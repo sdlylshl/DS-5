@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?fileVersion 4.0.0?>
+
+<cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+	<storageModule moduleId="org.eclipse.cdt.core.settings">
+		<cconfiguration id="com.arm.eclipse.build.config.baremetal.exe.debug.840775929">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.arm.eclipse.build.config.baremetal.exe.debug.840775929" moduleId="org.eclipse.cdt.core.settings" name="Debug">
+				<externalSettings/>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="com.arm.eclipse.builder.armcc.error" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="axf" artifactName="${ProjName}" buildArtefactType="com.arm.eclipse.build.artefact.baremetal.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=com.arm.eclipse.build.artefact.baremetal.exe" cleanCommand="clean" description="" id="com.arm.eclipse.build.config.baremetal.exe.debug.840775929" name="Debug" parent="com.arm.eclipse.build.config.baremetal.exe.debug">
+					<folderInfo id="com.arm.eclipse.build.config.baremetal.exe.debug.840775929." name="/" resourcePath="">
+						<toolChain id="com.arm.toolchain.baremetal.exe.debug.347136598" name="ARM Compiler" superClass="com.arm.toolchain.baremetal.exe.debug">
+							<targetPlatform id="com.arm.eclipse.build.config.baremetal.exe.debug.840775929..1141119652" name=""/>
+							<builder buildPath="${workspace_loc:/s3c2440_keil/Debug}" id="com.arm.toolchain.baremetal.builder.2013291340" managedBuildOn="true" name="Gnu Make Builder.Debug" superClass="com.arm.toolchain.baremetal.builder"/>
+							<tool id="com.arm.tool.c.compiler.baremetal.exe.debug.336446411" name="ARM C Compiler" superClass="com.arm.tool.c.compiler.baremetal.exe.debug"/>
+							<tool id="com.arm.tool.cpp.compiler.baremetal.exe.debug.1270562287" name="ARM C++ Compiler" superClass="com.arm.tool.cpp.compiler.baremetal.exe.debug"/>
+							<tool id="com.arm.tool.assembler.838536166" name="ARM Assembler" superClass="com.arm.tool.assembler"/>
+							<tool id="com.arm.tool.c.linker.1660863517" name="ARM Linker" superClass="com.arm.tool.c.linker"/>
+							<tool id="com.arm.tool.librarian.1156866913" name="ARM Librarian" superClass="com.arm.tool.librarian"/>
+						</toolChain>
+					</folderInfo>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.arm.eclipse.build.config.baremetal.exe.release.474691289">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.arm.eclipse.build.config.baremetal.exe.release.474691289" moduleId="org.eclipse.cdt.core.settings" name="Release">
+				<externalSettings/>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="com.arm.eclipse.builder.armcc.error" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="axf" artifactName="${ProjName}" buildArtefactType="com.arm.eclipse.build.artefact.baremetal.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=com.arm.eclipse.build.artefact.baremetal.exe" cleanCommand="clean" description="" id="com.arm.eclipse.build.config.baremetal.exe.release.474691289" name="Release" parent="com.arm.eclipse.build.config.baremetal.exe.release">
+					<folderInfo id="com.arm.eclipse.build.config.baremetal.exe.release.474691289." name="/" resourcePath="">
+						<toolChain id="com.arm.toolchain.baremetal.exe.release.845779860" name="ARM Compiler" superClass="com.arm.toolchain.baremetal.exe.release">
+							<targetPlatform id="com.arm.eclipse.build.config.baremetal.exe.release.474691289..1435950214" name=""/>
+							<builder buildPath="${workspace_loc:/s3c2440_keil/Release}" id="com.arm.toolchain.baremetal.builder.1954673803" managedBuildOn="true" name="Gnu Make Builder.Release" superClass="com.arm.toolchain.baremetal.builder"/>
+							<tool id="com.arm.tool.c.compiler.baremetal.exe.release.1220385143" name="ARM C Compiler" superClass="com.arm.tool.c.compiler.baremetal.exe.release"/>
+							<tool id="com.arm.tool.cpp.compiler.baremetal.exe.release.460853345" name="ARM C++ Compiler" superClass="com.arm.tool.cpp.compiler.baremetal.exe.release"/>
+							<tool id="com.arm.tool.assembler.291197670" name="ARM Assembler" superClass="com.arm.tool.assembler"/>
+							<tool id="com.arm.tool.c.linker.388150920" name="ARM Linker" superClass="com.arm.tool.c.linker"/>
+							<tool id="com.arm.tool.librarian.1278432229" name="ARM Librarian" superClass="com.arm.tool.librarian"/>
+						</toolChain>
+					</folderInfo>
+				</configuration>
+			</storageModule>
+		</cconfiguration>
+	</storageModule>
+	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+		<project id="s3c2440_keil.com.arm.eclipse.build.project.baremetal.exe.1741369893" name="Bare-metal Executable" projectType="com.arm.eclipse.build.project.baremetal.exe"/>
+	</storageModule>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+	</storageModule>
+</cproject>

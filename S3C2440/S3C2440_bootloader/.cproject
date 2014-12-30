@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?fileVersion 4.0.0?>
+
+<cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+	<storageModule moduleId="org.eclipse.cdt.core.settings">
+		<cconfiguration id="com.arm.eclipse.build.config.baremetal.exe.debug.19099850">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.arm.eclipse.build.config.baremetal.exe.debug.19099850" moduleId="org.eclipse.cdt.core.settings" name="Debug">
+				<externalSettings/>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="com.arm.eclipse.builder.armcc.error" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="axf" artifactName="${ProjName}" buildArtefactType="com.arm.eclipse.build.artefact.baremetal.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=com.arm.eclipse.build.artefact.baremetal.exe" cleanCommand="clean" description="" id="com.arm.eclipse.build.config.baremetal.exe.debug.19099850" name="Debug" parent="com.arm.eclipse.build.config.baremetal.exe.debug">
+					<folderInfo id="com.arm.eclipse.build.config.baremetal.exe.debug.19099850." name="/" resourcePath="">
+						<toolChain id="com.arm.toolchain.baremetal.exe.debug.997168318" name="ARM Compiler" superClass="com.arm.toolchain.baremetal.exe.debug">
+							<targetPlatform id="com.arm.eclipse.build.config.baremetal.exe.debug.19099850..2071263125" name=""/>
+							<builder buildPath="${workspace_loc:/bootloader_s3c2440/Debug}" id="com.arm.toolchain.baremetal.builder.642924994" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="com.arm.toolchain.baremetal.builder"/>
+							<tool id="com.arm.tool.c.compiler.baremetal.exe.debug.1078960300" name="ARM C Compiler" superClass="com.arm.tool.c.compiler.baremetal.exe.debug">
+								<option id="com.arm.tool.c.compile.option.lang.1866378760" name="Source language mode" superClass="com.arm.tool.c.compile.option.lang" value="com.arm.tool.c.compile.option.lang.auto" valueType="enumerated"/>
+								<option id="com.arm.tool.c.compiler.baremetal.exe.debug.option.opt.753842046" name="Optimization level" superClass="com.arm.tool.c.compiler.baremetal.exe.debug.option.opt" value="com.arm.tool.c.compiler.option.optlevel.restrict" valueType="enumerated"/>
+								<option id="com.arm.tool.c.compiler.option.targetcpu.796574466" name="Target CPU (--cpu)" superClass="com.arm.tool.c.compiler.option.targetcpu" value="ARM920T" valueType="string"/>
+								<option id="com.arm.tool.c.compiler.option.defmac.2065582363" name="Define macro (-D)" superClass="com.arm.tool.c.compiler.option.defmac" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="__TARGET_FPU_SOFTVFP"/>
+									<listOptionValue builtIn="false" value="__CC_ARM=1"/>
+									<listOptionValue builtIn="false" value="__STDC__=1"/>
+								</option>
+								<option id="com.arm.tool.c.compiler.option.incpath.597091897" name="Include path (-I)" superClass="com.arm.tool.c.compiler.option.incpath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/APPtest}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/MCP2515}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/usb}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/Flash}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/Key}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/GUI}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/Timer}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/src}&quot;"/>
+								</option>
+								<inputType id="com.arm.tool.c.compiler.input.192121070" superClass="com.arm.tool.c.compiler.input"/>
+								<inputType id="com.arm.tool.cpp.compiler.input.1437678920" superClass="com.arm.tool.cpp.compiler.input"/>
+							</tool>
+							<tool id="com.arm.tool.cpp.compiler.baremetal.exe.debug.1641399412" name="ARM C++ Compiler" superClass="com.arm.tool.cpp.compiler.baremetal.exe.debug"/>
+							<tool id="com.arm.tool.assembler.2095594896" name="ARM Assembler" superClass="com.arm.tool.assembler">
+								<option id="com.arm.tool.assembler.option.cpu.992732367" name="Target CPU (--cpu)" superClass="com.arm.tool.assembler.option.cpu" value="ARM920T" valueType="string"/>
+								<option id="com.arm.tool.assembler.option.flags.1782001877" name="Other flags" superClass="com.arm.tool.assembler.option.flags" value="-keep" valueType="string"/>
+							</tool>
+							<tool id="com.arm.tool.c.linker.1703519729" name="ARM Linker" superClass="com.arm.tool.c.linker">
+								<option id="com.arm.tool.c.linker.option.cpu.1540967605" name="Target CPU (--cpu)" superClass="com.arm.tool.c.linker.option.cpu" value="ARM920T" valueType="string"/>
+								<option id="com.arm.tool.c.linker.option.entry.1142454046" name="Image entry point (--entry)" superClass="com.arm.tool.c.linker.option.entry" value="__ENTRY " valueType="string"/>
+								<option id="com.arm.tool.c.linker.option.robase.587982812" name="RO base address (--ro_base)" superClass="com.arm.tool.c.linker.option.robase" value="0x31000000 " valueType="string"/>
+								<option id="com.arm.tool.c.linker.option.imagemap.1169321619" name="Generate image map (--map)" superClass="com.arm.tool.c.linker.option.imagemap" value="true" valueType="boolean"/>
+								<option id="com.arm.tool.c.linker.option.flags.1857815665" name="Other flags" superClass="com.arm.tool.c.linker.option.flags" value="--first __ENTRY" valueType="string"/>
+							</tool>
+							<tool id="com.arm.tool.librarian.713981148" name="ARM Librarian" superClass="com.arm.tool.librarian"/>
+						</toolChain>
+					</folderInfo>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.arm.eclipse.build.config.baremetal.exe.release.273551403">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.arm.eclipse.build.config.baremetal.exe.release.273551403" moduleId="org.eclipse.cdt.core.settings" name="Release">
+				<externalSettings/>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="com.arm.eclipse.builder.armcc.error" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="axf" artifactName="${ProjName}" buildArtefactType="com.arm.eclipse.build.artefact.baremetal.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=com.arm.eclipse.build.artefact.baremetal.exe" cleanCommand="clean" description="" id="com.arm.eclipse.build.config.baremetal.exe.release.273551403" name="Release" parent="com.arm.eclipse.build.config.baremetal.exe.release">
+					<folderInfo id="com.arm.eclipse.build.config.baremetal.exe.release.273551403." name="/" resourcePath="">
+						<toolChain id="com.arm.toolchain.baremetal.exe.release.1403417671" name="ARM Compiler" superClass="com.arm.toolchain.baremetal.exe.release">
+							<targetPlatform id="com.arm.eclipse.build.config.baremetal.exe.release.273551403..822178244" name=""/>
+							<builder buildPath="${workspace_loc:/bootloader_s3c2440/Release}" id="com.arm.toolchain.baremetal.builder.1723912022" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="com.arm.toolchain.baremetal.builder"/>
+							<tool id="com.arm.tool.c.compiler.baremetal.exe.release.10710799" name="ARM C Compiler" superClass="com.arm.tool.c.compiler.baremetal.exe.release">
+								<inputType id="com.arm.tool.c.compiler.input.620892819" superClass="com.arm.tool.c.compiler.input"/>
+								<inputType id="com.arm.tool.cpp.compiler.input.1173969552" superClass="com.arm.tool.cpp.compiler.input"/>
+							</tool>
+							<tool id="com.arm.tool.cpp.compiler.baremetal.exe.release.1995588203" name="ARM C++ Compiler" superClass="com.arm.tool.cpp.compiler.baremetal.exe.release"/>
+							<tool id="com.arm.tool.assembler.1100914574" name="ARM Assembler" superClass="com.arm.tool.assembler"/>
+							<tool id="com.arm.tool.c.linker.505977058" name="ARM Linker" superClass="com.arm.tool.c.linker"/>
+							<tool id="com.arm.tool.librarian.948619510" name="ARM Librarian" superClass="com.arm.tool.librarian"/>
+						</toolChain>
+					</folderInfo>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+	</storageModule>
+	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+		<project id="bootloader_s3c2440.com.arm.eclipse.build.project.baremetal.exe.1072169840" name="Bare-metal Executable" projectType="com.arm.eclipse.build.project.baremetal.exe"/>
+	</storageModule>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+	</storageModule>
+	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+</cproject>
