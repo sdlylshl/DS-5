@@ -120,6 +120,16 @@ build
 *.cof
 *.fil
 
+### IAR
+!*.ewp
+!*.eww
+settings
+*.sfr
+*.cout
+*.pbi
+*.r43
+*.d43
+
 ### ARM ads1.2
 !*.mcp
 *.stg
