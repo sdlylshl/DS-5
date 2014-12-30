@@ -142,6 +142,7 @@ packages
 *.suo
 
 ### eclipse
+.settings
 .metadata
 RemoteSystemsTempFiles
 
