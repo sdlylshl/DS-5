@@ -20,12 +20,12 @@
 							<builder buildPath="${workspace_loc:/STM32/Debug}" id="com.arm.toolchain.baremetal.builder.1344000798" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="com.arm.toolchain.baremetal.builder"/>
 							<tool id="com.arm.tool.c.compiler.baremetal.exe.debug.1232569647" name="ARM C Compiler" superClass="com.arm.tool.c.compiler.baremetal.exe.debug">
 								<option id="com.arm.tool.c.compiler.option.incpath.1746401136" name="Include path (-I)" superClass="com.arm.tool.c.compiler.option.incpath" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Cabinet/Source}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Cabinet/RTE}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Cabinet/RTE/Device/STM32F103VE}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Cabinet/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Cabinet/Libraries/CMSIS/CM3/CoreSupport}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Cabinet/Libraries/STM32F10x_StdPeriph_Driver/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/RTE}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/RTE/Device/STM32F103VE}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Libraries/CMSIS/CM3/CoreSupport}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Libraries/STM32F10x_StdPeriph_Driver/inc}&quot;"/>
 								</option>
 								<option id="com.arm.tool.c.compiler.option.defmac.469728796" name="Define macro (-D)" superClass="com.arm.tool.c.compiler.option.defmac" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_STDPERIPH_DRIVER"/>
@@ -55,8 +55,8 @@
 								<option id="com.arm.tool.c.linker.option.verbose.603573178" name="Verbose output (--verbose)" superClass="com.arm.tool.c.linker.option.verbose" value="false" valueType="boolean"/>
 								<option id="com.arm.tool.c.linker.option.inlineinfo.1605880837" name="List functions inlined by linker (--info=inline)" superClass="com.arm.tool.c.linker.option.inlineinfo" value="false" valueType="boolean"/>
 								<option id="com.arm.tool.c.linker.option.flags.2058152163" name="Other flags" superClass="com.arm.tool.c.linker.option.flags" value="--first __Vectors" valueType="string"/>
-								<option id="com.arm.tool.c.linker.userobjs.504914414" name="Other object files" superClass="com.arm.tool.c.linker.userobjs" valueType="userObjs"/>
-								<option id="com.arm.tool.c.linker.option.sizes.1533685655" superClass="com.arm.tool.c.linker.option.sizes" value="false" valueType="boolean"/>
+								<option id="com.arm.tool.c.linker.userobjs.504914414" name="Other object files" superClass="com.arm.tool.c.linker.userobjs"/>
+								<option id="com.arm.tool.c.linker.option.sizes.1533685655" name="List code and data sizes of output image (--info=sizes)" superClass="com.arm.tool.c.linker.option.sizes" value="false" valueType="boolean"/>
 							</tool>
 							<tool id="com.arm.tool.librarian.2003251121" name="ARM Librarian" superClass="com.arm.tool.librarian"/>
 						</toolChain>
