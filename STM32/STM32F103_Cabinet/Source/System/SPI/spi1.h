@@ -50,7 +50,7 @@
 // SPI1 PA 4 5 6 7
 #define SPI1_SCS_PORT				GPIOA
 #define SPI1_SCS_PIN				GPIO_Pin_4
-#define SPI1_SCS_MODE				GPIO_Mode_Out_OD
+#define SPI1_SCS_MODE				GPIO_Mode_Out_PP
 
 #define SPI1_SCLK_PORT			GPIOA
 #define SPI1_SCLK_PIN				GPIO_Pin_5

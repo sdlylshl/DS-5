@@ -11,17 +11,17 @@
 
 #define SPI3_IRQ_PORT				GPIOB
 #define SPI3_IRQ_PIN				GPIO_Pin_12
-#define SPI3_IRQ_MODE				GPIO_Mode_IN_FLOATING
+#define SPI3_IRQ_MODE				GPIO_Mode_IPU
            
 #define SPI3_RST_PORT			  GPIOB
 #define SPI3_RST_PIN				GPIO_Pin_13
-#define SPI3_RST_MODE			  GPIO_Mode_Out_OD
+#define SPI3_RST_MODE			  GPIO_Mode_Out_PP
 
 #ifdef SPI3_NONREMAP
 // SPI3 PB 3 4 5	
 #define SPI3_SCS_PORT				GPIOA
 #define SPI3_SCS_PIN				GPIO_Pin_15
-#define SPI3_SCS_MODE				GPIO_Mode_Out_OD
+#define SPI3_SCS_MODE				GPIO_Mode_Out_PP
 
 #define SPI3_SCLK_PORT			GPIOB
 #define SPI3_SCLK_PIN				GPIO_Pin_3

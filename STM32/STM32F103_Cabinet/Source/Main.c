@@ -2,6 +2,7 @@
 #include "config.h"
 char *str = "\r\n This is a USART1_printf demo \r\n";
 extern void nrf_main(void);
+int NRF_master_main(void);
 int main() {
 //	uint8_t i;
 	uint32_t Time = 0;

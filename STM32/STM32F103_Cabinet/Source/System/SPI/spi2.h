@@ -19,7 +19,7 @@
 // SPI2 PB 12 13 14 15
 #define SPI2_SCS_PORT				GPIOB
 #define SPI2_SCS_PIN				GPIO_Pin_12
-#define SPI2_SCS_MODE				GPIO_Mode_Out_OD
+#define SPI2_SCS_MODE				GPIO_Mode_Out_PP	//此处一定要PP输出否则程序不正常
 
 #define SPI2_SCLK_PORT			GPIOB
 #define SPI2_SCLK_PIN				GPIO_Pin_13
