@@ -4,8 +4,18 @@ static void SPI2_GPIO_Config(void) {
 	GPIO_InitTypeDef GPIO_InitStructure;
 
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+	RCC_APB2PeriphClockCmd(SPI2_RCC_APB2_PORT|RCC_APB2Periph_GPIOB, ENABLE);
+#if 1
+	GPIO_InitStructure.GPIO_Pin = SPI2_IRQ_PIN;
+	GPIO_InitStructure.GPIO_Mode = SPI2_IRQ_MODE;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(SPI2_IRQ_PORT, &GPIO_InitStructure);
 
+	GPIO_InitStructure.GPIO_Pin = SPI2_RST_PIN;
+	GPIO_InitStructure.GPIO_Mode = SPI2_RST_MODE;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(SPI2_RST_PORT, &GPIO_InitStructure);
+#endif
 	GPIO_InitStructure.GPIO_Pin = SPI2_SCS_PIN;
 	GPIO_InitStructure.GPIO_Mode = SPI2_SCS_MODE;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;

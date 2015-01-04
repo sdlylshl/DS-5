@@ -4,11 +4,27 @@ static void SPI3_GPIO_Config(void) {
 	GPIO_InitTypeDef GPIO_InitStructure;
 
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
-	GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI3, ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+	RCC_APB2PeriphClockCmd(SPI3_RCC_APB2_PORT|RCC_APB2Periph_GPIOA, ENABLE);
+	
+	#ifdef SPI3_NONREMAP
+		GPIO_PinRemapConfig(GPIO_Remap_SWJ_JTAGDisable, ENABLE);	
+		RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+	#else
+		RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
+	#endif
 
+	
+	GPIO_InitStructure.GPIO_Pin = SPI3_IRQ_PIN;
+	GPIO_InitStructure.GPIO_Mode = SPI3_IRQ_MODE;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(SPI3_IRQ_PORT, &GPIO_InitStructure);
+	
+	GPIO_InitStructure.GPIO_Pin = SPI3_RST_PIN;
+	GPIO_InitStructure.GPIO_Mode = SPI3_RST_MODE;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(SPI3_RST_PORT, &GPIO_InitStructure);
+	
 	GPIO_InitStructure.GPIO_Pin = SPI3_SCS_PIN;
 	GPIO_InitStructure.GPIO_Mode = SPI3_SCS_MODE;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;

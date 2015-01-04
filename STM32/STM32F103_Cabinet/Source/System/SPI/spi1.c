@@ -3,7 +3,7 @@
 static void SPI1_GPIO_Config(void) {
 	GPIO_InitTypeDef GPIO_InitStructure;
 
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
+	RCC_APB2PeriphClockCmd(SPI1_RCC_APB2_PORT|RCC_APB2Periph_SPI1, ENABLE);
 
 #ifdef   SPI1_NONREMAP
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
@@ -13,7 +13,17 @@ static void SPI1_GPIO_Config(void) {
 	GPIO_PinRemapConfig(GPIO_Remap_SPI1, ENABLE);
 
 #endif
-
+	
+	GPIO_InitStructure.GPIO_Pin = SPI1_IRQ_PIN;
+	GPIO_InitStructure.GPIO_Mode = SPI1_IRQ_MODE;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(SPI1_IRQ_PORT, &GPIO_InitStructure);
+		
+	GPIO_InitStructure.GPIO_Pin = SPI1_RST_PIN;
+	GPIO_InitStructure.GPIO_Mode = SPI1_RST_MODE;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(SPI1_RST_PORT, &GPIO_InitStructure);
+	
 	GPIO_InitStructure.GPIO_Pin = SPI1_SCS_PIN;
 	GPIO_InitStructure.GPIO_Mode = SPI1_SCS_MODE;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;

@@ -98,6 +98,9 @@ void NVIC_Config(void) {
 	/* Configure one bit for preemption priority */
 	//NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
 	NVIC_SetPriorityGrouping(6);
+	
+	//NVIC_SetPriority(USART1_IRQn, 3);
+	//NVIC_EnableIRQ(USART1_IRQn);
 
 }
 
