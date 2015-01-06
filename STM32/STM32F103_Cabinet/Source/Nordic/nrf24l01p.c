@@ -1,105 +1,195 @@
 #include <stdint.h>
 #include "stdio.h"
 #include "./nrf24l01p/hal_nrf.h"
-
-// Global variables
-uint8_t payload[3];
-uint8_t NRF__RX_BUF[RX_PLOAD_WIDTH];		//æ¥æ”¶æ•°æ®ç¼“å­˜
-uint8_t NRF__TX_BUF[TX_PLOAD_WIDTH];		//å‘å°„æ•°æ®ç¼“å­˜
-//moren
-uint8_t TX_ADDRESS[TX_ADR_WIDTH] = {0x34,0x43,0x10,0x10,0x01};  // å®šä¹‰ä¸€ä¸ªé™æ€å‘é€åœ°å€
-uint8_t RX_ADDRESS[RX_ADR_WIDTH] = {0x34,0x43,0x10,0x10,0x01};
-static void nrf_init(){
-	//ç«¯å£&SPIåˆå§‹åŒ–
-	SPI2_Config();
+//¹¤×÷Ä£Ê½µÄÅäÖÃ 
+//Mode  	 PWR_UP       PRIM_RX(1) 		CE 
+//·¢ËÍÄ£Ê½ 		 1 			0 				1 
+//·¢ËÍÄ£Ê½ 		 1 			0 				¡İ10Î¢ÃëµÄ¸ßµçÆ½ 
+//½ÓÊÕÄ£Ê½ 		 1 			1 				1 
 	
-	//é‡Šæ”¾SPIæ€»çº¿
+//´ı»úÄ£Ê½¢ò	 1 			0 				1 
+//´ı»úÄ£Ê½¢ñ	 1			- 				0 
+//µôµçÄ£Ê½  	 0 			- 				- 
+//ÔöÇ¿ĞÍ ShockBurst Ä£Ê½µÄÊı¾İÖ¡¸ñÊ½ 
+//Ö¡Í·| µØÖ· |¿ØÖÆÓò| Êı¾İ| CRC 
+//µØÖ·³¤¶ÈÎª3-5¸ö×Ö½Ú£¬ÆäÄÚÈİÎª½ÓÊÕ»úµÄµØÖ·
+// Global variables
+uint8_t payload[RX_PLOAD_WIDTH];
+uint8_t NRF__RX_BUF[RX_PLOAD_WIDTH] = {0,0,0,0};		//½ÓÊÕÊı¾İ»º´æ
+uint8_t NRF__TX_BUF[TX_PLOAD_WIDTH] = {0,1,2,3};		//·¢ÉäÊı¾İ»º´æ
+//moren
+uint8_t NRF_MASTER_ADDRESS[TX_ADR_WIDTH] = {0x34,0x43,0x10,0x10,0x01};  // ¶¨ÒåÒ»¸ö¾²Ì¬·¢ËÍµØÖ·
+uint8_t NRF_DEVICE_ADDRESS[RX_ADR_WIDTH] = {0x34,0x43,0x10,0x10,0x01};
+static void nrf_init(){
+	//¶Ë¿Ú&SPI³õÊ¼»¯
+	SPI2_Init();	
+	//ÊÍ·ÅSPI×ÜÏß
 	CSN_HIGH(); 
 }
-
+uint8_t  nrf_test(){
+	uint8_t reg;
+    
+    reg = hal_nrf_read_reg(CONFIG);
+    reg = hal_nrf_read_reg(EN_AA      );
+    reg = hal_nrf_read_reg(EN_RXADDR  );
+    reg = hal_nrf_read_reg(SETUP_AW   );
+    reg = hal_nrf_read_reg(SETUP_RETR );
+    reg = hal_nrf_read_reg(RF_CH      );
+    reg = hal_nrf_read_reg(RF_SETUP   );
+    reg = hal_nrf_read_reg(STATUS     );
+    reg = hal_nrf_read_reg(OBSERVE_TX );
+    reg = hal_nrf_read_reg(CD         );
+    reg = hal_nrf_read_reg(RX_ADDR_P0 );
+    reg = hal_nrf_read_reg(RX_ADDR_P1 );
+    reg = hal_nrf_read_reg(RX_ADDR_P2 );
+    reg = hal_nrf_read_reg(RX_ADDR_P3 );
+    reg = hal_nrf_read_reg(RX_ADDR_P4 );
+    reg = hal_nrf_read_reg(RX_ADDR_P5 );
+    reg = hal_nrf_read_reg(TX_ADDR    );
+    reg = hal_nrf_read_reg(RX_PW_P0   );
+    reg = hal_nrf_read_reg(RX_PW_P1   );
+    reg = hal_nrf_read_reg(RX_PW_P2   );
+    reg = hal_nrf_read_reg(RX_PW_P3   );
+    reg = hal_nrf_read_reg(RX_PW_P4   );
+    reg = hal_nrf_read_reg(RX_PW_P5   );
+    reg = hal_nrf_read_reg(FIFO_STATUS);
+    reg = hal_nrf_read_reg(DYNPD      );
+    reg = hal_nrf_read_reg(FEATURE    );
+		return reg;
+}
 static uint8_t nrf_check(void)
 {
-	uint8_t buf[5]={0xC2,0xC2,0xC2,0xC2,0xC2};
+	uint8_t buf[5]={0x12,0x22,0x32,0x42,0x52};
 	uint8_t buf1[5];
 	uint8_t i; 
-	 
-	/*å†™å…¥5ä¸ªå­—èŠ‚çš„åœ°å€.  */  
+		hal_nrf_get_address(HAL_NRF_TX,buf1);
+		hal_nrf_get_address(HAL_NRF_PIPE0,buf1);
+		hal_nrf_get_address(HAL_NRF_PIPE1,buf1);
+		hal_nrf_get_address(HAL_NRF_PIPE2,buf1);
+		hal_nrf_get_address(HAL_NRF_PIPE3,buf1);
+		hal_nrf_get_address(HAL_NRF_PIPE4,buf1);
+		hal_nrf_get_address(HAL_NRF_PIPE5,buf1);	 
+	
+	/*Ğ´Èë5¸ö×Ö½ÚµÄµØÖ·.  */  
 	//SPI_NRF_WriteBuf(NRF_WRITE_REG+TX_ADDR,buf,5);
-
     hal_nrf_set_address(HAL_NRF_TX,buf);
-	/*è¯»å‡ºå†™å…¥çš„åœ°å€ */
+	/*¶Á³öĞ´ÈëµÄµØÖ· */
 	//SPI_NRF_ReadBuf(TX_ADDR,buf1,5); 
 	  hal_nrf_get_address(HAL_NRF_TX,buf1);
-	/*æ¯”è¾ƒ*/               
+	/*±È½Ï*/               
 	for(i=0;i<5;i++)
 	{
-		if(buf1[i]!=0xC2)
+		if(buf1[i]!=buf[i])
 		break;
 	} 
 	       
 	if(i==5)
-		return SUCCESS ;        //MCUä¸NRFæˆåŠŸè¿æ¥ 
+		return SUCCESS ;        //MCUÓëNRF³É¹¦Á¬½Ó 
 	else
-		return ERROR ;        //MCUä¸NRFä¸æ­£å¸¸è¿æ¥
+		return ERROR ;        //MCUÓëNRF²»Õı³£Á¬½Ó
 }
 
 static void nrf_config(){
-	//è¿›å…¥ç©ºé—²æ¨¡å¼
+		//²ÎÊıÅäÖÃ±ØĞëÔÚPOWER DOWN Ä£Ê½ÏÂ
+		//½øÈë¿ÕÏĞÄ£Ê½
     CE_LOW();	
-		//1.è®¾ç½®åœ°å€å®½åº¦ï¼Œé»˜è®¤5
-		hal_nrf_set_address_width(HAL_NRF_AW_5BYTES);
-    //è®¾ç½®æ¥æ”¶èŠ‚ç‚¹0åœ°å€,é»˜è®¤0xE7E7E7E7E7
-    hal_nrf_set_address(HAL_NRF_PIPE0,RX_ADDRESS);
-		//è®¾ç½®æ¥æ”¶èŠ‚ç‚¹1åœ°å€,é»˜è®¤0xC2C2C2C2C2
-		hal_nrf_set_address(HAL_NRF_PIPE1,RX_ADDRESS);
-    // è®¾ç½®å‘é€èŠ‚ç‚¹åœ°å€,é»˜è®¤0xE7E7E7E7E7
-    hal_nrf_set_address(HAL_NRF_TX,TX_ADDRESS);
-    //è®¾ç½®ä¼ è¾“é€šé“ é»˜è®¤:2
-		hal_nrf_set_rf_channel(40);
-    //è®¾ç½®æ¥æ”¶æ•°æ®å®½åº¦
-    hal_nrf_set_rx_payload_width(HAL_NRF_PIPE0,RX_PLOAD_WIDTH);
-    //è®¾ç½®ä¼ è¾“åŠŸç‡,é»˜è®¤0db
+		//ÏµÍ³ÉèÖÃ
+	  //RF_SETUPÉèÖÃ´«Êä¹¦ÂÊ,Ä¬ÈÏ0db
     hal_nrf_set_output_power(HAL_NRF_0DBM);
-    //è®¾ç½®ä¼ è¾“é€Ÿç‡,é»˜è®¤2Mbps
+    //RF_SETUPÉèÖÃ´«ÊäËÙÂÊ,Ä¬ÈÏ2Mbps
     hal_nrf_set_datarate(HAL_NRF_2MBPS);
-    //æ‰“å¼€CRC16æ ¡éªŒ,é»˜è®¤8ä½
+
+		//RF_CHÉèÖÃ´«ÊäÍ¨µÀ Ä¬ÈÏ:2
+		hal_nrf_set_rf_channel(40);
+		//CONFIGÉèÖÃÖĞ¶ÏIRQ 
+		hal_nrf_set_irq_mode(HAL_NRF_MAX_RT,true);
+		hal_nrf_set_irq_mode(HAL_NRF_TX_DS,true);
+		hal_nrf_set_irq_mode(HAL_NRF_RX_DR,true);
+
+		//SETUP_AWÉèÖÃµØÖ·¿í¶È£¬Ä¬ÈÏ5
+		//hal_nrf_set_address_width(HAL_NRF_AW_5BYTES);
+		//RX_PW_P0ÉèÖÃ½ÓÊÕÊı¾İ¿í¶È,Ä¬ÈÏ0 nouse
+		hal_nrf_set_rx_payload_width(HAL_NRF_PIPE0,RX_PLOAD_WIDTH);
+		//RX_ADDR_P0ÉèÖÃ·¢ËÍ½ÚµãµØÖ·,Ä¬ÈÏ0xE7E7E7E7E7
+		hal_nrf_set_address(HAL_NRF_TX,NRF_MASTER_ADDRESS);
+		//RX_ADDR_P0ÉèÖÃ½ÓÊÕ½Úµã0µØÖ·,Ä¬ÈÏ0xE7E7E7E7E7
+		hal_nrf_set_address(HAL_NRF_PIPE0,NRF_MASTER_ADDRESS);
+		//RX_ADDR_P0ÉèÖÃ½ÓÊÕ½Úµã1µØÖ·,Ä¬ÈÏ0xC2C2C2C2C2
+		//hal_nrf_set_address(HAL_NRF_PIPE1,NRF_DEVICE_ADDRESS);
+
+		//SETUP_RETRÉèÖÃÖØ·¢´ÎÊı,ÖØ·¢¼ä¸ô,Ä¬ÈÏ3´Î,250us
+		hal_nrf_set_auto_retr(10,500);
+		//EN_AA,EN_RXADDR¿ªÆôÍ¨µÀ0µÄ×Ô¶¯Ó¦´ğ,¿ªÆôÊ±Ç¿ÖÆ´ò¿ªCRCĞ£Ñé,Ä¬ÈÏ¿ªÆô
+		hal_nrf_open_pipe(HAL_NRF_PIPE0,EN_AA);
+			//CONFIG´ò¿ªCRC16Ğ£Ñé,Ä¬ÈÏ8Î»
     hal_nrf_set_crc_mode(HAL_NRF_CRC_16BIT);
-    //å¼€å¯é€šé“0çš„è‡ªåŠ¨åº”ç­”,å¼€å¯æ—¶å¼ºåˆ¶æ‰“å¼€CRCæ ¡éªŒ
-    hal_nrf_open_pipe(HAL_NRF_PIPE1,true);    
-    //è®¾ç½®é‡å‘æ¬¡æ•°,é‡å‘é—´éš”,é»˜è®¤3æ¬¡,250us
-    hal_nrf_set_auto_retr(5,500);
-    //é»˜è®¤POWER DOWN
+    //CONFIGÄ¬ÈÏPOWER DOWN
     hal_nrf_set_power_mode(HAL_NRF_PWR_UP);
-    //è®¾ç½®å‘é€æ¨¡å¼,é»˜è®¤TX
-    hal_nrf_set_operation_mode(HAL_NRF_PTX);
-    //è¿›å…¥æ¥æ”¶æ¨¡å¼
-    CE_HIGH();
     
 }
 
-void nrf_main()
-{
-	uint8_t status;
 
-	nrf_init();		 
-	/*æ£€æµ‹NRFæ¨¡å—ä¸MCUçš„è¿æ¥*/
-  status =nrf_check();	
-
-
-	/*åˆ¤æ–­è¿æ¥çŠ¶æ€*/  
-   if(status == SUCCESS)	   
-   		 printf("\r\n      NRFä¸MCUè¿æ¥æˆåŠŸï¼\r\n");  
-   else	  
-   	     printf("\r\n  NRFä¸MCUè¿æ¥å¤±è´¥ï¼Œè¯·é‡æ–°æ£€æŸ¥æ¥çº¿ã€‚\r\n");
-
-	nrf_config();
-  for(;;){}
+void nrf_tx_mode(){
+		CE_LOW();
+   //CONFIGÉèÖÃ·¢ËÍÄ£Ê½,Ä¬ÈÏTX
+    hal_nrf_set_operation_mode(HAL_NRF_PTX);
+		CE_HIGH();
+		Delay_us(1000);
 }
+void nrf_rx_mode(){
+		CE_LOW();
+    //CONFIGÉèÖÃ·¢ËÍÄ£Ê½,Ä¬ÈÏTX
+    hal_nrf_set_operation_mode(HAL_NRF_PRX);
+		CE_HIGH();
+		
+}
+uint8_t nrf_tx_dat(){
+	
+	uint8_t status =0;
+	
+		CE_LOW();
+    hal_nrf_write_tx_payload(NRF__TX_BUF,TX_PLOAD_WIDTH);
+		//CE_PULSE();//Delay_us(15);
+	  CE_HIGH();	
+		//µÈ´ı·¢ËÍÍê³É
+		//while(NRF_Read_IRQ()!=0); 
+		Delay_us(2000);
+		status = hal_nrf_get_clear_irq_flags();
+	  hal_nrf_flush_tx();
+	 
+    //If MAX_RT is asserted it must be cleared to enable further communication.
+		//hal_nrf_clear_irq_flag(HAL_NRF_MAX_RT);
+	
+		return status;
+}
+#define POLL
+uint8_t nrf_rx_dat(){
+	uint8_t status =0;
+	#ifdef POLL
+		nrf_rx_mode();
+    //CE_HIGH();
+		while(NRF_Read_IRQ()!=0); 
+  #endif
+    
+    CE_LOW();
+    //pipe
+    //hal_nrf_get_rx_data_source();
+   
+    status = hal_nrf_get_clear_irq_flags();
+	
+    if(status & (1<<RX_DR)){
+			hal_nrf_read_rx_payload(NRF__RX_BUF);
+			hal_nrf_flush_rx();
+		}
+	return status;
+ 
+}
+//*********************************************
 
 // Radio interrupt
-void NRF_ISR()
+void NRF_ISR(void)
 {
-  uint8_t irq_flags;
+  uint8_t irq_flags=0;
 
   // Read and clear IRQ flags from radio
   irq_flags = hal_nrf_get_clear_irq_flags();
@@ -118,106 +208,60 @@ void NRF_ISR()
   }
 }
 
-/*
- * å‡½æ•°åï¼šNRF_RX_Mode
- * æè¿°  ï¼šé…ç½®å¹¶è¿›å…¥æ¥æ”¶æ¨¡å¼
- * è¾“å…¥  ï¼šæ— 	
- * è¾“å‡º  ï¼šæ— 
- * è°ƒç”¨  ï¼šå¤–éƒ¨è°ƒç”¨
- */
-void NRF_RX_Mode(void)
 
+
+//*******************************************************
+void nrf_main()
 {
-	
-	//è¿›å…¥ç©ºé—²æ¨¡å¼
-    CE_LOW();	
-		//1.è®¾ç½®åœ°å€å®½åº¦ï¼Œé»˜è®¤5
-		hal_nrf_set_address_width(HAL_NRF_AW_5BYTES);
-    //è®¾ç½®æ¥æ”¶èŠ‚ç‚¹0åœ°å€,é»˜è®¤0xE7E7E7E7E7
-    hal_nrf_set_address(HAL_NRF_PIPE0,RX_ADDRESS);
-		//è®¾ç½®æ¥æ”¶èŠ‚ç‚¹1åœ°å€,é»˜è®¤0xC2C2C2C2C2
-		hal_nrf_set_address(HAL_NRF_PIPE1,RX_ADDRESS);
-    // è®¾ç½®å‘é€èŠ‚ç‚¹åœ°å€,é»˜è®¤0xE7E7E7E7E7
-    hal_nrf_set_address(HAL_NRF_TX,TX_ADDRESS);
-    //è®¾ç½®ä¼ è¾“é€šé“ é»˜è®¤:2
-		hal_nrf_set_rf_channel(40);
-    //è®¾ç½®æ¥æ”¶æ•°æ®å®½åº¦
-    hal_nrf_set_rx_payload_width(HAL_NRF_PIPE0,RX_PLOAD_WIDTH);
-    //è®¾ç½®ä¼ è¾“åŠŸç‡,é»˜è®¤0db
-    hal_nrf_set_output_power(HAL_NRF_0DBM);
-    //è®¾ç½®ä¼ è¾“é€Ÿç‡,é»˜è®¤2Mbps
-    hal_nrf_set_datarate(HAL_NRF_2MBPS);
-    //æ‰“å¼€CRC16æ ¡éªŒ,é»˜è®¤8ä½
-    hal_nrf_set_crc_mode(HAL_NRF_CRC_16BIT);
-    //å¼€å¯é€šé“0çš„è‡ªåŠ¨åº”ç­”,å¼€å¯æ—¶å¼ºåˆ¶æ‰“å¼€CRCæ ¡éªŒ
-    hal_nrf_open_pipe(HAL_NRF_PIPE1,true);    
-    //è®¾ç½®é‡å‘æ¬¡æ•°,é‡å‘é—´éš”,é»˜è®¤3æ¬¡,250us
-    hal_nrf_set_auto_retr(5,500);
-    //é»˜è®¤POWER DOWN
-    hal_nrf_set_power_mode(HAL_NRF_PWR_UP);
-    //è®¾ç½®å‘é€æ¨¡å¼,é»˜è®¤TX
-    hal_nrf_set_operation_mode(HAL_NRF_PTX);
-    //è¿›å…¥æ¥æ”¶æ¨¡å¼
-    CE_HIGH();
-    
-//   SPI_NRF_WriteBuf(NRF_WRITE_REG+RX_ADDR_P0,RX_ADDRESS,RX_ADR_WIDTH);//å†™RXèŠ‚ç‚¹åœ°å€
+	uint8_t status=0;
+	uint8_t i;
+	nrf_init();		
+	//nrf_EXIT_Config();	
+	/*¼ì²âNRFÄ£¿éÓëMCUµÄÁ¬½Ó*/
+	while(!status){
+  status =nrf_check();	
+	}
+	//
+	/*ÅĞ¶ÏÁ¬½Ó×´Ì¬*/  
+   if(status == SUCCESS)	   
+   		 printf("\r\n      NRFÓëMCUÁ¬½Ó³É¹¦£¡\r\n");  
+   else	  
+   	   printf("\r\n  NRFÓëMCUÁ¬½ÓÊ§°Ü£¬ÇëÖØĞÂ¼ì²é½ÓÏß¡£\r\n");
+	  nrf_test();
+		nrf_config();
+	  nrf_test();
+			 nrf_rx_mode();
+     while(1){   
+     
+     
+	   	printf("\r\n Ö÷»ú¶Ë ½øÈë×ÔÓ¦´ğ·¢ËÍÄ£Ê½\r\n"); 
+				//nrf_tx_mode();
+    //status = nrf_tx_dat();
+        switch(status)
+        {
+        case (1<<MAX_RT):
+        printf("\r\n Ö÷»ú¶Ë Ã»½ÓÊÕµ½Ó¦´ğĞÅºÅ£¬·¢ËÍ´ÎÊı³¬¹ıÏŞ¶¨Öµ£¬·¢ËÍÊ§°Ü¡£ \r\n");
+        break;
 
-//   SPI_NRF_WriteReg(NRF_WRITE_REG+EN_AA,0x01);    //ä½¿èƒ½é€šé“0çš„è‡ªåŠ¨åº”ç­”    
-
-//   SPI_NRF_WriteReg(NRF_WRITE_REG+EN_RXADDR,0x01);//ä½¿èƒ½é€šé“0çš„æ¥æ”¶åœ°å€    
-
-//   SPI_NRF_WriteReg(NRF_WRITE_REG+RF_CH,CHANAL);      //è®¾ç½®RFé€šä¿¡é¢‘ç‡    
-
-//   SPI_NRF_WriteReg(NRF_WRITE_REG+RX_PW_P0,RX_PLOAD_WIDTH);//é€‰æ‹©é€šé“0çš„æœ‰æ•ˆæ•°æ®å®½åº¦      
-
-//   SPI_NRF_WriteReg(NRF_WRITE_REG+RF_SETUP,0x0f); //è®¾ç½®TXå‘å°„å‚æ•°,0dbå¢ç›Š,2Mbps,ä½å™ªå£°å¢ç›Šå¼€å¯   
-
-//   SPI_NRF_WriteReg(NRF_WRITE_REG+CONFIG, 0x0f);  //é…ç½®åŸºæœ¬å·¥ä½œæ¨¡å¼çš„å‚æ•°;PWR_UP,EN_CRC,16BIT_CRC,æ¥æ”¶æ¨¡å¼ 
-
-/*CEæ‹‰é«˜ï¼Œè¿›å…¥æ¥æ”¶æ¨¡å¼*/	
-  //NRF_CE_HIGH();
-
-}    
-
-/*
- * å‡½æ•°åï¼šNRF_TX_Mode
- * æè¿°  ï¼šé…ç½®å‘é€æ¨¡å¼
- * è¾“å…¥  ï¼šæ— 	
- * è¾“å‡º  ï¼šæ— 
- * è°ƒç”¨  ï¼šå¤–éƒ¨è°ƒç”¨
- */
-void NRF_TX_Mode(void)
-{  
-	//NRF_CE_LOW();		
-
-//   SPI_NRF_WriteBuf(NRF_WRITE_REG+TX_ADDR,TX_ADDRESS,TX_ADR_WIDTH);    //å†™TXèŠ‚ç‚¹åœ°å€ 
-
-//   SPI_NRF_WriteBuf(NRF_WRITE_REG+RX_ADDR_P0,RX_ADDRESS,RX_ADR_WIDTH); //è®¾ç½®TXèŠ‚ç‚¹åœ°å€,ä¸»è¦ä¸ºäº†ä½¿èƒ½ACK   
-
-//   SPI_NRF_WriteReg(NRF_WRITE_REG+EN_AA,0x01);     //ä½¿èƒ½é€šé“0çš„è‡ªåŠ¨åº”ç­”    
-
-//   SPI_NRF_WriteReg(NRF_WRITE_REG+EN_RXADDR,0x01); //ä½¿èƒ½é€šé“0çš„æ¥æ”¶åœ°å€  
-
-//   SPI_NRF_WriteReg(NRF_WRITE_REG+SETUP_RETR,0x1a);//è®¾ç½®è‡ªåŠ¨é‡å‘é—´éš”æ—¶é—´:500us + 86us;æœ€å¤§è‡ªåŠ¨é‡å‘æ¬¡æ•°:10æ¬¡
-
-//   SPI_NRF_WriteReg(NRF_WRITE_REG+RF_CH,CHANAL);       //è®¾ç½®RFé€šé“ä¸ºCHANAL
-
-//   SPI_NRF_WriteReg(NRF_WRITE_REG+RF_SETUP,0x0f);  //è®¾ç½®TXå‘å°„å‚æ•°,0dbå¢ç›Š,2Mbps,ä½å™ªå£°å¢ç›Šå¼€å¯   
-//	
-//   SPI_NRF_WriteReg(NRF_WRITE_REG+CONFIG,0x0e);    //é…ç½®åŸºæœ¬å·¥ä½œæ¨¡å¼çš„å‚æ•°;PWR_UP,EN_CRC,16BIT_CRC,å‘å°„æ¨¡å¼,å¼€å¯æ‰€æœ‰ä¸­æ–­
-
-/*CEæ‹‰é«˜ï¼Œè¿›å…¥å‘é€æ¨¡å¼*/	
-  //NRF_CE_HIGH();
-	CE_PULSE();
-    //Delay(0xffff); //CEè¦æ‹‰é«˜ä¸€æ®µæ—¶é—´æ‰è¿›å…¥å‘é€æ¨¡å¼
+        case (1<<TX_DS):
+        printf("\r\n Ö÷»ú¶Ë ½ÓÊÕµ½ ´Ó»ú¶Ë µÄÓ¦´ğĞÅºÅ£¬·¢ËÍ³É¹¦£¡ \r\n");	 		
+        break;  								
+        }		
+        	 	printf("\r\n Ö÷»ú¶Ë ½øÈë½ÓÊÕÄ£Ê½¡£ \r\n");	
+			 //	nrf_rx_mode();
+	//	status = nrf_rx_dat();
+        	switch(status)
+			{
+			 case (1<<RX_DR):
+			 	for(i=0;i<4;i++)
+				{					
+					printf("\r\n Ö÷»ú¶Ë ½ÓÊÕµ½ ´Ó»ú¶Ë ·¢ËÍµÄÊı¾İÎª£º%d \r\n",NRF__RX_BUF[i]);
+				}
+            break;	
+			}
+        
+         Delay_ms(1000);
+     }
+		 
 }
 
-
-
-/*
- * å‡½æ•°åï¼šNRF_Check
- * æè¿°  ï¼šä¸»è¦ç”¨äºNRFä¸MCUæ˜¯å¦æ­£å¸¸è¿æ¥
- * è¾“å…¥  ï¼šæ— 	
- * è¾“å‡º  ï¼šSUCCESS/ERROR è¿æ¥æ­£å¸¸/è¿æ¥å¤±è´¥
- * è°ƒç”¨  ï¼šå¤–éƒ¨è°ƒç”¨
- */

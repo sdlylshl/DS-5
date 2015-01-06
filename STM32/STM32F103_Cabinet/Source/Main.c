@@ -2,22 +2,30 @@
 #include "config.h"
 char *str = "\r\n This is a USART1_printf demo \r\n";
 extern void nrf_main(void);
+extern void nrf_main0(void);
 int NRF_master_main(void);
 int main() {
 //	uint8_t i;
 	uint32_t Time = 0;
 	//RCC_Config();
-	NVIC_Config();
 	//DMA_Config();
+	//nrf
+	SPI2_Init();
+	PS2_Init();
 	
 	LED_GPIO_Config();	
 	TIM2_Start();
 	TIM4_Start(); //用来做网络延时计时使用
-	
+
+	//
+
 	USART1_Config();	
-	//nrf_main();
+	
+	NVIC_Config();
+	while(1);
+	nrf_main0();
 //		NRF_device_main();
-NRF_master_main();
+//NRF_master_main();
 
 #ifdef CABINET_DEVICE
 	LOCK_GPIO_Config();
@@ -32,7 +40,7 @@ NRF_master_main();
 	//CAN_main();
 	Ethernet_Init();
 
-	PS2_Init();
+	
 	//Ethernet_main();
 	printf("%slist", str);
 	while (1) {

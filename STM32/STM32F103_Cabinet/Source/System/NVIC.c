@@ -1,7 +1,7 @@
 //printf();
 #include "stdio.h"
 
-#include "version.h"
+#include "NVIC.h"
 //#include "System_config.h"
 /*
  * 函数名：NVIC_Config
@@ -82,6 +82,129 @@
 //   NVIC_PriorityGroup_4  |                0-15               |            0                |   4 bits for pre-emption priority
 //                         |                                   |                             |   0 bits for subpriority                       
 //  ============================================================================================================================
+
+ void NVIC_EXTI0_init(void) {
+	
+	EXTI_InitTypeDef EXTI_InitStructure;
+
+	EXTI_ClearITPendingBit(EXTI_Line0);
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinSource0);
+	EXTI_InitStructure.EXTI_Line = EXTI_Line0;
+	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt; 
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+	EXTI_InitStructure.EXTI_LineCmd = ENABLE; 
+	EXTI_Init(&EXTI_InitStructure); 
+}
+ void NVIC_EXTI1_init(void) {
+	
+	EXTI_InitTypeDef EXTI_InitStructure;
+
+	EXTI_ClearITPendingBit(EXTI_Line1);
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinSource1);
+	EXTI_InitStructure.EXTI_Line = EXTI_Line1;
+	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt; 
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+	EXTI_InitStructure.EXTI_LineCmd = ENABLE; 
+	EXTI_Init(&EXTI_InitStructure); 
+}
+void NVIC_EXTI2_init(void) {
+	
+	EXTI_InitTypeDef EXTI_InitStructure;
+
+	EXTI_ClearITPendingBit(EXTI_Line2);
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOD, GPIO_PinSource2);
+	EXTI_InitStructure.EXTI_Line = EXTI_Line2;
+	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt; 
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+	EXTI_InitStructure.EXTI_LineCmd = ENABLE; 
+	EXTI_Init(&EXTI_InitStructure); 
+}
+ void NVIC_EXTI3_init(void) {
+	
+	EXTI_InitTypeDef EXTI_InitStructure;
+
+	EXTI_ClearITPendingBit(EXTI_Line3);
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOD, GPIO_PinSource3);
+	EXTI_InitStructure.EXTI_Line = EXTI_Line3;
+	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt; 
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+	EXTI_InitStructure.EXTI_LineCmd = ENABLE; 
+	EXTI_Init(&EXTI_InitStructure); 
+}
+ void NVIC_EXTI4_init(void) {
+	
+	EXTI_InitTypeDef EXTI_InitStructure;
+
+	EXTI_ClearITPendingBit(EXTI_Line4);
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOD, GPIO_PinSource4);
+	EXTI_InitStructure.EXTI_Line = EXTI_Line4;
+	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt; 
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+	EXTI_InitStructure.EXTI_LineCmd = ENABLE; 
+	EXTI_Init(&EXTI_InitStructure); 
+}
+void NVIC_EXTI5_init(void) {
+	
+	EXTI_InitTypeDef EXTI_InitStructure;
+
+	EXTI_ClearITPendingBit(EXTI_Line5);
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOD, GPIO_PinSource5);
+	EXTI_InitStructure.EXTI_Line = EXTI_Line5;
+	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt; 
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+	EXTI_InitStructure.EXTI_LineCmd = ENABLE; 
+	EXTI_Init(&EXTI_InitStructure); 
+}
+void NVIC_EXTI6_init(void) {
+	
+	EXTI_InitTypeDef EXTI_InitStructure;
+
+	EXTI_ClearITPendingBit(EXTI_Line6);
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOD, GPIO_PinSource6);
+	EXTI_InitStructure.EXTI_Line = EXTI_Line6;
+	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt; 
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+	EXTI_InitStructure.EXTI_LineCmd = ENABLE; 
+	EXTI_Init(&EXTI_InitStructure); 
+}
+void NVIC_EXTI7_init(void) {
+	
+	EXTI_InitTypeDef EXTI_InitStructure;
+
+	EXTI_ClearITPendingBit(EXTI_Line7);
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOD, GPIO_PinSource7);
+	EXTI_InitStructure.EXTI_Line = EXTI_Line7;
+	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt; 
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+	EXTI_InitStructure.EXTI_LineCmd = ENABLE; 
+	EXTI_Init(&EXTI_InitStructure); 
+}
+void NVIC_EXTI8_init(void) {
+	
+	EXTI_InitTypeDef EXTI_InitStructure;
+
+	EXTI_ClearITPendingBit(EXTI_Line8);
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOD, GPIO_PinSource8);
+	EXTI_InitStructure.EXTI_Line = EXTI_Line8;
+	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt; 
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+	EXTI_InitStructure.EXTI_LineCmd = ENABLE; 
+	EXTI_Init(&EXTI_InitStructure); 
+}
+void NVIC_EXTI9_init(void) {
+	
+	EXTI_InitTypeDef EXTI_InitStructure;
+
+	EXTI_ClearITPendingBit(EXTI_Line9);
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOD, GPIO_PinSource9);
+	EXTI_InitStructure.EXTI_Line = EXTI_Line9;
+	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt; 
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
+	EXTI_InitStructure.EXTI_LineCmd = ENABLE; 
+	EXTI_Init(&EXTI_InitStructure); 
+}
+
+#define  TIM2IRQ
 void NVIC_Config(void) {
 //		NVIC_InitTypeDef NVIC_InitStructure;
 
@@ -94,14 +217,35 @@ void NVIC_Config(void) {
 	/* Set the Vector Table base location at 0x08000000 */
 	NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0);
 #endif
-
+	//关中断
+		__set_PRIMASK(1);
 	/* Configure one bit for preemption priority */
 	//NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
-	NVIC_SetPriorityGrouping(6);
+	NVIC_SetPriorityGrouping(0);
 	
-	//NVIC_SetPriority(USART1_IRQn, 3);
-	//NVIC_EnableIRQ(USART1_IRQn);
 
+#ifdef USATR1IRQ	
+	NVIC_SetPriority(USART1_IRQn, 3);
+	NVIC_EnableIRQ(USART1_IRQn);
+#endif
+	//PS2
+	NVIC_EXTI1_init();	
+	NVIC_SetPriority(EXTI1_IRQn, 2);
+	NVIC_EnableIRQ(EXTI1_IRQn);
+
+		//SPI2_IRQ
+	NVIC_EXTI8_init();
+	NVIC_SetPriority(EXTI9_5_IRQn, 5);
+	NVIC_EnableIRQ(EXTI9_5_IRQn);
+
+	
+	#ifdef  TIM2IRQ
+	NVIC_SetPriority(TIM2_IRQn, 8);
+	NVIC_EnableIRQ(TIM2_IRQn);
+	#endif
+	
+	//开总中断
+	__set_PRIMASK(0);
 }
 
 void NVIC_Info(IRQn_Type IRQn) {
@@ -115,4 +259,58 @@ void NVIC_Info(IRQn_Type IRQn) {
 	printf("pPreemptPriority_IRQn:%d\n", pPreemptPriority_IRQn);
 	printf("pSubPriority_IRQn:%d\n", pSubPriority_IRQn);
 
+}
+extern void TIM2_IRQ(void);
+void TIM2_IRQHandle(void) {
+	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
+		TIM2_IRQ();
+		TIM_ClearITPendingBit(TIM2, TIM_FLAG_Update);
+	}
+}	
+extern void TIM3_IRQ(void);
+void TIM3_IRQHandle(void) {
+	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) {
+		TIM3_IRQ();
+		TIM_ClearITPendingBit(TIM3, TIM_FLAG_Update);
+	}
+}
+extern void PS2_IRQHandle(void);
+void EXTI1_IRQHandle(void){
+	//中断1产生了相应的中断
+	if (EXTI_GetITStatus(EXTI_Line1) == SET) {		
+		
+		PS2_IRQHandle();
+		
+		//清除LINE1上的中断标志位
+		EXTI_ClearFlag(EXTI_Line1);
+		EXTI_ClearITPendingBit(EXTI_Line1);
+	}
+}
+void NRF_ISR(void);
+void EXTI9_5_IRQHandle(void){
+	if (EXTI_GetITStatus(EXTI_Line5) == SET) {
+		EXTI_ClearFlag(EXTI_Line5);
+		EXTI_ClearITPendingBit(EXTI_Line5);
+		
+	}else
+	if (EXTI_GetITStatus(EXTI_Line6) == SET) {
+		EXTI_ClearFlag(EXTI_Line6);
+		EXTI_ClearITPendingBit(EXTI_Line6);
+		
+	}else
+	if (EXTI_GetITStatus(EXTI_Line7) == SET) {
+		EXTI_ClearFlag(EXTI_Line7);
+		EXTI_ClearITPendingBit(EXTI_Line7);
+			
+	}else
+	if (EXTI_GetITStatus(EXTI_Line8) == SET) {
+		EXTI_ClearFlag(EXTI_Line8);
+		EXTI_ClearITPendingBit(EXTI_Line8);
+		NRF_ISR();
+	}else
+	if (EXTI_GetITStatus(EXTI_Line9) == SET) {
+		EXTI_ClearFlag(EXTI_Line9);
+		EXTI_ClearITPendingBit(EXTI_Line9);
+			
+	}
 }

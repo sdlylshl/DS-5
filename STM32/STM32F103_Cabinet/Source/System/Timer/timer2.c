@@ -38,7 +38,7 @@ void TIM2_Config(void) {
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
 	TIM_DeInit(TIM2);
-	TIM2_NVIC_Configuration();
+	//TIM2_NVIC_Configuration();
 	TIM_TimeBaseStructure.TIM_Period = 1000;
 	/* 累计 TIM_Period个频率后产生一个更新或者中断 */
 	TIM_TimeBaseStructure.TIM_Prescaler = (72 - 1);
@@ -63,9 +63,8 @@ void TIM2_Stop(void) {
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, DISABLE);
 }
 
-void TIM2_IRQHandle(void) {
-	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
-		TIM_ClearITPendingBit(TIM2, TIM_FLAG_Update);
+void TIM2_IRQ(void){
+
 		time2++;
 		Zigbee_time++;
 		Net_time++;
@@ -91,6 +90,6 @@ void TIM2_IRQHandle(void) {
 
 		}
 
-	}
+
 }
 

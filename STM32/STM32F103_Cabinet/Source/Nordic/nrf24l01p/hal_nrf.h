@@ -170,7 +170,7 @@ void hal_nrf_set_address(const hal_nrf_address_t address, const uint8_t *addr);
  *
  * @return Numbers of bytes copied to addr
 */
-uint8_t hal_nrf_get_address (uint8_t address, uint8_t *addr);
+uint8_t hal_nrf_get_address (const hal_nrf_address_t address, uint8_t *addr);
 
 /** Set auto acknowledge parameters.
  * Use this function to set retransmit and retransmit delay
@@ -202,7 +202,7 @@ uint8_t hal_nrf_get_address_width (void);
  * @param pipe_num Pipe number to set payload width for
  * @param pload_width number of bytes expected
 */
-void hal_nrf_set_rx_payload_width(uint8_t pipe_num, uint8_t pload_width);
+void hal_nrf_set_rx_payload_width(hal_nrf_address_t pipe_num, uint8_t pload_width);
 
 /** Read current interrupt mode for selected interrupt source.
  * Use this function to get the interrupt source's mode,
@@ -238,7 +238,7 @@ uint8_t hal_nrf_get_irq_flags(void);
  * @retval 0x01 Pipe is open, autoack disabled
  * @retval 0x03 Pipe is open, autoack enabled
 */
-uint8_t hal_nrf_get_pipe_status(uint8_t pipe_num);
+uint8_t hal_nrf_get_pipe_status(hal_nrf_address_t pipe_num);
 
 /** Get auto retransmit parameters.
  * Use this function to get the auto retransmit parameters,
@@ -266,7 +266,7 @@ uint8_t hal_nrf_get_packet_lost_ctr(void);
  *
  * @return Payload_Width in bytes
 */
-uint8_t hal_nrf_get_rx_payload_width(uint8_t pipe_num);
+uint8_t hal_nrf_get_rx_payload_width(hal_nrf_address_t pipe_num);
 //@}
 
 /** @name Operation */
@@ -529,6 +529,8 @@ void hal_nrf_enable_continious_wave (bool enable);
  * @return Databyte from radio.
 */
 uint8_t hal_nrf_rw(uint8_t value);
+
+uint8_t hal_nrf_read_reg(uint8_t reg);
 //@}
 #endif // HAL_NRF_H__
 /** @} */

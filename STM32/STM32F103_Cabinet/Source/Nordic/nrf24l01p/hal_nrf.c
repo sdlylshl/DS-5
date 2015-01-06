@@ -252,8 +252,8 @@ void hal_nrf_set_irq_mode(hal_nrf_irq_source_t int_source, bool irq_state)
 
 	switch (int_source)
 	{
-		case HAL_NRF_MAX_RT:
-			config.bits.mask_max_rt = irq_state ? 0U : 1U;
+	case HAL_NRF_MAX_RT:
+      config.bits.mask_max_rt = irq_state ? 0U : 1U;
       break;
     case HAL_NRF_TX_DS:
       config.bits.mask_tx_ds = irq_state ? 0U : 1U;
@@ -438,12 +438,12 @@ uint8_t hal_nrf_get_address_width (void)
   return hal_nrf_read_reg (SETUP_AW) + 2U;
 }
 
-void hal_nrf_set_rx_payload_width(uint8_t pipe_num, uint8_t pload_width)
+void hal_nrf_set_rx_payload_width(hal_nrf_address_t pipe_num, uint8_t pload_width)
 {
   hal_nrf_write_reg (RX_PW_P0 + pipe_num, pload_width);
 }
 
-uint8_t hal_nrf_get_pipe_status(uint8_t pipe_num)
+uint8_t hal_nrf_get_pipe_status(hal_nrf_address_t pipe_num)
 {
   en_pipes_t en_rxaddr;
   en_pipes_t en_aa;
@@ -497,7 +497,7 @@ uint8_t hal_nrf_get_packet_lost_ctr(void)
   return ((hal_nrf_read_reg(OBSERVE_TX) & (BIT_7|BIT_6|BIT_5|BIT_4)) >> 4);
 }
 
-uint8_t hal_nrf_get_rx_payload_width(uint8_t pipe_num)
+uint8_t hal_nrf_get_rx_payload_width(hal_nrf_address_t pipe_num)
 {
   uint8_t pw;
 

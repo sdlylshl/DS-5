@@ -161,13 +161,13 @@ typedef enum {
  *
  */
 typedef enum {
-    HAL_NRF_PIPE0 = 0,          /**< Select pipe0 0xE7E7E7E7E7 */
-    HAL_NRF_PIPE1,              /**< Select pipe1 0xC2C2C2C2C2*/
+    HAL_NRF_PIPE0 = 0,          /**< Select pipe0 0xE7E7E7E7E7 */ //34 43 10 10 01
+    HAL_NRF_PIPE1,              /**< Select pipe1 0xC2C2C2C2C2*/	//34 43 10 10 01
     HAL_NRF_PIPE2,              /**< Select pipe2 0xC3*/
     HAL_NRF_PIPE3,              /**< Select pipe3 0xC4*/
     HAL_NRF_PIPE4,              /**< Select pipe4 0xC5*/
     HAL_NRF_PIPE5,              /**< Select pipe5 0xC6*/
-    HAL_NRF_TX,                 /**< Refer to TX address 0xE7E7E7E7E7*/
+    HAL_NRF_TX,                 /**< Refer to TX address 0xE7E7E7E7E7*///34 43 10 10 01
     HAL_NRF_ALL = 0xFF          /**< Close or open all pipes*/
                                 /**< @see hal_nrf_set_address @see hal_nrf_get_address
                                  @see hal_nrf_open_pipe  @see hal_nrf_close_pipe */

@@ -651,7 +651,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Nordic</GroupName>
+          <GroupName>NRF2401</GroupName>
           <Files>
             <File>
               <FileName>NRF2401_main.c</FileName>
@@ -662,6 +662,21 @@
               <FileName>SPI_NRF.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\Nordic\Application\SPI_NRF.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Nordic</GroupName>
+          <Files>
+            <File>
+              <FileName>nrf24l01p.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Nordic\nrf24l01p.c</FilePath>
+            </File>
+            <File>
+              <FileName>hal_nrf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Nordic\nrf24l01p\hal_nrf.c</FilePath>
             </File>
           </Files>
         </Group>

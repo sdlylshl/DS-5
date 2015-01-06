@@ -37,7 +37,7 @@ static void SPI2_GPIO_Config(void) {
 	GPIO_Init(SPI2_MOSI_PORT, &GPIO_InitStructure);
 }
 
-void SPI2_Config(void) {
+void SPI2_Init(void) {
 	SPI_InitTypeDef SPI_InitStructure;
 
 	SPI2_GPIO_Config();
@@ -87,3 +87,4 @@ uint8_t SPI2_ReceiveByte(void) {
 
 	return SPI_I2S_ReceiveData(SPI2);
 }
+

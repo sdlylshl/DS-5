@@ -10,7 +10,7 @@
 #define SPI2_IRQ_PORT				GPIOD
 #define SPI2_IRQ_PIN				GPIO_Pin_8
 #define SPI2_IRQ_MODE				GPIO_Mode_IPU		
-	         
+    
 #define SPI2_RST_PORT				GPIOD
 #define SPI2_RST_PIN				GPIO_Pin_9		
 #define SPI2_RST_MODE				GPIO_Mode_Out_PP
@@ -42,9 +42,9 @@
 #define SPI2_RST_LOW()			GPIO_ResetBits(SPI2_RST_PORT, SPI2_RST_PIN)
 #define	SPI2_RST(x)   			x ? GPIO_SetBits(SPI2_RST_PORT,SPI2_RST_PIN): GPIO_ResetBits(SPI2_RST_PORT,SPI2_RST_PIN)
 
-#define	SPI2_READ_IRQ()   	return GPIO_ReadInputDataBit(SPI2_IRQ_PORT, SPI2_IRQ_PIN)
+#define	SPI2_READ_IRQ()   	GPIO_ReadInputDataBit(SPI2_IRQ_PORT, SPI2_IRQ_PIN)
 
-void SPI2_Config(void);
+void SPI2_Init(void);
 uint8_t SPI2_SendByte(uint8_t byte);
 uint8_t SPI2_ReceiveByte(void);
 

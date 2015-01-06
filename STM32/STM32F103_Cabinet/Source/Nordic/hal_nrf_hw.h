@@ -57,6 +57,8 @@
 #define CE_HIGH()		do { SPI2_RST_HIGH(); } while(false)
 
 #define hal_nrf_rw 	SPI2_SendByte
+
+#define NRF_Read_IRQ() SPI2_READ_IRQ() 
 /**
  * Pulses the CE to nRF24L01 for at least 10 us
  */

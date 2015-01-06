@@ -69,25 +69,20 @@ static void PS2_EXIT_Config(void) {
 void PS2_Init(void) {
 
 	PS2_GPIO_Config();
-	PS2_NVIC_Config();
-	PS2_EXIT_Config();
+	//PS2_NVIC_Config();
+	//PS2_EXIT_Config();
 
 }
 
 //每11个bit,为接收1个字节
 //每接收完一个包(11位)后,设备至少会等待50ms再发送下一个包
 //只做了鼠标部分,键盘部分暂时未加入
-void EXTI1_IRQHandle(void) {
+void PS2_IRQHandle(void) {
 
 //	5.       在选择的中断通道的响应函数中中断函数。
 	static uint8_t tempdata = 0;
 	static uint8_t parity = 0;
 
-	//中断1产生了相应的中断
-	if (EXTI_GetITStatus(EXTI_Line1) == SET) {
-		//清除LINE1上的中断标志位
-		EXTI_ClearFlag(EXTI_Line1);
-		EXTI_ClearITPendingBit(EXTI_Line1);
 
 		if (BIT_Count == 0) {
 			parity = 0;
@@ -121,7 +116,7 @@ void EXTI1_IRQHandle(void) {
 
 			BIT_Count = 0;
 		}
-	}
+	
 }
 
 //禁止数据传输

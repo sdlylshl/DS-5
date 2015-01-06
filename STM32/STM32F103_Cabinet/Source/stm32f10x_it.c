@@ -95,7 +95,8 @@ __INLINE void USART3_IRQHandle(void) {
 	}
 }
 extern void EXTI1_IRQHandle(void);
-extern voidRTC_IRQHandle(void);
+extern void RTC_IRQHandle(void);
+void EXTI9_5_IRQHandle(void);
 /******************************************************************************/
 /*            Cortex-M3 Processor Exceptions Handlers                         */
 /******************************************************************************/
@@ -416,9 +417,7 @@ void EXTI9_5_IRQHandler() {
 #ifdef DEBUG
 	printf("EXTI9_5_IRQHandler \r\n");
 #endif
-	while (1) {
-		NVIC_SystemReset();
-	}
+	EXTI9_5_IRQHandle();
 }
 void TIM1_BRK_IRQHandler() {
 #ifdef DEBUG

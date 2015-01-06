@@ -17,12 +17,13 @@ u8 status;	//用于判断接收/发送状态
 u8 txbuf[4]={0,1,2,3};	 //发送缓冲
 u8 rxbuf[4];			 //接收缓冲
 int i=0;
-
+uint8_t  nrf__test(void);
 int NRF_master_main(void)
 {
   
    SPI_NRF_Init();
    
+nrf__test();
   /* 串口1初始化 */
 	USART1_Config();
 
@@ -43,8 +44,7 @@ int NRF_master_main(void)
  while(1)
 		{
 	   	printf("\r\n 主机端 进入自应答发送模式\r\n"); 
-	 	NRF_TX_Mode();
-		 	
+	 	NRF_TX_Mode();	
 			/*开始发送数据*/	
 		status = NRF_Tx_Dat(txbuf);	  
 		  
@@ -66,7 +66,7 @@ int NRF_master_main(void)
 	
 	 	printf("\r\n 主机端 进入接收模式。 \r\n");	
 		NRF_RX_Mode();
-	
+	  nrf__test();
 			/*等待接收数据*/
 		status = NRF_Rx_Dat(rxbuf);
 	
@@ -138,5 +138,47 @@ while(1)
 		}while(status == MAX_RT);
 	} 
 } 
+
+void nrf_recv(){
+	NRF_RX_Mode();
+	 
+	/*等待接收数据*/
+	status = NRF_Rx_Dat(rxbuf);
+
+	   /*判断接收状态*/
+	if(status == RX_DR)
+	{
+	 for(i=0;i<4;i++)
+	 {	
+	 	printf("\r\n 从机端 接收到 主机端 发送的数据为：%d \r\n",rxbuf[i]); 
+	 	/*把接收的数据+1后发送给主机*/
+	 	rxbuf[i]+=1;	  
+		txbuf[i] = rxbuf[i]; 
+		}
+	}   
+}
+void nrf_send(){
+
+	printf("\r\n 从机端 进入自应答发送模式\r\n"); 
+	  	NRF_TX_Mode();
+
+		/*不断重发，直至发送成功*/	  
+	 do
+	   { 	  
+		status = NRF_Tx_Dat(txbuf);
+		}while(status == MAX_RT);
+	 
+Delay_ms(500);
+}
+
+void nrf_main0(){
+	  SPI_NRF_Init();	
+//NRF_master_main();
+//	NRF_device_main();
+	while(1){
+	nrf_recv();
+	//nrf_send();
+	}
+}
 /******************* (C) COPYRIGHT 2012 WildFire Team *****END OF FILE************/
 
