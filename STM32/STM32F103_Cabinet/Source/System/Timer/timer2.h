@@ -20,5 +20,10 @@ extern void TIM2_Config(void);
 extern void TIM2_Start(void);
 extern void TIM2_Stop(void);
 
-extern void TIM2_IRQHandle(void);
+extern void TIM2_ISR(void);
+
+uint32_t TIM2_GetDistanceTime(uint32_t pretime);
+
+uint32_t TIM2_GetCurrentTime(void);
+
 #endif	/* TIME_TEST_H */

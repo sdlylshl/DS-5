@@ -2,6 +2,7 @@
 
 //LED();
 #include "config.h"
+const uint32_t MAX_UINT32 = (uint32_t) -1;
 
 volatile uint32_t time2 = 0; // ms 计时变量
 volatile uint32_t Zigbee_time; // ms 计时变量
@@ -63,7 +64,14 @@ void TIM2_Stop(void) {
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, DISABLE);
 }
 
-void TIM2_IRQ(void){
+uint32_t TIM2_GetDistanceTime(uint32_t pretime) {
+	return (MAX_UINT32 - pretime + time2 + 1);
+}
+
+uint32_t TIM2_GetCurrentTime(void) {
+	return (time2);
+}
+void TIM2_ISR(void){
 
 		time2++;
 		Zigbee_time++;

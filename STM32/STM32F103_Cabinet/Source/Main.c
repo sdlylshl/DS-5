@@ -11,19 +11,14 @@ int main() {
 	//DMA_Config();
 	//nrf
 	SPI2_Init();
-	PS2_Init();
+	//PS2_Init();
 	
 	LED_GPIO_Config();	
 	TIM2_Start();
 	TIM4_Start(); //用来做网络延时计时使用
-
-	//
-
-	USART1_Config();	
-	
+	USART1_Config();		
 	NVIC_Config();
-	while(1);
-	nrf_main0();
+	nrf_main();
 //		NRF_device_main();
 //NRF_master_main();
 

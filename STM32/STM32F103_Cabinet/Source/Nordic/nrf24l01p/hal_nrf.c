@@ -834,6 +834,5 @@ void hal_nrf_write_multibyte_reg(uint8_t reg, const uint8_t *pbuf, uint8_t lengt
     for(byte_cnt=0;byte_cnt<length;byte_cnt++)
     hal_nrf_rw(*pbuf++);	//写数据到缓冲区 
 
-
-    CSN_HIGH();
+		CSN_HIGH();
 }

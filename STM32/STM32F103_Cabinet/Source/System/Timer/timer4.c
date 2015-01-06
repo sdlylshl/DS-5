@@ -1,6 +1,6 @@
 #include "timer4.h"
 
-const uint32_t MAX_UINT32 = (uint32_t) -1;
+extern const uint32_t MAX_UINT32;
 volatile uint32_t time4 = 0; // ms 计时变量
 void TIM4_NVIC_Configuration(void) {
 	NVIC_InitTypeDef NVIC_InitStructure;

@@ -43,7 +43,8 @@ nrf__test();
 
  while(1)
 		{
-	   	printf("\r\n 主机端 进入自应答发送模式\r\n"); 
+	   	printf("\r\n 主机端 进入自应答发送模式\r\n");
+	
 	 	NRF_TX_Mode();	
 			/*开始发送数据*/	
 		status = NRF_Tx_Dat(txbuf);	  
@@ -56,7 +57,7 @@ nrf__test();
 				 break;
 	
 			  case ERROR:
-			  	 	printf("\r\n 未知原因导致发送失败。 \r\n");
+			  	 	printf("\r\n 未知原因导致发送失败 %x\r\n",status);
 				 break;
 	
 			  case TX_DS:
@@ -66,7 +67,7 @@ nrf__test();
 	
 	 	printf("\r\n 主机端 进入接收模式。 \r\n");	
 		NRF_RX_Mode();
-	  nrf__test();
+	 // nrf__test();
 			/*等待接收数据*/
 		status = NRF_Rx_Dat(rxbuf);
 	
@@ -82,11 +83,11 @@ nrf__test();
 				  break;
 	
 			 case ERROR:
-				  	printf("\r\n 主机端 接收出错。   \r\n");
+				  	printf("\r\n 主机端 接收出错。status%x   \r\n",status);
 				  break;  		
 			}
 		} 
-
+			
 }
 
 
@@ -173,7 +174,7 @@ Delay_ms(500);
 
 void nrf_main0(){
 	  SPI_NRF_Init();	
-//NRF_master_main();
+NRF_master_main();
 //	NRF_device_main();
 	while(1){
 	nrf_recv();

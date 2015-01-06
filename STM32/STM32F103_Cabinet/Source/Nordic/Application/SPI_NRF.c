@@ -30,8 +30,8 @@
  uint8_t TX_ADDRESS[TX_ADR_WIDTH] = {0x34,0x43,0x10,0x10,0x01};  // 定义一个静态发送地址
  uint8_t RX_ADDRESS[RX_ADR_WIDTH] = {0x34,0x43,0x10,0x10,0x01};
 
-
-
+#define GetCurrentTime TIM2_GetCurrentTime
+#define GetDistanceTime TIM2_GetDistanceTime
 void Delay(__IO u32 nCount)
 {
   for(; nCount != 0; nCount--);
@@ -307,17 +307,17 @@ void NRF_RX_Mode(void)
 {
 	NRF_CE_LOW();	
 
-   SPI_NRF_WriteBuf(NRF_WRITE_REG+RX_ADDR_P0,RX_ADDRESS,RX_ADR_WIDTH);//写RX节点地址
+//   SPI_NRF_WriteBuf(NRF_WRITE_REG+RX_ADDR_P0,RX_ADDRESS,RX_ADR_WIDTH);//写RX节点地址
 
-   SPI_NRF_WriteReg(NRF_WRITE_REG+EN_AA,0x01);    //使能通道0的自动应答    
+//   SPI_NRF_WriteReg(NRF_WRITE_REG+EN_AA,0x01);    //使能通道0的自动应答    
 
-   SPI_NRF_WriteReg(NRF_WRITE_REG+EN_RXADDR,0x01);//使能通道0的接收地址    
+//   SPI_NRF_WriteReg(NRF_WRITE_REG+EN_RXADDR,0x01);//使能通道0的接收地址    
 
-   SPI_NRF_WriteReg(NRF_WRITE_REG+RF_CH,CHANAL);      //设置RF通信频率    
+//   SPI_NRF_WriteReg(NRF_WRITE_REG+RF_CH,CHANAL);      //设置RF通信频率    
 
    SPI_NRF_WriteReg(NRF_WRITE_REG+RX_PW_P0,RX_PLOAD_WIDTH);//选择通道0的有效数据宽度      
 
-   SPI_NRF_WriteReg(NRF_WRITE_REG+RF_SETUP,0x0f); //设置TX发射参数,0db增益,2Mbps,低噪声增益开启   
+  // SPI_NRF_WriteReg(NRF_WRITE_REG+RF_SETUP,0x0f); //设置TX发射参数,0db增益,2Mbps,低噪声增益开启   
 
    SPI_NRF_WriteReg(NRF_WRITE_REG+CONFIG, 0x0f);  //配置基本工作模式的参数;PWR_UP,EN_CRC,16BIT_CRC,接收模式 
 
@@ -403,7 +403,7 @@ uint8_t NRF_Check(void)
 uint8_t NRF_Tx_Dat(uint8_t *txbuf)
 {
 	uint8_t state;  
-
+	uint32_t ct = GetCurrentTime();
 	 /*ce为低，进入待机模式1*/
 	NRF_CE_LOW();
 
@@ -412,9 +412,13 @@ uint8_t NRF_Tx_Dat(uint8_t *txbuf)
 
       /*CE为高，txbuf非空，发送数据包 */   
  	 NRF_CE_HIGH();
-	  	
+	  	Delay(0xFF);
 	  /*等待发送完成中断 */                            
-	while(NRF_Read_IRQ()!=0); 	
+	while(NRF_Read_IRQ()){
+
+			if(GetDistanceTime(ct)>20)
+			break;
+			} 	
 	
 	/*读取状态寄存器的值 */                              
 	state = SPI_NRF_ReadReg(STATUS);
@@ -472,11 +476,13 @@ uint8_t  nrf__test(){
  */ 
 uint8_t NRF_Rx_Dat(uint8_t *rxbuf)
 {
+	uint32_t ct = GetCurrentTime();
 	uint8_t state; 
 	NRF_CE_HIGH();	 //进入接收状态
 	 /*等待接收中断*/
-	while(NRF_Read_IRQ()!=0){
-			;
+	while(NRF_Read_IRQ()){
+		if(GetDistanceTime(ct)>20)
+			break;
 	} 
 	
 	NRF_CE_LOW();  	 //进入待机状态

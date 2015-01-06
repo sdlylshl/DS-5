@@ -204,7 +204,7 @@ void NVIC_EXTI9_init(void) {
 	EXTI_Init(&EXTI_InitStructure); 
 }
 
-#define  TIM2IRQ
+
 void NVIC_Config(void) {
 //		NVIC_InitTypeDef NVIC_InitStructure;
 
@@ -224,25 +224,22 @@ void NVIC_Config(void) {
 	NVIC_SetPriorityGrouping(0);
 	
 
-#ifdef USATR1IRQ	
 	NVIC_SetPriority(USART1_IRQn, 3);
 	NVIC_EnableIRQ(USART1_IRQn);
-#endif
-	//PS2
-	NVIC_EXTI1_init();	
-	NVIC_SetPriority(EXTI1_IRQn, 2);
-	NVIC_EnableIRQ(EXTI1_IRQn);
 
-		//SPI2_IRQ
-	NVIC_EXTI8_init();
-	NVIC_SetPriority(EXTI9_5_IRQn, 5);
-	NVIC_EnableIRQ(EXTI9_5_IRQn);
+	  //PS2
+//	NVIC_EXTI1_init();	
+//	NVIC_SetPriority(EXTI1_IRQn, 2);
+//	NVIC_EnableIRQ(EXTI1_IRQn);
+
+	//SPI2_IRQ
+//	NVIC_EXTI8_init();
+//	NVIC_SetPriority(EXTI9_5_IRQn, 5);
+//	NVIC_EnableIRQ(EXTI9_5_IRQn);
 
 	
-	#ifdef  TIM2IRQ
 	NVIC_SetPriority(TIM2_IRQn, 8);
 	NVIC_EnableIRQ(TIM2_IRQn);
-	#endif
 	
 	//开总中断
 	__set_PRIMASK(0);
@@ -260,10 +257,10 @@ void NVIC_Info(IRQn_Type IRQn) {
 	printf("pSubPriority_IRQn:%d\n", pSubPriority_IRQn);
 
 }
-extern void TIM2_IRQ(void);
+extern void TIM2_ISR(void);
 void TIM2_IRQHandle(void) {
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
-		TIM2_IRQ();
+		TIM2_ISR();
 		TIM_ClearITPendingBit(TIM2, TIM_FLAG_Update);
 	}
 }	
