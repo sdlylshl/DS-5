@@ -59,6 +59,6 @@ extern uint8_t Usart3_SendBuff[SENDBUFF_SIZE];
 #endif
 
 
-extern void USART3_Config(void);
+extern void USART3_Init(void);
 
 #endif /* __USART3_H */

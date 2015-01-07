@@ -35,7 +35,7 @@ void TIM2_NVIC_Configuration(void) {
 }
 
 /*TIM_Period--1000   TIM_Prescaler--71 -->中断周期为1ms*/
-void TIM2_Config(void) {
+void TIM2_Init(void) {
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
 	TIM_DeInit(TIM2);
@@ -49,12 +49,12 @@ void TIM2_Config(void) {
 	TIM_ClearFlag(TIM2, TIM_FLAG_Update);
 	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
 	TIM_Cmd(TIM2, ENABLE);
-
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, DISABLE); /*先关闭等待使用*/
 }
+
 void TIM2_Start(void) {
 	time2 = 0;
-	TIM2_Config();
+	TIM2_Init();
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
 	TIM_Cmd(TIM2, ENABLE);
 }

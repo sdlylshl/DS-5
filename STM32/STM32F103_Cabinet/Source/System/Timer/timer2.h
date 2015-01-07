@@ -16,7 +16,7 @@ extern volatile uint32_t timer_Zigbee_operate_default;
 extern volatile uint32_t timer_Zigbee_reset_default;
 extern volatile uint32_t timer_curtain_stop;
 
-extern void TIM2_Config(void);
+extern void TIM2_Init(void);
 extern void TIM2_Start(void);
 extern void TIM2_Stop(void);
 

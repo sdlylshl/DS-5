@@ -14,7 +14,7 @@ void TIM4_NVIC_Configuration(void) {
 }
 
 /*TIM_Period--1000   TIM_Prescaler--71 -->中断周期为1ms*/
-void TIM4_Config(void) {
+void TIM4_Init(void) {
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
 	TIM_DeInit(TIM4);
@@ -34,7 +34,7 @@ void TIM4_Config(void) {
 
 void TIM4_Start(void) {
 	time4 = 0;
-	TIM4_Config();
+	TIM4_Init();
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
 	TIM_Cmd(TIM4, ENABLE);
 }

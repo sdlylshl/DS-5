@@ -5,7 +5,7 @@
 volatile uint32_t time3 = 0; // ms 计时变量
 
 /*TIM_Period--1000   TIM_Prescaler--71 -->中断周期为1ms*/
-void TIM3_Config(void) {
+void TIM3_Init(void) {
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
 	TIM_DeInit(TIM3);
@@ -24,7 +24,7 @@ void TIM3_Config(void) {
 
 void TIM3_Start(void) {
 	time3 = 0;
-	TIM3_Config();
+	TIM3_Init();
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
 	TIM_Cmd(TIM3, ENABLE);
 }

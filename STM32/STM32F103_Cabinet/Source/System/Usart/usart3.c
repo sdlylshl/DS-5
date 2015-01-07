@@ -101,7 +101,7 @@ void USART3_GPIO_Config(void) {
 	GPIO_Init(USART3_RX_PORT, &GPIO_InitStructure);
 
 }
-void USART3_Config(void) {
+void USART3_Init(void) {
 	USART_InitTypeDef USART_InitStructure;
 	USART3_GPIO_Config();
 	/* USART3 mode config */

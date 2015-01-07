@@ -41,7 +41,7 @@ extern uint8_t USART1_SendBuff[USART1_SENDBUFF_SIZE];
 #endif
 
 
-extern void USART1_Config(void);
+extern void USART1_Init(void);
 extern void USART1_printf(char *Data, ...);
 
 #endif /* __USART1_H */

@@ -5,7 +5,7 @@
 
 extern volatile uint32_t time4;
 
-extern void TIM4_Config(void);
+extern void TIM4_Init(void);
 extern void TIM4_Start(void);
 extern void TIM4_Stop(void);
 uint32_t TIM4_GetDistanceTime(uint32_t pretime);

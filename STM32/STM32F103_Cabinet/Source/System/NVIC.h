@@ -1,6 +1,9 @@
 #ifndef _NVIC_H_
 #define _NVIC_H_
 #include "version.h"
+
+//#define NVIC_SPI2_IRQ
+
 void NVIC_EXTI0_init(void);
 void NVIC_EXTI1_init(void);
 void NVIC_EXTI2_init(void);
@@ -19,6 +22,7 @@ void NVIC_EXTI14_init(void);
 void NVIC_EXTI15_init(void);
 
 void NVIC_Config(void);
+void EXTI0_IRQHandle(void);
 void EXTI1_IRQHandle(void);
 void EXTI9_5_IRQHandle(void);
 

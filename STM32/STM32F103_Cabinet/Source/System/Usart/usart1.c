@@ -46,7 +46,7 @@ static void USART1_NVIC_Config(void) {
 	NVIC_EnableIRQ(USART1_IRQn);
 
 }
-void USART1_Config(void) {
+void USART1_Init(void) {
 	USART_InitTypeDef USART_InitStructure;
 
 	USART1_GPIO_Config();

@@ -1,24 +1,29 @@
 #include <stdio.h>
 #include "config.h"
 char *str = "\r\n This is a USART1_printf demo \r\n";
-extern void nrf_main(void);
 extern void nrf_main0(void);
+extern void nrf_main(void);
 int NRF_master_main(void);
 int main() {
 //	uint8_t i;
 	uint32_t Time = 0;
 	//RCC_Config();
+	//NVIC_Config();
 	//DMA_Config();
+	USART1_Init();
+//	USART3_Init();
+	TIM2_Start();	//通用定时器
+	
+//	TIM4_Start(); //用来做网络延时计时使用
 	//nrf
 	SPI2_Init();
-	//PS2_Init();
 	
+	PS2_Init();
 	LED_GPIO_Config();	
-	TIM2_Start();
-	TIM4_Start(); //用来做网络延时计时使用
-	USART1_Config();		
-	NVIC_Config();
-	nrf_main();
+
+		//开总中断
+	__set_PRIMASK(0);
+	nrf_main0();
 //		NRF_device_main();
 //NRF_master_main();
 
@@ -31,7 +36,6 @@ int main() {
 
 	//while(1)
 		printf("USART1 start");
-	USART3_Config();
 	//CAN_main();
 	Ethernet_Init();
 

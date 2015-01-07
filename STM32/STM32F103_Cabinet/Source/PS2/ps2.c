@@ -34,12 +34,6 @@ static void PS2_GPIO_Config() {
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(PS2_DAT_PORT, &GPIO_InitStructure);
 }
-
-static void PS2_NVIC_Config(void) {
-	//	3.       设置相应的中断；
-	NVIC_SetPriority(EXTI1_IRQn, 5);
-	NVIC_EnableIRQ(EXTI1_IRQn);
-}
 //STM32中，每一个GPIO都可以触发一个外部中断
 //但是，GPIO的中断是以组位一个单位的，同组间的外部中断同一时间只能使用一个
 //比如说，PA0，PB0，PC0，PD0，PE0，PF0，PG0这些为1组
@@ -49,22 +43,6 @@ static void PS2_NVIC_Config(void) {
 //EXTI0 – EXTI4这5个外部中断有着自己的单独的中断响应函数
 //EXTI5-9	共用一个中断响应函数
 //EXTI10-15	共用一个中断响应函数
-
-static void PS2_EXIT_Config(void) {
-//	4.       把相应的IO口设置为中断线路（要在设置外部中断之前）并初始化；
-	EXTI_InitTypeDef EXTI_InitStructure;
-	//清空中断标志
-	EXTI_ClearITPendingBit(EXTI_Line1);
-	//同组间的外部中断同一时间只能使用一个 GPIOB1挂到中断线1
-	GPIO_EXTILineConfig(GPIO_PortSourceGPIOB, GPIO_PinSource1);
-	EXTI_InitStructure.EXTI_Line = EXTI_Line1;
-	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt; //中断
-	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
-	EXTI_InitStructure.EXTI_LineCmd = ENABLE; //使能中断线
-	EXTI_Init(&EXTI_InitStructure); //根据EXTI_InitStruct中指定的参数初始化外设EXTI寄存器
-
-}
-
 
 void PS2_Init(void) {
 

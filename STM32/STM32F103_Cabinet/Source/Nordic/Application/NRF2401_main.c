@@ -24,8 +24,6 @@ int NRF_master_main(void)
    SPI_NRF_Init();
    
 nrf__test();
-  /* 串口1初始化 */
-	USART1_Config();
 
 	printf("\r\n 这是一个 NRF24L01 无线传输实验 \r\n");
    	printf("\r\n 这是无线传输 主机端 的反馈信息\r\n");
@@ -93,8 +91,6 @@ nrf__test();
 
 int NRF_device_main(void)
 {      
- /* 串口1初始化 */
-	USART1_Config(); 
 
 /*SPI接口初始化*/   
    SPI_NRF_Init(); 
@@ -174,8 +170,8 @@ Delay_ms(500);
 
 void nrf_main0(){
 	  SPI_NRF_Init();	
-NRF_master_main();
-//	NRF_device_main();
+//NRF_master_main();
+	NRF_device_main();
 	while(1){
 	nrf_recv();
 	//nrf_send();

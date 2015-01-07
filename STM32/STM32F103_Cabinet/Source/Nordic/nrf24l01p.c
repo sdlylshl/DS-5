@@ -13,6 +13,8 @@
 //增强型 ShockBurst 模式的数据帧格式 
 //帧头| 地址 |控制域| 数据| CRC 
 //地址长度为3-5个字节，其内容为接收机的地址
+
+
 // Global variables
 uint8_t payload[RX_PLOAD_WIDTH];
 uint8_t NRF__RX_BUF[RX_PLOAD_WIDTH] = {0,0,0,0};		//接收数据缓存
@@ -20,8 +22,6 @@ uint8_t NRF__TX_BUF[TX_PLOAD_WIDTH] = {0,0x65,2,3};		//发射数据缓存
 //moren
 uint8_t NRF_MASTER_ADDRESS[TX_ADR_WIDTH] = {0x34,0x43,0x10,0x10,0x01};  // 定义一个静态发送地址
 uint8_t NRF_DEVICE_ADDRESS[RX_ADR_WIDTH] = {0x34,0x43,0x10,0x10,0x01};
-
-
 
 uint8_t radio_busy;
 
@@ -158,7 +158,11 @@ uint8_t nrf_tx_dat(){
 	  CE_HIGH();
 		CE_PULSE();//Delay_us(15);
 		//等待发送完成
-		while(NRF_Read_IRQ()!=0); 
+	#ifdef NVIC_SPI2_IRQ
+		while(radio_busy);
+#else
+		while(NRF_Read_IRQ());
+	#endif 
 		//while(radio_busy);
 		Delay_us(2000);
 		status = hal_nrf_get_clear_irq_flags();
@@ -169,10 +173,12 @@ uint8_t nrf_tx_dat(){
 	
 		return status;
 }
-#define POLL
+
 uint8_t nrf_rx_dat(){
 	uint8_t status =0;
-	#ifdef POLL
+	#ifdef NVIC_SPI2_IRQ
+	
+	#else
 		nrf_rx_mode();
     //CE_HIGH();
 		while(NRF_Read_IRQ()!=0); 
@@ -200,6 +206,7 @@ void NRF_ISR()
   // Read and clear IRQ flags from radio
   irq_flags = hal_nrf_get_clear_irq_flags();
 
+     // radio_busy = false;
   switch(irq_flags)
   {
     // Transmission success
@@ -219,6 +226,7 @@ void NRF_ISR()
 		 // If data received
 		case (1 << (uint8_t)HAL_NRF_RX_DR):
 
+      radio_busy = false;
     // Read payload
     while(!hal_nrf_rx_fifo_empty())
     {
