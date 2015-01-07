@@ -170,8 +170,8 @@ Delay_ms(500);
 
 void nrf_main0(){
 	  SPI_NRF_Init();	
-//NRF_master_main();
-	NRF_device_main();
+NRF_master_main();
+//	NRF_device_main();
 	while(1){
 	nrf_recv();
 	//nrf_send();
