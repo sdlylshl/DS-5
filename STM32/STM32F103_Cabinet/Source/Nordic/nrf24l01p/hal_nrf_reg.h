@@ -79,9 +79,10 @@ This file is radio-chip dependent, and are included with the hal_nrf.h
  *
  */
 typedef enum {
-    HAL_NRF_MAX_RT = 4,     /**< Max retries interrupt */
-    HAL_NRF_TX_DS,          /**< TX data sent interrupt */
-    HAL_NRF_RX_DR           /**< RX data received interrupt */
+
+    HAL_NRF_MASK_MAX_RT = 4,     /**< Max retries interrupt */
+    HAL_NRF_MASK_TX_DS,          /**< TX data sent interrupt */
+    HAL_NRF_MASK_RX_DR           /**< RX data received interrupt */
 } hal_nrf_irq_source_t;
 
 /* Operation mode definitions */
@@ -181,47 +182,64 @@ typedef enum {
     HAL_NRF_AW_4BYTES,          /**< Set address width to 4 bytes */
     HAL_NRF_AW_5BYTES           /**< Set address width to 5 bytes default*/
 } hal_nrf_address_width_t;
+typedef enum {
+		HAL_NRF_TX_FULL,				/**< TX FIFO full flag.*/ 
+	  HAL_NRF_RX_P_NO,				/**< Data pipe number for the payload available for reading from RX_FIFO */
+	  HAL_NRF_MAX_RT = 4,     /**< Max retries interrupt */
+    HAL_NRF_TX_DS,          /**< TX data sent interrupt */
+    HAL_NRF_RX_DR           /**< RX data received interrupt */
+} hal_nrf_status_t;
+//若TX_REUSE=1则当CE位高电平状态时不断发送上一数据包
+typedef enum {
+	HAL_NRF_RX_EMPTY = 0,				  /**<1> 1: RX FIFO empty */
+	HAL_NRF_RX_FULL,							/**<0> 1: RX FIFO full. */
+	HAL_NRF_TX_EMPTY =4,					/**<1> 1: TX FIFO empty */
+	HAL_NRF_TX_FIFO_FULL,					/**<0> 1: TX FIFO full. */
+	HAL_NRF_TX_REUSE							/**<0>    TX payload reuse is active until W_TX_PAYLOAD or FLUSH TX is executed.
+																			    TX_REUSE=1	Pulse the CE high for at least 10us to Reuse last transmitted payload.
+																			    TX_REUSE is set by the SPI command REUSE_TX_PL, 
+																			    and is reset by the SPI commands W_TX_PAYLOAD or FLUSH TX*/
+} hal_nrf_fifo_status_t;
 
+///** @name CONFIG register bit definitions */
+////@{
 
-/** @name CONFIG register bit definitions */
-//@{
+//#define MASK_RX_DR    0x40     /**< CONFIG register bit 6 */
+//#define MASK_TX_DS    0x20     /**< CONFIG register bit 5 */
+//#define MASK_MAX_RT   0x10     /**< CONFIG register bit 4 */
+//#define EN_CRC        0x08     /**< CONFIG register bit 3 */
+//#define CRCO          0x04     /**< CONFIG register bit 2 */
+//#define PWR_UP        0x02     /**< CONFIG register bit 1 */
+//#define PRIM_RX       0x01     /**< CONFIG register bit 0 */
+////@}
 
-#define MASK_RX_DR    6     /**< CONFIG register bit 6 */
-#define MASK_TX_DS    5     /**< CONFIG register bit 5 */
-#define MASK_MAX_RT   4     /**< CONFIG register bit 4 */
-#define EN_CRC        3     /**< CONFIG register bit 3 */
-#define CRCO          2     /**< CONFIG register bit 2 */
-#define PWR_UP        1     /**< CONFIG register bit 1 */
-#define PRIM_RX       0     /**< CONFIG register bit 0 */
-//@}
+///** @name RF_SETUP register bit definitions */
+////@{
+//#define PLL_LOCK      0x10     /**< RF_SETUP register bit 4 */
+//#define RF_DR         0x08     /**< RF_SETUP register bit 3 */
+//#define RF_PWR1       0x04     /**< RF_SETUP register bit 2 */
+//#define RF_PWR0       0x02     /**< RF_SETUP register bit 1 */
+//#define LNA_HCURR     0x01     /**< RF_SETUP register bit 0 */
+////@}
 
-/** @name RF_SETUP register bit definitions */
-//@{
-#define PLL_LOCK      4     /**< RF_SETUP register bit 4 */
-#define RF_DR         3     /**< RF_SETUP register bit 3 */
-#define RF_PWR1       2     /**< RF_SETUP register bit 2 */
-#define RF_PWR0       1     /**< RF_SETUP register bit 1 */
-#define LNA_HCURR     0     /**< RF_SETUP register bit 0 */
-//@}
+///* STATUS 0x07 */
+///** @name STATUS register bit definitions */
+////@{
+//#define RX_DR         0x40     /**< STATUS register bit 6 */
+//#define TX_DS         0x20     /**< STATUS register bit 5 */
+//#define MAX_RT        0x10     /**< STATUS register bit 4 */
+//#define TX_FULL       0x01     /**< STATUS register bit 0 */
+////@}
 
-/* STATUS 0x07 */
-/** @name STATUS register bit definitions */
-//@{
-#define RX_DR         6     /**< STATUS register bit 6 */
-#define TX_DS         5     /**< STATUS register bit 5 */
-#define MAX_RT        4     /**< STATUS register bit 4 */
-#define TX_FULL       0     /**< STATUS register bit 0 */
-//@}
-
-/* FIFO_STATUS 0x17 */
-/** @name FIFO_STATUS register bit definitions */
-//@{
-#define TX_REUSE      6     /**< FIFO_STATUS register bit 6 */
-#define TX_FIFO_FULL  5     /**< FIFO_STATUS register bit 5 */
-#define TX_EMPTY      4     /**< FIFO_STATUS register bit 4 */
-#define RX_FULL       1     /**< FIFO_STATUS register bit 1 */
-#define RX_EMPTY      0     /**< FIFO_STATUS register bit 0 */
-//@}
+///* FIFO_STATUS 0x17 */
+///** @name FIFO_STATUS register bit definitions */
+////@{
+//#define TX_REUSE      0x40     /**< FIFO_STATUS register bit 6 */
+//#define TX_FIFO_FULL  0x20     /**< FIFO_STATUS register bit 5 */
+//#define TX_EMPTY      0x10     /**< FIFO_STATUS register bit 4 */
+//#define RX_FULL       0x02     /**< FIFO_STATUS register bit 1 */
+//#define RX_EMPTY      0x01     /**< FIFO_STATUS register bit 0 */
+////@}
 
 #endif // HAL_NRF_REG_H__
 /** @} */

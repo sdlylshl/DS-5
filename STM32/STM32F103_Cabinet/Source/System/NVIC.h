@@ -2,7 +2,7 @@
 #define _NVIC_H_
 #include "version.h"
 
-//#define NVIC_SPI2_IRQ
+#define NVIC_SPI2_IRQ
 
 void NVIC_EXTI0_init(void);
 void NVIC_EXTI1_init(void);

@@ -227,29 +227,29 @@ void NVIC_Config(void) {
 	NVIC_SetPriority(USART1_IRQn, 3);
 	NVIC_EnableIRQ(USART1_IRQn);
 
-//	NVIC_EXTI0_init();	
-//	NVIC_SetPriority(EXTI0_IRQn, 4);
+	NVIC_EXTI0_init();	
+	NVIC_SetPriority(EXTI0_IRQn, 4);
 //	NVIC_EnableIRQ(EXTI0_IRQn);
 	  //PS2
-//	NVIC_EXTI1_init();	
-//	NVIC_SetPriority(EXTI1_IRQn, 4);
+	NVIC_EXTI1_init();	
+	NVIC_SetPriority(EXTI1_IRQn, 4);
 //	NVIC_EnableIRQ(EXTI1_IRQn);
 
 #ifdef NVIC_SPI2_IRQ
 	//SPI2_IRQ
 	NVIC_EXTI8_init();
-	NVIC_SetPriority(EXTI9_5_IRQn, 5);
-	NVIC_EnableIRQ(EXTI9_5_IRQn);
+	NVIC_SetPriority(EXTI9_5_IRQn, 10);
+//	NVIC_EnableIRQ(EXTI9_5_IRQn);
 #endif
 	
 	NVIC_SetPriority(TIM2_IRQn, 8);
 	NVIC_EnableIRQ(TIM2_IRQn);
 	
-//	NVIC_SetPriority(TIM3_IRQn, 9);
+	NVIC_SetPriority(TIM3_IRQn, 9);
 //	NVIC_EnableIRQ(TIM3_IRQn);
 	
-//	NVIC_SetPriority(TIM4_IRQn, 10);
-//	NVIC_EnableIRQ(TIM4_IRQn);
+	NVIC_SetPriority(TIM4_IRQn, 10);
+	NVIC_EnableIRQ(TIM4_IRQn);
 	//开总中断
 	//__set_PRIMASK(0);
 }

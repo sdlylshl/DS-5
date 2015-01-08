@@ -125,13 +125,19 @@ while(1)
 		txbuf[i] = rxbuf[i]; 
 		}
 	}   
-		printf("\r\n 从机端 进入自应答发送模式\r\n"); 
+		printf("\r\n 从机端 进入应答发送模式\r\n"); 
 	  	NRF_TX_Mode();
 
 		/*不断重发，直至发送成功*/	  
 	 do
-	   { 	  
+	   { 
+				if(!i++)
+					break;
+				
 		status = NRF_Tx_Dat(txbuf);
+				if(status & TX_DS)
+					break;
+		printf(" %x ",status); 
 		}while(status == MAX_RT);
 	} 
 } 
@@ -170,8 +176,8 @@ Delay_ms(500);
 
 void nrf_main0(){
 	  SPI_NRF_Init();	
-NRF_master_main();
-//	NRF_device_main();
+//NRF_master_main();
+	NRF_device_main();
 	while(1){
 	nrf_recv();
 	//nrf_send();

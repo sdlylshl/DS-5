@@ -574,32 +574,32 @@ void hal_nrf_set_datarate(hal_nrf_datarate_t datarate)
 
 bool hal_nrf_rx_fifo_empty(void)
 {
-  return (bool)((hal_nrf_read_reg(FIFO_STATUS) >> RX_EMPTY) & 0x01U);
+  return (bool)((hal_nrf_read_reg(FIFO_STATUS) >> HAL_NRF_RX_EMPTY) & 0x01U);
 }
 
 bool hal_nrf_rx_fifo_full(void)
 {
-  return (bool)((hal_nrf_read_reg(FIFO_STATUS) >> RX_FULL) & 0x01U);
+  return (bool)((hal_nrf_read_reg(FIFO_STATUS) >> HAL_NRF_RX_FULL) & 0x01U);
 }
 
 bool hal_nrf_tx_fifo_empty(void)
 {
-  return (bool)((hal_nrf_read_reg(FIFO_STATUS) >> TX_EMPTY) & 0x01U);
+  return (bool)((hal_nrf_read_reg(FIFO_STATUS) >> HAL_NRF_TX_EMPTY) & 0x01U);
 }
 
 bool hal_nrf_tx_fifo_full(void)
 {
-  return (bool)((hal_nrf_read_reg(FIFO_STATUS) >> TX_FIFO_FULL) & 0x01U);
+  return (bool)((hal_nrf_read_reg(FIFO_STATUS) >> HAL_NRF_TX_FIFO_FULL) & 0x01U);
 }
 
 uint8_t hal_nrf_get_tx_fifo_status(void)
 {
-  return ((hal_nrf_read_reg(FIFO_STATUS) & ((1U<<TX_FIFO_FULL)|(1U<<TX_EMPTY))) >> 4);
+  return ((hal_nrf_read_reg(FIFO_STATUS) & ((1U<<HAL_NRF_TX_FIFO_FULL)|(1U<<HAL_NRF_TX_EMPTY))) >> 4);
 }
 
 uint8_t hal_nrf_get_rx_fifo_status(void)
 {
-  return (hal_nrf_read_reg(FIFO_STATUS) & ((1U<<RX_FULL)|(1U<<RX_EMPTY)));
+  return (hal_nrf_read_reg(FIFO_STATUS) & ((1U<<HAL_NRF_RX_FULL)|(1U<<HAL_NRF_RX_EMPTY)));
 }
 
 uint8_t hal_nrf_get_fifo_status(void)
@@ -694,7 +694,7 @@ void hal_nrf_reuse_tx(void)
 
 bool hal_nrf_get_reuse_tx_status(void)
 {
-  return (bool)((hal_nrf_get_fifo_status() & (1U<<TX_REUSE)) >> TX_REUSE);
+  return (bool)((hal_nrf_get_fifo_status() & (1U<<HAL_NRF_TX_REUSE)) >> HAL_NRF_TX_REUSE);
 }
 
 void hal_nrf_flush_rx(void)

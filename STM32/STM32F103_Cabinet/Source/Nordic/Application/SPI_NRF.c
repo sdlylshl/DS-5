@@ -481,8 +481,8 @@ uint8_t NRF_Rx_Dat(uint8_t *rxbuf)
 	NRF_CE_HIGH();	 //进入接收状态
 	 /*等待接收中断*/
 	while(NRF_Read_IRQ()){
-		if(GetDistanceTime(ct)>200)
-			break;
+		//if(GetDistanceTime(ct)>200)
+		//	break;
 	} 
 	
 	NRF_CE_LOW();  	 //进入待机状态

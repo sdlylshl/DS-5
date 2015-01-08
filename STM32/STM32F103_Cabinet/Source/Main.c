@@ -8,13 +8,13 @@ int main() {
 //	uint8_t i;
 	uint32_t Time = 0;
 	//RCC_Config();
-	//NVIC_Config();
+	NVIC_Config();
 	//DMA_Config();
 	USART1_Init();
 //	USART3_Init();
 	TIM2_Start();	//通用定时器
 	
-//	TIM4_Start(); //用来做网络延时计时使用
+	TIM4_Start(); //用来做网络延时计时使用
 	//nrf
 	SPI2_Init();
 	

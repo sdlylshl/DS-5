@@ -64,7 +64,7 @@
  */
 #define CE_PULSE() do { \
   uint8_t count; \
-  count = 30; \
+  count = 50; \
   CE_HIGH();  \
   while(count--){} \
   CE_LOW();  \

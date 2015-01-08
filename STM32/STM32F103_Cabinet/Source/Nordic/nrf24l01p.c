@@ -107,9 +107,9 @@ static void nrf_config(){
 		//RF_CH设置传输通道 默认:2
 		hal_nrf_set_rf_channel(40);
 		//CONFIG设置中断IRQ 
-		hal_nrf_set_irq_mode(HAL_NRF_MAX_RT,true);
-		hal_nrf_set_irq_mode(HAL_NRF_TX_DS,true);
-		hal_nrf_set_irq_mode(HAL_NRF_RX_DR,true);
+		hal_nrf_set_irq_mode(HAL_NRF_MASK_MAX_RT,true);
+		hal_nrf_set_irq_mode(HAL_NRF_MASK_TX_DS,true);
+		hal_nrf_set_irq_mode(HAL_NRF_MASK_RX_DR,true);
 
 		//SETUP_AW设置地址宽度，默认5
 		//hal_nrf_set_address_width(HAL_NRF_AW_5BYTES);
@@ -133,13 +133,6 @@ static void nrf_config(){
 		
 }
 
-
-void nrf_tx_mode(){
-		CE_LOW();
-	 //CONFIG设置发送模式,默认TX
-		hal_nrf_set_operation_mode(HAL_NRF_PTX);
-		CE_HIGH();
-}
 void nrf_rx_mode(){
 		CE_LOW();
 		//CONFIG设置发送模式,默认TX
@@ -149,47 +142,51 @@ void nrf_rx_mode(){
 }
 uint8_t nrf_tx_dat(){
 	
-	uint8_t status =0;
+		uint8_t status =0;
 		radio_busy = true;
 		CE_LOW();
-		hal_nrf_write_tx_payload(NRF__TX_BUF,TX_PLOAD_WIDTH);
-	
-		CE_HIGH();//Delay_us(15);
+		hal_nrf_set_operation_mode(HAL_NRF_PTX);
+		hal_nrf_write_tx_payload(NRF__TX_BUF,TX_PLOAD_WIDTH);	
+		CE_HIGH();Delay_us(105);
 		CE_PULSE();
+	
 		//等待发送完成
 #ifdef NVIC_SPI2_IRQ
 		while(radio_busy);
 #else
 		while(NRF_Read_IRQ());
 #endif 
-		//while(radio_busy);
-		Delay_us(2000);
+
 		status = hal_nrf_get_clear_irq_flags();
 		hal_nrf_flush_tx();
 	 
 		//If MAX_RT is asserted it must be cleared to enable further communication.
 		//hal_nrf_clear_irq_flag(HAL_NRF_MAX_RT);
-	
+
 		return status;
 }
 
 uint8_t nrf_rx_dat(){
 	uint8_t status =0;
+	
+	CE_LOW();
+	hal_nrf_set_operation_mode(HAL_NRF_PRX);
+	CE_HIGH();
+	
 	#ifdef NVIC_SPI2_IRQ
 	
 	#else
-		nrf_rx_mode();
-		CE_HIGH();
-		while(NRF_Read_IRQ()); 
+
+		//while(NRF_Read_IRQ()); 
 	#endif
 		
 		CE_LOW();
 		//pipe
 		//hal_nrf_get_rx_data_source();
-	 
+	
 		status = hal_nrf_get_clear_irq_flags();
 	
-		if(status & (1<<RX_DR)){
+		if(status & (1<<HAL_NRF_RX_DR)){
 			hal_nrf_read_rx_payload(NRF__RX_BUF);
 			hal_nrf_flush_rx();
 		}
@@ -201,6 +198,7 @@ uint8_t nrf_rx_dat(){
 //*******************************************************
 void nrf_main()
 {
+	uint32_t nrf_time;
 	uint8_t status=0;
 	uint8_t i;
 	nrf_init();		
@@ -220,27 +218,31 @@ void nrf_main()
 		nrf_test();
 		//	 nrf_rx_mode();
 		 while(1){	 
+			 
+			 if(TIM4_GetDistanceTime(nrf_time)>1000){
+			 			nrf_time = TIM4_GetCurrentTime();
 		 
-		 
-		 	printf("\r\n 主机端 进入自应答发送模式\r\n"); 
-			nrf_tx_mode();
-			status = nrf_tx_dat();
-				switch(status)
-				{
-				case (1<<MAX_RT):
-				printf("\r\n 主机端 没接收到应答信号，发送次数超过限定值，发送失败。 \r\n");
-				break;
+				printf("\r\n 主机端 进入发送模式\r\n"); 				 
+						status = nrf_tx_dat();
+						switch(status)
+						{
+						case (1<<HAL_NRF_MAX_RT):
+						printf("\r\n 主机端 没接收到应答信号，发送次数超过限定值，发送失败。 \r\n");
+						break;
 
-				case (1<<TX_DS):
-				printf("\r\n 主机端 接收到 从机端 的应答信号，发送成功！ \r\n");	 		
-				break;									
-				}		
-					 	printf("\r\n 主机端 进入接收模式。 \r\n");	
-			 	nrf_rx_mode();
+						case (1<<HAL_NRF_TX_DS):
+						printf("\r\n 主机端 接收到 从机端 的应答信号，发送成功！ \r\n");	 		
+						break;									
+						}			 
+			 }
+
+		
+		//printf("\r\n 主机端 进入接收模式。 \r\n");	
+		nrf_rx_mode();
 		status = nrf_rx_dat();
 					switch(status)
 			{
-			 case (1<<RX_DR):
+			 case (1<<HAL_NRF_RX_DR):
 				 printf("\r\n 主机端 接收到 从机端 发送的数据为");
 			 	for(i=0;i<4;i++)
 				{					
