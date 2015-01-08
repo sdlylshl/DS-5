@@ -23,7 +23,7 @@ uint8_t NRF__TX_BUF[TX_PLOAD_WIDTH] = {0,0x65,2,3};		//发射数据缓存
 uint8_t NRF_MASTER_ADDRESS[TX_ADR_WIDTH] = {0x34,0x43,0x10,0x10,0x01};	// 定义一个静态发送地址
 uint8_t NRF_DEVICE_ADDRESS[RX_ADR_WIDTH] = {0x34,0x43,0x10,0x10,0x01};
 
-uint8_t radio_busy;
+uint8_t radio_busy =0;
 
 static void nrf_init(){
 	//端口&SPI初始化
@@ -134,66 +134,76 @@ static void nrf_config(){
 }
 
 void nrf_rx_mode(){
-		CE_LOW();
-		//CONFIG设置发送模式,默认TX
+		CE_LOW();			
+		hal_nrf_flush_rx();
+		hal_nrf_set_irq_mode(HAL_NRF_MASK_MAX_RT,false);
+		hal_nrf_set_irq_mode(HAL_NRF_MASK_TX_DS,false);
+		hal_nrf_set_irq_mode(HAL_NRF_MASK_RX_DR,true);	
 		hal_nrf_set_operation_mode(HAL_NRF_PRX);
 		CE_HIGH();
 		
 }
 uint8_t nrf_tx_dat(){
 	
-		uint8_t status =0;
-		radio_busy = true;
+		radio_busy = 0;
+		//1. 切换发送模式
 		CE_LOW();
+	
+		hal_nrf_set_irq_mode(HAL_NRF_MASK_MAX_RT,true);
+		hal_nrf_set_irq_mode(HAL_NRF_MASK_TX_DS,true);
+		hal_nrf_set_irq_mode(HAL_NRF_MASK_RX_DR,false);
 		hal_nrf_set_operation_mode(HAL_NRF_PTX);
 		hal_nrf_write_tx_payload(NRF__TX_BUF,TX_PLOAD_WIDTH);	
-		CE_HIGH();Delay_us(105);
+	
+		CE_HIGH();
+	NRF__TX_BUF[0]++;
+	Delay_us(15);
 		CE_PULSE();
 	
-		//等待发送完成
+		//2.等待发送完成
 #ifdef NVIC_SPI2_IRQ
-		while(radio_busy);
+		while(!radio_busy);
+
 #else
 		while(NRF_Read_IRQ());
+	
+		radio_busy = hal_nrf_get_clear_irq_flags();	
+
 #endif 
-
-		status = hal_nrf_get_clear_irq_flags();
-		hal_nrf_flush_tx();
-	 
-		//If MAX_RT is asserted it must be cleared to enable further communication.
-		//hal_nrf_clear_irq_flag(HAL_NRF_MAX_RT);
-
-		return status;
-}
-
-uint8_t nrf_rx_dat(){
-	uint8_t status =0;
-	
-	CE_LOW();
-	hal_nrf_set_operation_mode(HAL_NRF_PRX);
-	CE_HIGH();
-	
-	#ifdef NVIC_SPI2_IRQ
-	
-	#else
-
-		//while(NRF_Read_IRQ()); 
-	#endif
-		
-		CE_LOW();
-		//pipe
-		//hal_nrf_get_rx_data_source();
-	
-		status = hal_nrf_get_clear_irq_flags();
-	
-		if(status & (1<<HAL_NRF_RX_DR)){
-			hal_nrf_read_rx_payload(NRF__RX_BUF);
-			hal_nrf_flush_rx();
+		if(radio_busy & TX_DS){
+			//printf("send data ok !\n");
+			//printf("数据发送成功 !\n");
+		}else
+		if(radio_busy & MAX_RT){
+			printf("超过最大发送次数\n");
+			hal_nrf_flush_tx();
 		}
-	return status;
- 
+		
+		//3.切换到接收模式
+		nrf_rx_mode();
+		
+		return radio_busy;	
 }
+void nrf_recv_ack(){
+	uint8_t i;
+nrf_rx_mode();
+	while(1){
+		//
+		//Delay_ms(100);
+				//2.收到数据
+			 if(radio_busy & RX_DR){
+				 radio_busy = 0;
+				 
+					//printf("\r\n 主机端 接收到 从机端 发送的数据为");		 
+					//for(i=0;i<4;i++)
+					{					
+						printf(" %d",NRF__RX_BUF[0]);
+					} 
 
+			 }
+			 
+		 }
+}
 
 //*******************************************************
 void nrf_main()
@@ -216,13 +226,14 @@ void nrf_main()
 		nrf_test();
 		nrf_config();
 		nrf_test();
-		//	 nrf_rx_mode();
+	 
+	 nrf_recv_ack();
 		 while(1){	 
 			 
-			 if(TIM4_GetDistanceTime(nrf_time)>1000){
+			 if(TIM4_GetDistanceTime(nrf_time)>1){
 			 			nrf_time = TIM4_GetCurrentTime();
 		 
-				printf("\r\n 主机端 进入发送模式\r\n"); 				 
+				//printf("\r\n 主机端 进入发送模式\r\n"); 				 
 						status = nrf_tx_dat();
 						switch(status)
 						{
@@ -231,27 +242,29 @@ void nrf_main()
 						break;
 
 						case (1<<HAL_NRF_TX_DS):
-						printf("\r\n 主机端 接收到 从机端 的应答信号，发送成功！ \r\n");	 		
+						//printf("\r\n 主机端 接收到 从机端 的应答信号，发送成功！ \r\n");	 		
 						break;									
 						}			 
 			 }
+			 
+			//2.收到数据
+			 if(radio_busy & RX_DR){
+				 radio_busy = 0;
+			// Read payload
+				while(!hal_nrf_rx_fifo_empty())
+				{
 
-		
-		//printf("\r\n 主机端 进入接收模式。 \r\n");	
-		nrf_rx_mode();
-		status = nrf_rx_dat();
-					switch(status)
-			{
-			 case (1<<HAL_NRF_RX_DR):
-				 printf("\r\n 主机端 接收到 从机端 发送的数据为");
-			 	for(i=0;i<4;i++)
-				{					
-					printf(" %d",NRF__RX_BUF[i]);
+					hal_nrf_read_rx_payload(NRF__RX_BUF);
+
+					printf("\r\n 主机端 接收到 从机端 发送的数据为");		 
+					for(i=0;i<4;i++)
+					{					
+						printf(" %d",NRF__RX_BUF[i]);
+					} 
 				}
-						break;	
+				 
 			}
-				
-				 Delay_ms(1000);
+		
 		 }
 		 
 }
@@ -269,7 +282,7 @@ void NRF_ISR()
 	{
 		// Transmission success
 		case (1 << (uint8_t)HAL_NRF_TX_DS):
-			radio_busy = false;
+			radio_busy = TX_DS;
 			// Data has been sent
 			break;
 		// Transmission failed (maximum re-transmits)
@@ -278,19 +291,21 @@ void NRF_ISR()
 			// If the packet is to be discarded this must be done manually by flushing the TX FIFO.
 			// Alternatively, CE_PULSE() can be called re-starting transmission of the payload.
 			// (Will only be possible after the radio irq flags are cleared)
-			hal_nrf_flush_tx();
-			radio_busy = false;
+			//hal_nrf_flush_tx();
+			radio_busy = MAX_RT;
 			break;
 		 // If data received
 		case (1 << (uint8_t)HAL_NRF_RX_DR):
-
-			radio_busy = false;
+			radio_busy = RX_DR;
 		// Read payload
 		while(!hal_nrf_rx_fifo_empty())
 		{
-			hal_nrf_read_rx_payload(payload);
+			//返回reg<<8+lenth
+			hal_nrf_read_rx_payload(NRF__RX_BUF);
 		}
-
+		//不要退出接收模式
+		CE_HIGH();
+		
 		break;
 		default:
 			break;

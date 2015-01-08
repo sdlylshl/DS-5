@@ -239,7 +239,7 @@ void NVIC_Config(void) {
 	//SPI2_IRQ
 	NVIC_EXTI8_init();
 	NVIC_SetPriority(EXTI9_5_IRQn, 10);
-//	NVIC_EnableIRQ(EXTI9_5_IRQn);
+	NVIC_EnableIRQ(EXTI9_5_IRQn);
 #endif
 	
 	NVIC_SetPriority(TIM2_IRQn, 8);

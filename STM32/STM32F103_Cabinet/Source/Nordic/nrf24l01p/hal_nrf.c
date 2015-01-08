@@ -684,7 +684,9 @@ uint8_t hal_nrf_get_rx_data_source(void)
 {
   return ((hal_nrf_nop() & (BIT_3|BIT_2|BIT_1)) >> 1);
 }
-
+//重发上一包数据
+//若TX_REUSE=1则当CE位高电平状态时不断发送上一数据包 
+//TX_REUSE 通过 SPI  指令REUSE_TX_PL 设置 通过 W_TX_PALOAD或 FLUSH_TX复位  
 void hal_nrf_reuse_tx(void)
 {
   CSN_LOW();
@@ -823,12 +825,12 @@ uint16_t hal_nrf_read_multibyte_reg(uint8_t reg, uint8_t *pbuf)
 
 void hal_nrf_write_multibyte_reg(uint8_t reg, const uint8_t *pbuf, uint8_t length)
 {
-    uint8_t status,byte_cnt;
+    uint8_t byte_cnt;
     CE_LOW();
     CSN_LOW();
 
     /*发送寄存器号*/	
-    status = hal_nrf_rw(reg); 
+    hal_nrf_rw(reg); 
 
     /*向缓冲区写入数据*/
     for(byte_cnt=0;byte_cnt<length;byte_cnt++)

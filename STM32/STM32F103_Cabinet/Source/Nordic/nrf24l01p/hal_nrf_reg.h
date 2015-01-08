@@ -80,9 +80,9 @@ This file is radio-chip dependent, and are included with the hal_nrf.h
  */
 typedef enum {
 
-    HAL_NRF_MASK_MAX_RT = 4,     /**< Max retries interrupt */
-    HAL_NRF_MASK_TX_DS,          /**< TX data sent interrupt */
-    HAL_NRF_MASK_RX_DR           /**< RX data received interrupt */
+	HAL_NRF_MASK_MAX_RT = 4,     /**<0> 1:MASK Max retries interrupt */
+	HAL_NRF_MASK_TX_DS,          /**<0> 1:MASK TX data sent interrupt */
+	HAL_NRF_MASK_RX_DR           /**<0> 1:MASK RX data received interrupt */
 } hal_nrf_irq_source_t;
 
 /* Operation mode definitions */
@@ -90,16 +90,25 @@ typedef enum {
  *
  */
 typedef enum {
-    HAL_NRF_PTX,            /**< Primary TX operation default*/
-    HAL_NRF_PRX             /**< Primary RX operation */
+		HAL_NRF_PTX,            /**<0> 0:Primary TX operation default*/
+		HAL_NRF_PRX             /**<0> 1:Primary RX operation */
 } hal_nrf_operation_mode_t;
+
+/** An enum describing the radio's CRC mode.
+ *
+ */
+typedef enum {
+    HAL_NRF_CRC_OFF,    /**< CRC check disabled */
+    HAL_NRF_CRC_8BIT,   /**< CRC check set to 8-bit default*/
+    HAL_NRF_CRC_16BIT   /**< CRC check set to 16-bit */
+} hal_nrf_crc_mode_t;
 
 /** An enum describing the radio's power mode.
  *
  */
 typedef enum {
-    HAL_NRF_PWR_DOWN,       /**< Device power-down default*/
-    HAL_NRF_PWR_UP          /**< Device power-up */
+    HAL_NRF_PWR_DOWN,       /**<0> 0: Device power-down default*/
+    HAL_NRF_PWR_UP          /**<0> 1: Device power-up */
 } hal_nrf_pwr_mode_t;
 
 /** An enum describing the radio's output power mode's.
@@ -121,14 +130,6 @@ typedef enum {
     HAL_NRF_250KBPS         /**< Datarate set to 250 kbps*/
 } hal_nrf_datarate_t;
 
-/** An enum describing the radio's CRC mode.
- *
- */
-typedef enum {
-    HAL_NRF_CRC_OFF,    /**< CRC check disabled */
-    HAL_NRF_CRC_8BIT,   /**< CRC check set to 8-bit default*/
-    HAL_NRF_CRC_16BIT   /**< CRC check set to 16-bit */
-} hal_nrf_crc_mode_t;
 
 /** An enum describing the read/write payload command.
  *
@@ -201,45 +202,45 @@ typedef enum {
 																			    and is reset by the SPI commands W_TX_PAYLOAD or FLUSH TX*/
 } hal_nrf_fifo_status_t;
 
-///** @name CONFIG register bit definitions */
-////@{
+/** @name CONFIG register bit definitions */
+//@{
 
-//#define MASK_RX_DR    0x40     /**< CONFIG register bit 6 */
-//#define MASK_TX_DS    0x20     /**< CONFIG register bit 5 */
-//#define MASK_MAX_RT   0x10     /**< CONFIG register bit 4 */
-//#define EN_CRC        0x08     /**< CONFIG register bit 3 */
-//#define CRCO          0x04     /**< CONFIG register bit 2 */
-//#define PWR_UP        0x02     /**< CONFIG register bit 1 */
-//#define PRIM_RX       0x01     /**< CONFIG register bit 0 */
-////@}
+#define MASK_RX_DR    0x40     /**< CONFIG register bit 6 */
+#define MASK_TX_DS    0x20     /**< CONFIG register bit 5 */
+#define MASK_MAX_RT   0x10     /**< CONFIG register bit 4 */
+#define EN_CRC        0x08     /**< CONFIG register bit 3 */
+#define CRCO          0x04     /**< CONFIG register bit 2 */
+#define PWR_UP        0x02     /**< CONFIG register bit 1 */
+#define PRIM_RX       0x01     /**< CONFIG register bit 0 */
+//@}
 
-///** @name RF_SETUP register bit definitions */
-////@{
-//#define PLL_LOCK      0x10     /**< RF_SETUP register bit 4 */
-//#define RF_DR         0x08     /**< RF_SETUP register bit 3 */
-//#define RF_PWR1       0x04     /**< RF_SETUP register bit 2 */
-//#define RF_PWR0       0x02     /**< RF_SETUP register bit 1 */
-//#define LNA_HCURR     0x01     /**< RF_SETUP register bit 0 */
-////@}
+/** @name RF_SETUP register bit definitions */
+//@{
+#define PLL_LOCK      0x10     /**< RF_SETUP register bit 4 */
+#define RF_DR         0x08     /**< RF_SETUP register bit 3 */
+#define RF_PWR1       0x04     /**< RF_SETUP register bit 2 */
+#define RF_PWR0       0x02     /**< RF_SETUP register bit 1 */
+#define LNA_HCURR     0x01     /**< RF_SETUP register bit 0 */
+//@}
 
-///* STATUS 0x07 */
-///** @name STATUS register bit definitions */
-////@{
-//#define RX_DR         0x40     /**< STATUS register bit 6 */
-//#define TX_DS         0x20     /**< STATUS register bit 5 */
-//#define MAX_RT        0x10     /**< STATUS register bit 4 */
-//#define TX_FULL       0x01     /**< STATUS register bit 0 */
-////@}
+/* STATUS 0x07 */
+/** @name STATUS register bit definitions */
+//@{
+#define RX_DR         0x40     /**< STATUS register bit 6 */
+#define TX_DS         0x20     /**< STATUS register bit 5 */
+#define MAX_RT        0x10     /**< STATUS register bit 4 */
+#define TX_FULL       0x01     /**< STATUS register bit 0 */
+//@}
 
-///* FIFO_STATUS 0x17 */
-///** @name FIFO_STATUS register bit definitions */
-////@{
-//#define TX_REUSE      0x40     /**< FIFO_STATUS register bit 6 */
-//#define TX_FIFO_FULL  0x20     /**< FIFO_STATUS register bit 5 */
-//#define TX_EMPTY      0x10     /**< FIFO_STATUS register bit 4 */
-//#define RX_FULL       0x02     /**< FIFO_STATUS register bit 1 */
-//#define RX_EMPTY      0x01     /**< FIFO_STATUS register bit 0 */
-////@}
+/* FIFO_STATUS 0x17 */
+/** @name FIFO_STATUS register bit definitions */
+//@{
+#define TX_REUSE      0x40     /**< FIFO_STATUS register bit 6 */
+#define TX_FIFO_FULL  0x20     /**< FIFO_STATUS register bit 5 */
+#define TX_EMPTY      0x10     /**< FIFO_STATUS register bit 4 */
+#define RX_FULL       0x02     /**< FIFO_STATUS register bit 1 */
+#define RX_EMPTY      0x01     /**< FIFO_STATUS register bit 0 */
+//@}
 
 #endif // HAL_NRF_REG_H__
 /** @} */
