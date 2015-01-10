@@ -148,7 +148,7 @@ void NVIC_EXTI5_init(void) {
 	EXTI_InitTypeDef EXTI_InitStructure;
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 	EXTI_ClearITPendingBit(EXTI_Line5);
-	GPIO_EXTILineConfig(GPIO_PortSourceGPIOD, GPIO_PinSource5);
+	GPIO_EXTILineConfig(GPIO_PortSourceGPIOC, GPIO_PinSource5);
 	EXTI_InitStructure.EXTI_Line = EXTI_Line5;
 	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt; 
 	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
@@ -237,6 +237,7 @@ void NVIC_Config(void) {
 
 #ifdef NVIC_SPI2_IRQ
 	//SPI2_IRQ
+	NVIC_EXTI5_init();
 	NVIC_EXTI8_init();
 	NVIC_SetPriority(EXTI9_5_IRQn, 10);
 	NVIC_EnableIRQ(EXTI9_5_IRQn);
@@ -308,7 +309,7 @@ void EXTI9_5_IRQHandle(void){
 	if (EXTI_GetITStatus(EXTI_Line5) == SET) {
 		EXTI_ClearFlag(EXTI_Line5);
 		EXTI_ClearITPendingBit(EXTI_Line5);
-		
+		NRF_ISR();
 	}else
 	if (EXTI_GetITStatus(EXTI_Line6) == SET) {
 		EXTI_ClearFlag(EXTI_Line6);
