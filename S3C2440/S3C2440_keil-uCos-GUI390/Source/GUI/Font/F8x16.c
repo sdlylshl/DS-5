@@ -1938,4 +1938,1384 @@ GUI_CONST_STORAGE U8 acFont8x16[][16] = {
    ________,
    ________}
 
-/* sharps eg 
+/* sharps eg ? 101  */
+ ,{
+   ________,
+   ________,
+   __XXX___,
+   _XX_XX__,
+   _XX_XX__,
+   _XX_XX__,
+   _XXXX___,
+   _XX_XX__,
+   _XX__XX_,
+   _XX__XX_,
+   _XX__XX_,
+   _XX_XX__,
+   _XX_____,
+   XX______,
+   ________,
+   ________}
+
+/* capital A with ring, 102 */
+ ,{
+   ___X____,
+   __X_X___,
+   ___X____,
+   ________,
+   _XXXXX__,
+   XX___XX_,
+   XX___XX_,
+   XXXXXXX_,
+   XX___XX_,
+   XX___XX_,
+   XX___XX_,
+   XX___XX_,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* small a with ring, 103 */
+ ,{
+   ________,
+   __XX____,
+   _X__X___,
+   __XX____,
+   ________,
+   _XXXX___,
+   ____XX__,
+   _XXXXX__,
+   XX__XX__,
+   XX__XX__,
+   XX__XX__,
+   _XXX_XX_,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/*  capital A diphtong, ligature, 104  */
+
+ ,{
+   ________,
+   ________,
+   ___XXXX_,
+   _XXXX_X_,
+   XX_XX___,
+   XX_XX___,
+   XX_XX___,
+   XXXXXXX_,
+   XX_XX___,
+   XX_XX___,
+   XX_XX_X_,
+   XX_XXXX_,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/*  Icelandic eth, 105  */
+ ,{
+   ________,
+   ________,
+   XXXXXX__,
+   _XX__XX_,
+   _XX__XX_,
+   _XX__XX_,
+   XXXX_XX_,
+   XXXX_XX_,
+   _XX__XX_,
+   _XX__XX_,
+   _XX__XX_,
+   XXXXXX__,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/*  Icelandic Thorn, 106  */
+ ,{
+   ________,
+   ________,
+   XXXX____,
+   _XX_____,
+   _XXXXX__,
+   _XX__XX_,
+   _XX__XX_,
+   _XX__XX_,
+   _XX__XX_,
+   _XXXXX__,
+   _XX_____,
+   XXXX____,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/*  small a diphtong, ligature, 107  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   XX__XX__,
+   __XX__X_,
+   __XXXXX_,
+   _XXX____,
+   X_XX____,
+   X_XX__X_,
+   _XX_XX__,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/*  small Icelanic Eth, 108  */
+ ,{
+   ________,
+   ________,
+   XX_X____,
+   _XX_____,
+   X_XX____,
+   ___XX___,
+   _XXXXX__,
+   XX___XX_,
+   XX___XX_,
+   XX___XX_,
+   XX___XX_,
+   _XXXXX__,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/*  small Icelandic Thorn, 109 */
+ ,{
+   ________,
+   ________,
+   XXX_____,
+   _XX_____,
+   _XX_____,
+   _XXXX___,
+   _XX_XX__,
+   _XX_XX__,
+   _XXXX___,
+   _XX_____,
+   _XX_____,
+   XXXX____,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/*  capital O with slash, 110 */
+ ,{
+   ________,
+   ________,
+   _XXXXX__,
+   XX___XX_,
+   XX__XXX_,
+   XX__XXX_,
+   XX_X_XX_,
+   XX_X_XX_,
+   XXX__XX_,
+   XXX__XX_,
+   XX___XX_,
+   _XXXXX__,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/*  small o with slash, 111 */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   __XXX_X_,
+   _X___X__,
+   XX__XXX_,
+   XX_X_XX_,
+   XXX__XX_,
+   _X___X__,
+   X_XXX___,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/*  Little capital A, 112 */
+ ,{
+   ________,
+   ________,
+   ________,
+   __XXX___,
+   _XX_XX__,
+   XX___XX_,
+   XX___XX_,
+   XXXXXXX_,
+   XX___XX_,
+   XX___XX_,
+   XX___XX_,
+   XX___XX_,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/*  Little capital E, 113 */
+ ,{
+   ________,
+   ________,
+   ________,
+   XXXXXXX_,
+   _XX__XX_,
+   _XX___X_,
+   _XX_X___,
+   _XXXX___,
+   _XX_X___,
+   _XX___X_,
+   _XX__XX_,
+   XXXXXXX_,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/*  Little capital I, 114 */
+ ,{
+   ________,
+   ________,
+   ________,
+   __XXXX__,
+   ___XX___,
+   ___XX___,
+   ___XX___,
+   ___XX___,
+   ___XX___,
+   ___XX___,
+   ___XX___,
+   __XXXX__,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/*  Little capital O, 115 */
+ ,{
+   ________,
+   ________,
+   ________,
+   _XXXXX__,
+   XX___XX_,
+   XX___XX_,
+   XX___XX_,
+   XX___XX_,
+   XX___XX_,
+   XX___XX_,
+   XX___XX_,
+   _XXXXX__,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/*  Little capital U, 116 */
+ ,{
+   ________,
+   ________,
+   ________,
+   XX___XX_,
+   XX___XX_,
+   XX___XX_,
+   XX___XX_,
+   XX___XX_,
+   XX___XX_,
+   XX___XX_,
+   XX___XX_,
+   _XXXXX__,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/*  Little capital N, 117 */
+ ,{
+   ________,
+   ________,
+   ________,
+   XX___XX_,
+   XXX__XX_,
+   XXXX_XX_,
+   XXXXXXX_,
+   XX_XXXX_,
+   XX__XXX_,
+   XX___XX_,
+   XX___XX_,
+   XX___XX_,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/*  inverted exclamation mark, 118 */
+ ,{
+   ________,
+   ________,
+   ___XX___,
+   ___XX___,
+   ________,
+   ___XX___,
+   ___XX___,
+   ___XX___,
+   __XXXX__,
+   __XXXX__,
+   __XXXX__,
+   ___XX___,
+   ________,
+   ________,
+   ________,
+   ________}  /* char inv '!'  */
+
+/*  inverted question mark, 119 */
+ ,{
+   ________,
+   ________,
+   __XX____,
+   __XX____,
+   ________,
+   __XX____,
+   __XX____,
+   __XX____,
+   _XX_____,
+   XX___XX_,
+   XX___XX_,
+   _XXXXX__,
+   ________,
+   ________,
+   ________,
+   ________}   /* char '?'  */
+
+/* capital accent ague, 120 */
+ ,{
+   ___XXX__,
+   __XX____,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* capital accent grave, 121 */
+ ,{
+   _XXX____,
+   ___XX___,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* capital accent circonflex, 122 */
+ ,{
+   __XXX___,
+   _XX_XX__,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* capital umlaut, 123 */
+ ,{
+   XX___XX_,
+   XX___XX_,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* capital tilde, 124 */
+ ,{
+   _XXX_XX_,
+   XX_XXX__,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* cedilla, 125 */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ___XX___,
+   __XX____,
+   ________,
+   ________}
+
+
+
+/*  additional characters for complete ISO 8859-1 character set  */
+
+/* Non breaking space, ISO-Code: 160, internal code: 126  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* cent sign, ISO-Code: 162, internal code: 127  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ___X____,
+   ___X____,
+   _XXXXX__,
+   XX_X____,
+   XX_X____,
+   XX_X____,
+   XX_X____,
+   XX_X_XX_,
+   _XXXXX__,
+   ___X____,
+   ___X____,
+   ________,
+   ________}  /* char 'c'  */
+
+
+/* pound sterling, ISO-Code: 163, internal code: 128  */
+ ,{
+   ________,
+   ________,
+   ___XXX__,
+   __XX____,
+   __XX____,
+   __XX____,
+   _XXXX___,
+   __XX____,
+   __XX____,
+   __XX____,
+   __XX__X_,
+   _X_XXX__,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* general currency sign, ISO-Code: 164, internal code: 129  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   _X____X_,
+   __XXXX__,
+   __X__X__,
+   __X__X__,
+   __XXXX__,
+   _X____X_,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* yen sign, ISO-Code: 165, internal code: 130  */
+ ,{
+   ________,
+   ________,
+   _XX__XX_,
+   __XXXX__,
+   ___XX___,
+   _XXXXXX_,
+   ___XX___,
+   ___XX___,
+   _XXXXXX_,
+   ___XX___,
+   ___XX___,
+   ___XX___,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* broken vertical bar, ISO-Code: 166, internal code: 131  */
+ ,{
+   ________,
+   ________,
+   ___XX___,
+   ___XX___,
+   ___XX___,
+   ___XX___,
+   ________,
+   ________,
+   ___XX___,
+   ___XX___,
+   ___XX___,
+   ___XX___,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* section sign, ISO-Code: 167, internal code: 132  */
+ ,{
+   ________,
+   ________,
+   __XXXX__,
+   _XX__X__,
+   _XX_____,
+   __XXX___,
+   _X___X__,
+   _X___X__,
+   __XXX___,
+   ____XX__,
+   _X__XX__,
+   _XXXX___,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* umlaut (dieresis), ISO-Code: 168, internal code: 133  */
+ ,{
+   ________,
+   XX___XX_,
+   XX___XX_,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* copyright, ISO-Code: 169, internal code: 134  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   _XXXXXX_,
+   _X____X_,
+   _X_XX_X_,
+   _X_XXXX_,
+   _X_XX_X_,
+   _X____X_,
+   _XXXXXX_,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* feminine ordinal, ISO-Code: 170, internal code: 135  */
+ ,{
+   ________,
+   ________,
+   _XXX____,
+   ____X___,
+   _XXXX___,
+   X___X___,
+   X___X___,
+   _XXX_X__,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* left angle quote, ISO-Code: 172, internal code: 136  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   __XX_XX_,
+   _XX_XX__,
+   XX_XX___,
+   _XX_XX__,
+   __XX_XX_,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* not sign, ISO-Code: 173, internal code: 137  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   XXXXXX__,
+   _____X__,
+   _____X__,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* soft hyphen, ISO-Code: 173, internal code: 138  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   _XXXXX__,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* rgistered trademark, ISO-Code: 174, internal code: 139  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   _XXXXX__,
+   _X___X__,
+   _X_X_X__,
+   _X___X__,
+   _X__XX__,
+   _X_X_X__,
+   _XXXXX__,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* macron accent, ISO-Code: 175, internal code: 140  */
+ ,{
+   XXXXXXX_,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* degree sign, ISO-Code: 176, internal code: 141  */
+ ,{
+   ________,
+   _XXX____,
+   XX_XX___,
+   X___X___,
+   XX_XX___,
+   _XXX____,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* plus or minus, ISO-Code: 177, internal code: 142  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   ___X____,
+   ___X____,
+   _XXXXX__,
+   ___X____,
+   ___X____,
+   ________,
+   _XXXXX__,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* superscript two, ISO-Code: 178, internal code: 143  */
+ ,{
+   _XXXX___,
+   X___XX__,
+   ____XX__,
+   ___XX___,
+   __XX____,
+   _XX_____,
+   XXXXXX__,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* superscript three, ISO-Code: 179, internal code: 144  */
+ ,{
+   _XXXX___,
+   X___XX__,
+   ____XX__,
+   _XXXX___,
+   ____XX__,
+   X___XX__,
+   _XXXX___,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* acute accent, ISO-Code: 180, internal code: 145  */
+ ,{
+   ________,
+   ____XXX_,
+   ___XX___,
+   __X_____,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* micro sign, ISO-Code: 181, internal code: 146  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   _XX__XX_,
+   _XX__XX_,
+   _XX__XX_,
+   _XX__XX_,
+   _XX__XX_,
+   _XX__XX_,
+   _XXXXX__,
+   _XX_____,
+   _XX_____,
+   XX______,
+   ________}
+
+/* paragraph sign, ISO-Code: 182, internal code: 147  */
+ ,{
+   ________,
+   ________,
+   _XXXXXX_,
+   XX_X_X__,
+   XX_X_X__,
+   XX_X_X__,
+   _XXX_X__,
+   ___X_X__,
+   ___X_X__,
+   ___X_X__,
+   ___X_X__,
+   __XXXXX_,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* middle dot, ISO-Code: 183, internal code: 148  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   __XXX___,
+   __XXX___,
+   __XXX___,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* superscript one, ISO-Code: 185, internal code: 149  */
+ ,{
+   _XX_____,
+   XXX_____,
+   _XX_____,
+   _XX_____,
+   _XX_____,
+   _XX_____,
+   XXXX____,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* masculine ordinal, ISO-Code: 186, internal code: 150  */
+ ,{
+   ________,
+   ________,
+   __XXXX__,
+   _XX__XX_,
+   _XX__XX_,
+   _XX__XX_,
+   __XXXX__,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* right angle quote, ISO-Code: 187, internal code: 151  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   XX_XX___,
+   _XX_XX__,
+   __XX_XX_,
+   _XX_XX__,
+   XX_XX___,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* fraction one-fourth, ISO-Code: 188, internal code: 152  */
+ ,{
+   ________,
+   ________,
+   _X______,
+   XX______,
+   _X___X__,
+   _X__X___,
+   ___X____,
+   __X__X__,
+   _X__XX__,
+   X__X_X__,
+   ___XXXX_,
+   _____X__,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* fraction one-half, ISO-Code: 189, internal code: 153  */
+ ,{
+   ________,
+   ________,
+   _X______,
+   XX______,
+   _X___X__,
+   _X__X___,
+   ___X____,
+   __X_XX__,
+   _X_X__X_,
+   X____X__,
+   ____X___,
+   ___XXXX_,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* fraction three-fourth, ISO-Code: 190, internal code: 154  */
+ ,{
+   ________,
+   ________,
+   XX______,
+   __X_____,
+   _X___X__,
+   __X_X___,
+   XX_X____,
+   __X__X__,
+   _X__XX__,
+   X__X_X__,
+   ___XXXX_,
+   _____X__,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* multiply sign, ISO-Code: 215, internal code: 155  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   _XX__XX_,
+   __XXXX__,
+   ___XX___,
+   __XXXX__,
+   _XX__XX_,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+/* division sign, ISO-Code: 247, internal code: 156  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   ___XX___,
+   ___XX___,
+   ________,
+   _XXXXXX_,
+   ________,
+   ___XX___,
+   ___XX___,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________}
+
+ /* left arrow, ISO-Code: ---, internal code: 157  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ____X___,
+   ___XX___,
+   __XXX___,
+   _XXXXXXX,
+   XXXXXXXX,
+   _XXXXXXX,
+   __XXX___,
+   ___XX___,
+   ____X___,
+   ________,
+   ________}
+
+ /* right arrow, ISO-Code: ---, internal code: 158  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ___X____,
+   ___XX___,
+   ___XXX__,
+   XXXXXXX_,
+   XXXXXXXX,
+   XXXXXXX_,
+   ___XXX__,
+   ___XX___,
+   ___X____,
+   ________,
+   ________}
+
+ /* up arrow, ISO-Code: ---, internal code: 159 */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ___X____,
+   __XXX___,
+   _XXXXX__,
+   XXXXXXX_,
+   __XXX___,
+   __XXX___,
+   __XXX___,
+   __XXX___,
+   ________,
+   ________}
+
+ /* down arrow, ISO-Code: ---, internal code: 160  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   __XXX___,
+   __XXX___,
+   __XXX___,
+   __XXX___,
+   XXXXXXX_,
+   _XXXXX__,
+   __XXX___,
+   ___X____,
+   ________,
+   ________}
+
+ /* down arrow, ISO-Code: ---, internal code: 161  */
+ ,{
+   ________,
+   ________,
+   ________,
+   _____XX_,
+   _____XX_,
+   _____XX_,
+   _____XX_,
+   ___X_XX_,
+   __XX_XX_,
+   _XXXXXX_,
+   XXXXXXX_,
+   _XXXXX__,
+   __XX____,
+   ___X____,
+   ________,
+   ________}
+
+ /* down arrow, ISO-Code: ---, internal code: 162  */
+ ,{
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ________,
+   ______XX,
+   ______XX,
+   _____XX_,
+   _____XX_,
+   ____XX__,
+   XX__XX__,
+   _XXXX___,
+   __XXX___,
+   ________,
+   ________}
+
+};
+
+
+
+/*
+        *********************************
+        *                               *
+        *       Font selection          *
+        *                               *
+        *********************************
+*/
+
+GUI_CONST_STORAGE GUI_FONT_TRANSLIST TransList8x16[] = {
+/*
+   The folowing are extensions to ISO 8859-1.
+   Since ISO 8859-1 does not define any characters for the codes
+   128 - 159, this area can be used by an application.
+   The most commonly used symbols in embedded applications are
+   therefor inserted here.
+*/
+  {CODE_ARROW_LEFT,-1},			/* 144, arrow left */
+  {CODE_ARROW_RIGHT,-1},		/* 145, arrow right */
+  {CODE_ARROW_UP,-1},			  /* 146, arrow up */
+  {CODE_ARROW_DOWN,-1},			/* 147, arrow down */
+  {CODE_ENTER,-1},          /* 148, enter symbol */
+  {CODE_CHECKMARK,-1},			/* 149, checkmark symbol */
+  {-1,-1},				/* 150, unused symbol */
+  {-1,-1},				/* 151, unused symbol */
+  {-1,-1},				/* 152, unused symbol */
+  {-1,-1},				/* 153, unused symbol */
+  {-1,-1},				/* 154, unused symbol */
+  {-1,-1},				/* 155, unused symbol */
+  {-1,-1},				/* 156, unused symbol */
+  {-1,-1},				/* 157, unused symbol */
+  {-1,-1},				/* 158, unused symbol */
+  {-1,-1},				/* 159, unused symbol */
+/* starting at character code 160 are the characters defined
+   by ISO 8859-1
+*/
+  {CODE_NB_SPACE,-1},                   /* 160, non-breaking space */
+  {CODE_INVEXCLAM,-1},                  /* 161, inverted exclamation sign */
+  {CODE_CENT,-1},                       /* 162, cent sign */
+  {CODE_POUND,-1},                      /* 163, pound sterling */
+  {CODE_CURRENCY,-1},                   /* 164, general currency sign */
+  {CODE_YEN,-1},                        /* 165, yen sign */
+  {CODE_BROKEN_BAR,-1},                 /* 166, broken vertical bar */
+  {CODE_SECTION,-1},                    /* 167, section sign */
+  {CODE_DIERESIS,-1},                   /* 168, umlaut */
+  {CODE_COPYRIGHT,-1},                  /* 169, copyright */
+  {CODE_FEMININE,-1},                   /* 170,  */
+  {CODE_LEFT_QUOTE,-1},                 /* 171,  */
+  {CODE_NOT,-1},                        /* 172,  */
+  {CODE_HYPHEN,-1},                     /* 173,  */
+  {CODE_TRADEMARK,-1},                  /* 174,  */
+  {CODE_MACRON,-1},                     /* 175,  */
+  {CODE_DEGREE,-1},                     /* 176,  */
+  {CODE_PLUS_MINUS,-1},                 /* 177,  */
+  {CODE_SUPER_TWO,-1},                  /* 178,  */
+  {CODE_SUPER_THREE,-1},                /* 179,  */
+  {CODE_ACUTE,-1},                      /* 180,  */
+  {CODE_MICRO,-1},                      /* 181,  */
+  {CODE_PARAGRAPH,-1},                  /* 182,  */
+  {CODE_MIDDLE_DOT,-1},                 /* 183,  */
+  {CODE_CEDILLA,-1},                    /* 184,  */
+  {CODE_SUPER_ONE,-1},                  /* 185,  */
+  {CODE_MASCULINE,-1},                  /* 186,  */
+  {CODE_RIGHT_QUOTE,-1},                /* 187,  */
+  {CODE_ONE_FOURTH,-1},                 /* 188,  */
+  {CODE_ONE_HALF,-1},                   /* 189,  */
+  {CODE_THREE_FOURTH,-1},               /* 190,  */
+  {CODE_INVQUEST,-1},                   /* 191,  */
+  {CODE_LITTLE_A,CODE_CACCGRAV},        /* 192,  */
+  {CODE_LITTLE_A,CODE_CACCAGUE},        /* 193,  */
+  {CODE_LITTLE_A,CODE_CACCCIRC},        /* 194,  */
+  {CODE_LITTLE_A,CODE_CTILDE},          /* 195,  */
+  {CODE_LITTLE_A,CODE_CUMLAUT},         /* 196,  */
+  {CODE_A_RING,-1},                     /* 197,  */
+  {CODE_AE,-1},                         /* 198,  */
+  {'C'-32,CODE_CEDILLA},                /* 199,  */
+  {CODE_LITTLE_E,CODE_CACCGRAV},        /* 200,  */
+  {CODE_LITTLE_E,CODE_CACCAGUE},        /* 201,  */
+  {CODE_LITTLE_E,CODE_CACCCIRC},        /* 202,  */
+  {CODE_LITTLE_E,CODE_CUMLAUT},         /* 203,  */
+  {CODE_LITTLE_I,CODE_CACCGRAV},        /* 204,  */
+  {CODE_LITTLE_I,CODE_CACCAGUE},        /* 205,  */
+  {CODE_LITTLE_I,CODE_CACCCIRC},        /* 206,  */
+  {CODE_LITTLE_I,CODE_CUMLAUT},         /* 207,  */
+  {CODE_ETH,-1},                        /* 208,  */
+  {CODE_LITTLE_N,CODE_CTILDE},          /* 209,  */
+  {CODE_LITTLE_O,CODE_CACCGRAV},        /* 210,  */
+  {CODE_LITTLE_O,CODE_CACCAGUE},        /* 211,  */
+  {CODE_LITTLE_O,CODE_CACCCIRC},        /* 212,  */
+  {CODE_LITTLE_O,CODE_CTILDE},          /* 213,  */
+  {CODE_LITTLE_O,CODE_CUMLAUT},         /* 214,  */
+  {CODE_MULTIPLY,-1},                   /* 215,  */
+  {CODE_OSLASH,-1},                     /* 216,  */
+  {CODE_LITTLE_U,CODE_CACCGRAV},        /* 217,  */
+  {CODE_LITTLE_U,CODE_CACCAGUE},        /* 218,  */
+  {CODE_LITTLE_U,CODE_CACCCIRC},        /* 219,  */
+  {CODE_LITTLE_U,CODE_CUMLAUT},         /* 220,  */
+  {'Y'-32,CODE_CACCAGUE},               /* 221,  */
+  {CODE_THORN,-1},                      /* 222,  */
+  {CODE_SHARPS,-1},                     /* 223,  */
+  {'a'-32,CODE_SACCGRAV},               /* 224,  */
+  {'a'-32,CODE_SACCAGUE},               /* 225,  */
+  {'a'-32,CODE_SACCCIRC},               /* 226,  */
+  {'a'-32,CODE_STILDE},                 /* 227,  */
+  {'a'-32,CODE_SUMLAUT},                /* 228,  */
+  {CODE_SA_RING,-1},                    /* 229,  */
+  {CODE_SMALLAE,-1},                    /* 230,  */
+  {'c'-32,CODE_CEDILLA},                /* 231,  */
+  {'e'-32,CODE_SACCGRAV},               /* 232,  */
+  {'e'-32,CODE_SACCAGUE},               /* 233,  */
+  {'e'-32,CODE_SACCCIRC},               /* 234,  */
+  {'e'-32,CODE_SUMLAUT},                /* 235,  */
+  {CODE_I_NOPOINT,CODE_SACCGRAV},       /* 236,  */
+  {CODE_I_NOPOINT,CODE_SACCAGUE},       /* 237,  */
+  {CODE_I_NOPOINT,CODE_SACCCIRC},       /* 238,  */
+  {CODE_I_NOPOINT,CODE_SUMLAUT},        /* 239,  */
+  {CODE_SMALLETH,-1},                   /* 240, small eth, Icelandic */
+  {'n'-32,CODE_STILDE},                 /* 241, small n, tilde */
+  {'o'-32,CODE_SACCGRAV},               /* 242, small o, grave accent */
+  {'o'-32,CODE_SACCAGUE},               /* 243, small o, acute accent */
+  {'o'-32,CODE_SACCCIRC},               /* 244, small o, circumflex  */
+  {'o'-32,CODE_STILDE},                 /* 245, small o, tilde  */
+  {'o'-32,CODE_SUMLAUT},                /* 246, small o, umlaut  */
+  {CODE_DIVISION,-1},                   /* 247, division sign */
+  {CODE_SOSLASH,-1},                    /* 248, small o slash */
+  {'u'-32,CODE_SACCAGUE},               /* 249,  */
+  {'u'-32,CODE_SACCGRAV},               /* 250,  */
+  {'u'-32,CODE_SACCCIRC},               /* 251,  */
+  {'u'-32,CODE_SUMLAUT},                /* 252, small u, umlaut  */
+  {'y'-32,CODE_SACCAGUE},               /* 253, small y, acute accent */
+  {CODE_SMALLTHORN,-1},                 /* 254, small thorn, Icelandic  */
+  {'y'-32,CODE_SUMLAUT},                /* 255, */
+};
+
+
+GUI_CONST_STORAGE GUI_FONT_TRANSINFO TransInfo8x16 = {
+  144              /*  FirstChar  */
+  ,255             /*  LastChar   */
+  ,TransList8x16   /*  const GUI_FONT_TRANSLIST* pList */
+};
+
+GUI_CONST_STORAGE GUI_FONT_MONO FontMono8x16 = {
+ acFont8x16[0],
+ acFont8x16[0],
+ &TransInfo8x16,
+ 32,                    /* FirstChar */
+ 127,                   /* LastChar */
+ 8,                     /* XSize */
+ 8,                     /* XDist */
+ 1                      /* BytesPerLine */
+};
+  
+GUI_CONST_STORAGE GUI_FONT GUI_Font8x16 = { GUI_FONTTYPE_MONO, 16, 16, 1, 1 , {&FontMono8x16}, 12, 7, 10};
+GUI_CONST_STORAGE GUI_FONT GUI_Font8x17 = { GUI_FONTTYPE_MONO, 16, 17, 1, 1 , {&FontMono8x16}, 12, 7, 10};
+GUI_CONST_STORAGE GUI_FONT GUI_Font8x18 = { GUI_FONTTYPE_MONO, 16, 18, 1, 1 , {&FontMono8x16}, 12, 7, 10};
+
+
+/*      *********************************
+        *                               *
+        *   Magnified fonts             *
+        *                               *
+        *********************************
+
+  The following are the definitions for magnified fonts. If magnified fonts
+  are not used, they can be erased.
+*/
+
+static GUI_CONST_STORAGE GUI_FONT_MONO FontMono8x16x2 = {
+ acFont8x16[0],
+ acFont8x16[0],
+ &TransInfo8x16,
+ 32,                    /* FirstChar */
+ 127,                   /* LastChar */
+ 8,                     /* XSize */
+ 2*8,                   /* XDist */
+ 1                      /* BytesPerLine */
+};
+
+static GUI_CONST_STORAGE GUI_FONT_MONO FontMono8x16x3 = {
+ acFont8x16[0],
+ acFont8x16[0],
+ &TransInfo8x16,
+ 32,                    /* FirstChar */
+ 127,                   /* LastChar */
+ 8,                     /* XSize */
+ 3*8,                   /* XDist */
+ 1                      /* BytesPerLine */
+};
+
+GUI_CONST_STORAGE GUI_FONT GUI_Font8x16x1x2 = { GUI_FONTTYPE_MONO, 16, 2*16, 1, 2 , {&FontMono8x16},   12, 7, 10 };
+GUI_CONST_STORAGE GUI_FONT GUI_Font8x16x2x2 = { GUI_FONTTYPE_MONO, 16, 2*16, 2, 2 , {&FontMono8x16x2}, 12, 7, 10 };
+GUI_CONST_STORAGE GUI_FONT GUI_Font8x16x3x3 = { GUI_FONTTYPE_MONO, 16, 3*16, 3, 3 , {&FontMono8x16x3}, 12, 7, 10 };
+
+

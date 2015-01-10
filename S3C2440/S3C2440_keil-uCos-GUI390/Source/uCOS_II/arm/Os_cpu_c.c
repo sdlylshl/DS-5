@@ -13,7 +13,7 @@
 */
 
 //#define  OS_CPU_GLOBALS
-#include "..\SOURCE\ucos_ii.h"
+#include "ucos_ii.h"
 
 
 INT32U        OSIntCtxSwFlag = 0;           /* Used to flag a context switch*/     

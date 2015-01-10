@@ -13,7 +13,7 @@
 * LICENSING TERMS:
 * ---------------
 *   uC/OS-II is provided in source form for FREE evaluation, for educational use or for peaceful research.
-* If you plan on using  uC/OS-II  in a commercial product you need to contact Micri�m to properly license
+* If you plan on using  uC/OS-II  in a commercial product you need to contact Micri祄 to properly license
 * its use in your product. We provide ALL the source code for your convenience and to help you experience
 * uC/OS-II.   The fact that the  source is provided does  NOT  mean that you can use it without  paying a
 * licensing fee.
@@ -41,8 +41,8 @@ extern "C" {
 *********************************************************************************************************
 */
 
-#include "../API/app_cfg.h"
-#include "../ARM/os_cpu.h"
+#include "app_cfg.h"
+#include "os_cpu.h"
 #include "os_cfg_r.h"
 
 
@@ -704,7 +704,7 @@ typedef  struct  os_tmr_wheel {
 *                                            GLOBAL VARIABLES
 *********************************************************************************************************
 */
-OS_EXT  INT32U            OsEnterSum;               /*  ���жϼ������������жϵ��ź�����    */
+OS_EXT  INT32U            OsEnterSum;               /*  关中断计数器（开关中断的信号量）    */
 
 OS_EXT  INT32U            OSCtxSwCtr;               /* Counter of number of context switches           */
 

@@ -147,6 +147,7 @@ settings
 *.opensdf
 *.user
 
+*.scc
 #Nuget
 packages
 *.suo
