@@ -135,8 +135,7 @@ static void nrf_config()
 void nrf_rx_mode()
 {
     CE_LOW();
-    hal_nrf_flush_rx();
-
+    //hal_nrf_flush_rx();
     hal_nrf_set_irq_mode(HAL_NRF_MASK_MAX_RT,false);
     hal_nrf_set_irq_mode(HAL_NRF_MASK_TX_DS,false);
     hal_nrf_set_irq_mode(HAL_NRF_MASK_RX_DR,true);
@@ -167,8 +166,7 @@ uint8_t nrf_tx_dat(const uint8_t * txdat)
 #ifdef NVIC_SPI2_IRQ
     while(!radio_busy){
 		        if(TIM4_GetDistanceTime(nrf_time)>10) {
-							 printf("数据发送超时!\n");
-							
+							 printf("\nsend timeout !");							
 							hal_nrf_flush_tx();
 							break;
 						}
@@ -182,10 +180,10 @@ uint8_t nrf_tx_dat(const uint8_t * txdat)
 #endif
     if(radio_busy & TX_DS) {
         //printf("send data ok !\n");
-        printf("数据发送成功 !\n");
+        printf("\n data send ok !");
 				
     } else if(radio_busy & MAX_RT) {
-        printf("超过最大发送次数\n");
+        printf("\n send max times");
         hal_nrf_flush_tx();
     }
 
@@ -200,8 +198,9 @@ uint8_t nrf_tx_dat(const uint8_t * txdat)
 */
 uint8_t nrf_master()
 {
-		printf(" master mode \n");
-   // uint8_t i;
+	 uint8_t i;	
+	printf(" master mode \n");
+
     nrf_rx_mode();
     while(1) {
         //
@@ -209,13 +208,16 @@ uint8_t nrf_master()
         //2.收到数据
 				//发送失败|收到数据 重发 
         if(radio_busy & RX_DR) {
-            radio_busy = 0;
-						nrf_tx_dat(NRF__RX_BUF);
-            //printf("\r\n 主机端 接收到 从机端 发送的数据为");
-            //for(i=0;i<4;i++)
+            radio_busy = 0;	
+
+					//printf("\r\n master recv dat :");
+					for(i=0;i<4;i++)
             {
-                printf(" %d",NRF__RX_BUF[1]);
+                printf(" %d",NRF__RX_BUF[i]);
             }
+					//此处必须加延迟 否则出错？？？
+					nrf_tx_dat(NRF__RX_BUF);
+            //printf("\r\n 主机端 接收到 从机端 发送的数据为");
 
         }
 
@@ -231,41 +233,39 @@ void nrf_device()
 			printf(" device mode \n");
     //nrf_rx_mode();
     while(1) {
+			
+			        //2.收到数据
+        if(radio_busy & RX_DR) {
+            radio_busy = 0;
+					
+							printf("\r\n device recv dat :");
+                for(i=0; i<4; i++) {
+                    printf(" %d",NRF__RX_BUF[i]);
+                }
+
+        }
 
         //载波检测,接收模式下有效
-        if(hal_nrf_get_carrier_detect()) {
-            cdn++;
-            printf("检测到载波信号 %x\n",cdn);
-        }
+       // if(hal_nrf_get_carrier_detect()) {
+           // cdn++;
+            //printf("检测到载波信号 %x\n",cdn);
+        //}
         if(TIM4_GetDistanceTime(nrf_time)>1000) {
             nrf_time = TIM4_GetCurrentTime();
             //printf("\r\n 主机端 进入发送模式\r\n");
-            status = nrf_tx_dat(NRF__RX_BUF);
+            status = nrf_tx_dat(NRF__TX_BUF);
             switch(status) {
             case (1<<HAL_NRF_MAX_RT):
-                printf("\r\n 主机端 没接收到应答信号，发送次数超过限定值，发送失败。%x \r\n",status);
+                printf("\r\n device send Max times %x \r\n",status);
                 break;
             case (1<<HAL_NRF_TX_DS):
-                printf("\r\n 主机端 接收到 从机端 的应答信号，发送成功！%x \r\n",status);
+                printf("\r\n device Send OK !%x \r\n",status);
                 break;
             }
 						//printf("\r\n 主机端 进入发送模式 %x\r\n",status);
         }
 
-        //2.收到数据
-        if(radio_busy & RX_DR) {
-            radio_busy = 0;
-            // Read payload
-            while(!hal_nrf_rx_fifo_empty()) {
-                hal_nrf_read_rx_payload(NRF__RX_BUF);
 
-                printf("\r\n 主机端 接收到 从机端 发送的数据为");
-                for(i=0; i<4; i++) {
-                    printf(" %d",NRF__RX_BUF[i]);
-                }
-            }
-
-        }
 
     }
 }
@@ -326,7 +326,6 @@ void NRF_ISR()
         break;
         // If data received
     case (1 << (uint8_t)HAL_NRF_RX_DR):
-        radio_busy = RX_DR;
         // Read payload
         while(!hal_nrf_rx_fifo_empty()) {
             //返回reg<<8+lenth
@@ -334,7 +333,8 @@ void NRF_ISR()
         }
         //不要退出接收模式
         CE_HIGH();
-
+				//数据接收完再将标志位置位
+        radio_busy = RX_DR;
         break;
     default:
         break;
