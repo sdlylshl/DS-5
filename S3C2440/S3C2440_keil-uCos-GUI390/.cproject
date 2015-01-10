@@ -17,8 +17,18 @@
 					<folderInfo id="com.arm.eclipse.build.config.baremetal.exe.debug.384990040." name="/" resourcePath="">
 						<toolChain id="com.arm.toolchain.baremetal.exe.debug.1225797483" name="ARM Compiler" superClass="com.arm.toolchain.baremetal.exe.debug">
 							<targetPlatform id="com.arm.eclipse.build.config.baremetal.exe.debug.384990040..684575343" name=""/>
-							<builder buildPath="${workspace_loc:/S3C2440_keil-uCos-GUI390/Debug}" id="com.arm.toolchain.baremetal.builder.222771205" managedBuildOn="true" name="Gnu Make Builder.Debug" superClass="com.arm.toolchain.baremetal.builder"/>
-							<tool id="com.arm.tool.c.compiler.baremetal.exe.debug.53643932" name="ARM C Compiler" superClass="com.arm.tool.c.compiler.baremetal.exe.debug"/>
+							<builder buildPath="${workspace_loc:/S3C2440_keil-uCos-GUI390/Debug}" id="com.arm.toolchain.baremetal.builder.222771205" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="com.arm.toolchain.baremetal.builder"/>
+							<tool id="com.arm.tool.c.compiler.baremetal.exe.debug.53643932" name="ARM C Compiler" superClass="com.arm.tool.c.compiler.baremetal.exe.debug">
+								<option id="com.arm.tool.c.compiler.option.incpath.2030398399" name="Include path (-I)" superClass="com.arm.tool.c.compiler.option.incpath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/S3C2440/includes}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/Config}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/GUI/core}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/LCD}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/uCOS_II/SOURCE}&quot;"/>
+								</option>
+								<inputType id="com.arm.tool.c.compiler.input.1916467523" superClass="com.arm.tool.c.compiler.input"/>
+								<inputType id="com.arm.tool.cpp.compiler.input.767436380" superClass="com.arm.tool.cpp.compiler.input"/>
+							</tool>
 							<tool id="com.arm.tool.cpp.compiler.baremetal.exe.debug.70814441" name="ARM C++ Compiler" superClass="com.arm.tool.cpp.compiler.baremetal.exe.debug"/>
 							<tool id="com.arm.tool.assembler.35395942" name="ARM Assembler" superClass="com.arm.tool.assembler"/>
 							<tool id="com.arm.tool.c.linker.1634766309" name="ARM Linker" superClass="com.arm.tool.c.linker"/>
@@ -43,8 +53,11 @@
 					<folderInfo id="com.arm.eclipse.build.config.baremetal.exe.release.1830265698." name="/" resourcePath="">
 						<toolChain id="com.arm.toolchain.baremetal.exe.release.414145054" name="ARM Compiler" superClass="com.arm.toolchain.baremetal.exe.release">
 							<targetPlatform id="com.arm.eclipse.build.config.baremetal.exe.release.1830265698..1311796088" name=""/>
-							<builder buildPath="${workspace_loc:/S3C2440_keil-uCos-GUI390/Release}" id="com.arm.toolchain.baremetal.builder.1726894416" managedBuildOn="true" name="Gnu Make Builder.Release" superClass="com.arm.toolchain.baremetal.builder"/>
-							<tool id="com.arm.tool.c.compiler.baremetal.exe.release.1135627843" name="ARM C Compiler" superClass="com.arm.tool.c.compiler.baremetal.exe.release"/>
+							<builder buildPath="${workspace_loc:/S3C2440_keil-uCos-GUI390/Release}" id="com.arm.toolchain.baremetal.builder.1726894416" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="com.arm.toolchain.baremetal.builder"/>
+							<tool id="com.arm.tool.c.compiler.baremetal.exe.release.1135627843" name="ARM C Compiler" superClass="com.arm.tool.c.compiler.baremetal.exe.release">
+								<inputType id="com.arm.tool.c.compiler.input.63209011" superClass="com.arm.tool.c.compiler.input"/>
+								<inputType id="com.arm.tool.cpp.compiler.input.1551558817" superClass="com.arm.tool.cpp.compiler.input"/>
+							</tool>
 							<tool id="com.arm.tool.cpp.compiler.baremetal.exe.release.2119956573" name="ARM C++ Compiler" superClass="com.arm.tool.cpp.compiler.baremetal.exe.release"/>
 							<tool id="com.arm.tool.assembler.1163723015" name="ARM Assembler" superClass="com.arm.tool.assembler"/>
 							<tool id="com.arm.tool.c.linker.920300823" name="ARM Linker" superClass="com.arm.tool.c.linker"/>
@@ -53,6 +66,7 @@
 					</folderInfo>
 				</configuration>
 			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
@@ -61,4 +75,5 @@
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 	</storageModule>
+	<storageModule moduleId="refreshScope"/>
 </cproject>

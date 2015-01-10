@@ -36,6 +36,7 @@
 								<option id="com.arm.tool.c.compiler.option.targetcpu.1401810738" name="Target CPU (--cpu)" superClass="com.arm.tool.c.compiler.option.targetcpu" value="Cortex-M3" valueType="string"/>
 								<option id="com.arm.tool.c.compiler.option.preproconly.1735436738" name="Preprocess only (-E)" superClass="com.arm.tool.c.compiler.option.preproconly" value="false" valueType="boolean"/>
 								<option id="com.arm.tool.c.compiler.baremetal.exe.debug.option.opt.1048308598" name="Optimization level" superClass="com.arm.tool.c.compiler.baremetal.exe.debug.option.opt" value="com.arm.tool.c.compiler.option.optlevel.max" valueType="enumerated"/>
+								<option id="com.arm.tool.c.compiler.options.debug.enabled.600504527" name="Enable debug (-g)" superClass="com.arm.tool.c.compiler.options.debug.enabled" value="true" valueType="boolean"/>
 								<inputType id="com.arm.tool.c.compiler.input.2126708075" superClass="com.arm.tool.c.compiler.input"/>
 								<inputType id="com.arm.tool.cpp.compiler.input.1799028332" superClass="com.arm.tool.cpp.compiler.input"/>
 							</tool>
