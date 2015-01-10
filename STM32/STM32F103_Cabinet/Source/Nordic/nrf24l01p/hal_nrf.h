@@ -528,7 +528,7 @@ void hal_nrf_enable_continious_wave (bool enable);
  *
  * @return Databyte from radio.
 */
-uint8_t hal_nrf_rw(uint8_t value);
+//uint8_t hal_nrf_rw(uint8_t value);
 
 uint8_t hal_nrf_read_reg(uint8_t reg);
 //@}

@@ -88,3 +88,19 @@ uint8_t SPI2_ReceiveByte(void) {
 	return SPI_I2S_ReceiveData(SPI2);
 }
 
+void SPI2_ResetNSS(void) {
+	SPI2_SCS_LOW();
+}
+void SPI2_SetNSS(void) {
+	SPI2_SCS_HIGH();	
+}
+
+void SPI2_ResetRST(void) {
+	SPI2_RST_LOW();
+}
+void SPI2_SetRST(void) {	
+	SPI2_RST_HIGH();
+}
+uint8_t SPI2_readIRQ(void){
+	return SPI2_READ_IRQ();
+}

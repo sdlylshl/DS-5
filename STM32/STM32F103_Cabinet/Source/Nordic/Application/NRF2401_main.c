@@ -1,21 +1,21 @@
 /******************** (C) COPYRIGHT 2012 WildFire Team **************************
- * ÎÄ¼şÃû  £ºmain.c
- * ÃèÊö    £ºNRF24L01ÎŞÏßw´«Êä²âÊÔÊµÑé        
- * ÊµÑéÆ½Ì¨£ºÒ°»ğSTM32¿ª·¢°å	
- * ¿â°æ±¾  £ºST3.5.0
+ * æ–‡ä»¶å  ï¼šmain.c
+ * æè¿°    ï¼šNRF24L01æ— çº¿wä¼ è¾“æµ‹è¯•å®éªŒ        
+ * å®éªŒå¹³å°ï¼šé‡ç«STM32å¼€å‘æ¿	
+ * åº“ç‰ˆæœ¬  ï¼šST3.5.0
  *
- * ×÷Õß    £ºwildfire team 
- * ÂÛÌ³    £ºhttp://www.amobbs.com/forum-1008-1.html
- * ÌÔ±¦    £ºhttp://firestm32.taobao.com
+ * ä½œè€…    ï¼šwildfire team 
+ * è®ºå›    ï¼šhttp://www.amobbs.com/forum-1008-1.html
+ * æ·˜å®    ï¼šhttp://firestm32.taobao.com
 **********************************************************************************/
 #include "stdio.h"
 #include "SPI_NRF.h"
 //usart1
 #include "./System/System_config.h"
 
-u8 status;	//ÓÃÓÚÅĞ¶Ï½ÓÊÕ/·¢ËÍ×´Ì¬
-u8 txbuf[4]={0,1,2,3};	 //·¢ËÍ»º³å
-u8 rxbuf[4];			 //½ÓÊÕ»º³å
+u8 status;	//ç”¨äºåˆ¤æ–­æ¥æ”¶/å‘é€çŠ¶æ€
+u8 txbuf[4]={0,1,2,3};	 //å‘é€ç¼“å†²
+u8 rxbuf[4];			 //æ¥æ”¶ç¼“å†²
 int i=0;
 uint8_t  nrf__test(void);
 int NRF_master_main(void)
@@ -25,63 +25,63 @@ int NRF_master_main(void)
    
 nrf__test();
 
-	printf("\r\n ÕâÊÇÒ»¸ö NRF24L01 ÎŞÏß´«ÊäÊµÑé \r\n");
-   	printf("\r\n ÕâÊÇÎŞÏß´«Êä Ö÷»ú¶Ë µÄ·´À¡ĞÅÏ¢\r\n");
-	printf("\r\n   ÕıÔÚ¼ì²âNRFÓëMCUÊÇ·ñÕı³£Á¬½Ó¡£¡£¡£\r\n");
+//	printf("\r\n è¿™æ˜¯ä¸€ä¸ª NRF24L01 æ— çº¿ä¼ è¾“å®éªŒ \r\n");
+//   	printf("\r\n è¿™æ˜¯æ— çº¿ä¼ è¾“ ä¸»æœºç«¯ çš„åé¦ˆä¿¡æ¯\r\n");
+//	printf("\r\n   æ­£åœ¨æ£€æµ‹NRFä¸MCUæ˜¯å¦æ­£å¸¸è¿æ¥ã€‚ã€‚ã€‚\r\n");
 
-	 /*¼ì²âNRFÄ£¿éÓëMCUµÄÁ¬½Ó*/
+	 /*æ£€æµ‹NRFæ¨¡å—ä¸MCUçš„è¿æ¥*/
    	status = NRF_Check(); 
 
-	/*ÅĞ¶ÏÁ¬½Ó×´Ì¬*/  
+	/*åˆ¤æ–­è¿æ¥çŠ¶æ€*/  
    if(status == SUCCESS)	   
-   		 printf("\r\n      NRFÓëMCUÁ¬½Ó³É¹¦£¡\r\n");  
+   		 printf("\r\n      NRFä¸MCUè¿æ¥æˆåŠŸï¼\r\n");  
    else	  
-   	     printf("\r\n  NRFÓëMCUÁ¬½ÓÊ§°Ü£¬ÇëÖØĞÂ¼ì²é½ÓÏß¡£\r\n");
+   	     printf("\r\n  NRFä¸MCUè¿æ¥å¤±è´¥ï¼Œè¯·é‡æ–°æ£€æŸ¥æ¥çº¿ã€‚\r\n");
 
 
  while(1)
 		{
-	   	printf("\r\n Ö÷»ú¶Ë ½øÈë×ÔÓ¦´ğ·¢ËÍÄ£Ê½\r\n");
+//	   	printf("\r\n ä¸»æœºç«¯ è¿›å…¥è‡ªåº”ç­”å‘é€æ¨¡å¼\r\n");
 	
 	 	NRF_TX_Mode();	
-			/*¿ªÊ¼·¢ËÍÊı¾İ*/	
+			/*å¼€å§‹å‘é€æ•°æ®*/	
 		status = NRF_Tx_Dat(txbuf);	  
 		  
-		  /*ÅĞ¶Ï·¢ËÍ×´Ì¬*/
+		  /*åˆ¤æ–­å‘é€çŠ¶æ€*/
 		  switch(status)
 		  	{
 		  	  case MAX_RT:
-			 	 	printf("\r\n Ö÷»ú¶Ë Ã»½ÓÊÕµ½Ó¦´ğĞÅºÅ£¬·¢ËÍ´ÎÊı³¬¹ıÏŞ¶¨Öµ£¬·¢ËÍÊ§°Ü¡£ \r\n");
+//			 	 	printf("\r\n ä¸»æœºç«¯ æ²¡æ¥æ”¶åˆ°åº”ç­”ä¿¡å·ï¼Œå‘é€æ¬¡æ•°è¶…è¿‡é™å®šå€¼ï¼Œå‘é€å¤±è´¥ã€‚ \r\n");
 				 break;
 	
 			  case ERROR:
-			  	 	printf("\r\n Î´ÖªÔ­Òòµ¼ÖÂ·¢ËÍÊ§°Ü %x\r\n",status);
+	//		  	 	printf("\r\n æœªçŸ¥åŸå› å¯¼è‡´å‘é€å¤±è´¥ %x\r\n",status);
 				 break;
 	
 			  case TX_DS:
-			  		printf("\r\n Ö÷»ú¶Ë ½ÓÊÕµ½ ´Ó»ú¶Ë µÄÓ¦´ğĞÅºÅ£¬·¢ËÍ³É¹¦£¡ \r\n");	 		
+//			  		printf("\r\n ä¸»æœºç«¯ æ¥æ”¶åˆ° ä»æœºç«¯ çš„åº”ç­”ä¿¡å·ï¼Œå‘é€æˆåŠŸï¼ \r\n");	 		
 				 break;  								
 		  	}			   	
 	
-	 	printf("\r\n Ö÷»ú¶Ë ½øÈë½ÓÊÕÄ£Ê½¡£ \r\n");	
+//	 	printf("\r\n ä¸»æœºç«¯ è¿›å…¥æ¥æ”¶æ¨¡å¼ã€‚ \r\n");	
 		NRF_RX_Mode();
 	 // nrf__test();
-			/*µÈ´ı½ÓÊÕÊı¾İ*/
+			/*ç­‰å¾…æ¥æ”¶æ•°æ®*/
 		status = NRF_Rx_Dat(rxbuf);
 	
-			/*ÅĞ¶Ï½ÓÊÕ×´Ì¬*/
+			/*åˆ¤æ–­æ¥æ”¶çŠ¶æ€*/
 			switch(status)
 			{
 			 case RX_DR:
 			 	for(i=0;i<4;i++)
 				{					
-					printf("\r\n Ö÷»ú¶Ë ½ÓÊÕµ½ ´Ó»ú¶Ë ·¢ËÍµÄÊı¾İÎª£º%d \r\n",rxbuf[i]);
+	//				printf("\r\n ä¸»æœºç«¯ æ¥æ”¶åˆ° ä»æœºç«¯ å‘é€çš„æ•°æ®ä¸ºï¼š%d \r\n",rxbuf[i]);
 					txbuf[i] =rxbuf[i];
 				}
 				  break;
 	
 			 case ERROR:
-				  	printf("\r\n Ö÷»ú¶Ë ½ÓÊÕ³ö´í¡£status%x   \r\n",status);
+//				  	printf("\r\n ä¸»æœºç«¯ æ¥æ”¶å‡ºé”™ã€‚status%x   \r\n",status);
 				  break;  		
 			}
 		} 
@@ -92,43 +92,45 @@ nrf__test();
 int NRF_device_main(void)
 {      
 
-/*SPI½Ó¿Ú³õÊ¼»¯*/   
+/*SPIæ¥å£åˆå§‹åŒ–*/   
    SPI_NRF_Init(); 
 
-	printf("\r\n ÕâÊÇÒ»¸ö NRF24L01 ÎŞÏß´«ÊäÊµÑé \r\n");
-   	printf("\r\n ÕâÊÇÎŞÏß´«Êä ´Ó»ú¶Ë µÄ·´À¡ĞÅÏ¢\r\n");
-	printf("\r\n   ÕıÔÚ¼ì²âNRFÓëMCUÊÇ·ñÕı³£Á¬½Ó¡£¡£¡£\r\n");
+	//printf("\r\n è¿™æ˜¯ä¸€ä¸ª NRF24L01 æ— çº¿ä¼ è¾“å®éªŒ \r\n");
+  // 	printf("\r\n è¿™æ˜¯æ— çº¿ä¼ è¾“ ä»æœºç«¯ çš„åé¦ˆä¿¡æ¯\r\n");
+	//printf("\r\n   æ­£åœ¨æ£€æµ‹NRFä¸MCUæ˜¯å¦æ­£å¸¸è¿æ¥ã€‚ã€‚ã€‚\r\n");
 	 
-	 /*¼ì²âNRFÄ£¿éÓëMCUµÄÁ¬½Ó*/
+	 /*æ£€æµ‹NRFæ¨¡å—ä¸MCUçš„è¿æ¥*/
    	status = NRF_Check();   		
-	   if(status == SUCCESS)	   
-	   		 printf("\r\n      NRFÓëMCUÁ¬½Ó³É¹¦\r\n");  
-	   else	  
-	   	     printf("\r\n   ÕıÔÚ¼ì²âNRFÓëMCUÊÇ·ñÕı³£Á¬½Ó¡£¡£¡£\r\n");
+		 if(status == SUCCESS)
+        printf("\r\n       nrf2401 connect ok !	\r\n");
+		 	   //		 printf("\r\n      NRFä¸MCUè¿æ¥æˆåŠŸ\r\n");  
+    else
+        printf("\r\n       nrf2401 connect erro ! \r\n"); 
+	   //	     printf("\r\n   æ­£åœ¨æ£€æµ‹NRFä¸MCUæ˜¯å¦æ­£å¸¸è¿æ¥ã€‚ã€‚ã€‚\r\n");
 			  
 while(1)
 	{  		 	
- 	printf("\r\n ´Ó»ú¶Ë ½øÈë½ÓÊÕÄ£Ê½\r\n"); 
+ 	//printf("\r\n ä»æœºç«¯ è¿›å…¥æ¥æ”¶æ¨¡å¼\r\n"); 
 	NRF_RX_Mode();
 	 
-	/*µÈ´ı½ÓÊÕÊı¾İ*/
+	/*ç­‰å¾…æ¥æ”¶æ•°æ®*/
 	status = NRF_Rx_Dat(rxbuf);
 
-	   /*ÅĞ¶Ï½ÓÊÕ×´Ì¬*/
+	   /*åˆ¤æ–­æ¥æ”¶çŠ¶æ€*/
 	if(status == RX_DR)
 	{
 	 for(i=0;i<4;i++)
 	 {	
-	 	printf("\r\n ´Ó»ú¶Ë ½ÓÊÕµ½ Ö÷»ú¶Ë ·¢ËÍµÄÊı¾İÎª£º%d \r\n",rxbuf[i]); 
-	 	/*°Ñ½ÓÊÕµÄÊı¾İ+1ºó·¢ËÍ¸øÖ÷»ú*/
+	 //	printf("\r\n ä»æœºç«¯ æ¥æ”¶åˆ° ä¸»æœºç«¯ å‘é€çš„æ•°æ®ä¸ºï¼š%d \r\n",rxbuf[i]); 
+	 	/*æŠŠæ¥æ”¶çš„æ•°æ®+1åå‘é€ç»™ä¸»æœº*/
 	 	rxbuf[i]+=1;	  
 		txbuf[i] = rxbuf[i]; 
 		}
 	}   
-		printf("\r\n ´Ó»ú¶Ë ½øÈëÓ¦´ğ·¢ËÍÄ£Ê½\r\n"); 
+		//printf("\r\n ä»æœºç«¯ è¿›å…¥åº”ç­”å‘é€æ¨¡å¼\r\n"); 
 	  	NRF_TX_Mode();
 
-		/*²»¶ÏÖØ·¢£¬Ö±ÖÁ·¢ËÍ³É¹¦*/	  
+		/*ä¸æ–­é‡å‘ï¼Œç›´è‡³å‘é€æˆåŠŸ*/	  
 	 do
 	   { 
 				if(!i++)
@@ -145,16 +147,16 @@ while(1)
 void nrf_recv(){
 	NRF_RX_Mode();
 	 
-	/*µÈ´ı½ÓÊÕÊı¾İ*/
+	/*ç­‰å¾…æ¥æ”¶æ•°æ®*/
 	status = NRF_Rx_Dat(rxbuf);
 
-	   /*ÅĞ¶Ï½ÓÊÕ×´Ì¬*/
+	   /*åˆ¤æ–­æ¥æ”¶çŠ¶æ€*/
 	if(status == RX_DR)
 	{
 	 for(i=0;i<4;i++)
 	 {	
-	 	printf("\r\n ´Ó»ú¶Ë ½ÓÊÕµ½ Ö÷»ú¶Ë ·¢ËÍµÄÊı¾İÎª£º%d \r\n",rxbuf[i]); 
-	 	/*°Ñ½ÓÊÕµÄÊı¾İ+1ºó·¢ËÍ¸øÖ÷»ú*/
+	 	//printf("\r\n ä»æœºç«¯ æ¥æ”¶åˆ° ä¸»æœºç«¯ å‘é€çš„æ•°æ®ä¸ºï¼š%d \r\n",rxbuf[i]); 
+	 	/*æŠŠæ¥æ”¶çš„æ•°æ®+1åå‘é€ç»™ä¸»æœº*/
 	 	rxbuf[i]+=1;	  
 		txbuf[i] = rxbuf[i]; 
 		}
@@ -162,10 +164,10 @@ void nrf_recv(){
 }
 void nrf_send(){
 
-	printf("\r\n ´Ó»ú¶Ë ½øÈë×ÔÓ¦´ğ·¢ËÍÄ£Ê½\r\n"); 
+	//printf("\r\n ä»æœºç«¯ è¿›å…¥è‡ªåº”ç­”å‘é€æ¨¡å¼\r\n"); 
 	  	NRF_TX_Mode();
 
-		/*²»¶ÏÖØ·¢£¬Ö±ÖÁ·¢ËÍ³É¹¦*/	  
+		/*ä¸æ–­é‡å‘ï¼Œç›´è‡³å‘é€æˆåŠŸ*/	  
 	 do
 	   { 	  
 		status = NRF_Tx_Dat(txbuf);

@@ -1,25 +1,25 @@
 #include <stdint.h>
 #include "stdio.h"
 #include "./nrf24l01p/hal_nrf.h"
-//¹¤×÷Ä£Ê½µÄÅäÖÃ
+//å·¥ä½œæ¨¡å¼çš„é…ç½®
 //Mode		 PWR_UP			 PRIM_RX(1) 		CE
-//·¢ËÍÄ£Ê½ 		 1 			0 				1
-//·¢ËÍÄ£Ê½ 		 1 			0 				¡İ10Î¢ÃëµÄ¸ßµçÆ½
-//½ÓÊÕÄ£Ê½ 		 1 			1 				1
+//å‘é€æ¨¡å¼ 		 1 			0 				1
+//å‘é€æ¨¡å¼ 		 1 			0 				â‰¥10å¾®ç§’çš„é«˜ç”µå¹³
+//æ¥æ”¶æ¨¡å¼ 		 1 			1 				1
 
-//´ı»úÄ£Ê½¢ò	 1 			0 				1
-//´ı»úÄ£Ê½¢ñ	 1			- 				0
-//µôµçÄ£Ê½		 0 			- 				-
-//ÔöÇ¿ĞÍ ShockBurst Ä£Ê½µÄÊı¾İÖ¡¸ñÊ½
-//Ö¡Í·| µØÖ· |¿ØÖÆÓò| Êı¾İ| CRC
-//µØÖ·³¤¶ÈÎª3-5¸ö×Ö½Ú£¬ÆäÄÚÈİÎª½ÓÊÕ»úµÄµØÖ·
+//å¾…æœºæ¨¡å¼â…¡	 1 			0 				1
+//å¾…æœºæ¨¡å¼â… 	 1			- 				0
+//æ‰ç”µæ¨¡å¼		 0 			- 				-
+//å¢å¼ºå‹ ShockBurst æ¨¡å¼çš„æ•°æ®å¸§æ ¼å¼
+//å¸§å¤´| åœ°å€ |æ§åˆ¶åŸŸ| æ•°æ®| CRC
+//åœ°å€é•¿åº¦ä¸º3-5ä¸ªå­—èŠ‚ï¼Œå…¶å†…å®¹ä¸ºæ¥æ”¶æœºçš„åœ°å€
 
 // Global variables
 uint8_t payload[RX_PLOAD_WIDTH];
-uint8_t NRF__RX_BUF[RX_PLOAD_WIDTH] = {0,0,0,0};		//½ÓÊÕÊı¾İ»º´æ
-uint8_t NRF__TX_BUF[TX_PLOAD_WIDTH] = {0,0x65,2,3};		//·¢ÉäÊı¾İ»º´æ
+uint8_t NRF__RX_BUF[RX_PLOAD_WIDTH] = {0,0,0,0};		//æ¥æ”¶æ•°æ®ç¼“å­˜
+uint8_t NRF__TX_BUF[TX_PLOAD_WIDTH] = {0,0x65,2,3};		//å‘å°„æ•°æ®ç¼“å­˜
 //moren
-uint8_t NRF_MASTER_ADDRESS[TX_ADR_WIDTH] = {0x34,0x43,0x10,0x10,0x01};	// ¶¨ÒåÒ»¸ö¾²Ì¬·¢ËÍµØÖ·
+uint8_t NRF_MASTER_ADDRESS[TX_ADR_WIDTH] = {0x34,0x43,0x10,0x10,0x01};	// å®šä¹‰ä¸€ä¸ªé™æ€å‘é€åœ°å€
 uint8_t NRF_DEVICE_ADDRESS[RX_ADR_WIDTH] = {0x34,0x43,0x10,0x10,0x01};
 
 uint8_t radio_busy =0;
@@ -70,63 +70,63 @@ static uint8_t nrf_check(void)
     hal_nrf_get_address(HAL_NRF_PIPE4,buf1);
     hal_nrf_get_address(HAL_NRF_PIPE5,buf1);
 
-    /*Ğ´Èë5¸ö×Ö½ÚµÄµØÖ·.	*/
+    /*å†™å…¥5ä¸ªå­—èŠ‚çš„åœ°å€.	*/
     //SPI_NRF_WriteBuf(NRF_WRITE_REG+TX_ADDR,buf,5);
     hal_nrf_set_address(HAL_NRF_TX,buf);
-    /*¶Á³öĞ´ÈëµÄµØÖ· */
+    /*è¯»å‡ºå†™å…¥çš„åœ°å€ */
     //SPI_NRF_ReadBuf(TX_ADDR,buf1,5);
     hal_nrf_get_address(HAL_NRF_TX,buf1);
-    /*±È½Ï*/
+    /*æ¯”è¾ƒ*/
     for(i=0; i<5; i++) {
         if(buf1[i]!=buf[i])
             break;
     }
 
     if(i==5)
-        return SUCCESS ;				//MCUÓëNRF³É¹¦Á¬½Ó
+        return SUCCESS ;				//MCUä¸NRFæˆåŠŸè¿æ¥
     else
-        return ERROR ;				//MCUÓëNRF²»Õı³£Á¬½Ó
+        return ERROR ;				//MCUä¸NRFä¸æ­£å¸¸è¿æ¥
 }
 
 static void nrf_config()
 {
-    //²ÎÊıÅäÖÃ±ØĞëÔÚPOWER DOWN Ä£Ê½ÏÂ
-    //½øÈë¿ÕÏĞÄ£Ê½
+    //å‚æ•°é…ç½®å¿…é¡»åœ¨POWER DOWN æ¨¡å¼ä¸‹
+    //è¿›å…¥ç©ºé—²æ¨¡å¼
     CE_LOW();
-    //ÏµÍ³ÉèÖÃ
-    //RF_SETUPÉèÖÃ´«Êä¹¦ÂÊ,Ä¬ÈÏ0db
+    //ç³»ç»Ÿè®¾ç½®
+    //RF_SETUPè®¾ç½®ä¼ è¾“åŠŸç‡,é»˜è®¤0db
     hal_nrf_set_output_power(HAL_NRF_0DBM);
-    //RF_SETUPÉèÖÃ´«ÊäËÙÂÊ,Ä¬ÈÏ2Mbps
+    //RF_SETUPè®¾ç½®ä¼ è¾“é€Ÿç‡,é»˜è®¤2Mbps
     hal_nrf_set_datarate(HAL_NRF_2MBPS);
 
-    //RF_CHÉèÖÃ´«ÊäÍ¨µÀ Ä¬ÈÏ:2
+    //RF_CHè®¾ç½®ä¼ è¾“é€šé“ é»˜è®¤:2
     hal_nrf_set_rf_channel(40);
-    //CONFIGÉèÖÃÖĞ¶ÏIRQ
-    hal_nrf_set_irq_mode(HAL_NRF_MASK_MAX_RT,false);
-    hal_nrf_set_irq_mode(HAL_NRF_MASK_TX_DS,false);
+    //CONFIGè®¾ç½®ä¸­æ–­IRQ
+    hal_nrf_set_irq_mode(HAL_NRF_MASK_MAX_RT,true);
+    hal_nrf_set_irq_mode(HAL_NRF_MASK_TX_DS,true);
     hal_nrf_set_irq_mode(HAL_NRF_MASK_RX_DR,true);
     hal_nrf_set_operation_mode(HAL_NRF_PRX);
 
     hal_nrf_flush_rx();
     hal_nrf_flush_tx();
-    //SETUP_AWÉèÖÃµØÖ·¿í¶È£¬Ä¬ÈÏ5
+    //SETUP_AWè®¾ç½®åœ°å€å®½åº¦ï¼Œé»˜è®¤5
     //hal_nrf_set_address_width(HAL_NRF_AW_5BYTES);
-    //RX_PW_P0ÉèÖÃ½ÓÊÕÊı¾İ¿í¶È,Ä¬ÈÏ0 nouse
+    //RX_PW_P0è®¾ç½®æ¥æ”¶æ•°æ®å®½åº¦,é»˜è®¤0 nouse
     hal_nrf_set_rx_payload_width(HAL_NRF_PIPE0,RX_PLOAD_WIDTH);
-    //RX_ADDR_P0ÉèÖÃ·¢ËÍ½ÚµãµØÖ·,Ä¬ÈÏ0xE7E7E7E7E7
+    //RX_ADDR_P0è®¾ç½®å‘é€èŠ‚ç‚¹åœ°å€,é»˜è®¤0xE7E7E7E7E7
     hal_nrf_set_address(HAL_NRF_TX,NRF_MASTER_ADDRESS);
-    //RX_ADDR_P0ÉèÖÃ½ÓÊÕ½Úµã0µØÖ·,Ä¬ÈÏ0xE7E7E7E7E7
+    //RX_ADDR_P0è®¾ç½®æ¥æ”¶èŠ‚ç‚¹0åœ°å€,é»˜è®¤0xE7E7E7E7E7
     hal_nrf_set_address(HAL_NRF_PIPE0,NRF_MASTER_ADDRESS);
-    //RX_ADDR_P0ÉèÖÃ½ÓÊÕ½Úµã1µØÖ·,Ä¬ÈÏ0xC2C2C2C2C2
+    //RX_ADDR_P0è®¾ç½®æ¥æ”¶èŠ‚ç‚¹1åœ°å€,é»˜è®¤0xC2C2C2C2C2
     //hal_nrf_set_address(HAL_NRF_PIPE1,NRF_DEVICE_ADDRESS);
 
-    //SETUP_RETRÉèÖÃÖØ·¢´ÎÊı,ÖØ·¢¼ä¸ô,Ä¬ÈÏ3´Î,250us
+    //SETUP_RETRè®¾ç½®é‡å‘æ¬¡æ•°,é‡å‘é—´éš”,é»˜è®¤3æ¬¡,250us
     hal_nrf_set_auto_retr(10,500);
-    //EN_AA,EN_RXADDR¿ªÆôÍ¨µÀ0µÄ×Ô¶¯Ó¦´ğ,¿ªÆôÊ±Ç¿ÖÆ´ò¿ªCRCĞ£Ñé,Ä¬ÈÏ¿ªÆô
+    //EN_AA,EN_RXADDRå¼€å¯é€šé“0çš„è‡ªåŠ¨åº”ç­”,å¼€å¯æ—¶å¼ºåˆ¶æ‰“å¼€CRCæ ¡éªŒ,é»˜è®¤å¼€å¯
     hal_nrf_open_pipe(HAL_NRF_PIPE0,EN_AA);
-    //CONFIG´ò¿ªCRC16Ğ£Ñé,Ä¬ÈÏ8Î»
+    //CONFIGæ‰“å¼€CRC16æ ¡éªŒ,é»˜è®¤8ä½
     hal_nrf_set_crc_mode(HAL_NRF_CRC_16BIT);
-    //CONFIGÄ¬ÈÏPOWER DOWN
+    //CONFIGé»˜è®¤POWER DOWN
     hal_nrf_set_power_mode(HAL_NRF_PWR_UP);
 
     //CE_HIGH();
@@ -136,9 +136,9 @@ void nrf_rx_mode()
 {
     CE_LOW();
     //hal_nrf_flush_rx();
-    hal_nrf_set_irq_mode(HAL_NRF_MASK_MAX_RT,false);
-    hal_nrf_set_irq_mode(HAL_NRF_MASK_TX_DS,false);
-    hal_nrf_set_irq_mode(HAL_NRF_MASK_RX_DR,true);
+    //hal_nrf_set_irq_mode(HAL_NRF_MASK_MAX_RT,false);
+    //hal_nrf_set_irq_mode(HAL_NRF_MASK_TX_DS,false);
+    //hal_nrf_set_irq_mode(HAL_NRF_MASK_RX_DR,true);
     hal_nrf_set_operation_mode(HAL_NRF_PRX);
     CE_HIGH();
 
@@ -148,21 +148,22 @@ uint8_t nrf_tx_dat(const uint8_t * txdat)
 {
     uint32_t nrf_time;
     radio_busy = 0;
-
+	//æµ‹è¯•æ—¶å¿…é¡»è¦åŠ ï¼Œå¦åˆ™å‘é€å¤±è´¥
+		Delay_us(100);
+	
   	CE_LOW();
-    hal_nrf_set_irq_mode(HAL_NRF_MASK_MAX_RT,true);
-    hal_nrf_set_irq_mode(HAL_NRF_MASK_TX_DS,true);
-    hal_nrf_set_irq_mode(HAL_NRF_MASK_RX_DR,false);
+    //hal_nrf_set_irq_mode(HAL_NRF_MASK_MAX_RT,true);
+    //hal_nrf_set_irq_mode(HAL_NRF_MASK_TX_DS,true);
+    //hal_nrf_set_irq_mode(HAL_NRF_MASK_RX_DR,false);
     hal_nrf_set_operation_mode(HAL_NRF_PTX);
     hal_nrf_write_tx_payload(txdat,TX_PLOAD_WIDTH);
 
     CE_HIGH();
-    //NRF__TX_BUF[0]++;
     //Delay_us(15);
     //CE_PULSE();
 
     nrf_time = TIM4_GetCurrentTime();
-    //2.µÈ´ı·¢ËÍÍê³É
+    //2.ç­‰å¾…å‘é€å®Œæˆ
 #ifdef NVIC_SPI2_IRQ
     while(!radio_busy){
 		        if(TIM4_GetDistanceTime(nrf_time)>10) {
@@ -187,16 +188,16 @@ uint8_t nrf_tx_dat(const uint8_t * txdat)
         hal_nrf_flush_tx();
     }
 
-			//3.ÇĞ»»µ½½ÓÊÕÄ£Ê½
+			//3.åˆ‡æ¢åˆ°æ¥æ”¶æ¨¡å¼
 			nrf_rx_mode();				
     return radio_busy;
 }
-//Ö÷»ú¶Ë
+//ä¸»æœºç«¯
 /**
-	1.Éè±¸1½ÓÊÕÄ£Ê½ --ĞÅµÀ64
+	1.è®¾å¤‡1æ¥æ”¶æ¨¡å¼ --ä¿¡é“64
 	2.
 */
-uint8_t nrf_master()
+void nrf_master()
 {
 	 uint8_t i;	
 	printf(" master mode \n");
@@ -205,19 +206,18 @@ uint8_t nrf_master()
     while(1) {
         //
         //Delay_ms(100);
-        //2.ÊÕµ½Êı¾İ
-				//·¢ËÍÊ§°Ü|ÊÕµ½Êı¾İ ÖØ·¢ 
+        //2.æ”¶åˆ°æ•°æ®
+				//å‘é€å¤±è´¥|æ”¶åˆ°æ•°æ® é‡å‘ 
         if(radio_busy & RX_DR) {
             radio_busy = 0;	
-
+					nrf_tx_dat(NRF__RX_BUF);
 					//printf("\r\n master recv dat :");
 					for(i=0;i<4;i++)
             {
                 printf(" %d",NRF__RX_BUF[i]);
             }
-					//´Ë´¦±ØĞë¼ÓÑÓ³Ù ·ñÔò³ö´í£¿£¿£¿
-					nrf_tx_dat(NRF__RX_BUF);
-            //printf("\r\n Ö÷»ú¶Ë ½ÓÊÕµ½ ´Ó»ú¶Ë ·¢ËÍµÄÊı¾İÎª");
+
+            //printf("\r\n ä¸»æœºç«¯ æ¥æ”¶åˆ° ä»æœºç«¯ å‘é€çš„æ•°æ®ä¸º");
 
         }
 
@@ -234,7 +234,7 @@ void nrf_device()
     //nrf_rx_mode();
     while(1) {
 			
-			        //2.ÊÕµ½Êı¾İ
+			        //2.æ”¶åˆ°æ•°æ®
         if(radio_busy & RX_DR) {
             radio_busy = 0;
 					
@@ -245,14 +245,14 @@ void nrf_device()
 
         }
 
-        //ÔØ²¨¼ì²â,½ÓÊÕÄ£Ê½ÏÂÓĞĞ§
+        //è½½æ³¢æ£€æµ‹,æ¥æ”¶æ¨¡å¼ä¸‹æœ‰æ•ˆ
        // if(hal_nrf_get_carrier_detect()) {
            // cdn++;
-            //printf("¼ì²âµ½ÔØ²¨ĞÅºÅ %x\n",cdn);
+            //printf("æ£€æµ‹åˆ°è½½æ³¢ä¿¡å· %x\n",cdn);
         //}
         if(TIM4_GetDistanceTime(nrf_time)>1000) {
             nrf_time = TIM4_GetCurrentTime();
-            //printf("\r\n Ö÷»ú¶Ë ½øÈë·¢ËÍÄ£Ê½\r\n");
+            //printf("\r\n ä¸»æœºç«¯ è¿›å…¥å‘é€æ¨¡å¼\r\n");
             status = nrf_tx_dat(NRF__TX_BUF);
             switch(status) {
             case (1<<HAL_NRF_MAX_RT):
@@ -262,7 +262,7 @@ void nrf_device()
                 printf("\r\n device Send OK !%x \r\n",status);
                 break;
             }
-						//printf("\r\n Ö÷»ú¶Ë ½øÈë·¢ËÍÄ£Ê½ %x\r\n",status);
+						//printf("\r\n ä¸»æœºç«¯ è¿›å…¥å‘é€æ¨¡å¼ %x\r\n",status);
         }
 
 
@@ -275,18 +275,18 @@ void nrf_main()
 
     uint8_t status=0;
 //    uint8_t i;
-
+		//nrfchip_spi2();
     //nrf_EXIT_Config();
-    /*¼ì²âNRFÄ£¿éÓëMCUµÄÁ¬½Ó*/
+    /*æ£€æµ‹NRFæ¨¡å—ä¸MCUçš„è¿æ¥*/
     while(!status) {
         status =nrf_check();
     }
     //
-    /*ÅĞ¶ÏÁ¬½Ó×´Ì¬*/
+    /*åˆ¤æ–­è¿æ¥çŠ¶æ€*/
     if(status == SUCCESS)
-        printf("\r\n			NRFÓëMCUÁ¬½Ó³É¹¦£¡\r\n");
+        printf("\r\n       nrf2401 connect ok !	\r\n");
     else
-        printf("\r\n	NRFÓëMCUÁ¬½ÓÊ§°Ü£¬ÇëÖØĞÂ¼ì²é½ÓÏß¡£\r\n");
+        printf("\r\n       nrf2401 connect erro ! \r\n");
     //nrf_test();
     nrf_config();
     //nrf_test();
@@ -328,12 +328,12 @@ void NRF_ISR()
     case (1 << (uint8_t)HAL_NRF_RX_DR):
         // Read payload
         while(!hal_nrf_rx_fifo_empty()) {
-            //·µ»Øreg<<8+lenth
+            //è¿”å›reg<<8+lenth
             hal_nrf_read_rx_payload(NRF__RX_BUF);
         }
-        //²»ÒªÍË³ö½ÓÊÕÄ£Ê½
+        //ä¸è¦é€€å‡ºæ¥æ”¶æ¨¡å¼
         CE_HIGH();
-				//Êı¾İ½ÓÊÕÍêÔÙ½«±êÖ¾Î»ÖÃÎ»
+				//æ•°æ®æ¥æ”¶å®Œå†å°†æ ‡å¿—ä½ç½®ä½
         radio_busy = RX_DR;
         break;
     default:

@@ -19,7 +19,7 @@
 // SPI2 PB 12 13 14 15
 #define SPI2_SCS_PORT				GPIOB
 #define SPI2_SCS_PIN				GPIO_Pin_12
-#define SPI2_SCS_MODE				GPIO_Mode_Out_PP	//´Ë´¦Ò»¶¨ÒªPPÊä³ö·ñÔò³ÌĞò²»Õı³£
+#define SPI2_SCS_MODE				GPIO_Mode_Out_PP	//æ­¤å¤„ä¸€å®šè¦PPè¾“å‡ºå¦åˆ™ç¨‹åºä¸æ­£å¸¸
 
 #define SPI2_SCLK_PORT			GPIOB
 #define SPI2_SCLK_PIN				GPIO_Pin_13
@@ -45,8 +45,14 @@
 #define	SPI2_READ_IRQ()   	GPIO_ReadInputDataBit(SPI2_IRQ_PORT, SPI2_IRQ_PIN)
 
 void SPI2_Init(void);
+//å¤–éƒ¨æ¥å£å‡½æ•°
 uint8_t SPI2_SendByte(uint8_t byte);
 uint8_t SPI2_ReceiveByte(void);
+void SPI2_SetNSS(void);
+void SPI2_ResetNSS(void);
+void SPI2_SetRST(void);
+void SPI2_ResetRST(void);
+uint8_t SPI2_readIRQ(void);
 
 #endif
 

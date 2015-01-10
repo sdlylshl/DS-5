@@ -35,30 +35,56 @@
 
 #define CHANAL 40
 
+typedef struct __nrfchip {
+	uint8_t radio_busy;
+	uint8_t id[6];
+	uint8_t tx_addr[5];
+	uint8_t rx_addr[5];
+	uint8_t rx_buffer[256];
 
-/** Macro that set radio's CSN line LOW.
- *
- */
-#define CSN_LOW()		do { SPI2_SCS_LOW(); } while(false)
+	struct _IRQ {
+		uint8_t (*_readirq)(void);
+	} IRQ;
+	struct _CE {
+		void (*_low)(void);
+		void (*_high)(void);
+	} CE;
+	struct _CS {
+		void (*_low)(void);
+		void (*_high)(void);
+	} CS;
 
-/** Macro that set radio's CSN line HIGH.
- *
- */
-#define CSN_HIGH()	do { SPI2_SCS_HIGH(); } while(false)
+	union _IF {
 
-/** Macro that set radio's CE line LOW.
- *
- */
-#define CE_LOW()		do { SPI2_RST_LOW(); } while(false)
+		struct {
+			uint8_t (*_read_byte)(void);
+			uint8_t (*_write_byte)(uint8_t wb);
+		} SPI;
+	} IF;
+} _nrfchip_t;
 
-/** Macro that set radio's CE line HIGH.
- *
- */
-#define CE_HIGH()		do { SPI2_RST_HIGH(); } while(false)
 
-#define hal_nrf_rw 	SPI2_SendByte
+typedef void (*vFUNv)(void);
+typedef uint8_t (*uFUNu)(uint8_t);
+typedef uint8_t (*uFUNv)(void);
+extern vFUNv CSN_LOW,CSN_HIGH,CE_LOW,CE_HIGH;
+extern uFUNv NRF_Read_IRQ;
+extern uFUNu hal_nrf_rw;
 
-#define NRF_Read_IRQ() SPI2_READ_IRQ() 
+//extern void (*CSN_LOW)(void);
+//extern void (*CSN_HIGH)(void);
+//extern void (*CE_LOW)(void);
+//extern void (*CE_HIGH)(void);
+//extern uint8_t (*hal_nrf_rw)(uint8_t);
+//extern uint8_t (*NRF_Read_IRQ)(void);
+
+//#define CSN_LOW()		do { SPI2_SCS_LOW(); } while(false)
+//#define CSN_HIGH()	do { SPI2_SCS_HIGH(); } while(false)
+//#define CE_LOW()		do { SPI2_RST_LOW(); } while(false)
+//#define CE_HIGH()		do { SPI2_RST_HIGH(); } while(false)
+//#define NRF_Read_IRQ() SPI2_READ_IRQ()
+//#define hal_nrf_rw 	SPI2_SendByte
+
 /**
  * Pulses the CE to nRF24L01 for at least 10 us
  */
@@ -71,5 +97,8 @@
   } while(false)
 
 #endif // HAL_NRF_LU1_H__
-
+void nrfchip_spi1(void);
+void nrfchip_spi2(void);
+void nrfchip_choice(_nrfchip_t nrf);	
+	
 /** @} */

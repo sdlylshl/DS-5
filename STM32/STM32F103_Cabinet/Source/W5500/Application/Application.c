@@ -95,16 +95,18 @@ wiz_NetTimeout gWIZNETTIMEOUT = { 3, //< retry count
 
 //外部接口函数
 void wizchip_spi_init(void) {
-	SPI1_Config();
+	SPI1_Init();
 }
 void wizchip_select(void) {
 	//WIZ_SCS(0);		//低电平有效
-	SPI1_select();
+	//SPI1_select();
+	SPI1_ResetNSS();
 }
 
 void wizchip_deselect(void) {
 	//WIZ_SCS(1);
-	SPI1_deselect();
+	//SPI1_deselect();
+	SPI1_SetNSS();
 }
 
 void wizchip_write_byte(uint8_t wb) {

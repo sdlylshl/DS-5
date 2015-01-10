@@ -45,7 +45,7 @@ static void SPI1_GPIO_Config(void) {
 	GPIO_Init(SPI1_MOSI_PORT, &GPIO_InitStructure);
 }
 
-void SPI1_Config(void) {
+void SPI1_Init(void) {
 	SPI_InitTypeDef SPI_InitStructure;
 
 	SPI1_GPIO_Config();
@@ -71,6 +71,8 @@ void SPI1_Config(void) {
 	while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET)
 		;
 }
+
+//外部接口函数
 
 uint8_t SPI1_SendByte(uint8_t byte) {
 	uint8_t i = 0;
@@ -103,10 +105,20 @@ uint8_t SPI1_ReceiveByte(void) {
 
 	return SPI_I2S_ReceiveData(SPI1);
 }
-void SPI1_select(void) {
-	SPI1_SCS(0);
-	//低电平有效
+
+void SPI1_ResetNSS(void) {
+	SPI1_SCS_LOW();
 }
-void SPI1_deselect(void) {
-	SPI1_SCS(1);
+void SPI1_SetNSS(void) {
+	SPI1_SCS_HIGH();
+}
+
+void SPI1_ResetRST(void) {
+	SPI1_RST_LOW();
+}
+void SPI1_SetRST(void) {
+	SPI1_RST_HIGH();
+}
+uint8_t SPI1_readIRQ(void){
+	return SPI1_READ_IRQ();
 }
