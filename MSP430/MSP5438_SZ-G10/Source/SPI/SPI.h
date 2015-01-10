@@ -1,56 +1,56 @@
 
 /******************************************************************************
-*Ãû    ³Æ£ºSPI()
+*å    ç§°ï¼šSPI()
 
-*¹¦    ÄÜ£º1.½âÎö´¦ÀíARM´«À´µÄÊı¾İ
-		   2.×¼±¸»ØÓ¦¸øARMµÄÊı¾İ
+*åŠŸ    èƒ½ï¼š1.è§£æå¤„ç†ARMä¼ æ¥çš„æ•°æ®
+		   2.å‡†å¤‡å›åº”ç»™ARMçš„æ•°æ®
 
-*Èë¿Ú²ÎÊı£ºÎŞ
+*å…¥å£å‚æ•°ï¼šæ— 
 
-*³ö¿Ú²ÎÊı£ºÎŞ
+*å‡ºå£å‚æ•°ï¼šæ— 
 
-*Ëµ    Ã÷£ºÎŞ
+*è¯´    æ˜ï¼šæ— 
 
-*ĞŞ¸ÄÀúÊ·:ÎŞ
+*ä¿®æ”¹å†å²:æ— 
 ******************************************************************************/
 
 void SPI(void)
 {
-	if(flag_do)//½ÓÊÕÍêÖ÷»ú·¢À´µÄÒ»×éÊı¾İ    
+	if(flag_do)//æ¥æ”¶å®Œä¸»æœºå‘æ¥çš„ä¸€ç»„æ•°æ®    
 	{ 
-		flag_do=0;//Çå¿Õ±êÖ¾£¬ÎªÏÂÒ»´Î×ö×¼±¸
-		lenth_crc=(SPIB2_DATA[4]<<8)+SPIB2_DATA[5]+8;//Õû¸öÊı¾İµÄ³¤¶È£¨±¨Í·+Êı¾İÀàĞÍ+Êı¾İ³¤¶È+Êı¾İÄÚÈİ+CRC£©
-		contents=(SPIB2_DATA[2]<<8)+SPIB2_DATA[3];//¶ÔÊÕµ½µÄÊı¾İ½øĞĞÄÚÈİÅĞ¶Ï£¬È·¶¨ÊÇÄÄ×éÊı¾İ
-		if((SPIB2_DATA[lenth_crc]==0x0d)&&(SPIB2_DATA[lenth_crc+1]==0x0a))//×îºóÁ½Î»Èç¹ûÊÇÍ£Ö¹·û
+		flag_do=0;//æ¸…ç©ºæ ‡å¿—ï¼Œä¸ºä¸‹ä¸€æ¬¡åšå‡†å¤‡
+		lenth_crc=(SPIB2_DATA[4]<<8)+SPIB2_DATA[5]+8;//æ•´ä¸ªæ•°æ®çš„é•¿åº¦ï¼ˆæŠ¥å¤´+æ•°æ®ç±»å‹+æ•°æ®é•¿åº¦+æ•°æ®å†…å®¹+CRCï¼‰
+		contents=(SPIB2_DATA[2]<<8)+SPIB2_DATA[3];//å¯¹æ”¶åˆ°çš„æ•°æ®è¿›è¡Œå†…å®¹åˆ¤æ–­ï¼Œç¡®å®šæ˜¯å“ªç»„æ•°æ®
+		if((SPIB2_DATA[lenth_crc]==0x0d)&&(SPIB2_DATA[lenth_crc+1]==0x0a))//æœ€åä¸¤ä½å¦‚æœæ˜¯åœæ­¢ç¬¦
 		{    
-			if(!crc_modbus2(SPIB2_DATA,lenth_crc)) //Èç¹ûCRCĞ£ÑéÕıÈ·
+			if(!crc_modbus2(SPIB2_DATA,lenth_crc)) //å¦‚æœCRCæ ¡éªŒæ­£ç¡®
 			{
 				switch(contents)  
 				{
-					case SPI_WOSHOU://½ÓÊÕÎÕÊÖĞÅºÅÕıÈ·
+					case SPI_WOSHOU://æ¥æ”¶æ¡æ‰‹ä¿¡å·æ­£ç¡®
 					{
-						TX_Data_crc_Length=(SPI_T_WOSHOU_OK[4]<<8)+SPI_T_WOSHOU_OK[5]+6;//430·¢ËÍÊı¾İĞèÒªĞ£ÑéµÄ³¤¶È
-						TX_Data_CRC=crc_modbus2(SPI_T_WOSHOU_OK,TX_Data_crc_Length);//CRCĞ£ÑéÊı¾İ
+						TX_Data_crc_Length=(SPI_T_WOSHOU_OK[4]<<8)+SPI_T_WOSHOU_OK[5]+6;//430å‘é€æ•°æ®éœ€è¦æ ¡éªŒçš„é•¿åº¦
+						TX_Data_CRC=crc_modbus2(SPI_T_WOSHOU_OK,TX_Data_crc_Length);//CRCæ ¡éªŒæ•°æ®
 						TX_Data_CRCH=(char)(TX_Data_CRC>>8);
 						TX_Data_CRCL=(char)TX_Data_CRC;
 						
 						SPI_T_WOSHOU_OK[TX_Data_crc_Length]=TX_Data_CRCH;	
-						SPI_T_WOSHOU_OK[TX_Data_crc_Length+1]=TX_Data_CRCL;//Ìí¼ÓCRCĞ£Ñé
+						SPI_T_WOSHOU_OK[TX_Data_crc_Length+1]=TX_Data_CRCL;//æ·»åŠ CRCæ ¡éªŒ
 						
 						SPI_T_WOSHOU_OK[TX_Data_crc_Length+2]=0x0d;
-						SPI_T_WOSHOU_OK[TX_Data_crc_Length+3]=0x0a;//Ìí¼ÓÍ£Ö¹·û
+						SPI_T_WOSHOU_OK[TX_Data_crc_Length+3]=0x0a;//æ·»åŠ åœæ­¢ç¬¦
 						
-						WOSHOU_CRC_OK=1;//CRCĞ£Ñé³É¹¦£¬·¢¸øÖ÷»úµÄÊı¾İ ÌîĞ´ÍêÕû
+						WOSHOU_CRC_OK=1;//CRCæ ¡éªŒæˆåŠŸï¼Œå‘ç»™ä¸»æœºçš„æ•°æ® å¡«å†™å®Œæ•´
 						
-						TX_Data_num=0;//·¢ËÍÊı¾İ¼ÆÊıÇåÁã
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï
+						TX_Data_num=0;//å‘é€æ•°æ®è®¡æ•°æ¸…é›¶
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­
 						break;
 					}
 					
 					
-					case SPI_SHEBEI_ID://½ÓÊÕÉè±¸IDÕıÈ·
+					case SPI_SHEBEI_ID://æ¥æ”¶è®¾å¤‡IDæ­£ç¡®
 					{						
-						//Ö»ÓĞµ±ÏÔÊ¾Æ÷ÉÏµÄIDºÅ¸ü¸Äºó£¬ARM²Å·¢ËÍIDºÅ£¬Æ½Ê±²»·¢ËÍ
+						//åªæœ‰å½“æ˜¾ç¤ºå™¨ä¸Šçš„IDå·æ›´æ”¹åï¼ŒARMæ‰å‘é€IDå·ï¼Œå¹³æ—¶ä¸å‘é€
 						
 						for(ID_cnt=0;ID_cnt<4;ID_cnt++)
 						{
@@ -61,91 +61,91 @@ void SPI(void)
 						ID_Write_Flag=1;
                       
 						
-						TX_Data_crc_Length=(SPI_T_SHEBEI_ID_OK[4]<<8)+SPI_T_SHEBEI_ID_OK[5]+6;//430·¢ËÍÊı¾İĞèÒªĞ£ÑéµÄ³¤¶È
-						TX_Data_CRC=crc_modbus2(SPI_T_SHEBEI_ID_OK,TX_Data_crc_Length);//CRCĞ£ÑéÊı¾İ
+						TX_Data_crc_Length=(SPI_T_SHEBEI_ID_OK[4]<<8)+SPI_T_SHEBEI_ID_OK[5]+6;//430å‘é€æ•°æ®éœ€è¦æ ¡éªŒçš„é•¿åº¦
+						TX_Data_CRC=crc_modbus2(SPI_T_SHEBEI_ID_OK,TX_Data_crc_Length);//CRCæ ¡éªŒæ•°æ®
 						TX_Data_CRCH=(char)(TX_Data_CRC>>8);
 						TX_Data_CRCL=(char)TX_Data_CRC;
 						
 						SPI_T_SHEBEI_ID_OK[TX_Data_crc_Length]=TX_Data_CRCH;	
-						SPI_T_SHEBEI_ID_OK[TX_Data_crc_Length+1]=TX_Data_CRCL;//Ìí¼ÓCRCĞ£Ñé
+						SPI_T_SHEBEI_ID_OK[TX_Data_crc_Length+1]=TX_Data_CRCL;//æ·»åŠ CRCæ ¡éªŒ
 						
 						SPI_T_SHEBEI_ID_OK[TX_Data_crc_Length+2]=0x0d;
-						SPI_T_SHEBEI_ID_OK[TX_Data_crc_Length+3]=0x0a;//Ìí¼ÓÍ£Ö¹·û
+						SPI_T_SHEBEI_ID_OK[TX_Data_crc_Length+3]=0x0a;//æ·»åŠ åœæ­¢ç¬¦
 						
 						SHEBEI_ID_CRC_OK=1;
 						
-						TX_Data_num=0;//·¢ËÍÊı¾İ¼ÆÊıÇåÁã
+						TX_Data_num=0;//å‘é€æ•°æ®è®¡æ•°æ¸…é›¶
 						
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­
 
 						break;
 					}
 					
-					case SPI_CONTENT_DATA://½ÓÊÕ³£Ì¬Êı¾İÕıÈ·
+					case SPI_CONTENT_DATA://æ¥æ”¶å¸¸æ€æ•°æ®æ­£ç¡®
 					{
-						//SPIB2_DATA[6]~SPIB2_DATA[67]Õâ62¸ö×Ö½Ú¶ÔÓ¦ÉÏ±¨MCUÊı¾İÃüÁîµÄ46×Ö½Úµ½107×Ö½Ú
-						//²¹³äGPS¶¨Î»ĞÅÏ¢
-						//²¹³äÏµÍ³²É¼¯ĞÅÏ¢ ¸½¼ÓÊı¾İ±êÖ¾ MCUÊı¾İµÈ
-						//¼ÓÉÏ³£Ì¬Êı¾İ ×é³ÉÒ»°üÍêÕûµÄÊı¾İ
-						//³£Ì¬Êı¾İ¶Á×ßºó Òª´ò¿ª½ÓÊÕÖĞ¶Ï 
+						//SPIB2_DATA[6]~SPIB2_DATA[67]è¿™62ä¸ªå­—èŠ‚å¯¹åº”ä¸ŠæŠ¥MCUæ•°æ®å‘½ä»¤çš„46å­—èŠ‚åˆ°107å­—èŠ‚
+						//è¡¥å……GPSå®šä½ä¿¡æ¯
+						//è¡¥å……ç³»ç»Ÿé‡‡é›†ä¿¡æ¯ é™„åŠ æ•°æ®æ ‡å¿— MCUæ•°æ®ç­‰
+						//åŠ ä¸Šå¸¸æ€æ•°æ® ç»„æˆä¸€åŒ…å®Œæ•´çš„æ•°æ®
+						//å¸¸æ€æ•°æ®è¯»èµ°å è¦æ‰“å¼€æ¥æ”¶ä¸­æ–­ 
 						for(CONTENT_DATA_cnt=0;CONTENT_DATA_cnt<62;CONTENT_DATA_cnt++)
 						{
-							GSM_MCU[CONTENT_DATA_cnt]=SPIB2_DATA[6+CONTENT_DATA_cnt];//½«³£Ì¬Êı¾İ×ª´æ
+							GSM_MCU[CONTENT_DATA_cnt]=SPIB2_DATA[6+CONTENT_DATA_cnt];//å°†å¸¸æ€æ•°æ®è½¬å­˜
 						}
 						
-						ARM_DATA_STU|=0x01;//ÖÃ±êÖ¾Î»
+						ARM_DATA_STU|=0x01;//ç½®æ ‡å¿—ä½
 						
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­
 						
 						//
-						//Êı¾İÌîÍêÕûºó£¬½¯±¾Çì½«Êı¾İÉÏ´«ÖÁÆ½Ì¨
+						//æ•°æ®å¡«å®Œæ•´åï¼Œè’‹æœ¬åº†å°†æ•°æ®ä¸Šä¼ è‡³å¹³å°
 						//
 						
 						break;
 					}
 					
-					case SHEBEI_Soft_VER://½ÓÊÕÉè±¸Èí¼ş°æ±¾ºÅÕıÈ·(ÏÔÊ¾Æ÷£¬¿ØÖÆÆ÷£¬ÓÍÃÅµç»úÈí¼ş°æ±¾ºÅ)
+					case SHEBEI_Soft_VER://æ¥æ”¶è®¾å¤‡è½¯ä»¶ç‰ˆæœ¬å·æ­£ç¡®(æ˜¾ç¤ºå™¨ï¼Œæ§åˆ¶å™¨ï¼Œæ²¹é—¨ç”µæœºè½¯ä»¶ç‰ˆæœ¬å·)
 					{
 						for(Soft_VER_cnt=0;Soft_VER_cnt<24;Soft_VER_cnt++)
 						{
-							Soft_VER_memory[Soft_VER_cnt]=SPIB2_DATA[6+Soft_VER_cnt];//´æ´¢½ÓÊÕµÄÈí¼ş°æ±¾ºÅ
+							Soft_VER_memory[Soft_VER_cnt]=SPIB2_DATA[6+Soft_VER_cnt];//å­˜å‚¨æ¥æ”¶çš„è½¯ä»¶ç‰ˆæœ¬å·
 						}
 						
 						for(Soft_VER_cnt=0;Soft_VER_cnt<8;Soft_VER_cnt++)
 						{
-							Soft_VER_memory[Soft_VER_cnt+24]=GPS_Soft_VER[Soft_VER_cnt];//GPSÈí¼ş°æ±¾ºÅ
+							Soft_VER_memory[Soft_VER_cnt+24]=GPS_Soft_VER[Soft_VER_cnt];//GPSè½¯ä»¶ç‰ˆæœ¬å·
 						}
                         
                         Soft_VER_OK=0X11;
 						
-						TX_Data_crc_Length=(SPI_T_SHEBEI_Soft_VER_OK[4]<<8)+SPI_T_SHEBEI_Soft_VER_OK[5]+6;//430·¢ËÍÊı¾İĞèÒªĞ£ÑéµÄ³¤¶È
-						TX_Data_CRC=crc_modbus2(SPI_T_SHEBEI_Soft_VER_OK,TX_Data_crc_Length);//CRCĞ£ÑéÊı¾İ
+						TX_Data_crc_Length=(SPI_T_SHEBEI_Soft_VER_OK[4]<<8)+SPI_T_SHEBEI_Soft_VER_OK[5]+6;//430å‘é€æ•°æ®éœ€è¦æ ¡éªŒçš„é•¿åº¦
+						TX_Data_CRC=crc_modbus2(SPI_T_SHEBEI_Soft_VER_OK,TX_Data_crc_Length);//CRCæ ¡éªŒæ•°æ®
 						TX_Data_CRCH=(char)(TX_Data_CRC>>8);
 						TX_Data_CRCL=(char)TX_Data_CRC;
 						
 						SPI_T_SHEBEI_Soft_VER_OK[TX_Data_crc_Length]=TX_Data_CRCH;	
-						SPI_T_SHEBEI_Soft_VER_OK[TX_Data_crc_Length+1]=TX_Data_CRCL;//Ìí¼ÓCRCĞ£Ñé
+						SPI_T_SHEBEI_Soft_VER_OK[TX_Data_crc_Length+1]=TX_Data_CRCL;//æ·»åŠ CRCæ ¡éªŒ
 						
 						SPI_T_SHEBEI_Soft_VER_OK[TX_Data_crc_Length+2]=0x0d;
-						SPI_T_SHEBEI_Soft_VER_OK[TX_Data_crc_Length+3]=0x0a;//Ìí¼ÓÍ£Ö¹·û
+						SPI_T_SHEBEI_Soft_VER_OK[TX_Data_crc_Length+3]=0x0a;//æ·»åŠ åœæ­¢ç¬¦
 						
 						SHEBEI_Soft_VER_CRC_OK=1;
 						
-						TX_Data_num=0;//·¢ËÍÊı¾İ¼ÆÊıÇåÁã
+						TX_Data_num=0;//å‘é€æ•°æ®è®¡æ•°æ¸…é›¶
 						
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­
 						
-						//½¯±¾Çì½«Èí¼ş°æ±¾ºÅÉÏ´«ÖÁÆ½Ì¨
+						//è’‹æœ¬åº†å°†è½¯ä»¶ç‰ˆæœ¬å·ä¸Šä¼ è‡³å¹³å°
 						//
 						//
 						break;
 					}
 					
-					case ASK_GPS://Ö÷»úÇëÇóGPSĞÅÏ¢
+					case ASK_GPS://ä¸»æœºè¯·æ±‚GPSä¿¡æ¯
 					{                         
                         if(GPS_Data_OK_Flag==0x11)
 						{
-							GPS_Data_OK_Flag=0x00;//±êÖ¾Î»ÇåÁã
+							GPS_Data_OK_Flag=0x00;//æ ‡å¿—ä½æ¸…é›¶
 							GPS_temp[0]=0x3c;
 							GPS_temp[1]=0x3a;
 						
@@ -157,32 +157,32 @@ void SPI(void)
 						
 							for(GPS_temp_cnt=0;GPS_temp_cnt<28;GPS_temp_cnt++)
 							{
-								GPS_temp[6+GPS_temp_cnt]=GPS_Inf[GPS_temp_cnt];//Ìí¼Ó³É¹¦¶¨Î»ºóµÄGPSÊı¾İ
+								GPS_temp[6+GPS_temp_cnt]=GPS_Inf[GPS_temp_cnt];//æ·»åŠ æˆåŠŸå®šä½åçš„GPSæ•°æ®
 							}
 							
-							TX_Data_crc_Length=34;//430·¢ËÍÊı¾İĞèÒªĞ£ÑéµÄ³¤¶È
-							TX_Data_CRC=crc_modbus2(GPS_temp,TX_Data_crc_Length);//CRCĞ£ÑéÊı¾İ
+							TX_Data_crc_Length=34;//430å‘é€æ•°æ®éœ€è¦æ ¡éªŒçš„é•¿åº¦
+							TX_Data_CRC=crc_modbus2(GPS_temp,TX_Data_crc_Length);//CRCæ ¡éªŒæ•°æ®
 							TX_Data_CRCH=(char)(TX_Data_CRC>>8);
 							TX_Data_CRCL=(char)TX_Data_CRC;
 							
 							GPS_temp[TX_Data_crc_Length]=TX_Data_CRCH;	
-							GPS_temp[TX_Data_crc_Length+1]=TX_Data_CRCL;//Ìí¼ÓCRCĞ£Ñé
+							GPS_temp[TX_Data_crc_Length+1]=TX_Data_CRCL;//æ·»åŠ CRCæ ¡éªŒ
 						
 							GPS_temp[TX_Data_crc_Length+2]=0x0d;
-							GPS_temp[TX_Data_crc_Length+3]=0x0a;//Ìí¼ÓÍ£Ö¹·û
+							GPS_temp[TX_Data_crc_Length+3]=0x0a;//æ·»åŠ åœæ­¢ç¬¦
 						
 							GPS_temp_OK=1;
 						
-							GPS_Data_num=0;//·¢ËÍÊı¾İ¼ÆÊıÇåÁã
+							GPS_Data_num=0;//å‘é€æ•°æ®è®¡æ•°æ¸…é›¶
 						}
 						
 						
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­
 				
 						break;
 					}
 					
-					case ASK_GPS_VER://Ö÷»úÇëÇóGPS°æ±¾ºÅ
+					case ASK_GPS_VER://ä¸»æœºè¯·æ±‚GPSç‰ˆæœ¬å·
 					{
 						GPS_mold_VER[0]=0x3c;
 						GPS_mold_VER[1]=0x3a;
@@ -195,30 +195,30 @@ void SPI(void)
 						
 						for(GPS_mold_VER_cnt=0;GPS_mold_VER_cnt<8;GPS_mold_VER_cnt++)
 						{
-							GPS_mold_VER[GPS_mold_VER_cnt+6]=GPS_Soft_VER[GPS_mold_VER_cnt];//GPS°æ±¾ºÅ
+							GPS_mold_VER[GPS_mold_VER_cnt+6]=GPS_Soft_VER[GPS_mold_VER_cnt];//GPSç‰ˆæœ¬å·
 						}
 						
-						TX_Data_crc_Length=14;//430·¢ËÍÊı¾İĞèÒªĞ£ÑéµÄ³¤¶È
-						TX_Data_CRC=crc_modbus2(GPS_mold_VER,TX_Data_crc_Length);//CRCĞ£ÑéÊı¾İ
+						TX_Data_crc_Length=14;//430å‘é€æ•°æ®éœ€è¦æ ¡éªŒçš„é•¿åº¦
+						TX_Data_CRC=crc_modbus2(GPS_mold_VER,TX_Data_crc_Length);//CRCæ ¡éªŒæ•°æ®
 						TX_Data_CRCH=(char)(TX_Data_CRC>>8);
 						TX_Data_CRCL=(char)TX_Data_CRC;
 						
 						GPS_mold_VER[TX_Data_crc_Length]=TX_Data_CRCH;	
-						GPS_mold_VER[TX_Data_crc_Length+1]=TX_Data_CRCL;//Ìí¼ÓCRCĞ£Ñé
+						GPS_mold_VER[TX_Data_crc_Length+1]=TX_Data_CRCL;//æ·»åŠ CRCæ ¡éªŒ
 						
 						GPS_mold_VER[TX_Data_crc_Length+2]=0x0d;
-						GPS_mold_VER[TX_Data_crc_Length+3]=0x0a;//Ìí¼ÓÍ£Ö¹·û
+						GPS_mold_VER[TX_Data_crc_Length+3]=0x0a;//æ·»åŠ åœæ­¢ç¬¦
 						
 						GPS_VER_OK=1;
 						
-						GPS_VER_num=0;//·¢ËÍÊı¾İ¼ÆÊıÇåÁã
+						GPS_VER_num=0;//å‘é€æ•°æ®è®¡æ•°æ¸…é›¶
 						
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­
 
 						break;
 					}
 					
-					case  ASK_Mode_Parameter://Ö÷»úÇëÇó¸÷µµÄ£Ê½²ÎÊı£¨Ö÷»ú¸ù¾İÄ£¿é×´Ì¬µÄ±êÖ¾Î»¾ö¶¨ÊÇ·ñÉêÇë¸ÃÊı¾İ£¬ÉêÇëÁËÔòËµÃ÷Ö÷»úÒÑ¾­·¢À´ÁËÊı¾İ£©
+					case  ASK_Mode_Parameter://ä¸»æœºè¯·æ±‚å„æ¡£æ¨¡å¼å‚æ•°ï¼ˆä¸»æœºæ ¹æ®æ¨¡å—çŠ¶æ€çš„æ ‡å¿—ä½å†³å®šæ˜¯å¦ç”³è¯·è¯¥æ•°æ®ï¼Œç”³è¯·äº†åˆ™è¯´æ˜ä¸»æœºå·²ç»å‘æ¥äº†æ•°æ®ï¼‰
 					{
 						Mode_Parameter[0]=0x3c;
 						Mode_Parameter[1]=0x3a;
@@ -234,30 +234,30 @@ void SPI(void)
 							Mode_Parameter[Mode_Parameter_cnt+6]=HML_Mode_BuF[Mode_Parameter_cnt];
 						}
 
-						TX_Data_crc_Length=26;//430·¢ËÍÊı¾İĞèÒªĞ£ÑéµÄ³¤¶È
+						TX_Data_crc_Length=26;//430å‘é€æ•°æ®éœ€è¦æ ¡éªŒçš„é•¿åº¦
 						
-						TX_Data_CRC=crc_modbus2(Mode_Parameter,TX_Data_crc_Length);//CRCĞ£ÑéÊı¾İ
+						TX_Data_CRC=crc_modbus2(Mode_Parameter,TX_Data_crc_Length);//CRCæ ¡éªŒæ•°æ®
 						TX_Data_CRCH=(char)(TX_Data_CRC>>8);
 						TX_Data_CRCL=(char)TX_Data_CRC;
 						
 						Mode_Parameter[TX_Data_crc_Length]=TX_Data_CRCH;	
-						Mode_Parameter[TX_Data_crc_Length+1]=TX_Data_CRCL;//Ìí¼ÓCRCĞ£Ñé
+						Mode_Parameter[TX_Data_crc_Length+1]=TX_Data_CRCL;//æ·»åŠ CRCæ ¡éªŒ
 						
 						Mode_Parameter[TX_Data_crc_Length+2]=0x0d;
-						Mode_Parameter[TX_Data_crc_Length+3]=0x0a;//Ìí¼ÓÍ£Ö¹·û
+						Mode_Parameter[TX_Data_crc_Length+3]=0x0a;//æ·»åŠ åœæ­¢ç¬¦
 						
 						Mode_Parameter_OK=1;
 						
-						mode_num=0;//·¢ËÍÊı¾İ¼ÆÊıÇåÁã
+						mode_num=0;//å‘é€æ•°æ®è®¡æ•°æ¸…é›¶
 						
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­
 									
 						break;
 					}
 					
 					
 					
-					case ASK_Module_State://Ö÷»úÇëÇóÄ£¿é×´Ì¬
+					case ASK_Module_State://ä¸»æœºè¯·æ±‚æ¨¡å—çŠ¶æ€
 					{
 						Module_State[0]=0x3c;
 						Module_State[1]=0x3a;
@@ -269,7 +269,7 @@ void SPI(void)
 						Module_State[5]=6;
 						
                         
-                        if(One_Mint_Warn_Cnt<MSP_A0_Min_10)//Ò»·ÖÖÓ¼ÆÊı)
+                        if(One_Mint_Warn_Cnt<MSP_A0_Min_10)//ä¸€åˆ†é’Ÿè®¡æ•°)
                         {
                            Module_Status[0] &= ~0x0F;
                            Module_Status[0] &= ~0x30;
@@ -286,29 +286,29 @@ void SPI(void)
 							Module_State[Module_State_cnt+6]=Module_Status[Module_State_cnt];//
 						}
 						
-						TX_Data_crc_Length=12;//430·¢ËÍÊı¾İĞèÒªĞ£ÑéµÄ³¤¶È
-						TX_Data_CRC=crc_modbus2(Module_State,TX_Data_crc_Length);//CRCĞ£ÑéÊı¾İ
+						TX_Data_crc_Length=12;//430å‘é€æ•°æ®éœ€è¦æ ¡éªŒçš„é•¿åº¦
+						TX_Data_CRC=crc_modbus2(Module_State,TX_Data_crc_Length);//CRCæ ¡éªŒæ•°æ®
 						TX_Data_CRCH=(char)(TX_Data_CRC>>8);
 						TX_Data_CRCL=(char)TX_Data_CRC;
 						
 						Module_State[TX_Data_crc_Length]=TX_Data_CRCH;	
-						Module_State[TX_Data_crc_Length+1]=TX_Data_CRCL;//Ìí¼ÓCRCĞ£Ñé
+						Module_State[TX_Data_crc_Length+1]=TX_Data_CRCL;//æ·»åŠ CRCæ ¡éªŒ
 						
 						Module_State[TX_Data_crc_Length+2]=0x0d;
-						Module_State[TX_Data_crc_Length+3]=0x0a;//Ìí¼ÓÍ£Ö¹·û
+						Module_State[TX_Data_crc_Length+3]=0x0a;//æ·»åŠ åœæ­¢ç¬¦
 						
 						Module_State_OK=1;
 						
-						Module_State_num=0;//·¢ËÍÊı¾İ¼ÆÊıÇåÁã
+						Module_State_num=0;//å‘é€æ•°æ®è®¡æ•°æ¸…é›¶
 						
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­
 
 						break;
 					}
 					
-					case  ASK_Monitor_Update://Ö÷»úÇëÇóÏÔÊ¾Æ÷Éı¼¶°ü
-					case  ASK_Controller_Update://ÇëÇó¿ØÖÆÆ÷µÄÉı¼¶°ü 0xC0 0x02
-					case  ASK_Motor_Update://ÇëÇóÓÍÃÅ¿ØÖÆÆ÷µÄÉı¼¶°ü 0xC0 0x03
+					case  ASK_Monitor_Update://ä¸»æœºè¯·æ±‚æ˜¾ç¤ºå™¨å‡çº§åŒ…
+					case  ASK_Controller_Update://è¯·æ±‚æ§åˆ¶å™¨çš„å‡çº§åŒ… 0xC0 0x02
+					case  ASK_Motor_Update://è¯·æ±‚æ²¹é—¨æ§åˆ¶å™¨çš„å‡çº§åŒ… 0xC0 0x03
 					{
 						Update_Command_Data[0]=0x3c;
 						Update_Command_Data[1]=0x3a;
@@ -317,9 +317,9 @@ void SPI(void)
 						Update_Command_Data[3]=0x01;
 						
 						Update_Command_Data[4]=0x00;
-						Update_Command_Data[5]=18;//18¸ö×Ö½Ú
+						Update_Command_Data[5]=18;//18ä¸ªå­—èŠ‚
 						
-						Module_Status[4] &= ~0x03;//ÊÕµ½Éı¼¶±êÖ¾£¬Çå³ıÉı¼¶±êÖ¾  
+						Module_Status[4] &= ~0x03;//æ”¶åˆ°å‡çº§æ ‡å¿—ï¼Œæ¸…é™¤å‡çº§æ ‡å¿—  
 
                         
 						for(Update_Command_Datar_cnt=0;Update_Command_Datar_cnt<18;Update_Command_Datar_cnt++)
@@ -327,42 +327,42 @@ void SPI(void)
 							Update_Command_Data[Update_Command_Datar_cnt+6]=UP_Stat_SPI_BuF[Update_Command_Datar_cnt];
 						}
 						
-						TX_Data_crc_Length=24;//430·¢ËÍÊı¾İĞèÒªĞ£ÑéµÄ³¤¶È
-						TX_Data_CRC=crc_modbus2(Update_Command_Data,TX_Data_crc_Length);//CRCĞ£ÑéÊı¾İ
+						TX_Data_crc_Length=24;//430å‘é€æ•°æ®éœ€è¦æ ¡éªŒçš„é•¿åº¦
+						TX_Data_CRC=crc_modbus2(Update_Command_Data,TX_Data_crc_Length);//CRCæ ¡éªŒæ•°æ®
 						TX_Data_CRCH=(char)(TX_Data_CRC>>8);
 						TX_Data_CRCL=(char)TX_Data_CRC;
 						
 						Update_Command_Data[TX_Data_crc_Length]=TX_Data_CRCH;	
-						Update_Command_Data[TX_Data_crc_Length+1]=TX_Data_CRCL;//Ìí¼ÓCRCĞ£Ñé
+						Update_Command_Data[TX_Data_crc_Length+1]=TX_Data_CRCL;//æ·»åŠ CRCæ ¡éªŒ
 						
 						Update_Command_Data[TX_Data_crc_Length+2]=0x0d;
-						Update_Command_Data[TX_Data_crc_Length+3]=0x0a;//Ìí¼ÓÍ£Ö¹·û
+						Update_Command_Data[TX_Data_crc_Length+3]=0x0a;//æ·»åŠ åœæ­¢ç¬¦
 						
 						Update_Command_Data_OK=1;
 						
-						TX_Update_Command_Data_num=0;//·¢ËÍÊı¾İ¼ÆÊıÇåÁã
+						TX_Update_Command_Data_num=0;//å‘é€æ•°æ®è®¡æ•°æ¸…é›¶
 						
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­
 	
 						break;
 					}
 					
-					case  ASK_Monitor_Update_Index://Ö÷»úÇëÇóÏÔÊ¾Æ÷Éı¼¶Ë÷ÒıºÅ
-					case  ASK_Controller_Update_Index://Ö÷»úÇëÇó¿ØÖÆÆ÷Éı¼¶Ë÷ÒıºÅ
-					case  ASK_Motor_Update_Index://Ö÷»úÇëÇóÓÍÃÅ¿ØÖÆÆ÷Éı¼¶Ë÷ÒıºÅ
+					case  ASK_Monitor_Update_Index://ä¸»æœºè¯·æ±‚æ˜¾ç¤ºå™¨å‡çº§ç´¢å¼•å·
+					case  ASK_Controller_Update_Index://ä¸»æœºè¯·æ±‚æ§åˆ¶å™¨å‡çº§ç´¢å¼•å·
+					case  ASK_Motor_Update_Index://ä¸»æœºè¯·æ±‚æ²¹é—¨æ§åˆ¶å™¨å‡çº§ç´¢å¼•å·
 					{
 						Ask_index=1;
-						Index=(SPIB2_DATA[6]<<8)+SPIB2_DATA[7];//Ë÷ÒıºÅ
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï
+						Index=(SPIB2_DATA[6]<<8)+SPIB2_DATA[7];//ç´¢å¼•å·
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­
 						break;
 					}
 					
-					case  ASK_Monitor_Update_Index_content://Ö÷»úÇëÇóÇëÇóÏÔÊ¾Æ÷µÄÃ¿°üÊı¾İÄÚÈİ
-					case  ASK_Controller_Update_Index_content://Ö÷»úÇëÇóÇëÇó¿ØÖÆÆ÷µÄÃ¿°üÊı¾İÄÚÈİ
-					case  ASK_Motor_Update_Index_content://Ö÷»úÇëÇóÇëÇóÓÍÃÅ¿ØÖÆÆ÷µÄÃ¿°üÊı¾İÄÚÈİ
+					case  ASK_Monitor_Update_Index_content://ä¸»æœºè¯·æ±‚è¯·æ±‚æ˜¾ç¤ºå™¨çš„æ¯åŒ…æ•°æ®å†…å®¹
+					case  ASK_Controller_Update_Index_content://ä¸»æœºè¯·æ±‚è¯·æ±‚æ§åˆ¶å™¨çš„æ¯åŒ…æ•°æ®å†…å®¹
+					case  ASK_Motor_Update_Index_content://ä¸»æœºè¯·æ±‚è¯·æ±‚æ²¹é—¨æ§åˆ¶å™¨çš„æ¯åŒ…æ•°æ®å†…å®¹
 					{
 
-						Module_Status[5]&=~0x0c;//ÇåÃ¿°üÊı¾İÍê³ÉµÄ±êÖ¾  
+						Module_Status[5]&=~0x0c;//æ¸…æ¯åŒ…æ•°æ®å®Œæˆçš„æ ‡å¿—  
 						
 						Update_Data[0]=0x3c;
 						Update_Data[1]=0x3a;
@@ -371,34 +371,34 @@ void SPI(void)
 						Update_Data[3]=0x01;
 						
 						Update_Data[4]=0x04;
-						Update_Data[5]=0x02;//1026¸ö×Ö½Ú
+						Update_Data[5]=0x02;//1026ä¸ªå­—èŠ‚
 						
-						//È¥½¯±¾ÇìÄÇÈ¡ÏÔÊ¾Æ÷Éı¼¶°ü
-						//´ıÈ·¶¨
+						//å»è’‹æœ¬åº†é‚£å–æ˜¾ç¤ºå™¨å‡çº§åŒ…
+						//å¾…ç¡®å®š
 						Update_Data[6]=(SPI_UP_BIT_SUM >>8);
-						Update_Data[7]=SPI_UP_BIT_SUM ;//Ë÷ÒıºÅ
+						Update_Data[7]=SPI_UP_BIT_SUM ;//ç´¢å¼•å·
 						
 						for(Update_Datar_cnt=0;Update_Datar_cnt<1024;Update_Datar_cnt++)
 						{
-							Update_Data[Update_Datar_cnt+8]=UP_SYSTEM_C_LANG[Update_Datar_cnt];//X3µÄº¯ÊıÃû½¯±¾Çì¶¨
+							Update_Data[Update_Datar_cnt+8]=UP_SYSTEM_C_LANG[Update_Datar_cnt];//X3çš„å‡½æ•°åè’‹æœ¬åº†å®š
 						}
 						
-						TX_Data_crc_Length=1032;//430·¢ËÍÊı¾İĞèÒªĞ£ÑéµÄ³¤¶È
-						TX_Data_CRC=crc_modbus2(Update_Data,TX_Data_crc_Length);//CRCĞ£ÑéÊı¾İ
+						TX_Data_crc_Length=1032;//430å‘é€æ•°æ®éœ€è¦æ ¡éªŒçš„é•¿åº¦
+						TX_Data_CRC=crc_modbus2(Update_Data,TX_Data_crc_Length);//CRCæ ¡éªŒæ•°æ®
 						TX_Data_CRCH=(char)(TX_Data_CRC>>8);
 						TX_Data_CRCL=(char)TX_Data_CRC;
 						
 						Update_Data[TX_Data_crc_Length]=TX_Data_CRCH;	
-						Update_Data[TX_Data_crc_Length+1]=TX_Data_CRCL;//Ìí¼ÓCRCĞ£Ñé
+						Update_Data[TX_Data_crc_Length+1]=TX_Data_CRCL;//æ·»åŠ CRCæ ¡éªŒ
 						
 						Update_Data[TX_Data_crc_Length+2]=0x0d;
-						Update_Data[TX_Data_crc_Length+3]=0x0a;//Ìí¼ÓÍ£Ö¹·û
+						Update_Data[TX_Data_crc_Length+3]=0x0a;//æ·»åŠ åœæ­¢ç¬¦
 						
 						Update_Data_OK=1;
 						
-						TX_Update_Data_num=0;//·¢ËÍÊı¾İ¼ÆÊıÇåÁã
+						TX_Update_Data_num=0;//å‘é€æ•°æ®è®¡æ•°æ¸…é›¶
 						
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­
 	
 						break;	
 					}
@@ -410,140 +410,140 @@ void SPI(void)
 				}                                     
 			}
 			
-			else //crcĞ£Ñé´íÎó
+			else //crcæ ¡éªŒé”™è¯¯
 			{           
 				switch(contents)
 				{
-					case SPI_WOSHOU://½ÓÊÕÎÕÊÖĞÅºÅ´íÎó
+					case SPI_WOSHOU://æ¥æ”¶æ¡æ‰‹ä¿¡å·é”™è¯¯
 					{
-						TX_Data_crc_Length=(SPI_T_WOSHOU_ERR[4]<<8)+SPI_T_WOSHOU_ERR[5]+6;//430·¢ËÍÊı¾İĞèÒªĞ£ÑéµÄ³¤¶È
-						TX_Data_CRC=crc_modbus2(SPI_T_WOSHOU_ERR,TX_Data_crc_Length);//CRCĞ£ÑéÊı¾İ
+						TX_Data_crc_Length=(SPI_T_WOSHOU_ERR[4]<<8)+SPI_T_WOSHOU_ERR[5]+6;//430å‘é€æ•°æ®éœ€è¦æ ¡éªŒçš„é•¿åº¦
+						TX_Data_CRC=crc_modbus2(SPI_T_WOSHOU_ERR,TX_Data_crc_Length);//CRCæ ¡éªŒæ•°æ®
 						TX_Data_CRCH=(char)(TX_Data_CRC>>8);
 						TX_Data_CRCL=(char)TX_Data_CRC;
 						
 						SPI_T_WOSHOU_ERR[TX_Data_crc_Length]=TX_Data_CRCH;	
-						SPI_T_WOSHOU_ERR[TX_Data_crc_Length+1]=TX_Data_CRCL;//Ìí¼ÓCRCĞ£Ñé
+						SPI_T_WOSHOU_ERR[TX_Data_crc_Length+1]=TX_Data_CRCL;//æ·»åŠ CRCæ ¡éªŒ
 						
 						SPI_T_WOSHOU_ERR[TX_Data_crc_Length+2]=0x0d;
-						SPI_T_WOSHOU_ERR[TX_Data_crc_Length+3]=0x0a;//Ìí¼ÓÍ£Ö¹·û
+						SPI_T_WOSHOU_ERR[TX_Data_crc_Length+3]=0x0a;//æ·»åŠ åœæ­¢ç¬¦
 						
 						WOSHOU_CRC_ERR=1;
 						
-						TX_Data_num=0;//·¢ËÍÊı¾İ¼ÆÊıÇåÁã
+						TX_Data_num=0;//å‘é€æ•°æ®è®¡æ•°æ¸…é›¶
 						
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­
 						break;
 					}
 					
-					case SPI_SHEBEI_ID://½ÓÊÕÉè±¸ID´íÎó
+					case SPI_SHEBEI_ID://æ¥æ”¶è®¾å¤‡IDé”™è¯¯
 					{
-						TX_Data_crc_Length=(SPI_T_SHEBEI_ID_ERR[4]<<8)+SPI_T_SHEBEI_ID_ERR[5]+6;//430·¢ËÍÊı¾İĞèÒªĞ£ÑéµÄ³¤¶È
-						TX_Data_CRC=crc_modbus2(SPI_T_SHEBEI_ID_ERR,TX_Data_crc_Length);//CRCĞ£ÑéÊı¾İ
+						TX_Data_crc_Length=(SPI_T_SHEBEI_ID_ERR[4]<<8)+SPI_T_SHEBEI_ID_ERR[5]+6;//430å‘é€æ•°æ®éœ€è¦æ ¡éªŒçš„é•¿åº¦
+						TX_Data_CRC=crc_modbus2(SPI_T_SHEBEI_ID_ERR,TX_Data_crc_Length);//CRCæ ¡éªŒæ•°æ®
 						TX_Data_CRCH=(char)(TX_Data_CRC>>8);
 						TX_Data_CRCL=(char)TX_Data_CRC;
 						
 						SPI_T_SHEBEI_ID_ERR[TX_Data_crc_Length]=TX_Data_CRCH;	
-						SPI_T_SHEBEI_ID_ERR[TX_Data_crc_Length+1]=TX_Data_CRCL;//Ìí¼ÓCRCĞ£Ñé
+						SPI_T_SHEBEI_ID_ERR[TX_Data_crc_Length+1]=TX_Data_CRCL;//æ·»åŠ CRCæ ¡éªŒ
 						
 						SPI_T_SHEBEI_ID_ERR[TX_Data_crc_Length+2]=0x0d;
-						SPI_T_SHEBEI_ID_ERR[TX_Data_crc_Length+3]=0x0a;//Ìí¼ÓÍ£Ö¹·û
+						SPI_T_SHEBEI_ID_ERR[TX_Data_crc_Length+3]=0x0a;//æ·»åŠ åœæ­¢ç¬¦
 						
 						SHEBEI_ID_CRC_ERR=1;
 						
-						TX_Data_num=0;//·¢ËÍÊı¾İ¼ÆÊıÇåÁã
+						TX_Data_num=0;//å‘é€æ•°æ®è®¡æ•°æ¸…é›¶
 						
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­
 						break;
 					}
 					
-					case SPI_CONTENT_DATA://½ÓÊÕ³£Ì¬Êı¾İ´íÎó
+					case SPI_CONTENT_DATA://æ¥æ”¶å¸¸æ€æ•°æ®é”™è¯¯
 					{
-						//ÎŞÊı¾İÉÏ±¨Æ½Ì¨
-						//½¯±¾ÇìÌí¼Ó´¦Àí
+						//æ— æ•°æ®ä¸ŠæŠ¥å¹³å°
+						//è’‹æœ¬åº†æ·»åŠ å¤„ç†
 						//
 						ARM_DATA_STU&=0xfe;
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï,½ÓÊÕÏÂÒ»×éÊı¾İ
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­,æ¥æ”¶ä¸‹ä¸€ç»„æ•°æ®
 						break;
 					}
 					
-					case SHEBEI_Soft_VER://½ÓÊÕÉè±¸Èí¼ş°æ±¾ºÅ´íÎó
+					case SHEBEI_Soft_VER://æ¥æ”¶è®¾å¤‡è½¯ä»¶ç‰ˆæœ¬å·é”™è¯¯
 					{
-						TX_Data_crc_Length=(SPI_T_SHEBEI_Soft_VER_ERR[4]<<8)+SPI_T_SHEBEI_Soft_VER_ERR[5]+6;//430·¢ËÍÊı¾İĞèÒªĞ£ÑéµÄ³¤¶È
-						TX_Data_CRC=crc_modbus2(SPI_T_SHEBEI_Soft_VER_ERR,TX_Data_crc_Length);//CRCĞ£ÑéÊı¾İ
+						TX_Data_crc_Length=(SPI_T_SHEBEI_Soft_VER_ERR[4]<<8)+SPI_T_SHEBEI_Soft_VER_ERR[5]+6;//430å‘é€æ•°æ®éœ€è¦æ ¡éªŒçš„é•¿åº¦
+						TX_Data_CRC=crc_modbus2(SPI_T_SHEBEI_Soft_VER_ERR,TX_Data_crc_Length);//CRCæ ¡éªŒæ•°æ®
 						TX_Data_CRCH=(char)(TX_Data_CRC>>8);
 						TX_Data_CRCL=(char)TX_Data_CRC;
 						
 						SPI_T_SHEBEI_Soft_VER_ERR[TX_Data_crc_Length]=TX_Data_CRCH;	
-						SPI_T_SHEBEI_Soft_VER_ERR[TX_Data_crc_Length+1]=TX_Data_CRCL;//Ìí¼ÓCRCĞ£Ñé
+						SPI_T_SHEBEI_Soft_VER_ERR[TX_Data_crc_Length+1]=TX_Data_CRCL;//æ·»åŠ CRCæ ¡éªŒ
 						
 						SPI_T_SHEBEI_Soft_VER_ERR[TX_Data_crc_Length+2]=0x0d;
-						SPI_T_SHEBEI_Soft_VER_ERR[TX_Data_crc_Length+3]=0x0a;//Ìí¼ÓÍ£Ö¹·û
+						SPI_T_SHEBEI_Soft_VER_ERR[TX_Data_crc_Length+3]=0x0a;//æ·»åŠ åœæ­¢ç¬¦
 						
 						SHEBEI_Soft_VER_CRC_ERR=1;
 						
-						TX_Data_num=0;//·¢ËÍÊı¾İ¼ÆÊıÇåÁã
+						TX_Data_num=0;//å‘é€æ•°æ®è®¡æ•°æ¸…é›¶
 						
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­
 						break;
 					}
 					
-					case ASK_GPS://Ö÷»úÇëÇóGPSĞÅÏ¢
+					case ASK_GPS://ä¸»æœºè¯·æ±‚GPSä¿¡æ¯
 					{
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï,½ÓÊÕÏÂÒ»×éÊı¾İ
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­,æ¥æ”¶ä¸‹ä¸€ç»„æ•°æ®
 						break;
 					}
 					
-					case ASK_GPS_VER://Ö÷»úÇëÇóGPS°æ±¾ºÅ
+					case ASK_GPS_VER://ä¸»æœºè¯·æ±‚GPSç‰ˆæœ¬å·
 					{
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï,½ÓÊÕÏÂÒ»×éÊı¾İ
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­,æ¥æ”¶ä¸‹ä¸€ç»„æ•°æ®
 						break;
 					}
 					
-					case  ASK_Mode_Parameter://Ö÷»úÇëÇó¸÷µµÄ£Ê½²ÎÊı
+					case  ASK_Mode_Parameter://ä¸»æœºè¯·æ±‚å„æ¡£æ¨¡å¼å‚æ•°
 					{             
 						
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­
 									
 						break;
 					}
 					
-					case  ASK_Monitor_Update://Ö÷»úÇëÇóÏÔÊ¾Æ÷Éı¼¶°ü
+					case  ASK_Monitor_Update://ä¸»æœºè¯·æ±‚æ˜¾ç¤ºå™¨å‡çº§åŒ…
 					{
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï,½ÓÊÕÏÂÒ»×éÊı¾İ
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­,æ¥æ”¶ä¸‹ä¸€ç»„æ•°æ®
 						break;
 					}
 					
-					case  ASK_Monitor_Update_Index://Ö÷»úÇëÇóÏÔÊ¾Æ÷Éı¼¶Ë÷ÒıºÅ
+					case  ASK_Monitor_Update_Index://ä¸»æœºè¯·æ±‚æ˜¾ç¤ºå™¨å‡çº§ç´¢å¼•å·
 					{
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï,½ÓÊÕÏÂÒ»×éÊı¾İ
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­,æ¥æ”¶ä¸‹ä¸€ç»„æ•°æ®
 						break;
 					}
 					
-					case  ASK_Controller_Update://Ö÷»úÇëÇó¿ØÖÆÆ÷Éı¼¶°ü
+					case  ASK_Controller_Update://ä¸»æœºè¯·æ±‚æ§åˆ¶å™¨å‡çº§åŒ…
 					{
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï,½ÓÊÕÏÂÒ»×éÊı¾İ
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­,æ¥æ”¶ä¸‹ä¸€ç»„æ•°æ®
 						break;
 					}
 					
-					case  ASK_Controller_Update_Index://Ö÷»úÇëÇó¿ØÖÆÆ÷Éı¼¶Ë÷ÒıºÅ
+					case  ASK_Controller_Update_Index://ä¸»æœºè¯·æ±‚æ§åˆ¶å™¨å‡çº§ç´¢å¼•å·
 					{
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï,½ÓÊÕÏÂÒ»×éÊı¾İ
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­,æ¥æ”¶ä¸‹ä¸€ç»„æ•°æ®
 						break;
 					}
 					
-					case  ASK_Motor_Update://Ö÷»úÇëÇóÓÍÃÅ¿ØÖÆÆ÷Éı¼¶°ü
+					case  ASK_Motor_Update://ä¸»æœºè¯·æ±‚æ²¹é—¨æ§åˆ¶å™¨å‡çº§åŒ…
 					{
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï,½ÓÊÕÏÂÒ»×éÊı¾İ
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­,æ¥æ”¶ä¸‹ä¸€ç»„æ•°æ®
 						break;
 					}
-					case  ASK_Motor_Update_Index://Ö÷»úÇëÇóÓÍÃÅ¿ØÖÆÆ÷Éı¼¶Ë÷ÒıºÅ
+					case  ASK_Motor_Update_Index://ä¸»æœºè¯·æ±‚æ²¹é—¨æ§åˆ¶å™¨å‡çº§ç´¢å¼•å·
 					{
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï,½ÓÊÕÏÂÒ»×éÊı¾İ
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­,æ¥æ”¶ä¸‹ä¸€ç»„æ•°æ®
 						break;
 					}
-					case  ASK_Module_State://Ö÷»úÇëÇóÄ£¿é×´Ì¬
+					case  ASK_Module_State://ä¸»æœºè¯·æ±‚æ¨¡å—çŠ¶æ€
 					{
-						UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï,½ÓÊÕÏÂÒ»×éÊı¾İ
+						UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­,æ¥æ”¶ä¸‹ä¸€ç»„æ•°æ®
 						break;
 					}
 					default:
@@ -553,10 +553,10 @@ void SPI(void)
 			
 	}	
 	
-	else//×îºóÁ½Î»²»ÊÇÍ£Ö¹·û
+	else//æœ€åä¸¤ä½ä¸æ˜¯åœæ­¢ç¬¦
 	{
-		UCB2IE|=UCRXIE;//¿ª½ÓÊÕÖĞ¶Ï,½ÓÊÕÏÂÒ»×éÊı¾İ
+		UCB2IE|=UCRXIE;//å¼€æ¥æ”¶ä¸­æ–­,æ¥æ”¶ä¸‹ä¸€ç»„æ•°æ®
 	}
 								
-	}//¶ÔÓ¦"if(flag_do)"  ´¦ÀíÍêÖ÷»ú·¢À´µÄÊı¾İ
+	}//å¯¹åº”"if(flag_do)"  å¤„ç†å®Œä¸»æœºå‘æ¥çš„æ•°æ®
 }

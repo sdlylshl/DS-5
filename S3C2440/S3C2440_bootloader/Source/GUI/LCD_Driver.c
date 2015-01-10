@@ -124,22 +124,22 @@ void S3C2440Lcd_On(void)
  */
 static void S3C2440Lcd_PowerEnable(int invpwren, int pwren)
 {
-	//GPB1 ÅäÖÃ¶Ë¿Ú×´Ì¬
-    rGPBCON = rGPBCON & (~(3 << 2)) | (1 << 2); //LCD_PWM GPB1ÉèÖÃÎªÊä³ö
-   rGPBDAT &= ~(1 << 1); //¿ªÆÁ
-//     rGPBDAT |= (1 << 1); //¹ØÆÁ
+	//GPB1 é…ç½®ç«¯å£çŠ¶æ€
+    rGPBCON = rGPBCON & (~(3 << 2)) | (1 << 2); //LCD_PWM GPB1è®¾ç½®ä¸ºè¾“å‡º
+   rGPBDAT &= ~(1 << 1); //å¼€å±
+//     rGPBDAT |= (1 << 1); //å…³å±
     
     //GPG4 is setted as LCD_PWREN
     rGPGUP = rGPGUP | (1 << 4); // Pull-up disable
-    rGPGCON = rGPGCON & (~(3 << 8)) | (1 << 8); //LCD_PWREN GPG4ÉèÖÃÎªÊä³ö
+    rGPGCON = rGPGCON & (~(3 << 8)) | (1 << 8); //LCD_PWREN GPG4è®¾ç½®ä¸ºè¾“å‡º
 
-	//¿ªÆÁ
+	//å¼€å±
     #if MC216
     	rGPGDAT &= ~(1 << 4); //LCD_PWREN_ON  MC216 
     #elif GPS
-    	rGPGDAT |= (1 << 4); //LCD_PWREN_ON GPSÒ»Ìå»ú
+    	rGPGDAT |= (1 << 4); //LCD_PWREN_ON GPSä¸€ä½“æœº
     #else	
-    	rGPGDAT &= ~(1 << 4); //LCD_PWREN_ON µÚÎå´úµç¿ØÏµÍ³
+    	rGPGDAT &= ~(1 << 4); //LCD_PWREN_ON ç¬¬äº”ä»£ç”µæŽ§ç³»ç»Ÿ
     #endif
 
     

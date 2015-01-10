@@ -6,7 +6,7 @@
 #include "stdlib.h"     //rand()
 /**
 //u2440mon.h
-extern U8 EEPROMISOK;       //EEPROM ´íÎó±êÖ¾
+extern U8 EEPROMISOK;       //EEPROM é”™è¯¯æ ‡å¿—
 //2440lib.h
 extern void Uart_Printf(char *fmt, ...);
 //IIC_24C64.h

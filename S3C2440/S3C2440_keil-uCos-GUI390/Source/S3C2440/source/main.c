@@ -57,13 +57,13 @@ void Touch_Screen_Init(void);
 void Task (void *data);
 
 
-extern void CalibrateTask(void* pdata);//´¥ÃşÆÁĞ£×¼ÈÎÎñÈë¿Ú		
+extern void CalibrateTask(void* pdata);//è§¦æ‘¸å±æ ¡å‡†ä»»åŠ¡å…¥å£		
    
 
 
 
 /**********************************************************
-**   ×¢Òâ£ºÔÚucos-iiÄÚ²¿ÖĞ¶Ï´¦Àíº¯Êı²»ÒªÊ¹ÓÃ_irqÏŞ¶¨·û
+**   æ³¨æ„ï¼šåœ¨ucos-iiå†…éƒ¨ä¸­æ–­å¤„ç†å‡½æ•°ä¸è¦ä½¿ç”¨_irqé™å®šç¬¦
 **
 ***********************************************************/
 
@@ -98,7 +98,7 @@ void  Timer4intdone(void)
 
 static void init_autorun_timer(int sec)
 {
-	U32 val = (PCLK>>4)/1000-1; //¶¨Ê±1ms	
+	U32 val = (PCLK>>4)/1000-1; //å®šæ—¶1ms	
 	
 	
 	pISR_TIMER4 = (U32)Timer4intdone;
@@ -297,9 +297,9 @@ void Task_LCDfresh(void *pdata)
 
     while(1)
     {	 
-       GUI_Exec();       //Íê³ÉÆÁÄ»Ë¢ĞÂ
+       GUI_Exec();       //å®Œæˆå±å¹•åˆ·æ–°
        
-       GUI_X_ExecIdle(); //¿ÕÏĞÈÎÎñ	
+       GUI_X_ExecIdle(); //ç©ºé—²ä»»åŠ¡	
 	
     }
 }
@@ -319,13 +319,13 @@ static void Rtc_Init(void)
 	
 	  rRTCCON = 1 ;		//RTC read and write enable
 
-	  rBCDYEAR = (unsigned char)TO_BCD(wYear%100);//Äê
-    rBCDMON  = (unsigned char)TO_BCD(wMonth);		//ÔÂ
-    rBCDDAY	 = (unsigned char)TO_BCD(wDay);			//ÈÕ	
-	  rBCDDATE = wDayOfWeek+1;					        	//ĞÇÆÚ
-	  rBCDHOUR = (unsigned char)TO_BCD(wHour);		//Ğ¡Ê±
-	  rBCDMIN  = (unsigned char)TO_BCD(wMinute);	//·Ö
-	  rBCDSEC  = (unsigned char)TO_BCD(wSecond);	//Ãë
+	  rBCDYEAR = (unsigned char)TO_BCD(wYear%100);//å¹´
+    rBCDMON  = (unsigned char)TO_BCD(wMonth);		//æœˆ
+    rBCDDAY	 = (unsigned char)TO_BCD(wDay);			//æ—¥	
+	  rBCDDATE = wDayOfWeek+1;					        	//æ˜ŸæœŸ
+	  rBCDHOUR = (unsigned char)TO_BCD(wHour);		//å°æ—¶
+	  rBCDMIN  = (unsigned char)TO_BCD(wMinute);	//åˆ†
+	  rBCDSEC  = (unsigned char)TO_BCD(wSecond);	//ç§’
 	
 	  rRTCCON &= ~1 ;		//RTC read and write disable
 }
@@ -339,13 +339,13 @@ void  ADC_ISR(void)
 	rINTSUBMSK|=(BIT_SUB_ADC|BIT_SUB_TC);	// Mask sub interrupt (ADC and TC) 
 	                                     // TC(Touch screen Control) Interrupt	
  
-	if(rADCDAT0 & 0x8000)//Ì§Æğ
+	if(rADCDAT0 & 0x8000)//æŠ¬èµ·
 	{
 		Uart_Printf("\nStylus Up!!\n");
 		rADCTSC&=0xff;	// Set stylus down interrupt
 		
 		xdata = -1;        
-		ydata = -1; //Ì§Æğ´¥±ÊÊ±£¬xdata,ydata ÒªÖµ³É²»´óÓÚ0µÄÊı        
+		ydata = -1; //æŠ¬èµ·è§¦ç¬”æ—¶ï¼Œxdata,ydata è¦å€¼æˆä¸å¤§äº0çš„æ•°        
        
 	}
 	else 
@@ -369,7 +369,7 @@ void  ADC_ISR(void)
 		
 	}		
 	
-	OSMboxPost(TouchMbox,(void *) 1);//Ïò´¦Àí´¥Ãş½ø³Ì·¢ÏûÏ¢
+	OSMboxPost(TouchMbox,(void *) 1);//å‘å¤„ç†è§¦æ‘¸è¿›ç¨‹å‘æ¶ˆæ¯
 	
 	ClearPending(BIT_ADC);	
 	ClearSubPending(BIT_SUB_TC);

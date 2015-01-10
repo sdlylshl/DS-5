@@ -22,7 +22,7 @@ U32 T0_CNT,T1_CNT,T2_CNT,T3_CNT,T4_CNT;
 
 static U32 autorun_10ms;
 static U16 autorun_ds;
-//ȫ�ֱ��� ʱ�䵽��־
+//全局变量 时间到标志
 volatile U16 autorun_trig;
 
 extern void Lcd_Update(void);
@@ -61,7 +61,7 @@ static __irq void Timer1_ISR(void)
         data_write[5] = (SendNum & 0xFF00) >> 8;
         data_write[6] = (SendNum & 0xFF0000) >> 16;
         data_write[7] = (SendNum & 0xFF000000) >> 24;
-Can_Write( 0x290, data_write, 8, false, false);//���ͱ���  ��׼ģʽ�±����н��ն˲��ܷ��ͳɹ�
+Can_Write( 0x290, data_write, 8, false, false);//发送报文  标准模式下必须有接收端才能发送成功
 if (SendNum>0xFFFFF0)
 {
 	DisableIrq(BIT_TIMER1);
@@ -280,7 +280,7 @@ void Timer_StartEx(void)
 }
 
 
-//U32 ���ɱ�ʾ��ʱ��Ϊ1.14Сʱ 
+//U32 最大可表示的时间为1.14小时 
 U32 Timer_StopEx(void)
 {
 	

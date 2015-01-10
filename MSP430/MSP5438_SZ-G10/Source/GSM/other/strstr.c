@@ -1,12 +1,12 @@
 
 
 //GSM_String
-//×Ö·û´®²éÕÒ
+//å­—ç¬¦ä¸²æŸ¥æ‰¾
 extern int GSM_strstr (const char * Main_str,const char * search_str);
-//×Ö·û´®³¤¶È
+//å­—ç¬¦ä¸²é•¿åº¦
 extern int GSM_strlen (const char * str);
 
-//ÔÚMain_strÖĞ²éÕÒ search_str ·µ»ØMain_strÖĞÊı×éµÄÏÂ±í 0Î´ÕÒµ½
+//åœ¨Main_strä¸­æŸ¥æ‰¾ search_str è¿”å›Main_strä¸­æ•°ç»„çš„ä¸‹è¡¨ 0æœªæ‰¾åˆ°
 // 7==strstr("12345678","78"); 
 int strstr (const char * Main_str,const char * search_str)
 {

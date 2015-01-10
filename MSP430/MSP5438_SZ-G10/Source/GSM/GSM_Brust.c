@@ -2,61 +2,61 @@
 
 #include "GSM.h"
 
-//#include "E:\¹¤×÷ÖĞ\2013\GPSÒ»Ìå»ú\µÚÒ»°æ -ĞŞ¶©2\2013.12.20--00\Source\Global.h"
+//#include "E:\å·¥ä½œä¸­\2013\GPSä¸€ä½“æœº\ç¬¬ä¸€ç‰ˆ -ä¿®è®¢2\2013.12.20--00\Source\Global.h"
 
 
-//0 Õı³£ 0x01¹Ø»ú 0x02ĞİÃß 0x04 SIM¿¨ 0x08 GSMÍøÂçÕı³£ 0x10GPRSÍøÂçÕı³£ 0x20 TCPIPÕı³£   
-char GSM_Brust()//Í»·¢Êı¾İ´¦Àí
+//0 æ­£å¸¸ 0x01å…³æœº 0x02ä¼‘çœ  0x04 SIMå¡ 0x08 GSMç½‘ç»œæ­£å¸¸ 0x10GPRSç½‘ç»œæ­£å¸¸ 0x20 TCPIPæ­£å¸¸   
+char GSM_Brust()//çªå‘æ•°æ®å¤„ç†
 {
       char Brst_Num                                           ;
       switch (M72D_Brust_STATUS)
       {
           case Receive_Gprs_Data:
-            {//M72D_Brust_STATUS = 0x01; //+QIRDI: 0,1,0 [GPRS Êı¾İµ½´ï AT+QINDI=1]
-                Delayms(5)                                    ;//XX*1MsÑÓÊ±
-                RD_Data_1_Min_Cnt=RD_Data_Time+1              ;//½âÎö MUC Ó¦´ğÊ±¼ä¼ÆÊı
+            {//M72D_Brust_STATUS = 0x01; //+QIRDI: 0,1,0 [GPRS æ•°æ®åˆ°è¾¾ AT+QINDI=1]
+                Delayms(5)                                    ;//XX*1Mså»¶æ—¶
+                RD_Data_1_Min_Cnt=RD_Data_Time+1              ;//è§£æ MUC åº”ç­”æ—¶é—´è®¡æ•°
                 RD_UCA0_Time=10240;
-                RecData()                                     ;//½âÎö²¢½«Êı¾İ×ª´æ
+                RecData()                                     ;//è§£æå¹¶å°†æ•°æ®è½¬å­˜
                 break                                         ;
             }
             
           case 0x02:
-            {//+CMTI:<mem>,<index> [¶ÌÏûÏ¢µ½´ï AT+CNMI=2,1]
+            {//+CMTI:<mem>,<index> [çŸ­æ¶ˆæ¯åˆ°è¾¾ AT+CNMI=2,1]
                 break                                         ;
             }
             
           case GSM_Get_GPS:
-            {//+CMTI:<mem>,<index> [¶ÌÏûÏ¢µ½´ï AT+CNMI=2,1]
-                Do_GSM_GPS_Data();//´¦ÀíGSM½ÓÊÕGPSÊı¾İ
+            {//+CMTI:<mem>,<index> [çŸ­æ¶ˆæ¯åˆ°è¾¾ AT+CNMI=2,1]
+                Do_GSM_GPS_Data();//å¤„ç†GSMæ¥æ”¶GPSæ•°æ®
                 break;
             } 
             
           case 0x04:
-            {//+CPIN: READY [SIM ×´Ì¬¼ì²â AT+CPIN?]
-                Module_Status[2] |= 0XC0;//È¡¿¨±¨¾¯
+            {//+CPIN: READY [SIM çŠ¶æ€æ£€æµ‹ AT+CPIN?]
+                Module_Status[2] |= 0XC0;//å–å¡æŠ¥è­¦
                 GPS_GSM_System_Stu[2] |= 0XC0; 
-                Write_No_Chg_Card_Flash();//Ğ´»»¿¨ÎŞ¿¨Flash 
-                CONNECT_FAIL_Flag=0x11;//CONNECT FAILÔÊĞíÊ¹ÄÜ
-                CONNECT_FAIL_RESET();//´¦ÀíConect_FailÁ´½Ó
+                Write_No_Chg_Card_Flash();//å†™æ¢å¡æ— å¡Flash 
+                CONNECT_FAIL_Flag=0x11;//CONNECT FAILå…è®¸ä½¿èƒ½
+                CONNECT_FAIL_RESET();//å¤„ç†Conect_Failé“¾æ¥
                 break                                         ;
             }
             
           case 0x08:
             {//M72D_Brust_STATUS = 0x02; //+CREG: 1
-                CONNECT_FAIL_Flag     =0x11                   ;//CONNECT FAILÔÊĞíÊ¹ÄÜ
-                CONNECT_FAIL_RESET()                          ;//´¦ÀíConect_FailÁ´½Ó
+                CONNECT_FAIL_Flag     =0x11                   ;//CONNECT FAILå…è®¸ä½¿èƒ½
+                CONNECT_FAIL_RESET()                          ;//å¤„ç†Conect_Failé“¾æ¥
                 break                                         ;
             }
 
           case 0x20:
-            {//+PDP DEACT [GPRSÁ´Â·(TCPIP)¶Ï¿ª ]
-                CONNECT_FAIL_Flag     =0x11                   ;//CONNECT FAILÔÊĞíÊ¹ÄÜ
-                CONNECT_FAIL_RESET()                          ;//´¦ÀíConect_FailÁ´½Ó
+            {//+PDP DEACT [GPRSé“¾è·¯(TCPIP)æ–­å¼€ ]
+                CONNECT_FAIL_Flag     =0x11                   ;//CONNECT FAILå…è®¸ä½¿èƒ½
+                CONNECT_FAIL_RESET()                          ;//å¤„ç†Conect_Failé“¾æ¥
                 break                                         ;
             }
             
           case 0x40:
-            {//+CFUN: 1 [È«¹¦ÄÜ¹¤×÷]
+            {//+CFUN: 1 [å…¨åŠŸèƒ½å·¥ä½œ]
 
                 break                                         ;
             }
@@ -64,10 +64,10 @@ char GSM_Brust()//Í»·¢Êı¾İ´¦Àí
           case 0x80:
             {//NORMAL_POWER_DOWN
                 GSM_NOM_POW_ON()                              ;
-                UDP_Built_flag      =0x00                     ;//00==ÍøÂç¶Ï¿ª»òÕßÃ»ÓĞ½¨Á¢
-                Heart_Beat_Count    =0                        ;//·¢ËÍĞÄÌø1msÊ±¼ä¼ÆÊı
+                UDP_Built_flag      =0x00                     ;//00==ç½‘ç»œæ–­å¼€æˆ–è€…æ²¡æœ‰å»ºç«‹
+                Heart_Beat_Count    =0                        ;//å‘é€å¿ƒè·³1msæ—¶é—´è®¡æ•°
                 if(MCU_Data_Count>(MCU_TimeOut>>2))
-                    MCU_Data_Count =   MCU_TimeOut >>  2      ;//1ms Êı¾İ°ü¼ÆÊı
+                    MCU_Data_Count =   MCU_TimeOut >>  2      ;//1ms æ•°æ®åŒ…è®¡æ•°
                 break                                         ;
             }
             
@@ -79,7 +79,7 @@ char GSM_Brust()//Í»·¢Êı¾İ´¦Àí
       }
     
      if(M72D_Brust_STATUS!=0)
-     {//Çå»º³åÆ÷
+     {//æ¸…ç¼“å†²å™¨
            for(Brst_Num=0;Brst_Num<M72D_Brust_RX_BUF_SIZE;Brst_Num++)
         {
             M72D_Brust_RX_Buf[Brst_Num]=0x00                  ;

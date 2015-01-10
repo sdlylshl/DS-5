@@ -1,51 +1,51 @@
 #include "msp430x54x.h"
 #include "GSM.h"
 
-unsigned int  OVER_TIMES_CNT                                        ;//3.5·ÖÖÓÒç³öÊ±¼ä¼ÆÊı
-unsigned long int THR_Mint_Time_Cnt                                 ;//3.5·ÖÖÓÊ±¼ä¼ÆÊı£¬ÓÃÓÚ²»ÉÏ´«Êı¾İ¼ì²â
-unsigned long int GSM_INIT_TIME_CNT                                 ;//GSM³õÊ¼»¯¼ÆÊ±ÓÃ
+unsigned int  OVER_TIMES_CNT                                        ;//3.5åˆ†é’Ÿæº¢å‡ºæ—¶é—´è®¡æ•°
+unsigned long int THR_Mint_Time_Cnt                                 ;//3.5åˆ†é’Ÿæ—¶é—´è®¡æ•°ï¼Œç”¨äºä¸ä¸Šä¼ æ•°æ®æ£€æµ‹
+unsigned long int GSM_INIT_TIME_CNT                                 ;//GSMåˆå§‹åŒ–è®¡æ—¶ç”¨
 unsigned char GSM_ECHO=0x87                                         ;
-unsigned char Thre_Num                                              ;//3´Î¼ÇÂ¼
+unsigned char Thre_Num                                              ;//3æ¬¡è®°å½•
 unsigned char GSM_SIM_Signal()                                               ;
-unsigned char CONNECT_FAIL_Flag                                     ;//CONNECT FAILÔÊĞíÊ¹ÄÜ
+unsigned char CONNECT_FAIL_Flag                                     ;//CONNECT FAILå…è®¸ä½¿èƒ½
 
 extern unsigned char ASCIITOHEX( unsigned char Input_H,
-                                unsigned char Input_L );//½«ASCII×Ö·û×ª»»Îª16½øÖÆµÄÊı
+                                unsigned char Input_L );//å°†ASCIIå­—ç¬¦è½¬æ¢ä¸º16è¿›åˆ¶çš„æ•°
 extern char StrSearch(char *a, char *b,
                       unsigned char aLength,
-                      unsigned char bLength)           ;//×Ö·û´®Ñ°ÕÒ
-char CONNECT_FAIL_RESET(void)                           ;//´¦ÀíConect_FailÁ´½Ó
+                      unsigned char bLength)           ;//å­—ç¬¦ä¸²å¯»æ‰¾
+char CONNECT_FAIL_RESET(void)                           ;//å¤„ç†Conect_Failé“¾æ¥
 //****************************************************************************//
 
-unsigned long int  TCPIP_BASIC_CNT                                  ;//M72Ä£¿éTCPIP»ù´¡ÉèÖÃ¼ÆÊı
-unsigned char TCPIP_BASIC_Step                                      ;//M72Ä£¿éTCPIP»ù´¡ÉèÖÃ
-char * ATE_0_Disp = "ATE0"                                          ;//ATE<value>  ÃüÁî»ØÏÔÄ£Ê½ 0²»»ØÏÔ
-char * AT_NO_DIS_DATA ="AT+QISDE=0"                                 ;//0=AT+QISENDÊı¾İ²»»ØÏÔ 
+unsigned long int  TCPIP_BASIC_CNT                                  ;//M72æ¨¡å—TCPIPåŸºç¡€è®¾ç½®è®¡æ•°
+unsigned char TCPIP_BASIC_Step                                      ;//M72æ¨¡å—TCPIPåŸºç¡€è®¾ç½®
+char * ATE_0_Disp = "ATE0"                                          ;//ATE<value>  å‘½ä»¤å›æ˜¾æ¨¡å¼ 0ä¸å›æ˜¾
+char * AT_NO_DIS_DATA ="AT+QISDE=0"                                 ;//0=AT+QISENDæ•°æ®ä¸å›æ˜¾ 
 char * AT_OK = "AT"                                                 ;
-char * AT_FGCNT_0 = "AT+QIFGCNT=0"                                  ;//ÅäÖÃÇ°ÖÃ³¡¾°ÊÜ¿ØÓÚ0Í¨µÀ
-char * AT_CSD_GPRS = "AT+QICSGP=1,\"IP\",\"CMNET\""                 ;//ÉèÖÃCSD»òGPRSÁ¬½ÓÄ£Ê½
-char * AT_SEND_OK = "AT+QIPROMPT=1"                                 ;//1==·¢ËÍ³É¹¦Ê±ÏÔÊ¾¡°>¡±ÇÒ·µ»Ø¡°SEND OK¡±
-char * AT_GPRS_CLASS_B = "AT+CGCLASS=\"B\""                         ;//GPRSÒÆ¶¯Ì¨Àà±ğ
-char * AT_GPRS_ATTACH = "AT+CGATT=1"                                ;//GPRSÍøÂç¸½×Å
-char * GPRS_ATTACH_L  = "AT+CGATT=0"                                ;//GPRSÍøÂç¸½×Å
-char * Set_Bond_Rate = "AT&W"                                       ;//¹Ì¶¨²¨ÌØÂÊ
-char *AT_CREG_1  =    "AT+CREG=1"                                   ;//Ñ°ÕÒÍøÂç AT+CGREG
-char *AT_CGREG_1  =   "AT+CGREG=1"                                  ;//Ñ°ÕÒÍøÂç 
+char * AT_FGCNT_0 = "AT+QIFGCNT=0"                                  ;//é…ç½®å‰ç½®åœºæ™¯å—æ§äº0é€šé“
+char * AT_CSD_GPRS = "AT+QICSGP=1,\"IP\",\"CMNET\""                 ;//è®¾ç½®CSDæˆ–GPRSè¿æ¥æ¨¡å¼
+char * AT_SEND_OK = "AT+QIPROMPT=1"                                 ;//1==å‘é€æˆåŠŸæ—¶æ˜¾ç¤ºâ€œ>â€ä¸”è¿”å›â€œSEND OKâ€
+char * AT_GPRS_CLASS_B = "AT+CGCLASS=\"B\""                         ;//GPRSç§»åŠ¨å°ç±»åˆ«
+char * AT_GPRS_ATTACH = "AT+CGATT=1"                                ;//GPRSç½‘ç»œé™„ç€
+char * GPRS_ATTACH_L  = "AT+CGATT=0"                                ;//GPRSç½‘ç»œé™„ç€
+char * Set_Bond_Rate = "AT&W"                                       ;//å›ºå®šæ³¢ç‰¹ç‡
+char *AT_CREG_1  =    "AT+CREG=1"                                   ;//å¯»æ‰¾ç½‘ç»œ AT+CGREG
+char *AT_CGREG_1  =   "AT+CGREG=1"                                  ;//å¯»æ‰¾ç½‘ç»œ 
 
 /*******************************************************************\
-*	      º¯ÊıÃû£ºTCPIP_BASIC_SET             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  TCPIP»ù´¡ÉèÖÃ
-                  1 ×ÔÊÊÓ¦²¨ÌØÂÊ==115200      2  ÅäÖÃÇ°ÖÃ³¡¾°ÊÜ¿ØÓÚ0Í¨µÀ
-                  3 ÉèÖÃCSD»òGPRSÁ¬½ÓÄ£Ê½     4 ¹Ø±ÕÊı¾İ»ØÏÔ
-                  5 ·¢ËÍ³É¹¦Ê±ÏÔÊ¾¡°>¡±ÇÒ·µ»Ø¡°SEND OK¡±
-                  6 GPRSÒÆ¶¯Ì¨Àà±ğB           7 
-                  8 GPRSÍøÂç¸½×Å
-*	      ²ÎÊı£º  
-          ¸ñÊ½£º 
-*	      ·µ»ØÖµ£º  
+*	      å‡½æ•°åï¼šTCPIP_BASIC_SET             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  TCPIPåŸºç¡€è®¾ç½®
+                  1 è‡ªé€‚åº”æ³¢ç‰¹ç‡==115200      2  é…ç½®å‰ç½®åœºæ™¯å—æ§äº0é€šé“
+                  3 è®¾ç½®CSDæˆ–GPRSè¿æ¥æ¨¡å¼     4 å…³é—­æ•°æ®å›æ˜¾
+                  5 å‘é€æˆåŠŸæ—¶æ˜¾ç¤ºâ€œ>â€ä¸”è¿”å›â€œSEND OKâ€
+                  6 GPRSç§»åŠ¨å°ç±»åˆ«B           7 
+                  8 GPRSç½‘ç»œé™„ç€
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š 
+*	      è¿”å›å€¼ï¼š  
 *
-*	      ĞŞ¸ÄÀúÊ·£º1 ½¯±¾Çì 2013.12.04 ¼ÓÈë¹Ì¶¨²¨ÌØÂÊÉèÖÃ AT&W
+*	      ä¿®æ”¹å†å²ï¼š1 è’‹æœ¬åº† 2013.12.04 åŠ å…¥å›ºå®šæ³¢ç‰¹ç‡è®¾ç½® AT&W
 \*******************************************************************/
 char TCPIP_BASIC_SET()
 {
@@ -74,7 +74,7 @@ char TCPIP_BASIC_SET()
                   {
                     TCPIP_BASIC_CNT=0;
                     TCPIP_BASIC_Step=0;
-                    OVER_TIMES_CNT=5;//ÖØÆôÏµÍ³
+                    OVER_TIMES_CNT=5;//é‡å¯ç³»ç»Ÿ
                     CONNECT_FAIL_Flag=0x11;
                     CONNECT_FAIL_RESET();
                   }
@@ -92,7 +92,7 @@ char TCPIP_BASIC_SET()
               }
               Delayms(200)                                           ;
               break                                                  ;
-          }   //¹Ø±ÕÊı¾İ»ØÏÔ   
+          }   //å…³é—­æ•°æ®å›æ˜¾   
           
          case 3:
           { 
@@ -100,7 +100,7 @@ char TCPIP_BASIC_SET()
               TCPIP_BASIC_Step      =   4                            ;
               Delayms(200)                                           ;
               break                                                  ;
-          }   //ÉèÖÃCSD»òGPRSÁ¬½ÓÄ£Ê½     
+          }   //è®¾ç½®CSDæˆ–GPRSè¿æ¥æ¨¡å¼     
           
          case 4:
           { 
@@ -108,7 +108,7 @@ char TCPIP_BASIC_SET()
               TCPIP_BASIC_Step      =   5                            ;
               Delayms(200)                                           ;
               break                                                  ;
-          }   //ÅäÖÃÇ°ÖÃ³¡¾°ÊÜ¿ØÓÚ0Í¨µÀ
+          }   //é…ç½®å‰ç½®åœºæ™¯å—æ§äº0é€šé“
          case 5:
           { 
               if(GSM_SendCMD(PACKET_CONFIG,AT_SEND_OK,0,20)==1)
@@ -118,7 +118,7 @@ char TCPIP_BASIC_SET()
               }
               Delayms(200)                                           ;
               break                                                  ;
-          }   //·¢ËÍ³É¹¦Ê±ÏÔÊ¾¡°>¡±ÇÒ·µ»Ø¡°SEND OK¡±            
+          }   //å‘é€æˆåŠŸæ—¶æ˜¾ç¤ºâ€œ>â€ä¸”è¿”å›â€œSEND OKâ€            
           
          case 6:
           { 
@@ -126,7 +126,7 @@ char TCPIP_BASIC_SET()
                   TCPIP_BASIC_Step  =   7                            ;
               Delayms(200)                                           ;
               break                                                  ;                                              ;
-          }   //GPRSÒÆ¶¯Ì¨Àà±ğB
+          }   //GPRSç§»åŠ¨å°ç±»åˆ«B
           
          case 7:
           { 
@@ -134,14 +134,14 @@ char TCPIP_BASIC_SET()
               TCPIP_BASIC_Step      =   8                            ;
               Delayms(200)                                           ;
               break                                                  ;
-          }   //ÅäÖÃ·ÇÍ¸´«Ä£Ê½0
+          }   //é…ç½®éé€ä¼ æ¨¡å¼0
           
          case 8:
           { 
               TCPIP_BASIC_Step  =   9                                ;
               Delayms(200)                                           ;
               break                                                  ;
-          }   //GPRSÍøÂç¸½×Å
+          }   //GPRSç½‘ç»œé™„ç€
           
          case 9:
           { 
@@ -163,13 +163,13 @@ char TCPIP_BASIC_SET()
               if(GSM_SendCMD(PACKET_CONFIG,AT_NO_DIS_DATA,0,20)==1)
                 {
                     GSM_ECHO    &=  ~0x04                            ;
-                    GSM_ECHO    &=  ~0x80                            ;//ÅäÖÃ³É¹¦
+                    GSM_ECHO    &=  ~0x80                            ;//é…ç½®æˆåŠŸ
                     TCPIP_BASIC_Step      =   0                      ;
                     return GSM_ECHO                                  ;
                 }
               Delayms(200)                                            ;
               break                                                  ;
-          }   //·¢ËÍ³É¹¦Ê±ÏÔÊ¾¡°>¡±ÇÒ·µ»Ø¡°SEND OK¡±      
+          }   //å‘é€æˆåŠŸæ—¶æ˜¾ç¤ºâ€œ>â€ä¸”è¿”å›â€œSEND OKâ€      
           
         default:
           {
@@ -187,7 +187,7 @@ char TCPIP_BASIC_SET()
 
 char * SIM_AT_QCCID_Query = "AT+QCCID";
 
-//AT+CIMI  ÇëÇó¹ú¼ÊÒÆ¶¯Ì¨Éè±¸±êÊ¶£¨IMSI£©
+//AT+CIMI  è¯·æ±‚å›½é™…ç§»åŠ¨å°è®¾å¤‡æ ‡è¯†ï¼ˆIMSIï¼‰
 //AT+CIMI?
 //+CIMI: "460023209180635"
 //OK
@@ -198,70 +198,70 @@ char * SIM_AT_CIMI_Query = "AT+CIMI";
 
 
 
-//1. ¿ª»ú¼ì²â
-//2. SIM ¿¨¼ì²â
+//1. å¼€æœºæ£€æµ‹
+//2. SIM å¡æ£€æµ‹
 
-// AT+CSNS0  ÅäÖÃÓïÒô/Êı¾İÄ£Ê½
-// 1  ÓïÒô/´«Õæ½»ÌæÄ£Ê½£¬ÓïÒôÓÅÏÈ
-// 2  ´«Õæ
-// 3  ÓïÒô/Êı¾İ½»ÌæÄ£Ê½£¬ÓïÒôÓÅÏÈ
-// 4  Êı¾İ
-// 5  ÓïÒô/´«Õæ½»ÌæÄ£Ê½£¬´«ÕæÓÅÏÈ
-// 6  ÓïÒô/Êı¾İ½»ÌæÄ£Ê½£¬Êı¾İÓÅÏÈ
-// 7  Êı¾İ¸úËæÓïÒôÄ£Ê½
+// AT+CSNS0  é…ç½®è¯­éŸ³/æ•°æ®æ¨¡å¼
+// 1  è¯­éŸ³/ä¼ çœŸäº¤æ›¿æ¨¡å¼ï¼Œè¯­éŸ³ä¼˜å…ˆ
+// 2  ä¼ çœŸ
+// 3  è¯­éŸ³/æ•°æ®äº¤æ›¿æ¨¡å¼ï¼Œè¯­éŸ³ä¼˜å…ˆ
+// 4  æ•°æ®
+// 5  è¯­éŸ³/ä¼ çœŸäº¤æ›¿æ¨¡å¼ï¼Œä¼ çœŸä¼˜å…ˆ
+// 6  è¯­éŸ³/æ•°æ®äº¤æ›¿æ¨¡å¼ï¼Œæ•°æ®ä¼˜å…ˆ
+// 7  æ•°æ®è·Ÿéšè¯­éŸ³æ¨¡å¼
 
-// AT+CCLK? ÊµÊ±Ê±ÖÓ
+// AT+CCLK? å®æ—¶æ—¶é’Ÿ
 //+CCLK: "13/06/19,02:34:02+00"
 
-// AT+QNITZ=1  ÆôÓÃ/½ûÓÃ GSMÍøÂçÊ±¼äÍ¬²½
+// AT+QNITZ=1  å¯ç”¨/ç¦ç”¨ GSMç½‘ç»œæ—¶é—´åŒæ­¥
 
 
 
 char SIM_CARD_TYPE_FLAG;
-unsigned int SIM_CARD_TIME_OUT;//SIM¿¨³õÊ¼»¯¼ÆÊ±ÓÃ
-unsigned long int No_SIM_CARD_Cnt;//¼ì²â²»µ½SIM¿¨³õÊ¼»¯¼ÆÊı
+unsigned int SIM_CARD_TIME_OUT;//SIMå¡åˆå§‹åŒ–è®¡æ—¶ç”¨
+unsigned long int No_SIM_CARD_Cnt;//æ£€æµ‹ä¸åˆ°SIMå¡åˆå§‹åŒ–è®¡æ•°
 /*******************************************************************\
-*	      º¯ÊıÃû£ºSIM_NUM_CHECK             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ²éÑ¯SIM¿¨CCIDºÅ 
-*	      ²ÎÊı£º  
-          ¸ñÊ½£º 
-*	      ·µ»ØÖµ£º  
+*	      å‡½æ•°åï¼šSIM_NUM_CHECK             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  æŸ¥è¯¢SIMå¡CCIDå· 
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š 
+*	      è¿”å›å€¼ï¼š  
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©SIM_Check
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰SIM_Check
 \*******************************************************************/
 char SIM_NUM_CHECK()
 {
     static int SIM_CARD_NUM                                           ;
     if(GSM_INIT_TIME_CNT>SIM_CARD_TIME_OUT)
     {
-        GSM_INIT_TIME_CNT=0;//GSM³õÊ¼»¯¼ÆÊ±ÓÃ            
-        SIM_CARD_TIME_OUT=SECD_2;//SIM¿¨³õÊ¼»¯¼ÆÊ±ÓÃ
+        GSM_INIT_TIME_CNT=0;//GSMåˆå§‹åŒ–è®¡æ—¶ç”¨            
+        SIM_CARD_TIME_OUT=SECD_2;//SIMå¡åˆå§‹åŒ–è®¡æ—¶ç”¨
         SIM_CARD_TYPE_FLAG=GSM_SendCMD(PACKET_Query, SIM_AT_QCCID_Query,0, 10);
         if (SIM_CARD_TYPE_FLAG==1) 
         {
             if (GSM_ECHO & 0x01) 
-            {//´ø»ØÏÔ¹¦ÄÜÖ¸Áî³¤¶È+3×Ö½Ú(0x0D 0x0D 0x0A)+ÄÚÈİ  0x01
+            {//å¸¦å›æ˜¾åŠŸèƒ½æŒ‡ä»¤é•¿åº¦+3å­—èŠ‚(0x0D 0x0D 0x0A)+å†…å®¹  0x01
                 SIM_CARD_NUM=GSM_strlen(SIM_AT_QCCID_Query)           ;
                 if(SAVE_SIM_NUM_FH(SIM_CARD_NUM+3))
                 {
-                    SIM_CHG_WARN();//¸ü»»ÊÖ»ú¿¨±¨¾¯ 
+                    SIM_CHG_WARN();//æ›´æ¢æ‰‹æœºå¡æŠ¥è­¦ 
                     Module_Status[2] &= ~0XC0;
                     GPS_GSM_System_Stu[2] &= ~ 0XC0; 
-                    Write_No_Chg_Card_Flash();//Ğ´»»¿¨ÎŞ¿¨Flash 
-                    No_SIM_CARD_Cnt=0;//¼ì²âµ½SIM¿¨
+                    Write_No_Chg_Card_Flash();//å†™æ¢å¡æ— å¡Flash 
+                    No_SIM_CARD_Cnt=0;//æ£€æµ‹åˆ°SIMå¡
                     return 1;
                 }
                 
             } else 
-            {//2×Ö½Ú(0x0D 0x0A)+ÄÚÈİ
-                if(SAVE_SIM_NUM_FH(2))//´æ´¢ÊÖ»ú¿¨ºÅ
+            {//2å­—èŠ‚(0x0D 0x0A)+å†…å®¹
+                if(SAVE_SIM_NUM_FH(2))//å­˜å‚¨æ‰‹æœºå¡å·
                 {
                     SIM_CHG_WARN(); 
                     Module_Status[2] &= ~0XC0;
                     GPS_GSM_System_Stu[2] &= ~ 0XC0;
-                    Write_No_Chg_Card_Flash();//Ğ´»»¿¨ÎŞ¿¨Flash 
-                    No_SIM_CARD_Cnt=0;//¼ì²âµ½SIM¿¨
+                    Write_No_Chg_Card_Flash();//å†™æ¢å¡æ— å¡Flash 
+                    No_SIM_CARD_Cnt=0;//æ£€æµ‹åˆ°SIMå¡
                     return 1;
                 }
             }
@@ -274,44 +274,44 @@ char SIM_NUM_CHECK()
                 OVER_TIMES_CNT=5;
                 CONNECT_FAIL_Flag=0x11;
                 CONNECT_FAIL_RESET();
-                Module_Status[2] |= 0XC0;//È¡¿¨±¨¾¯
+                Module_Status[2] |= 0XC0;//å–å¡æŠ¥è­¦
                 GPS_GSM_System_Stu[2] |= 0XC0; 
-                Write_No_Chg_Card_Flash();//Ğ´»»¿¨ÎŞ¿¨Flash 
+                Write_No_Chg_Card_Flash();//å†™æ¢å¡æ— å¡Flash 
             }
             
-            SIM_CARD_TIME_OUT=SECD_5;//SIM¿¨³õÊ¼»¯¼ÆÊ±ÓÃ
+            SIM_CARD_TIME_OUT=SECD_5;//SIMå¡åˆå§‹åŒ–è®¡æ—¶ç”¨
         }
     }
     return 0                                                          ;
 }
 
-//AT+CREG ÍøÂç×¢²áĞÅÏ¢<stat>  0   Î´×¢²á£»MEµ±Ç°Ã»ÓĞËÑË÷µ½Òª×¢²áÒµÎñµÄĞÂÓªÔËÉÌ
-// 1   ÒÑ×¢²á£¬±¾µØÍø
-// 2   Î´×¢²á£¬µ« ME ÕıÔÚËÑË÷Òª×¢²áÒµÎñµÄĞÂÓªÔËÉÌ
-// 3   ×¢²á±»¾Ü¾ø
-// 4   Î´Öª
-// 5   ÒÑ×¢²á£¬ÂşÓÎ
+//AT+CREG ç½‘ç»œæ³¨å†Œä¿¡æ¯<stat>  0   æœªæ³¨å†Œï¼›MEå½“å‰æ²¡æœ‰æœç´¢åˆ°è¦æ³¨å†Œä¸šåŠ¡çš„æ–°è¥è¿å•†
+// 1   å·²æ³¨å†Œï¼Œæœ¬åœ°ç½‘
+// 2   æœªæ³¨å†Œï¼Œä½† ME æ­£åœ¨æœç´¢è¦æ³¨å†Œä¸šåŠ¡çš„æ–°è¥è¿å•†
+// 3   æ³¨å†Œè¢«æ‹’ç»
+// 4   æœªçŸ¥
+// 5   å·²æ³¨å†Œï¼Œæ¼«æ¸¸
 //AT+CREG?
 //+CREG: 0,1
 //OK
 char * GSM_AT_CREG_Query = "AT+CREG?";
 /*******************************************************************\
-*	      º¯ÊıÃû£ºGSM_CREG_Init             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ²éÑ¯SIM¿¨CCIDºÅ 
-*	      ²ÎÊı£º  
-          ¸ñÊ½£º 
-*	      ·µ»ØÖµ£º  
+*	      å‡½æ•°åï¼šGSM_CREG_Init             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  æŸ¥è¯¢SIMå¡CCIDå· 
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š 
+*	      è¿”å›å€¼ï¼š  
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©SIM_Check
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰SIM_Check
 \*******************************************************************/
-unsigned long int GSM_CREG_TIME_OUT =500;//SIM¿¨³õÊ¼»¯¼ÆÊ±ÓÃ
-unsigned int CREG_Zhu_Ce_Cnt ;//×¢²áÍøÂç²éÑ¯×¢²á´ÎÊı
+unsigned long int GSM_CREG_TIME_OUT =500;//SIMå¡åˆå§‹åŒ–è®¡æ—¶ç”¨
+unsigned int CREG_Zhu_Ce_Cnt ;//æ³¨å†Œç½‘ç»œæŸ¥è¯¢æ³¨å†Œæ¬¡æ•°
 char GSM_CREG_Init()
 {
     if(GSM_INIT_TIME_CNT>GSM_CREG_TIME_OUT)
     {
-        GSM_INIT_TIME_CNT=0;//GSM³õÊ¼»¯¼ÆÊ±ÓÃ
+        GSM_INIT_TIME_CNT=0;//GSMåˆå§‹åŒ–è®¡æ—¶ç”¨
         GSM_CREG_TIME_OUT=500;
         GSM_SIM_Iint_Sig_Num=GSM_SIM_Signal();
         if((GSM_SIM_Iint_Sig_Num>5)&&(GSM_SIM_Iint_Sig_Num<32))
@@ -320,7 +320,7 @@ char GSM_CREG_Init()
             if (GSM_SendCMD(PACKET_Query, GSM_AT_CREG_Query,0, 10) == 1) 
             {
                 if (GSM_ECHO & 0x01) 
-                {//Ö¸Áî³¤¶È+3×Ö½Ú(0x0D 0x0D 0x0A)+ÄÚÈİ
+                {//æŒ‡ä»¤é•¿åº¦+3å­—èŠ‚(0x0D 0x0D 0x0A)+å†…å®¹
                     if ((M72D_Query_RX_Buf[GSM_strlen(GSM_AT_CREG_Query) + 3 + 10 - 1] == '1')||
                         (M72D_Query_RX_Buf[GSM_strlen(GSM_AT_CREG_Query) + 3 + 10 - 1] == '5')||
                         (CREG_Zhu_Ce_Cnt++ >20)||
@@ -329,9 +329,9 @@ char GSM_CREG_Init()
                         )
                     {
                       
-                        Module_Status[1]  &= ~ 0xC0;//GPRSĞÅºÅÃ¤Çø
+                        Module_Status[1]  &= ~ 0xC0;//GPRSä¿¡å·ç›²åŒº
                         GPS_GSM_System_Stu[1] &= ~0xC0;
-                        Delayms(200);//XX*1MsÑÓÊ±
+                        Delayms(200);//XX*1Mså»¶æ—¶
                         if(GSM_SendCMD(PACKET_CONFIG,AT_GPRS_ATTACH,0,20)==1)
                         {
                             CREG_Zhu_Ce_Cnt=0;
@@ -342,13 +342,13 @@ char GSM_CREG_Init()
                     }
         
                 } else {
-                    //2×Ö½Ú(0x0D 0x0A)+ÄÚÈİ
+                    //2å­—èŠ‚(0x0D 0x0A)+å†…å®¹
                     if (((M72D_Query_RX_Buf[0]==0x0D&&M72D_Query_RX_Buf[1]==0x0A)&&(M72D_Query_RX_Buf[2+10 - 1] == '1'||M72D_Query_RX_Buf[2+10 - 1] == '5'))
                         ||(CREG_Zhu_Ce_Cnt++ >20))
                     {
-                        Module_Status[1]  &= ~ 0xC0;//GPRSĞÅºÅÃ¤Çø
+                        Module_Status[1]  &= ~ 0xC0;//GPRSä¿¡å·ç›²åŒº
                         GPS_GSM_System_Stu[1] &= ~0xC0;
-                        Delayms(200);//XX*1MsÑÓÊ±
+                        Delayms(200);//XX*1Mså»¶æ—¶
                         if(GSM_SendCMD(PACKET_CONFIG,AT_GPRS_ATTACH,0,20)==1)
                         {
                             CREG_Zhu_Ce_Cnt=0;
@@ -371,11 +371,11 @@ char GSM_CREG_Init()
                      OVER_TIMES_CNT=5;
                      CONNECT_FAIL_Flag=0x11;
                      CONNECT_FAIL_RESET(); 
-                     Module_Status[1]  |= 0xC0;//GPRSĞÅºÅÃ¤Çø
+                     Module_Status[1]  |= 0xC0;//GPRSä¿¡å·ç›²åŒº
                      GPS_GSM_System_Stu[1]|=0xC0;  
                 }
                 
-                GSM_CREG_TIME_OUT=SECD_5;//SIM¿¨³õÊ¼»¯¼ÆÊ±ÓÃ
+                GSM_CREG_TIME_OUT=SECD_5;//SIMå¡åˆå§‹åŒ–è®¡æ—¶ç”¨
             }
         }
     }
@@ -384,14 +384,14 @@ char GSM_CREG_Init()
 
 
 /*******************************************************************\
-*	      º¯ÊıÃû£ºGSM_GPRS_Init             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ²éÑ¯SIM¿¨CCIDºÅ 
-*	      ²ÎÊı£º  
-          ¸ñÊ½£º 
-*	      ·µ»ØÖµ£º  
+*	      å‡½æ•°åï¼šGSM_GPRS_Init             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  æŸ¥è¯¢SIMå¡CCIDå· 
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š 
+*	      è¿”å›å€¼ï¼š  
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©SIM_Check
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰SIM_Check
 \*******************************************************************/
 char * GSM_AT_CGREG = "AT+CGREG?";
 char GSM_SIM_Iint_Sig_Num;
@@ -399,18 +399,18 @@ char GSM_GPRS_Init()
 {
     if(GSM_INIT_TIME_CNT>GSM_CREG_TIME_OUT)
     {
-        GSM_INIT_TIME_CNT=0 ;//GSM³õÊ¼»¯¼ÆÊ±ÓÃ
-        GSM_CREG_TIME_OUT=500;//SIM¿¨³õÊ¼»¯¼ÆÊ±ÓÃ
+        GSM_INIT_TIME_CNT=0 ;//GSMåˆå§‹åŒ–è®¡æ—¶ç”¨
+        GSM_CREG_TIME_OUT=500;//SIMå¡åˆå§‹åŒ–è®¡æ—¶ç”¨
         GSM_SIM_Iint_Sig_Num=GSM_SIM_Signal();
-        //Delayms(200);//XX*1MsÑÓÊ±
+        //Delayms(200);//XX*1Mså»¶æ—¶
         if((GSM_SIM_Iint_Sig_Num>5)&&(GSM_SIM_Iint_Sig_Num<32))
         {
             GSM_SIM_Iint_Sig_Num=0;  
             if (GSM_SendCMD(PACKET_Query, GSM_AT_CGREG,0, 10) == 1) 
             {   
-                Delayms(200);//XX*1MsÑÓÊ±
+                Delayms(200);//XX*1Mså»¶æ—¶
                 if (GSM_ECHO & 0x01) 
-                {//Ö¸Áî³¤¶È+3×Ö½Ú(0x0D 0x0D 0x0A)+ÄÚÈİ
+                {//æŒ‡ä»¤é•¿åº¦+3å­—èŠ‚(0x0D 0x0D 0x0A)+å†…å®¹
                     if (M72D_Query_RX_Buf[GSM_strlen(GSM_AT_CREG_Query) + 3 + 10] == '1'||
                         M72D_Query_RX_Buf[GSM_strlen(GSM_AT_CREG_Query) + 3 + 10] == '5')
                     {
@@ -419,7 +419,7 @@ char GSM_GPRS_Init()
                     }
         
                 } else 
-                {//2×Ö½Ú(0x0D 0x0A)+ÄÚÈİ
+                {//2å­—èŠ‚(0x0D 0x0A)+å†…å®¹
                     if (M72D_Query_RX_Buf[2+10 ] == '1' || M72D_Query_RX_Buf[2+10] == '5')
                     {
                         CREG_Zhu_Ce_Cnt=0;
@@ -448,18 +448,18 @@ char GSM_GPRS_Init()
         }
         
         
-        GSM_CREG_TIME_OUT=SECD_5;//SIM¿¨³õÊ¼»¯¼ÆÊ±ÓÃ
+        GSM_CREG_TIME_OUT=SECD_5;//SIMå¡åˆå§‹åŒ–è®¡æ—¶ç”¨
     }
     return 0;
 }
 
-// AT+QIFGCNT  ÅäÖÃÇ°ÖÃ³¡¾°
+// AT+QIFGCNT  é…ç½®å‰ç½®åœºæ™¯
 
 
-// AT+QNTP  Í¨¹ıTCP/IPÍøÂçÊ±¼ä·şÎñÆ÷Í¬²½±¾µØÊ±¼ä
+// AT+QNTP  é€šè¿‡TCP/IPç½‘ç»œæ—¶é—´æœåŠ¡å™¨åŒæ­¥æœ¬åœ°æ—¶é—´
 char * TCPIP_AT_QNTP = "AT+QNTP";
 
-//AT+QIOPEN="UDP","58.57.53.58","1090" É½ÖØ½¨»úÓĞÏŞ¹«Ë¾GPS¹ÜÀíÆ½Ì¨¶Ë¿Ú
+//AT+QIOPEN="UDP","58.57.53.58","1090" å±±é‡å»ºæœºæœ‰é™å…¬å¸GPSç®¡ç†å¹³å°ç«¯å£
 //char * TCPIP_AT_QIOPEN = "AT+QIOPEN=\"UDP\",\"58.57.53.58\",\"2013\"";
 
 
@@ -467,21 +467,21 @@ char UDP_Built_STR[41]={'A','T','+','Q','I','O','P','E','N','=',                
                         '"','U','D','P','"',',',                                     //"UDP",
                         '"','0','5','8','.','0','5','7','.','0','5','3','.','0','5','8','"',',',     //"58.57.53.58",
                         '"','2','0','1','3','"'};                                    //"1090"    '"','1','0','9','0','"',0X0D }  '"','2','0','1','3','"',0X0D };  
-//AT+QIOPEN="UDP","58.57.53.58","2013" É½ÖØ½¨»úÓĞÏŞ¹«Ë¾GPS¹ÜÀíÆ½Ì¨¶Ë¿Ú
+//AT+QIOPEN="UDP","58.57.53.58","2013" å±±é‡å»ºæœºæœ‰é™å…¬å¸GPSç®¡ç†å¹³å°ç«¯å£
 
 char GSM_TCPIP_Init()
 {
-/*      ÆäËû´íÎó·µ»ØµÄ·ÖÎö¼°´¦Àí£º 
-Ò»¡¢  "ERROR"£¬ÕâÀï·µ»ØERROR¿ÉÄÜÓĞÁ½¸öÔ­Òò£º 
-1¡¢ ÃüÁî¸ñÊ½²»¶Ô£¬Èç¹ûËùÓĞÊı¾İ¸ñÊ½¶¼¶Ô£¬ĞèÒª¿´¿´QIMUXÊÇ²»ÊÇÎª0£¨Í¨¹ıÃüÁî
-"AT+QIMUX?"²éÑ¯£¬Èç¹û²éÑ¯½á¹ûÎª1£¬ÔòĞèÒªÍ¨¹ıÃüÁîAT+QIMUX=0½«ÆäÖØĞÂ
-ÉèÎª0£©¡£ 
-2¡¢ µ±Ç°µÄTCPIP·şÎñµÄ×´Ì¬²»ÊÇIP INITIAL»òIP STATUS»òIP CLOSE£¨Í¨¹ıÃüÁî
-AT+QISTAT²éÑ¯£©¡£Èç¹ûµ±Ç°×´Ì¬ÎªTCP CONNECTING£¬ÔòĞèÒªÖ´ĞĞ
-AT+QICLOSE¹Ø±Õµ±Ç°Ê§°ÜµÄTCPÁ¬½Ó¡£Èç¹ûÊÇÆäËû×´Ì¬£¬ÔòĞèÒªÖ´ĞĞÃüÁî
-AT+QIDEACT¶Ï¿ªµ±Ç°Ê§°ÜµÄGPRS³¡¾°¡£ 
-¶ş¡¢  "ALREADY CONNECT"£¬Õâ±íÃ÷ÒÑ¾­´æÔÚÒ»¸öTCPÁ¬½Ó»òUDPÁ¬½Ó¡£Èç¹ûÈ·ÈÏĞèÒª½¨
-Á¢ĞÂµÄÁ¬½Ó£¬ÔòĞèÒªÃüÁîAT+QICLOSE¹Ø±Õµ±Ç°Á¬½Ó¡£ 
+/*      å…¶ä»–é”™è¯¯è¿”å›çš„åˆ†æåŠå¤„ç†ï¼š 
+ä¸€ã€  "ERROR"ï¼Œè¿™é‡Œè¿”å›ERRORå¯èƒ½æœ‰ä¸¤ä¸ªåŸå› ï¼š 
+1ã€ å‘½ä»¤æ ¼å¼ä¸å¯¹ï¼Œå¦‚æœæ‰€æœ‰æ•°æ®æ ¼å¼éƒ½å¯¹ï¼Œéœ€è¦çœ‹çœ‹QIMUXæ˜¯ä¸æ˜¯ä¸º0ï¼ˆé€šè¿‡å‘½ä»¤
+"AT+QIMUX?"æŸ¥è¯¢ï¼Œå¦‚æœæŸ¥è¯¢ç»“æœä¸º1ï¼Œåˆ™éœ€è¦é€šè¿‡å‘½ä»¤AT+QIMUX=0å°†å…¶é‡æ–°
+è®¾ä¸º0ï¼‰ã€‚ 
+2ã€ å½“å‰çš„TCPIPæœåŠ¡çš„çŠ¶æ€ä¸æ˜¯IP INITIALæˆ–IP STATUSæˆ–IP CLOSEï¼ˆé€šè¿‡å‘½ä»¤
+AT+QISTATæŸ¥è¯¢ï¼‰ã€‚å¦‚æœå½“å‰çŠ¶æ€ä¸ºTCP CONNECTINGï¼Œåˆ™éœ€è¦æ‰§è¡Œ
+AT+QICLOSEå…³é—­å½“å‰å¤±è´¥çš„TCPè¿æ¥ã€‚å¦‚æœæ˜¯å…¶ä»–çŠ¶æ€ï¼Œåˆ™éœ€è¦æ‰§è¡Œå‘½ä»¤
+AT+QIDEACTæ–­å¼€å½“å‰å¤±è´¥çš„GPRSåœºæ™¯ã€‚ 
+äºŒã€  "ALREADY CONNECT"ï¼Œè¿™è¡¨æ˜å·²ç»å­˜åœ¨ä¸€ä¸ªTCPè¿æ¥æˆ–UDPè¿æ¥ã€‚å¦‚æœç¡®è®¤éœ€è¦å»º
+ç«‹æ–°çš„è¿æ¥ï¼Œåˆ™éœ€è¦å‘½ä»¤AT+QICLOSEå…³é—­å½“å‰è¿æ¥ã€‚ 
   
   AT+QIOPEN="TCP","116.226.39.202","7007"
 OK
@@ -499,10 +499,10 @@ ERROR
     char stat;
     if(GSM_INIT_TIME_CNT>GSM_CREG_TIME_OUT)
     {
-        GSM_INIT_TIME_CNT=0;//GSM³õÊ¼»¯¼ÆÊ±ÓÃ
-        GSM_CREG_TIME_OUT=SECD_5;//SIM¿¨³õÊ¼»¯¼ÆÊ±ÓÃ
+        GSM_INIT_TIME_CNT=0;//GSMåˆå§‹åŒ–è®¡æ—¶ç”¨
+        GSM_CREG_TIME_OUT=SECD_5;//SIMå¡åˆå§‹åŒ–è®¡æ—¶ç”¨
                 
-        if(GSM_SendCMD(PACKET_Query,"AT+QINDI=1", 0,10)==1)                            ;//´ò¿ªTCPIP»º´æ
+        if(GSM_SendCMD(PACKET_Query,"AT+QINDI=1", 0,10)==1)                            ;//æ‰“å¼€TCPIPç¼“å­˜
         stat=GSM_SendCMD(PACKET_NETCONFIG,UDP_Built_STR, 0,10)                         ;//OK TCPIP_AT_QIOPEN
         switch (stat) 
         {
@@ -517,8 +517,8 @@ ERROR
                if(Thre_Num>3)
                {   
                    Thre_Num   =0;
-                   CONNECT_FAIL_Flag =0x11;//CONNECT FAILÔÊĞíÊ¹ÄÜ
-                   CONNECT_FAIL_RESET();//´¦ÀíConect_FailÁ´½Ó
+                   CONNECT_FAIL_Flag =0x11;//CONNECT FAILå…è®¸ä½¿èƒ½
+                   CONNECT_FAIL_RESET();//å¤„ç†Conect_Failé“¾æ¥
                }
                return 0;
           }
@@ -530,15 +530,15 @@ ERROR
         case 0xA0:
           {//ERROR
                if(GSM_SendCMD(PACKET_CONFIG,"AT+QIMUX]=0",0, 10));
-               //CONNECT_FAIL_Flag      =0x11                                          ;//CONNECT FAILÔÊĞíÊ¹ÄÜ
-               //CONNECT_FAIL_RESET()                                                  ;//´¦ÀíConect_FailÁ´½Ó
+               //CONNECT_FAIL_Flag      =0x11                                          ;//CONNECT FAILå…è®¸ä½¿èƒ½
+               //CONNECT_FAIL_RESET()                                                  ;//å¤„ç†Conect_Failé“¾æ¥
                return 0 ;
           }
         default:
           {
-               //Delayms(60000)                                                        ;//XX*1MsÑÓÊ±
-               //CONNECT_FAIL_Flag      =0x11                                          ;//CONNECT FAILÔÊĞíÊ¹ÄÜ
-               //CONNECT_FAIL_RESET()                                                  ;//´¦ÀíConect_FailÁ´½Ó
+               //Delayms(60000)                                                        ;//XX*1Mså»¶æ—¶
+               //CONNECT_FAIL_Flag      =0x11                                          ;//CONNECT FAILå…è®¸ä½¿èƒ½
+               //CONNECT_FAIL_RESET()                                                  ;//å¤„ç†Conect_Failé“¾æ¥
                return 0;
           }   
         }
@@ -550,38 +550,38 @@ ERROR
 
 
 /********************************************************\
-*	º¯ÊıÃû£ºGSM_SIM_Signal
-   1    ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	¹¦ÄÜ£º  ³õÊ¼»¯Ö÷Ê±ÖÓ
-*	²ÎÊı£º  
-             AT+CSQ?   ĞÅºÅÖÊÁ¿
+*	å‡½æ•°åï¼šGSM_SIM_Signal
+   1    ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	åŠŸèƒ½ï¼š  åˆå§‹åŒ–ä¸»æ—¶é’Ÿ
+*	å‚æ•°ï¼š  
+             AT+CSQ?   ä¿¡å·è´¨é‡
              +CSQ:28,0
              OK
-*	·µ»ØÖµ: ÎŞ
-*	ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	è¿”å›å€¼: æ— 
+*	ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \********************************************************/
-unsigned char GSM_SIM_Signal_Num                                ;//ĞÅºÅÖÊÁ¿Ç¿¶È
+unsigned char GSM_SIM_Signal_Num                                ;//ä¿¡å·è´¨é‡å¼ºåº¦
 char * GSM_SIM_Signal_AT = "AT+CSQ"                             ;
 char * CSQ_String = "+CSQ:"                                     ;
-char   SIM_Signal                                               ;//GPS_RX_Buffer½ÓÊÕÊı×éÊ×µØÖ·
+char   SIM_Signal                                               ;//GPS_RX_Bufferæ¥æ”¶æ•°ç»„é¦–åœ°å€
 unsigned char GSM_SIM_Signal()
 {    
     //Delayms(1000);
-    char SIM_Num                                                ;//ÄÚ²¿¼ÆÊıÓÃ
+    char SIM_Num                                                ;//å†…éƒ¨è®¡æ•°ç”¨
     GSM_SIM_Signal_Num=0                                        ;
-    if (GSM_SendCMD(PACKET_Query, GSM_SIM_Signal_AT,0, 10) == 1) //·µ»ØOK
+    if (GSM_SendCMD(PACKET_Query, GSM_SIM_Signal_AT,0, 10) == 1) //è¿”å›OK
     {
-        //½âÎö +CSQ:28,0 //´ø»ØÏÔ¹¦ÄÜ //0x0D 0x0A+ÄÚÈİ(6)
+        //è§£æ +CSQ:28,0 //å¸¦å›æ˜¾åŠŸèƒ½ //0x0D 0x0A+å†…å®¹(6)
         
         SIM_Signal=StrSearch((char *)M72D_Query_RX_Buf, CSQ_String,
-                      M72D_Query_RX_BUF_SIZE,4)                 ;//×Ö·û´®Ñ°ÕÒ
+                      M72D_Query_RX_BUF_SIZE,4)                 ;//å­—ç¬¦ä¸²å¯»æ‰¾
         for(SIM_Num=0;SIM_Num<3;SIM_Num++)        
         {
              if((M72D_Query_RX_Buf[SIM_Signal+2+SIM_Num]!=',')
                 &&((M72D_Query_RX_Buf[SIM_Signal+2+SIM_Num]>0x2F)&&(M72D_Query_RX_Buf[SIM_Signal+2+SIM_Num]<0x3A)))
              {
                 GSM_SIM_Signal_Num=GSM_SIM_Signal_Num*10+
-                                   ASCIITOHEX('0',M72D_Query_RX_Buf[SIM_Signal+2+SIM_Num]);//¿ÉÓÃĞÇÊı 
+                                   ASCIITOHEX('0',M72D_Query_RX_Buf[SIM_Signal+2+SIM_Num]);//å¯ç”¨æ˜Ÿæ•° 
              }
              else {break;}  
         } 
@@ -592,31 +592,31 @@ unsigned char GSM_SIM_Signal()
  
 
 /*******************************************************************\
-*	      º¯ÊıÃû£ºConect_Fail_Reset             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ´¦ÀíConect_FailÁ´½Ó  
-*	      ²ÎÊı£º  
-*	      ·µ»ØÖµ£ºÎŞ     
+*	      å‡½æ•°åï¼šConect_Fail_Reset             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å¤„ç†Conect_Failé“¾æ¥  
+*	      å‚æ•°ï¼š  
+*	      è¿”å›å€¼ï¼šæ—      
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/           
-char CONNECT_FAIL_RESET(void)                                         //´¦ÀíConect_FailÁ´½Ó
+char CONNECT_FAIL_RESET(void)                                         //å¤„ç†Conect_Failé“¾æ¥
 {
     if((THR_Mint_Time_Cnt>MSP_A0_Min_3)||(CONNECT_FAIL_Flag==0x11)) 
     {
-        CONNECT_FAIL_Flag   =0x00                                   ;//±êÖ¾Î»ÇåÁã
-        THR_Mint_Time_Cnt   =0                                      ;//3.5·ÖÖÓ¼ÆÊıÇåÁã
+        CONNECT_FAIL_Flag   =0x00                                   ;//æ ‡å¿—ä½æ¸…é›¶
+        THR_Mint_Time_Cnt   =0                                      ;//3.5åˆ†é’Ÿè®¡æ•°æ¸…é›¶
         GSM_STATUS          = 0x3D                                  ;
         GSM_ECHO            =0x87                                   ;
         UDP_Built_STR[40]  =0                                       ;
         
-        Module_Status[1] |=  0x30                                   ;//GPRSÍøÂçÒì³£
+        Module_Status[1] |=  0x30                                   ;//GPRSç½‘ç»œå¼‚å¸¸
         GPS_GSM_System_Stu[1]|=0x30                                 ;
-        CREG_Zhu_Ce_Cnt =0;//×¢²áÍøÂç²éÑ¯×¢²á´ÎÊı
+        CREG_Zhu_Ce_Cnt =0;//æ³¨å†Œç½‘ç»œæŸ¥è¯¢æ³¨å†Œæ¬¡æ•°
         
         if(UDP_Built_flag==0x11)
         {
-            UDP_Built_flag      =0x00                                   ;//00==ÍøÂç¶Ï¿ª»òÕßÃ»ÓĞ½¨Á¢
+            UDP_Built_flag      =0x00                                   ;//00==ç½‘ç»œæ–­å¼€æˆ–è€…æ²¡æœ‰å»ºç«‹
             GSM_SendCMD(PACKET_Query,"AT+QICLOSE",0, 1000)              ;   
             Delayms(200)                                                ;
             GSM_SendCMD(PACKET_Query,"AT+QIDEACT",0, 1000)              ;
@@ -627,14 +627,14 @@ char CONNECT_FAIL_RESET(void)                                         //´¦ÀíCone
         OVER_TIMES_CNT  ++                                          ;  
         if(OVER_TIMES_CNT>3)
         {
-            RE_START_GSM()                                          ;//ÖØÆôÏµÍ³
+            RE_START_GSM()                                          ;//é‡å¯ç³»ç»Ÿ
             OVER_TIMES_CNT  =0                                      ;
         }
         
         No_SIM_CARD_Cnt=0;
-        Heart_Beat_Count    =0                                      ;//·¢ËÍĞÄÌø1msÊ±¼ä¼ÆÊı
+        Heart_Beat_Count    =0                                      ;//å‘é€å¿ƒè·³1msæ—¶é—´è®¡æ•°
         if(MCU_Data_Count>(MCU_TimeOut>>2))
-            MCU_Data_Count =   MCU_TimeOut >>  2                    ;//1ms Êı¾İ°ü¼ÆÊı
+            MCU_Data_Count =   MCU_TimeOut >>  2                    ;//1ms æ•°æ®åŒ…è®¡æ•°
         return 1                                                    ; 
     }
     return 0                                                        ;

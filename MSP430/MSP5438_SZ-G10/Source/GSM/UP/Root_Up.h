@@ -6,20 +6,20 @@
 #define SECD_5 5120
 
 
-//0x03==Éı¼¶ÏÔÊ¾Æ÷;0x0C==Éı¼¶¿ØÖÆÆ÷;0x30==Éı¼¶ÓÍÃÅ¿ØÖÆÆ÷;0xC0==Éı¼¶GPS,GSMÏµÍ³ÀàĞÍ
-//unsigned long int UP_All_Bit_Len                                    ;//Éı¼¶³ÌĞòÎÄ¼ş×Ü×Ö½ÚÊı
-//char UP_Soft_Flag                                                   ;//Èí¼ş°æ±¾Éı¼¶ÅĞ¶Ï±êÖ¾Î» 
-//0x11==Èí¼ş°æ±¾Éı¼¶;0x00==²»Èí¼ş°æ±¾Éı¼¶;0xXX==Î´Öª²»´¦Àí
-extern unsigned char UDP_Built_flag                                            ;//11==ÍøÂç½¨Á¢£¬00==ÍøÂç¶Ï¿ª»òÕßÃ»ÓĞ½¨Á¢
-extern unsigned char UP_STR_A10_Type                                           ;//Éı¼¶¿ØÖÆÏµÍ³ÀàĞÍ 
-extern unsigned char UP_SPI_Num_Flag                                           ;//11==ARMË÷ÒªÊı¾İ(°üÊıË÷ÒıºÅ,Ã¿°ü×Ö½ÚÊı)
+//0x03==å‡çº§æ˜¾ç¤ºå™¨;0x0C==å‡çº§æ§åˆ¶å™¨;0x30==å‡çº§æ²¹é—¨æ§åˆ¶å™¨;0xC0==å‡çº§GPS,GSMç³»ç»Ÿç±»å‹
+//unsigned long int UP_All_Bit_Len                                    ;//å‡çº§ç¨‹åºæ–‡ä»¶æ€»å­—èŠ‚æ•°
+//char UP_Soft_Flag                                                   ;//è½¯ä»¶ç‰ˆæœ¬å‡çº§åˆ¤æ–­æ ‡å¿—ä½ 
+//0x11==è½¯ä»¶ç‰ˆæœ¬å‡çº§;0x00==ä¸è½¯ä»¶ç‰ˆæœ¬å‡çº§;0xXX==æœªçŸ¥ä¸å¤„ç†
+extern unsigned char UDP_Built_flag                                            ;//11==ç½‘ç»œå»ºç«‹ï¼Œ00==ç½‘ç»œæ–­å¼€æˆ–è€…æ²¡æœ‰å»ºç«‹
+extern unsigned char UP_STR_A10_Type                                           ;//å‡çº§æ§åˆ¶ç³»ç»Ÿç±»å‹ 
+extern unsigned char UP_SPI_Num_Flag                                           ;//11==ARMç´¢è¦æ•°æ®(åŒ…æ•°ç´¢å¼•å·,æ¯åŒ…å­—èŠ‚æ•°)
 extern unsigned char Ask_index;
 extern unsigned int Index;
-extern unsigned long int UP_SPI_Sum_Len                                        ;//ÀÛ¼ÆÒÑ½ÓÊÕÎÄ¼ş×Ö½ÚÊı
-extern unsigned long int Heart_Beat_Send_Cnt                          ;//ĞÄÌø·¢ËÍ´ÎÊı¼ÆÊı
-extern unsigned long int UP_SPI_NUM_CNT                                       ;//Ô¶³ÌÉı¼¶¼ÆÊı
-extern unsigned long int UP_Send_Times                                        ;//Ô¶³ÌÉı¼¶·¢ËÍ´ÎÊı¼ÆÊı
-extern unsigned long int RD_Data_Time                                   ;//½âÎö MUC Ó¦´ğÊ±¼ä¼ÆÊı
+extern unsigned long int UP_SPI_Sum_Len                                        ;//ç´¯è®¡å·²æ¥æ”¶æ–‡ä»¶å­—èŠ‚æ•°
+extern unsigned long int Heart_Beat_Send_Cnt                          ;//å¿ƒè·³å‘é€æ¬¡æ•°è®¡æ•°
+extern unsigned long int UP_SPI_NUM_CNT                                       ;//è¿œç¨‹å‡çº§è®¡æ•°
+extern unsigned long int UP_Send_Times                                        ;//è¿œç¨‹å‡çº§å‘é€æ¬¡æ•°è®¡æ•°
+extern unsigned long int RD_Data_Time                                   ;//è§£æ MUC åº”ç­”æ—¶é—´è®¡æ•°
 
 
 
@@ -28,44 +28,44 @@ extern unsigned int RD_UCA0_Time                                             ;
 
 
 
-extern char Sys_NOW_UP_Flag;//ÏµÍ³ÕıÔÚÉı¼¶±êÖ¾ 11==ÔÚÉı¼¶ 55 Î´Éı¼¶
+extern char Sys_NOW_UP_Flag;//ç³»ç»Ÿæ­£åœ¨å‡çº§æ ‡å¿— 11==åœ¨å‡çº§ 55 æœªå‡çº§
 
 
-extern char Module_Status[6]                                                   ;//Ä£¿é×´Ì¬ĞÅÏ¢GPSĞÅÏ¢+GSMĞÅÏ¢+ÏµÍ³×´Ì¬1¡¢2+Éı¼¶×´Ì¬1¡¢2
-extern char UP_Root_Stat_BuF[29]                                               ;//´æ·ÅÍø¹Ø·¢ËÍÉı¼¶Æô¶¯Ö¸Áî
-extern unsigned char UP_Stat_SPI_BuF[18]                                       ;//´æ·ÅÍø¹Ø·¢ËÍÉı¼¶Æô¶¯Ö¸Áî
-extern unsigned char Soft_VER_memory[32]                                                ;//´æ´¢Èí¼ş°æ±¾ºÅ
-extern char Module_Status[6]                                                   ;//Ä£¿é×´Ì¬ĞÅÏ¢GPSĞÅÏ¢+GSMĞÅÏ¢+ÏµÍ³×´Ì¬1¡¢2+Éı¼¶×´Ì¬1¡¢2
-extern char ANS_Up_Stat_Buf[20]                                                ;//»Ø¸´Æ½Ì¨Éı¼¶Æô¶¯Ö¸ÁîÊı×é
-extern char GPS_GSM_ID_Memory[4]                                               ;//Ò»Ìå»úÉè±¸IDÖÕ¶ËºÅ  {0X38,0X1C,0X06,0X00}
-//extern char   UP_SPI_Num_BuF[4]                                                ;//´æ·Å°üÊıË÷ÒıºÅ,Ã¿°ü×Ö½ÚÊı
+extern char Module_Status[6]                                                   ;//æ¨¡å—çŠ¶æ€ä¿¡æ¯GPSä¿¡æ¯+GSMä¿¡æ¯+ç³»ç»ŸçŠ¶æ€1ã€2+å‡çº§çŠ¶æ€1ã€2
+extern char UP_Root_Stat_BuF[29]                                               ;//å­˜æ”¾ç½‘å…³å‘é€å‡çº§å¯åŠ¨æŒ‡ä»¤
+extern unsigned char UP_Stat_SPI_BuF[18]                                       ;//å­˜æ”¾ç½‘å…³å‘é€å‡çº§å¯åŠ¨æŒ‡ä»¤
+extern unsigned char Soft_VER_memory[32]                                                ;//å­˜å‚¨è½¯ä»¶ç‰ˆæœ¬å·
+extern char Module_Status[6]                                                   ;//æ¨¡å—çŠ¶æ€ä¿¡æ¯GPSä¿¡æ¯+GSMä¿¡æ¯+ç³»ç»ŸçŠ¶æ€1ã€2+å‡çº§çŠ¶æ€1ã€2
+extern char ANS_Up_Stat_Buf[20]                                                ;//å›å¤å¹³å°å‡çº§å¯åŠ¨æŒ‡ä»¤æ•°ç»„
+extern char GPS_GSM_ID_Memory[4]                                               ;//ä¸€ä½“æœºè®¾å¤‡IDç»ˆç«¯å·  {0X38,0X1C,0X06,0X00}
+//extern char   UP_SPI_Num_BuF[4]                                                ;//å­˜æ”¾åŒ…æ•°ç´¢å¼•å·,æ¯åŒ…å­—èŠ‚æ•°
 
 
 #define UP_SYSTEM_C_SIZE 1200
-extern unsigned char UP_SYSTEM_C_LANG[UP_SYSTEM_C_SIZE]                         ;//Éı¼¶°üÊı¾İ
+extern unsigned char UP_SYSTEM_C_LANG[UP_SYSTEM_C_SIZE]                         ;//å‡çº§åŒ…æ•°æ®
 #define AnsUp_SpiNum_BfSz 24
-extern char ANS_UP_SPI_Num_BuF[AnsUp_SpiNum_BfSz]                              ;//ÏòÆ½Ì¨Ë÷ÒªÉı¼¶Êı¾İ°ü
+extern char ANS_UP_SPI_Num_BuF[AnsUp_SpiNum_BfSz]                              ;//å‘å¹³å°ç´¢è¦å‡çº§æ•°æ®åŒ…
 
 
 
-extern char ANS_UP_STAT_2_NET(void)                                            ;//»Ø¸´Éı¼¶Æô¶¯Ö¸ÁîÆ½Ì¨Êı¾İ
-extern void Delayms(unsigned long int ms)                                      ;//XX*1MsÑÓÊ±
-extern char GSM_SendData(const char * Data,int num)                            ;//Êı¾İ·¢ËÍÖ¸Áî
-extern void Tran_ID_CmdNum(char* ID_Addr,char CmdNum)                   ;//×ª´æIDºÅºÍÃüÁî±àÂë                              
+extern char ANS_UP_STAT_2_NET(void)                                            ;//å›å¤å‡çº§å¯åŠ¨æŒ‡ä»¤å¹³å°æ•°æ®
+extern void Delayms(unsigned long int ms)                                      ;//XX*1Mså»¶æ—¶
+extern char GSM_SendData(const char * Data,int num)                            ;//æ•°æ®å‘é€æŒ‡ä»¤
+extern void Tran_ID_CmdNum(char* ID_Addr,char CmdNum)                   ;//è½¬å­˜IDå·å’Œå‘½ä»¤ç¼–ç                               
 extern unsigned int crc_modbus2(unsigned char *puchMsg, unsigned int usDataLen);//CRC
 extern char COMP_Peice_STR(char *Source,char *Target,unsigned int T_Cnt,
-                           unsigned int S_Cnt,unsigned int Count )             ;//±È½ÏÁ½¸ö×Ö·û´®ÊÇ·ñÏàÍ¬
-extern char Compare_String(char *Source,char *Target,unsigned int Count )      ;//±È½ÏÁ½¸ö×Ö·û´®ÊÇ·ñÏàÍ¬
-extern void Flash_WriteChar(unsigned int Addr,unsigned char Data)              ;//ÏòFlashÖĞĞ´ÈëÒ»¸ö×Ö½Ú
-extern void READ_UP_SPI_FLASH(void)                                            ;//×ªÒÆÈí¼ş°æ±¾ºÅ¼°Éı¼¶ÀàĞÍ
+                           unsigned int S_Cnt,unsigned int Count )             ;//æ¯”è¾ƒä¸¤ä¸ªå­—ç¬¦ä¸²æ˜¯å¦ç›¸åŒ
+extern char Compare_String(char *Source,char *Target,unsigned int Count )      ;//æ¯”è¾ƒä¸¤ä¸ªå­—ç¬¦ä¸²æ˜¯å¦ç›¸åŒ
+extern void Flash_WriteChar(unsigned int Addr,unsigned char Data)              ;//å‘Flashä¸­å†™å…¥ä¸€ä¸ªå­—èŠ‚
+extern void READ_UP_SPI_FLASH(void)                                            ;//è½¬ç§»è½¯ä»¶ç‰ˆæœ¬å·åŠå‡çº§ç±»å‹
 
 
-extern char UP_SPI_Num_Net(void)                                               ;//SPI°üÊıË÷ÒıºÅ,·¢ËÍ¸øÆ½Ì¨Ë÷Òı°ü
-extern char UP_A2_NUM_CRC(void)                                                ;//Éı¼¶³ÌĞòCRCĞ£Ñé
+extern char UP_SPI_Num_Net(void)                                               ;//SPIåŒ…æ•°ç´¢å¼•å·,å‘é€ç»™å¹³å°ç´¢å¼•åŒ…
+extern char UP_A2_NUM_CRC(void)                                                ;//å‡çº§ç¨‹åºCRCæ ¡éªŒ
 
 
 
-//extern void Ce_Shi_SPI_NUM(void)                                               ;//»Ø¸´Éı¼¶Æô¶¯Ö¸ÁîÆ½Ì¨Êı¾İ
+//extern void Ce_Shi_SPI_NUM(void)                                               ;//å›å¤å‡çº§å¯åŠ¨æŒ‡ä»¤å¹³å°æ•°æ®
 //extern unsigned int  UP_SPI_Ce_SHI                                             ;
 
 

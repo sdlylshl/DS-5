@@ -177,7 +177,7 @@ uint8_t hal_nrf_get_address (const hal_nrf_address_t address, uint8_t *addr);
  * parameters.
  *
  * @param retr Number of retransmit, 0 equ retransmit OFF
- * @param delay Retransmit delay in µs. Must be a
+ * @param delay Retransmit delay in ç¥. Must be a
 */
 void hal_nrf_set_auto_retr(uint8_t retr, uint16_t delay);
 

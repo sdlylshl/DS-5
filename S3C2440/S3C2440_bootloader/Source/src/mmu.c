@@ -45,9 +45,9 @@ void MMU_Init(void)
 
     //MMU_SetMTT(int vaddrStart,int vaddrEnd,int paddrStart,int attr)
     //MMU_SetMTT(0x00000000,0x07f00000,0x00000000,RW_CNB);  //bank0
-    if(rBWSCON&0x6)//nor∆Ù∂Ø
+    if(rBWSCON&0x6)//norÂêØÂä®
    		MMU_SetMTT(0x00000000,0x07f00000,0x00000000,RW_NCNB);   //bank0
-   	else//nand ∆Ù∂Ø
+   	else//nand ÂêØÂä®
    		MMU_SetMTT(0x00000000,0x00001000,0/*(int)__ENTRY*/,RW_CB);   //bank0
     //MMU_SetMTT(0x04000000,0x07f00000,0,RW_NCNB);  			//bank0
     MMU_SetMTT(0x08000000,0x0ff00000,0x08000000,RW_NCNB);  //bank1

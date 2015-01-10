@@ -21,13 +21,13 @@ UINT8  code  ETCPIP[]       = "AT%ETCPIP\r";
 UINT8  code  IOMODE[]       = "AT%IOMODE=1,1,1\r";
 UINT8  code  IPSEND[]       = "%IPSEND:1,";
 
-//UINT8  code  IPOPEN[41]     = "AT%IPOPEN=\"TCP\",\"060.213.047.105\",08080\r"; ´íÎóµÄIPµØÖ·£¬ÓÃÓÚÊµÑé
-//UINT8  code  IPOPEN[41]     = "AT%IPOPEN=\"TCP\",\"221.215.099.081\",08102\r"; //40×Ö·û£¬Ä©Î²'\0' 1¸ö£¬¹²41¸ö,IP´ÓµÚ17Êý×éµØÖ·¿ªÊ¼
-//UINT8  code  IPOPEN[41]       = "AT%IPOPEN=\"TCP\",\"060.213.047.151\",09123\r"; //40×Ö·û£¬Ä©Î²'\0' 1¸ö£¬¹²41¸ö,IP´ÓµÚ17Êý×éµØÖ·¿ªÊ¼
+//UINT8  code  IPOPEN[41]     = "AT%IPOPEN=\"TCP\",\"060.213.047.105\",08080\r"; é”™è¯¯çš„IPåœ°å€ï¼Œç”¨äºŽå®žéªŒ
+//UINT8  code  IPOPEN[41]     = "AT%IPOPEN=\"TCP\",\"221.215.099.081\",08102\r"; //40å­—ç¬¦ï¼Œæœ«å°¾'\0' 1ä¸ªï¼Œå…±41ä¸ª,IPä»Žç¬¬17æ•°ç»„åœ°å€å¼€å§‹
+//UINT8  code  IPOPEN[41]       = "AT%IPOPEN=\"TCP\",\"060.213.047.151\",09123\r"; //40å­—ç¬¦ï¼Œæœ«å°¾'\0' 1ä¸ªï¼Œå…±41ä¸ª,IPä»Žç¬¬17æ•°ç»„åœ°å€å¼€å§‹
 UINT8  code  IPOPEN[41]     = "AT%IPOPEN=\"TCP\",\"219.143.116.144\",02012\r";
-UINT8        IPOPENRAM[40];   // ÁªÍøÓÃ
-UINT8        IPOPENRAM1[40];  // ÉèÖÃÓÃ
-UINT8        IPOPENRAM2[40];  // ±¸·ÝÓÃ
+UINT8        IPOPENRAM[40];   // è”ç½‘ç”¨
+UINT8        IPOPENRAM1[40];  // è®¾ç½®ç”¨
+UINT8        IPOPENRAM2[40];  // å¤‡ä»½ç”¨
 
 UINT8  code  cIPCLOSE1[]    = "AT%IPCLOSE=1\r";
 UINT8  code  cIPCLOSE5[]    = "AT%IPCLOSE=5\r";
@@ -53,14 +53,14 @@ UINT8  code  ascTable[]     = "0123456789ABCDEF";
 // --------------------------------------------------------------------------
 
           UINT8   linkStep; 
-volatile  UINT8   GPRSOnLineFlag;       // GPRSÔÚÏß±ê¼Ç
-volatile  UINT8   GPRSTimCntSec;        // GPRS³¬Ê±ÖØÆô
-          UINT8   NetLinkOneTimeFlag;   // GPRS ÉÏµçÁªÍø±ê¼Ç
+volatile  UINT8   GPRSOnLineFlag;       // GPRSåœ¨çº¿æ ‡è®°
+volatile  UINT8   GPRSTimCntSec;        // GPRSè¶…æ—¶é‡å¯
+          UINT8   NetLinkOneTimeFlag;   // GPRS ä¸Šç”µè”ç½‘æ ‡è®°
  
  // --------------------------------------------------------------------------
            
 volatile  UINT8   GPRSRcvStep;
-volatile  UINT8   GPRSDataStartFlag;    // ¸æËßÊý¾Ý½ÓÊÕÊÇ·ñ¿ªÊ¼ÊÜµ½%ipdata 
+volatile  UINT8   GPRSDataStartFlag;    // å‘Šè¯‰æ•°æ®æŽ¥æ”¶æ˜¯å¦å¼€å§‹å—åˆ°%ipdata 
          
 volatile  UINT8   GPRSRcvTimStart;             
 volatile  UINT16  GPRSRcvTimCnt; 
@@ -70,14 +70,14 @@ volatile  UINT8   GPRSDecodeStartCmd;
 
 // --------------------------------------------------------------------------
 
-volatile  UINT16  GPRSRcvNum;           // ½ÓÊÕµ½HEX×Ö·ûµÄÊýÁ¿,ASCIIÊýÁ¿ == 2 * GPRSRcvNum;
+volatile  UINT16  GPRSRcvNum;           // æŽ¥æ”¶åˆ°HEXå­—ç¬¦çš„æ•°é‡,ASCIIæ•°é‡ == 2 * GPRSRcvNum;
 volatile  UINT8   GPRSRcvDataPos;          
 
 // --------------------------------------------------------------------------
 
           UINT8   GPRS_Snd_Cmd; 
 volatile  UINT8   GPRSSendLength;
-volatile  UINT8   GPRSSndCountIsr;      // GPRS ·¢ËÍ¼ÆÊýÆ÷
+volatile  UINT8   GPRSSndCountIsr;      // GPRS å‘é€è®¡æ•°å™¨
 
 volatile  UINT8   GPRS_Rcv_Count_Cmd;
 volatile  UINT8   GPRS_Rcv_Count;               
@@ -94,12 +94,12 @@ volatile  UINT8   GPRSCmdType;
           
 // --------------------------------------------------------------------------    
           
-          UINT8   ATStep;               // ATÃüÁîÖ´ÐÐµÄ²½Öè
-volatile  UINT16  ATTimCnt;             // 10mSÎªµ¥Î»£¬ATÃüÁîÖ´ÐÐµÄ¼ÆÊ±
-          UINT8   ATExpectStr[8];       // ÆÚÍûµÃµ½µÄ×Ö·û´®
-          UINT8   ATExpectStrLength;    // ÆÚÍûµÃµ½µÄ×Ö·û´®³¤¶È
+          UINT8   ATStep;               // ATå‘½ä»¤æ‰§è¡Œçš„æ­¥éª¤
+volatile  UINT16  ATTimCnt;             // 10mSä¸ºå•ä½ï¼ŒATå‘½ä»¤æ‰§è¡Œçš„è®¡æ—¶
+          UINT8   ATExpectStr[8];       // æœŸæœ›å¾—åˆ°çš„å­—ç¬¦ä¸²
+          UINT8   ATExpectStrLength;    // æœŸæœ›å¾—åˆ°çš„å­—ç¬¦ä¸²é•¿åº¦
 
-          UINT8   TxWindows;                     // Õâ¸ö±äÁ¿»¹Ã»ÀûÓÃ£¬µ«Õâ¸öÖµÒÑ¸³£¬ÔÚÆäËûÄ£¿é¿ÉÒÔÖ±½ÓÊ¹ÓÃ¡£
+          UINT8   TxWindows;                     // è¿™ä¸ªå˜é‡è¿˜æ²¡åˆ©ç”¨ï¼Œä½†è¿™ä¸ªå€¼å·²èµ‹ï¼Œåœ¨å…¶ä»–æ¨¡å—å¯ä»¥ç›´æŽ¥ä½¿ç”¨ã€‚
 volatile  UINT8   TxWindowsTimCnt;
           UINT8   IPSENDRAM[10];
 
@@ -107,7 +107,7 @@ volatile  UINT8   TxWindowsTimCnt;
  
 extern              UINT8   MutexFlag; 
 extern              UINT8   LEDCntReLoadValue;
-extern    volatile  UINT8   SndSvrDataDelayTimCnt;   // Êý¾ÝÑÓÊ±·¢ËÍSendDataBlockToServer()
+extern    volatile  UINT8   SndSvrDataDelayTimCnt;   // æ•°æ®å»¶æ—¶å‘é€SendDataBlockToServer()
 extern    volatile  UINT8   GPRSPacketForbidFlag;
 extern    volatile  UINT8   VMCSndToGPRS_RcvTimeOverCnt_Sec;
 extern    volatile  UINT8   RequestSndTimCnt;
@@ -143,8 +143,8 @@ void  Clear_GPRS_Rcv_Buf_Cmd(void)
 void  EM310_Turn(void)
 {
     TERM_ON; TERM_ON;
-    Delay10Ms(7);       // ¸ßÂö³å70mSÀ´¿ª»ú
-    TERM_OFF;TERM_OFF;  // Ò»Ö±¿ª»ú·ÀÖ¹¸ÉÈÅÂö³å¹Ø»ú
+    Delay10Ms(7);       // é«˜è„‰å†²70mSæ¥å¼€æœº
+    TERM_OFF;TERM_OFF;  // ä¸€ç›´å¼€æœºé˜²æ­¢å¹²æ‰°è„‰å†²å…³æœº
 }
 
 void   GPRSInit(void)
@@ -271,7 +271,7 @@ UINT8  SendATThenCheck(UINT8 code * at, UINT8  atLength, UINT16  timCnt)
     switch(ATStep)
     {
         case 0:
-	        Clear_GPRS_Rcv_Buf_Cmd();  //·¢ËÍÃüÁîÖ®Ç°£¬ÏÈÇå³ý½ÓÊÕ»º³åÇø
+	        Clear_GPRS_Rcv_Buf_Cmd();  //å‘é€å‘½ä»¤ä¹‹å‰ï¼Œå…ˆæ¸…é™¤æŽ¥æ”¶ç¼“å†²åŒº
 	        GPRS_Rcv_Count_Cmd = 0;
 	        
 		    for(i=0; i<atLength; i++)
@@ -307,7 +307,7 @@ UINT8  SendATThenCheck(UINT8 code * at, UINT8  atLength, UINT16  timCnt)
         	{
         	    EnableInterrupt;
         	    
-        	    //if(GPRS_Rcv_Count_Cmd > ATExpectStrLength)  ÒÑÔÚStrSearch()º¯ÊýÖÐ½ç¶¨
+        	    //if(GPRS_Rcv_Count_Cmd > ATExpectStrLength)  å·²åœ¨StrSearch()å‡½æ•°ä¸­ç•Œå®š
 	        	//{
 	        		if(StrSearch(GPRS_Rcv_Buf_Cmd, ATExpectStr, GPRS_Rcv_Count_Cmd, ATExpectStrLength) != 0)
 	        	    {
@@ -346,7 +346,7 @@ UINT8  SendATThenCheckRAM(UINT8  * at, UINT8  atLength, UINT16  timCnt)
     switch(ATStep)
     {
         case 0:
-	        Clear_GPRS_Rcv_Buf_Cmd();  //·¢ËÍÃüÁîÖ®Ç°£¬ÏÈÇå³ý½ÓÊÕ»º³åÇø
+	        Clear_GPRS_Rcv_Buf_Cmd();  //å‘é€å‘½ä»¤ä¹‹å‰ï¼Œå…ˆæ¸…é™¤æŽ¥æ”¶ç¼“å†²åŒº
 	        GPRS_Rcv_Count_Cmd = 0;
 	        
 	        SendDataBlockToGPRS(at, atLength);
@@ -376,7 +376,7 @@ UINT8  SendATThenCheckRAM(UINT8  * at, UINT8  atLength, UINT16  timCnt)
         	{
         	    EnableInterrupt;
         	    
-        	    //if(GPRS_Rcv_Count_Cmd > ATExpectStrLength)  ÒÑÔÚStrSearch()º¯ÊýÖÐ½ç¶¨
+        	    //if(GPRS_Rcv_Count_Cmd > ATExpectStrLength)  å·²åœ¨StrSearch()å‡½æ•°ä¸­ç•Œå®š
 	        	//{
 	        		if(StrSearch(GPRS_Rcv_Buf_Cmd, ATExpectStr, GPRS_Rcv_Count_Cmd, ATExpectStrLength) != 0)
 	        	    {
@@ -431,7 +431,7 @@ void   ATCmd(void)
                 if(ret == _OK)
                 {
                     ATStep = 0;
-                    //ret = _ERROR; ¾Ö²¿±äÁ¿¸ü¸ÄÎÞÐ§
+                    //ret = _ERROR; å±€éƒ¨å˜é‡æ›´æ”¹æ— æ•ˆ
                     
                     GPRSCmdStep++;
                 }
@@ -530,7 +530,7 @@ void   ATCmd(void)
                     GPRS_IP_Fail;
                     
                     GPRSOnLineFlag       = _NOWBAD;
-                    GPRSCmdType          = _GPRS_CMD_NO; // ´ò¿ªÁ´½ÓµÄ75sÄÚ½ûÖ¹ºóÐø²Ù×÷¡£
+                    GPRSCmdType          = _GPRS_CMD_NO; // æ‰“å¼€é“¾æŽ¥çš„75så†…ç¦æ­¢åŽç»­æ“ä½œã€‚
                     GPRSCmdStep          = 0;
                 }
                 break;
@@ -573,7 +573,7 @@ void   ATCmd(void)
                 }
                 else if(ret == _ERROR)
                 {
-                    GPRSCmdStep = 0;   // µÈ´ýÆäËûº¯ÊýµÄ³¬Ê±ÅÐ¶Ï
+                    GPRSCmdStep = 0;   // ç­‰å¾…å…¶ä»–å‡½æ•°çš„è¶…æ—¶åˆ¤æ–­
                 }
                 break;
         }
@@ -590,7 +590,7 @@ void   GPRSSendData(void)
     
     if(GPRS_Snd_Cmd != 0)
     {
-    	if(SndSvrDataDelayTimCnt == 0)  // È¡µÃ×Ê¸ñÖ®ºóÑÓÊ±·¢
+    	if(SndSvrDataDelayTimCnt == 0)  // å–å¾—èµ„æ ¼ä¹‹åŽå»¶æ—¶å‘
     	{
     		;
     	}
@@ -623,11 +623,11 @@ void   GPRSSendData(void)
 }
 
 /*-------------------------------------------------
-×Ö·û´®Ñ°ÕÒ
-    ×Ö·û´®°üº¬Ä³×Ö·û´®Ê±£¬·µ»Ø_OK, Ö»ÒªÓÐ 1 ¸ö²»Í¬£¬·µ»Ø_ERROR
-    UINT8  ptr: ´æ´¢ÇøÖ¸Õë
+å­—ç¬¦ä¸²å¯»æ‰¾
+    å­—ç¬¦ä¸²åŒ…å«æŸå­—ç¬¦ä¸²æ—¶ï¼Œè¿”å›ž_OK, åªè¦æœ‰ 1 ä¸ªä¸åŒï¼Œè¿”å›ž_ERROR
+    UINT8  ptr: å­˜å‚¨åŒºæŒ‡é’ˆ
 
-     ·µ»ØÊý¾ÝÏàµÈµÄÄ©Î²Î»ÖÃ
+     è¿”å›žæ•°æ®ç›¸ç­‰çš„æœ«å°¾ä½ç½®
      0 1 2 3 4 5 6 7 8    ===> i = 3
            3 4 5 6 |      ===> j = 4
                    |
@@ -636,7 +636,7 @@ void   GPRSSendData(void)
                    |
           i + j == 7
           
-author£ºwangtai
+authorï¼šwangtai
 
 -------------------------------------------------*/
 
@@ -644,7 +644,7 @@ UINT8  StrSearch(UINT8  *a, UINT8  *b, UINT8  aLength, UINT8  bLength)
 {
     UINT8  i, j, n;
     
-    if(aLength < bLength)   //  ÖØÒªÌõ¼þ
+    if(aLength < bLength)   //  é‡è¦æ¡ä»¶
     {
     	return  0;
     }
@@ -668,7 +668,7 @@ UINT8  StrSearch(UINT8  *a, UINT8  *b, UINT8  aLength, UINT8  bLength)
         
         if(n == bLength)
         {
-            return  (i+j); // ·µ»Ø±È½Ï×Ö·û´®µÄºóÒ»¸ö×Ö½ÚµÄÎ»ÖÃ
+            return  (i+j); // è¿”å›žæ¯”è¾ƒå­—ç¬¦ä¸²çš„åŽä¸€ä¸ªå­—èŠ‚çš„ä½ç½®
         }    
     }
     
@@ -724,16 +724,16 @@ void   CalDataNum(UINT8  colonPos, UINT8   commaPos)
 
 void   GPRSDataExtraction(void)
 {
-    static UINT8  colonNextPos;   // Ã°ºÅ   
+    static UINT8  colonNextPos;   // å†’å·   
                
     UINT8  i;
     
-    if(GPRS_Rcv_Count < 23)  // %IPDATA:X,"infodata......." // ÕæÕýµÄÊý¾ÝÒ»¶¨´óÓÚ23
+    if(GPRS_Rcv_Count < 23)  // %IPDATA:X,"infodata......." // çœŸæ­£çš„æ•°æ®ä¸€å®šå¤§äºŽ23
     {
         GPRSDataStartFlag  = 0;   
         GPRSRcvStep        = 0;   
         
-        if((GPRS_Rcv_Count > 16)) // %IPSEND:1,XX  ¾­ÑéÖ¤Ã°ºÅºóÎÞ¿Õ¸ñ£¬
+        if((GPRS_Rcv_Count > 16)) // %IPSEND:1,XX  ç»éªŒè¯å†’å·åŽæ— ç©ºæ ¼ï¼Œ
         {
         	for(i=0; i<10; i++)
 	        {
@@ -755,8 +755,8 @@ void   GPRSDataExtraction(void)
 	            	
 	            	if(TxWindows < 8)
 	            	{
-	            		TxWindowsTimCnt      = 200;  // ÕâÁ½¸ö±äÁ¿µÄË³Ðò²»ÄÜÅª·´
-	            		GPRSPacketForbidFlag = 1;    // ºó°ë»º³åÇø²ÉÓÃÂýËÙ·¢ËÍ·½Ê½
+	            		TxWindowsTimCnt      = 200;  // è¿™ä¸¤ä¸ªå˜é‡çš„é¡ºåºä¸èƒ½å¼„å
+	            		GPRSPacketForbidFlag = 1;    // åŽåŠç¼“å†²åŒºé‡‡ç”¨æ…¢é€Ÿå‘é€æ–¹å¼
 	            	}
 	            	else
 	            	{
@@ -768,7 +768,7 @@ void   GPRSDataExtraction(void)
 	        }
 	        else
 	        {
-	        	;// ¿ÉÄÜÊÇÊý¾Ý
+	        	;// å¯èƒ½æ˜¯æ•°æ®
 	        } 
     	}
     	
@@ -869,11 +869,11 @@ void   GPRSDataExtraction(void)
                     break;
             }
 
-            //---------------------------------------------------------- ³¬Ê±ÅÐ¶Ï
+            //---------------------------------------------------------- è¶…æ—¶åˆ¤æ–­
             
             if(GPRSRcvTimStart != 0)
             {
-                if(GPRSRcvTimCnt < 10)                          //±¾¼ÆÊýÆ÷ÖÐ¶ÏÖÐ×Ô¼õ,10msµÝ¼õ£¬²»ÊÇ1msµÝ¼õ
+                if(GPRSRcvTimCnt < 10)                          //æœ¬è®¡æ•°å™¨ä¸­æ–­ä¸­è‡ªå‡,10msé€’å‡ï¼Œä¸æ˜¯1msé€’å‡
                 {
                     GPRSRcvInit();
                     return;
@@ -891,9 +891,9 @@ void   GPRSDeCodeData(void)
 {
     if(GPRSDecodeStartCmd != 0)  
     {
-        Ascii2Hex(&GPRS_Rcv_Buf[GPRSRcvDataPos], GPRS_Rcv_Shadow_Buf, GPRSRcvNum*2); // ½ÓÊÕµ½µÄasciiÊÇÊý¾ÝÁ¿µÄ2±¶
+        Ascii2Hex(&GPRS_Rcv_Buf[GPRSRcvDataPos], GPRS_Rcv_Shadow_Buf, GPRSRcvNum*2); // æŽ¥æ”¶åˆ°çš„asciiæ˜¯æ•°æ®é‡çš„2å€
         
-        GPRSRcvInit();           // ·¢ËÍ½ÓÊÕºó¶¼¸´Î»
+        GPRSRcvInit();           // å‘é€æŽ¥æ”¶åŽéƒ½å¤ä½
 
         GPRS_Rcv_Cmd       = 1;
         GPRSDecodeStartCmd = 0;        
@@ -984,12 +984,12 @@ void   GPRSLink(void)
 	if( NetLinkOneTimeFlag == _FIRSTLINK )
     {
 	    NetLinkOneTimeFlag = _NODETERMINE; 
-	    GPRSTimCntSec  = 61;               // ×ª»»Ìõ¼þ
+	    GPRSTimCntSec  = 61;               // è½¬æ¢æ¡ä»¶
 	    
 	    linkStep       = 2;
 	    GPRS_Connect_ING;                 
-		GPRSCmdType    = _GPRS_CMD_NO;     // ·ÀÖ¹EM310¶ÏµçÊ±»¹Ö´ÐÐÖ¸Áî
-		GPRSOnLineFlag = _NODETERMINE;     // ·ÀÖ¹µôÏßºóÖ±½Óµ½ÕâÀï£¬Çå³ýÉÏÏß±ê¼Ç
+		GPRSCmdType    = _GPRS_CMD_NO;     // é˜²æ­¢EM310æ–­ç”µæ—¶è¿˜æ‰§è¡ŒæŒ‡ä»¤
+		GPRSOnLineFlag = _NODETERMINE;     // é˜²æ­¢æŽ‰çº¿åŽç›´æŽ¥åˆ°è¿™é‡Œï¼Œæ¸…é™¤ä¸Šçº¿æ ‡è®°
     }
     
     if( GPRSTimCntSec > 60 )     
@@ -997,7 +997,7 @@ void   GPRSLink(void)
         switch(linkStep)
         {
             case 0: 
-                GPRSTimCntSec  = 61;  // óéÖÆ¶¨Ê±Æ÷£¬·ÀÖ¹ÒâÍâ£¬ËäÈ»Æä»ù±¾ÊÇ41
+                GPRSTimCntSec  = 61;  // ç®åˆ¶å®šæ—¶å™¨ï¼Œé˜²æ­¢æ„å¤–ï¼Œè™½ç„¶å…¶åŸºæœ¬æ˜¯41
                 GPRSOnLineFlag = _NODETERMINE;
                 GPRSCmdType    = _GPRS_CMD_UnConnect;
                 
@@ -1007,14 +1007,14 @@ void   GPRSLink(void)
             case 1: 
                 if(GPRSOnLineFlag == _NO)
                 {
-                    GPRSCmdType   = _GPRS_CMD_NO;   //±ØÐëÒª
+                    GPRSCmdType   = _GPRS_CMD_NO;   //å¿…é¡»è¦
                     linkStep++;    
                 }
                 else
                 {
                     if(GPRSTimCntSec > 67)
                     {
-                        GPRSCmdType   = _GPRS_CMD_NO;//±ØÐëÒª£¬·ÀÖ¹CASE2,3¿ª»úµÈ´ýÊ±£¬»¹ÔÚÖ´ÐÐ¡£
+                        GPRSCmdType   = _GPRS_CMD_NO;//å¿…é¡»è¦ï¼Œé˜²æ­¢CASE2,3å¼€æœºç­‰å¾…æ—¶ï¼Œè¿˜åœ¨æ‰§è¡Œã€‚
                         linkStep++;  
                     }
                     else
@@ -1064,12 +1064,12 @@ void   GPRSLink(void)
                     //linkStep       = 0;
                     GPRSTimCntSec  = 0;
                       
-                    //MutexFlag = 74;        // MutexFlag±»Õ¼ÓÃµÄÊ±ºòÍ»È»µôÏß£¬ÕâÀïÖØ¸³Öµ   
+                    //MutexFlag = 74;        // MutexFlagè¢«å ç”¨çš„æ—¶å€™çªç„¶æŽ‰çº¿ï¼Œè¿™é‡Œé‡èµ‹å€¼   
                     //MutexRel;    
-                    MutexFlag = 85;          // ÉÏÏßÖ®ºóÇ¿ÖÆ·¢ËÍÐÄÌøÃüÁî£¬ÒÔ½øÐÐÊ±¼äÍ¬²½
+                    MutexFlag = 85;          // ä¸Šçº¿ä¹‹åŽå¼ºåˆ¶å‘é€å¿ƒè·³å‘½ä»¤ï¼Œä»¥è¿›è¡Œæ—¶é—´åŒæ­¥
                     GPRS_Connect_OK; 
                     
-                    GPRS_Rcv_Count  = 0;   // ±ÜÃâ¶ÏÍøÃüÁîµ¼ÖÂÍøÂç¼à¿ØÆð×÷ÓÃ
+                    GPRS_Rcv_Count  = 0;   // é¿å…æ–­ç½‘å‘½ä»¤å¯¼è‡´ç½‘ç»œç›‘æŽ§èµ·ä½œç”¨
                 }
                 else
                 {
@@ -1078,7 +1078,7 @@ void   GPRSLink(void)
                         GPRSTimCntSec      = 61;    
                         NetLinkOneTimeFlag = _FIRSTLINK;
                         
-                        GPRSCmdType        = _GPRS_CMD_NO; // >140µÄÇé¿ö
+                        GPRSCmdType        = _GPRS_CMD_NO; // >140çš„æƒ…å†µ
                     }
                     else
                     {
@@ -1100,7 +1100,7 @@ void   NetMonitor(void)
 {   
 	UINT8  i;
 	
-	if( GPRSTimCntSec < 60 )  // Ã»ÓÐ³¬Ê±²Å¼à¿Ø£¬·ñÔòÓ°ÏìGPRSLink()µÄ¶ÏÍøÃüÁî
+	if( GPRSTimCntSec < 60 )  // æ²¡æœ‰è¶…æ—¶æ‰ç›‘æŽ§ï¼Œå¦åˆ™å½±å“GPRSLink()çš„æ–­ç½‘å‘½ä»¤
 	{
 		for(i=0; i<11; i++)
 	    {
@@ -1114,8 +1114,8 @@ void   NetMonitor(void)
 	        {
 	        	GPRSOnLineFlag = _NO;
 	        	GPRSCmdType    = _GPRS_CMD_NO;
-	            GPRSTimCntSec  = 31;  // ºóÌ¨¶Ï¿ªÁ¬½Ó£¬µÈ30sÔÙÁ¬½Ó
-	            GPRSRcvInit();        // ·ÀÖ¹²ÐÔüÄÚÈÝÒ»ÖÂÇ¯ÖÆÊ±ÖÓÔÚ GPRSTimCntSec == 41, Ê¹ÖØÁªÎÞ·¨Æô¶¯
+	            GPRSTimCntSec  = 31;  // åŽå°æ–­å¼€è¿žæŽ¥ï¼Œç­‰30så†è¿žæŽ¥
+	            GPRSRcvInit();        // é˜²æ­¢æ®‹æ¸£å†…å®¹ä¸€è‡´é’³åˆ¶æ—¶é’Ÿåœ¨ GPRSTimCntSec == 41, ä½¿é‡è”æ— æ³•å¯åŠ¨
 	        }
 	    }
 	}

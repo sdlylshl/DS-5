@@ -3,7 +3,7 @@
 
 #define	printf	Uart_Printf
 
-#define	ROM_BASE	0x04000000	//地址重定向到0x04000000
+#define	ROM_BASE	0x04000000	//鍦板潃閲嶅畾鍚戝埌0x04000000
 #define	CMD_ADDR0	*((volatile U16 *)(0x5555*2+ROM_BASE))
 #define	CMD_ADDR1	*((volatile U16 *)(0x2aaa*2+ROM_BASE))
 

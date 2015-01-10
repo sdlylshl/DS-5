@@ -1,8 +1,8 @@
 #include"CRC modbus.h"
 //*************************************************************************
-//Õâ¸ö³ÌĞòÀ´×ÔÓÚPIC485 ÎÒµÄ±ÏÒµÉè¼Æ,¸ßµ×Î»ÓëÁíÁ½¸öÏà·´
+//è¿™ä¸ªç¨‹åºæ¥è‡ªäºPIC485 æˆ‘çš„æ¯•ä¸šè®¾è®¡,é«˜åº•ä½ä¸å¦ä¸¤ä¸ªç›¸å
 //Poly      0xA001 x^15+x^13+x^0
-//·´Ïò¶àÏîÊ½ 0x8005 x^15+x^2+x^0
+//åå‘å¤šé¡¹å¼ 0x8005 x^15+x^2+x^0
 /* Table of CRC constants - implements x^16+x^12+x^5+1 */
 const unsigned char auchCRCHi[] = {
 0x00, 0xC1, 0x81, 0x40, 0x01, 0xC0, 0x80, 0x41, 0x01, 0xC0,
@@ -33,7 +33,7 @@ const unsigned char auchCRCHi[] = {
 0x80, 0x41, 0x00, 0xC1, 0x81, 0x40
 } ;
 //--------------------------------------------------------
-//CRCµÍÎ»×Ö½ÚÖµ±í
+//CRCä½ä½å­—èŠ‚å€¼è¡¨
 //--------------------------------------------------------
 const unsigned char auchCRCLo[] = {
 0x00, 0xC0, 0xC1, 0x01, 0xC3, 0x03, 0x02, 0xC2, 0xC6, 0x06,
@@ -64,16 +64,16 @@ const unsigned char auchCRCLo[] = {
 0x43, 0x83, 0x41, 0x81, 0x80, 0x40
 } ;
 //--------------------------------------------------------
-//         ÊäÈë×Ö·û´® µÃµ½ÏàÓ¦µÄcrcĞ£ÑéÖµ
+//         è¾“å…¥å­—ç¬¦ä¸² å¾—åˆ°ç›¸åº”çš„crcæ ¡éªŒå€¼
 //--------------------------------------------------------
 U16 crc_modbus2(unsigned char *puchMsg, unsigned int usDataLen)
 {
-	unsigned char uchCRCHi = 0xFF ; // ¸ßCRC×Ö½Ú³õÊ¼»¯
-	unsigned char uchCRCLo = 0xFF ; // µÍCRC ×Ö½Ú³õÊ¼»¯
-	unsigned int uIndex ;         // CRCÑ­»·ÖĞµÄË÷Òı
-	while (usDataLen--)     // ´«ÊäÏûÏ¢»º³åÇø
+	unsigned char uchCRCHi = 0xFF ; // é«˜CRCå­—èŠ‚åˆå§‹åŒ–
+	unsigned char uchCRCLo = 0xFF ; // ä½CRC å­—èŠ‚åˆå§‹åŒ–
+	unsigned int uIndex ;         // CRCå¾ªç¯ä¸­çš„ç´¢å¼•
+	while (usDataLen--)     // ä¼ è¾“æ¶ˆæ¯ç¼“å†²åŒº
 	{
-		uIndex = uchCRCHi ^ *puchMsg++ ; // ¼ÆËãCRC
+		uIndex = uchCRCHi ^ *puchMsg++ ; // è®¡ç®—CRC
 		uchCRCHi = uchCRCLo ^ auchCRCHi[uIndex] ;
 		uchCRCLo = auchCRCLo[uIndex] ;
 	}

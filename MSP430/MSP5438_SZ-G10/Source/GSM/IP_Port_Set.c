@@ -3,28 +3,28 @@
 #include "GSM.h"
 
 #define  NET_IP_PORT_BUF_SIZE 14
-char REC_IP_PORT_BUF[NET_IP_PORT_BUF_SIZE]                              ;//½ÓÊÕIP¶Ë¿ÚºÅ
-char ANS_IP_PORT_BUF[NET_IP_PORT_BUF_SIZE];//IP¶Ë¿ÚºÅ »Ø¸´
+char REC_IP_PORT_BUF[NET_IP_PORT_BUF_SIZE]                              ;//æŽ¥æ”¶IPç«¯å£å·
+char ANS_IP_PORT_BUF[NET_IP_PORT_BUF_SIZE];//IPç«¯å£å· å›žå¤
 
-char IP_PORT_EROR_Flag                                                  ;//IP¶Ë¿ÚºÅ ÖØ·¢
-void ReaD_IP_PORT_FLASH(void)                                           ;//¶ÁÈ¡IPµØÖ·\PortºÅ 
+char IP_PORT_EROR_Flag                                                  ;//IPç«¯å£å· é‡å‘
+void ReaD_IP_PORT_FLASH(void)                                           ;//è¯»å–IPåœ°å€\Portå· 
 void IP_2_A(unsigned char NUM,unsigned char ADD)                        ;
 void PORT_2_A(unsigned int P_NUM)                                       ;
 /**********************************************************************\
-*	      º¯ÊýÃû£ºIP_Port_Reset             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ´¦ÀíIPµØÖ·\PortºÅ  
-*	      ²ÎÊý£º  
-          ¸ñÊ½£º ID(4)+ÃüÁî±àÂë0x87(2)+IPµØÖ·(4)+PortºÅ(2)
-*	      ·µ»ØÖµ£º·µ»ØIPµØÖ·\PortºÅ   
+*	      å‡½æ•°åï¼šIP_Port_Reset             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å¤„ç†IPåœ°å€\Portå·  
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š ID(4)+å‘½ä»¤ç¼–ç 0x87(2)+IPåœ°å€(4)+Portå·(2)
+*	      è¿”å›žå€¼ï¼šè¿”å›žIPåœ°å€\Portå·   
 *
-*	      ÐÞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹åŽ†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \**********************************************************************/
 char IP_Port_Reset()
 {
-    unsigned char PT_Num,IP_Num                                         ;//¼ÆÊýÓÃ
+    unsigned char PT_Num,IP_Num                                         ;//è®¡æ•°ç”¨
     char* IP_PORT                                                       ;
-    unsigned int CAL_IP_PT_CRC,NET_IP_PT_CRC                            ;//Ð£ÑéºÍ
+    unsigned int CAL_IP_PT_CRC,NET_IP_PT_CRC                            ;//æ ¡éªŒå’Œ
       
     NET_IP_PT_CRC =   REC_IP_PORT_BUF[13]                               ;
     NET_IP_PT_CRC =   NET_IP_PT_CRC  <<8                                ;
@@ -33,10 +33,10 @@ char IP_Port_Reset()
                                 NET_IP_PORT_BUF_SIZE-2)                 ;//12
     if(CAL_IP_PT_CRC==NET_IP_PT_CRC)
     {
-        Tran_ID_CmdNum(ANS_IP_PORT_BUF,0x87)                        ;//×ª´æIDºÅºÍÃüÁî±àÂë
+        Tran_ID_CmdNum(ANS_IP_PORT_BUF,0x87)                        ;//è½¬å­˜IDå·å’Œå‘½ä»¤ç¼–ç 
     
-        Flash_WriteChar(12,0x11)                                        ;//Ð´±êÖ¾Î»
-        for(IP_Num=0;IP_Num<6;IP_Num++)                                 //Ð´IP¼°¶Ë¿ÚºÅ
+        Flash_WriteChar(12,0x11)                                        ;//å†™æ ‡å¿—ä½
+        for(IP_Num=0;IP_Num<6;IP_Num++)                                 //å†™IPåŠç«¯å£å·
         {  
            _NOP();_NOP();_NOP();_NOP();_NOP();          
            Flash_WriteChar(13+IP_Num,REC_IP_PORT_BUF[6+IP_Num])         ;      
@@ -44,15 +44,15 @@ char IP_Port_Reset()
         
         _NOP();_NOP();_NOP();_NOP();_NOP();
         
-        IP_PORT     = (char *)0x180D                                    ;//IP¼°¶Ë¿ÚºÅÊ×µØÖ·
+        IP_PORT     = (char *)0x180D                                    ;//IPåŠç«¯å£å·é¦–åœ°å€
         for(PT_Num=0;PT_Num<6;PT_Num++)                                 
         {            
-            ANS_IP_PORT_BUF[6+PT_Num] =  *(IP_PORT+PT_Num)              ;//»Ø¸´IP¼°¶Ë¿ÚºÅ      
+            ANS_IP_PORT_BUF[6+PT_Num] =  *(IP_PORT+PT_Num)              ;//å›žå¤IPåŠç«¯å£å·      
         }  
         
-        ReaD_IP_PORT_FLASH()                                            ;//¶ÁÈ¡IPµØÖ·\PortºÅ 
+        ReaD_IP_PORT_FLASH()                                            ;//è¯»å–IPåœ°å€\Portå· 
 
-        CONNECT_FAIL_Flag     =0x11                                     ;//ÐÞ¸Ä±êÖ¾Î»£¬ÓÃÓÚÐÞ¸ÄIPºóÁ¢¼´Ö´ÐÐÖØÆô
+        CONNECT_FAIL_Flag     =0x11                                     ;//ä¿®æ”¹æ ‡å¿—ä½ï¼Œç”¨äºŽä¿®æ”¹IPåŽç«‹å³æ‰§è¡Œé‡å¯
         
         CAL_IP_PT_CRC=crc_modbus2((unsigned char *)ANS_IP_PORT_BUF,
                                     (NET_IP_PORT_BUF_SIZE-2))           ;//12
@@ -60,12 +60,12 @@ char IP_Port_Reset()
         ANS_IP_PORT_BUF[13]    =   (char)((CAL_IP_PT_CRC>>8)&0xFF)      ;
         
         IP_PORT_EROR_Flag   = 1                                         ;
-        if(GSM_SendData(ANS_IP_PORT_BUF,NET_IP_PORT_BUF_SIZE))           //Êý¾Ý·¢ËÍ   
+        if(GSM_SendData(ANS_IP_PORT_BUF,NET_IP_PORT_BUF_SIZE))           //æ•°æ®å‘é€   
         {
            IP_PORT_EROR_Flag  =  0                                      ;
            return 1                                                     ;
         }
-        if(IP_PORT_EROR_Flag)                                            //Ê§°ÜÖØ·¢
+        if(IP_PORT_EROR_Flag)                                            //å¤±è´¥é‡å‘
         {
             Delayms(200);
             IP_PORT_EROR_Flag  =  0;
@@ -81,22 +81,22 @@ char IP_Port_Reset()
 
 
 /*******************************************************************\
-*	      º¯ÊýÃû£ºReaD_IP_PORT             
-*	      ×÷ÓÃÓò£ºÄÚ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ¶ÁÈ¡IPµØÖ·\PortºÅ  
-*	      ²ÎÊý£º  
-          ¸ñÊ½£º ID(4)+ÃüÁî±àÂë0x87(2)+IPµØÖ·(8)+PortºÅ(4)
-*	      ·µ»ØÖµ£º
+*	      å‡½æ•°åï¼šReaD_IP_PORT             
+*	      ä½œç”¨åŸŸï¼šå†…éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  è¯»å–IPåœ°å€\Portå·  
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š ID(4)+å‘½ä»¤ç¼–ç 0x87(2)+IPåœ°å€(8)+Portå·(4)
+*	      è¿”å›žå€¼ï¼š
 *
-*	      ÐÞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹åŽ†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*****************************************************************/
 void ReaD_IP_PORT_FLASH(void)
 {
   
     unsigned char RD_NUM,FL_NUM,FL_CNT                                            ;
     unsigned int  PORT_NUM                                          ;
-    char* IP_PORT_AD                                                ;//IP¼°¶Ë¿ÚºÅÊ×µØÖ·
-    //char* IP_PT_AD_FG   =  (char *)0x180C                           ;//IP¼°¶Ë¿ÚºÅ
+    char* IP_PORT_AD                                                ;//IPåŠç«¯å£å·é¦–åœ°å€
+    //char* IP_PT_AD_FG   =  (char *)0x180C                           ;//IPåŠç«¯å£å·
 
     IP_PORT_AD     = (char *)0x180D                                 ;
 
@@ -122,14 +122,14 @@ void ReaD_IP_PORT_FLASH(void)
 
 
 /*******************************************************************\
-*	      º¯ÊýÃû£ºReaD_IP_PORT             
-*	      ×÷ÓÃÓò£ºÄÚ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ¶ÁÈ¡IPµØÖ·\PortºÅ  
-*	      ²ÎÊý£º  
-          ¸ñÊ½£º ID(4)+ÃüÁî±àÂë0x87(2)+IPµØÖ·(8)+PortºÅ(4)
-*	      ·µ»ØÖµ£º
+*	      å‡½æ•°åï¼šReaD_IP_PORT             
+*	      ä½œç”¨åŸŸï¼šå†…éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  è¯»å–IPåœ°å€\Portå·  
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š ID(4)+å‘½ä»¤ç¼–ç 0x87(2)+IPåœ°å€(8)+Portå·(4)
+*	      è¿”å›žå€¼ï¼š
 *
-*	      ÐÞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹åŽ†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*****************************************************************/
 void IP_2_A(unsigned char I_NUM,unsigned char ADD)
 {
@@ -139,7 +139,7 @@ void IP_2_A(unsigned char I_NUM,unsigned char ADD)
 
     RD_IP_SHI   =   RD_IP_NUM   %   100                             ;
     RD_IP_BAI   =   RD_IP_NUM   /   100                             ;
-    UDP_Built_STR[ADD+0]   =  HEX_TO_ASCII(RD_IP_BAI)               ;//16½øÖÆ×Ö·û×ª»»ASCII
+    UDP_Built_STR[ADD+0]   =  HEX_TO_ASCII(RD_IP_BAI)               ;//16è¿›åˆ¶å­—ç¬¦è½¬æ¢ASCII
     RD_IP_GE    =   RD_IP_SHI   %   10                              ;
     RD_IP_SHI   =   RD_IP_SHI   /   10                              ;
     UDP_Built_STR[ADD+1]   =  HEX_TO_ASCII(RD_IP_SHI)               ;
@@ -151,14 +151,14 @@ void IP_2_A(unsigned char I_NUM,unsigned char ADD)
 
 
 /*******************************************************************\
-*	      º¯ÊýÃû£ºReaD_IP_PORT             
-*	      ×÷ÓÃÓò£ºÄÚ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ¶ÁÈ¡IPµØÖ·\PortºÅ  
-*	      ²ÎÊý£º  
-          ¸ñÊ½£º ID(4)+ÃüÁî±àÂë0x87(2)+IPµØÖ·(8)+PortºÅ(4)
-*	      ·µ»ØÖµ£º
+*	      å‡½æ•°åï¼šReaD_IP_PORT             
+*	      ä½œç”¨åŸŸï¼šå†…éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  è¯»å–IPåœ°å€\Portå·  
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š ID(4)+å‘½ä»¤ç¼–ç 0x87(2)+IPåœ°å€(8)+Portå·(4)
+*	      è¿”å›žå€¼ï¼š
 *
-*	      ÐÞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹åŽ†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*****************************************************************/
 void PORT_2_A(unsigned int P_NUM)
 {
@@ -169,7 +169,7 @@ void PORT_2_A(unsigned int P_NUM)
 
     RD_PT_BAI    =   RD_IP_NUM   %   1000                           ;
     RD_PT_QIAN   =   RD_IP_NUM   /   1000                           ;
-    UDP_Built_STR[35]   =  HEX_TO_ASCII(RD_PT_QIAN)                 ;//16½øÖÆ×Ö·û×ª»»ASCII
+    UDP_Built_STR[35]   =  HEX_TO_ASCII(RD_PT_QIAN)                 ;//16è¿›åˆ¶å­—ç¬¦è½¬æ¢ASCII
     
     RD_PT_SHI    =   RD_PT_BAI   %   100                            ;  
     RD_PT_BAI    =   RD_PT_BAI   /   100                            ;  
@@ -184,25 +184,25 @@ void PORT_2_A(unsigned int P_NUM)
 
 
 /**********************************************************************\
-*	      º¯ÊýÃû£ºTest_IP_Port             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ²âÊÔIPµØÖ·\PortºÅ  
-*	      ²ÎÊý£º  
-          ¸ñÊ½£º 
-*	      ·µ»ØÖµ 
+*	      å‡½æ•°åï¼šTest_IP_Port             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  æµ‹è¯•IPåœ°å€\Portå·  
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š 
+*	      è¿”å›žå€¼ 
 *
-*	      ÐÞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹åŽ†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \**********************************************************************/
 void Test_IP_Port(void)
 {
     unsigned char Test;
     
-    Flash_WriteChar(12,0x11);//Ð´±êÖ¾Î»
-    for(Test=0;Test<6;Test++)//Ð´IP¼°¶Ë¿ÚºÅ
+    Flash_WriteChar(12,0x11);//å†™æ ‡å¿—ä½
+    for(Test=0;Test<6;Test++)//å†™IPåŠç«¯å£å·
     {  
        _NOP();_NOP();_NOP();_NOP();_NOP();          
        Flash_WriteChar(13+Test,Test);      
     } 
-    ReaD_IP_PORT_FLASH();//¶ÁÈ¡IPµØÖ·\PortºÅ 
+    ReaD_IP_PORT_FLASH();//è¯»å–IPåœ°å€\Portå· 
 }
 

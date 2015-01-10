@@ -1,30 +1,30 @@
 
 #include "def1.h"
 
-// ¶¨ÒåÑÕÉ«Êı¾İÀàĞÍ(¿ÉÒÔÊÇÊı¾İ½á¹¹)
+// å®šä¹‰é¢œè‰²æ•°æ®ç±»å‹(å¯ä»¥æ˜¯æ•°æ®ç»“æ„)
 #define  TCOLOR				U16
    
-// ¶¨ÒåLCMÏñËØÊıºê                 
-#define  GUI_LCM_XMAX		320							/* ¶¨ÒåÒº¾§xÖáµÄµãÊı */
-#define  GUI_LCM_YMAX		240							/* ¶¨ÒåÒº¾§yÖáµÄµãÊı */
+// å®šä¹‰LCMåƒç´ æ•°å®                 
+#define  GUI_LCM_XMAX		320							/* å®šä¹‰æ¶²æ™¶xè½´çš„ç‚¹æ•° */
+#define  GUI_LCM_YMAX		240							/* å®šä¹‰æ¶²æ™¶yè½´çš„ç‚¹æ•° */
 
-// ÉèÖÃÑÕÉ«ºê¶¨Òå
-#define   BLACK		0x0000      /* ºÚÉ«£º    0,   0,   0 */
-#define   NAVY		0x000F      /* ÉîÀ¶É«£º  0,   0, 128 */
-#define   DGREEN	0x03E0		/* ÉîÂÌÉ«£º  0, 128,   0 */
-#define   DCYAN		0x03EF		/* ÉîÇàÉ«£º  0, 128, 128 */
-#define   MAROON	0x7800		/* ÉîºìÉ«£º128,   0,   0 */
-#define   PURPLE	0x780F		/* ×ÏÉ«£º  128,   0, 128 */
-#define   OLIVE		0x7BE0 	    /* éÏé­ÂÌ£º128, 128,   0 */
-#define   LGRAY		0xC618	    /* »Ò°×É«£º192, 192, 192 */
-#define   DGRAY		0x7BEF		/* Éî»ÒÉ«£º128, 128, 128 */
-#define   BLUE		0x001F		/* À¶É«£º    0,   0, 255 */
-#define   GREEN		0x07E0		/* ÂÌÉ«£º    0, 255,   0 */
-#define   CYAN	    0x07FF 		/* ÇàÉ«£º    0, 255, 255 */
-#define   RED		0xF800		/* ºìÉ«£º  255,   0,   0 */
-#define   MAGENTA	0xF81F		/* Æ·ºì£º  255,   0, 255 */
-#define   YELLOW	0xFFE0		/* »ÆÉ«£º  255, 255, 0   */
-#define   WHITE		0xFFFF      /* °×É«£º  255, 255, 255 */
+// è®¾ç½®é¢œè‰²å®å®šä¹‰
+#define   BLACK		0x0000      /* é»‘è‰²ï¼š    0,   0,   0 */
+#define   NAVY		0x000F      /* æ·±è“è‰²ï¼š  0,   0, 128 */
+#define   DGREEN	0x03E0		/* æ·±ç»¿è‰²ï¼š  0, 128,   0 */
+#define   DCYAN		0x03EF		/* æ·±é’è‰²ï¼š  0, 128, 128 */
+#define   MAROON	0x7800		/* æ·±çº¢è‰²ï¼š128,   0,   0 */
+#define   PURPLE	0x780F		/* ç´«è‰²ï¼š  128,   0, 128 */
+#define   OLIVE		0x7BE0 	    /* æ©„æ¦„ç»¿ï¼š128, 128,   0 */
+#define   LGRAY		0xC618	    /* ç°ç™½è‰²ï¼š192, 192, 192 */
+#define   DGRAY		0x7BEF		/* æ·±ç°è‰²ï¼š128, 128, 128 */
+#define   BLUE		0x001F		/* è“è‰²ï¼š    0,   0, 255 */
+#define   GREEN		0x07E0		/* ç»¿è‰²ï¼š    0, 255,   0 */
+#define   CYAN	    0x07FF 		/* é’è‰²ï¼š    0, 255, 255 */
+#define   RED		0xF800		/* çº¢è‰²ï¼š  255,   0,   0 */
+#define   MAGENTA	0xF81F		/* å“çº¢ï¼š  255,   0, 255 */
+#define   YELLOW	0xFFE0		/* é»„è‰²ï¼š  255, 255, 0   */
+#define   WHITE		0xFFFF      /* ç™½è‰²ï¼š  255, 255, 255 */
 
 #define  CENTER_X	160
 #define  CENTER_Y	120

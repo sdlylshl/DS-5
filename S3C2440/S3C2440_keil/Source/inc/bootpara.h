@@ -46,7 +46,7 @@ int set_params(void);
 
 #ifdef GLOBAL_PARAMS
 
-//Ğ¡ÓÚµÈÓÚ512¸ö×Ö½Ú,×î¶à±£´æ24¸öITEMºÍ128×Ö½ÚÓÃ»§¶¨ÒåµÄ×Ö·û´®
+//å°äºç­‰äº512ä¸ªå­—èŠ‚,æœ€å¤šä¿å­˜24ä¸ªITEMå’Œ128å­—èŠ‚ç”¨æˆ·å®šä¹‰çš„å­—ç¬¦ä¸²
 BootParams boot_params = {
 	{"auto-run", 3},	//0=boot without parameters,1=boot with parameters
 	//{"cpuclk",   2},	//0=200M, 1=300M, 2=400M, 3=440M
@@ -70,7 +70,7 @@ BootParams boot_params = {
 	{0}
 };
 
-//Ğ¡ÓÚµÈÓÚ256×Ö½Ú
+//å°äºç­‰äº256å­—èŠ‚
 VenderParams vend_params = {
 	{"VendID",   0x76543210},
 	{"ProdID",   0xfedcba98},

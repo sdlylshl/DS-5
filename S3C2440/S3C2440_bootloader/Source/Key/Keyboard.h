@@ -4,11 +4,11 @@
 
 void Beep(int x, int y);
 /*************************************************************/
-//È«¾Ö±äÁ¿
-extern U16 KeyNum;         //¼üÖµ
-//extern U8  KeyIsUsed;      //¼üÖµÊÇ·ñÊ¹ÓÃ
-//extern U8  KEYDOWN;				//°´¼ü°´ÏÂ
-//extern U8  KEYUP; 				//°´¼üÌ§Æğ±êÖ¾
+//å…¨å±€å˜é‡
+extern U16 KeyNum;         //é”®å€¼
+//extern U8  KeyIsUsed;      //é”®å€¼æ˜¯å¦ä½¿ç”¨
+//extern U8  KEYDOWN;				//æŒ‰é”®æŒ‰ä¸‹
+//extern U8  KEYUP; 				//æŒ‰é”®æŠ¬èµ·æ ‡å¿—
 extern U16 key2num[];
 /*************************************************************/
 // 06 mode     41
@@ -36,16 +36,16 @@ extern U16 key2num[];
 #define KEY_NUM8            
 #define KEY_NUM9            
 
-#define Key_RainClean              //Óê¹Î
+#define Key_RainClean              //é›¨åˆ®
 #define KEY_F1                      //F1
-#define KEY_LongLight               //Ô¶µÆ
-#define Key_ShortLight              //½üµÆ
-#define Key_Walk                    //ĞĞ×ß
-#define Key_SpurtWater             //Ï´µÓÆ÷
-#define Key_Counter              	//¼ÆÊıÆ÷
-#define Key_AirCondition            //¿Õµ÷
-#define Key_IdleSpeed       0x18        //µ¡ËÙ
-#define Key_Speaker         0x11     	//·äÃùÆ÷
+#define KEY_LongLight               //è¿œç¯
+#define Key_ShortLight              //è¿‘ç¯
+#define Key_Walk                    //è¡Œèµ°
+#define Key_SpurtWater             //æ´—æ¶¤å™¨
+#define Key_Counter              	//è®¡æ•°å™¨
+#define Key_AirCondition            //ç©ºè°ƒ
+#define Key_IdleSpeed       0x18        //æ€ é€Ÿ
+#define Key_Speaker         0x11     	//èœ‚é¸£å™¨
 
 #define KEY_H             
 #define KEY_M             
@@ -75,16 +75,16 @@ extern U16 key2num[];
 #define KEY_NUM8            0x44
 #define KEY_NUM9            0x84
 
-#define Key_RainClean       0x104       //Óê¹Î
+#define Key_RainClean       0x104       //é›¨åˆ®
 #define KEY_F1              0x18        //F1
-#define KEY_LongLight       0x28        //Ô¶µÆ
-#define Key_ShortLight      0x48        //½üµÆ
-#define Key_Walk            0x88        //ĞĞ×ß
-#define Key_SpurtWater      0x108       //Ï´µÓÆ÷
-#define Key_Counter         0x14     	//¼ÆÊıÆ÷
-#define Key_AirCondition    0x24        //¿Õµ÷
-#define Key_IdleSpeed       0x44        //µ¡ËÙ
-#define Key_Speaker         0x84     	//·äÃùÆ÷
+#define KEY_LongLight       0x28        //è¿œç¯
+#define Key_ShortLight      0x48        //è¿‘ç¯
+#define Key_Walk            0x88        //è¡Œèµ°
+#define Key_SpurtWater      0x108       //æ´—æ¶¤å™¨
+#define Key_Counter         0x14     	//è®¡æ•°å™¨
+#define Key_AirCondition    0x24        //ç©ºè°ƒ
+#define Key_IdleSpeed       0x44        //æ€ é€Ÿ
+#define Key_Speaker         0x84     	//èœ‚é¸£å™¨
 
 
 
@@ -100,19 +100,19 @@ extern U16 key2num[];
 #define KEY_ENTER           0x102
 #endif
 /*************************************************************/
-// ¸´ºÏ°´¼üµÄ¶¨Òå
-// Çå³ıEEPROMµÄÃÜÂë1 ÊÇ 646879 dky ANSIÂëÎª0x64 0x6B 0x79
+// å¤åˆæŒ‰é”®çš„å®šä¹‰
+// æ¸…é™¤EEPROMçš„å¯†ç 1 æ˜¯ 646879 dky ANSIç ä¸º0x64 0x6B 0x79
 /*************************************************************/
 #if MC216
-	//Ç¿ÖÆË¢Ğ´MyAPP
+	//å¼ºåˆ¶åˆ·å†™MyAPP
 	#ifndef KEY_DOWNAPP
 	#define KEY_DOWNAPP			(KEY_BACK|Key_Speaker)
 	#endif
-	//²Ëµ¥Ä£Ê½
+	//èœå•æ¨¡å¼
 	#ifndef KEY_MENU
 	#define KEY_MENU			(KEY_ENTER|Key_IdleSpeed)
 	#endif
-	//Ç¿ÖÆAPP³õÊ¼»¯
+	//å¼ºåˆ¶APPåˆå§‹åŒ–
 	#ifndef KEY_KernalAPP
 	#define KEY_KernalAPP			(KEY_BACK)
 	#endif

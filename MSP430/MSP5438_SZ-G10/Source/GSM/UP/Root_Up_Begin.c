@@ -1,34 +1,34 @@
 
 #include "Root_Up.h"
 
-unsigned char UP_STR_A10_Type                                       ;//Éı¼¶¿ØÖÆÏµÍ³ÀàĞÍ 
-unsigned char UP_STR_Flag                                           ;//Éı¼¶±êÖ¾11==OK£»00==Fail
+unsigned char UP_STR_A10_Type                                       ;//å‡çº§æ§åˆ¶ç³»ç»Ÿç±»å‹ 
+unsigned char UP_STR_Flag                                           ;//å‡çº§æ ‡å¿—11==OKï¼›00==Fail
 
-char UP_Root_Stat_BuF[29]                                           ;//´æ·ÅÍø¹Ø·¢ËÍÉı¼¶Æô¶¯Ö¸Áî
-unsigned char UP_Stat_SPI_BuF[18]                                   ;//´æ·ÅÉı¼¶Æô¶¯SPIÖ¸Áî
-void TRAN_UP_SPI_BUF(char Move_Num)                                 ;//×ªÒÆÈí¼ş°æ±¾ºÅ
-void READ_UP_SPI_FLASH(void)                                        ;//×ªÒÆÈí¼ş°æ±¾ºÅ¼°Éı¼¶ÀàĞÍ
+char UP_Root_Stat_BuF[29]                                           ;//å­˜æ”¾ç½‘å…³å‘é€å‡çº§å¯åŠ¨æŒ‡ä»¤
+unsigned char UP_Stat_SPI_BuF[18]                                   ;//å­˜æ”¾å‡çº§å¯åŠ¨SPIæŒ‡ä»¤
+void TRAN_UP_SPI_BUF(char Move_Num)                                 ;//è½¬ç§»è½¯ä»¶ç‰ˆæœ¬å·
+void READ_UP_SPI_FLASH(void)                                        ;//è½¬ç§»è½¯ä»¶ç‰ˆæœ¬å·åŠå‡çº§ç±»å‹
 
 /*******************************************************************\
-*	      º¯ÊıÃû£ºRoot_UP_Net_Begin             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  Íø¹Ø·¢ËÍÉı¼¶Æô¶¯Ö¸Áî
-*	      ²ÎÊı£º  
-          ¸ñÊ½£º  ID(4)+Cmd(2)+Ö¸ÁîÁ÷Ë®ºÅ(2)+Êı¾İ°ü³¤¶È(2)
-                  +Éı¼¶³ÌĞòÖÖÀà(1)+Éı¼¶³ÌĞòÎÄ¼ş×Ü×Ö½ÚÊı(2)
-                  +Éı¼¶ÎÄ¼ş°æ±¾ºÅ(8)+CRCĞ£Ñé(2))
-*	      ·µ»ØÖµ£º    
+*	      å‡½æ•°åï¼šRoot_UP_Net_Begin             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  ç½‘å…³å‘é€å‡çº§å¯åŠ¨æŒ‡ä»¤
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š  ID(4)+Cmd(2)+æŒ‡ä»¤æµæ°´å·(2)+æ•°æ®åŒ…é•¿åº¦(2)
+                  +å‡çº§ç¨‹åºç§ç±»(1)+å‡çº§ç¨‹åºæ–‡ä»¶æ€»å­—èŠ‚æ•°(2)
+                  +å‡çº§æ–‡ä»¶ç‰ˆæœ¬å·(8)+CRCæ ¡éªŒ(2))
+*	      è¿”å›å€¼ï¼š    
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
-char Root_UP_Net_Begin(void)                                        //Íø¹Ø·¢ËÍÉı¼¶Æô¶¯Ö¸Áî
+char Root_UP_Net_Begin(void)                                        //ç½‘å…³å‘é€å‡çº§å¯åŠ¨æŒ‡ä»¤
 {
-    unsigned int NET_CNT                                            ;//¼ÆÊıÓÃ
-    unsigned int UP_CRC_B_Sum                                       ;//¼ÆËãÉı¼¶¿ªÊ¼Ğ£ÑéºÍ
-    unsigned int UP_Packet_Len                                      ;//Íø¹Ø·¢ËÍÉı¼¶Æô¶¯Ö¸Áî°ü×Ö½Ú×Ü³¤¶È
-    unsigned int UP_Root_CRC_Sum                                    ;//Ô¶³ÌÉı¼¶¿ªÊ¼Ğ£ÑéºÍ
+    unsigned int NET_CNT                                            ;//è®¡æ•°ç”¨
+    unsigned int UP_CRC_B_Sum                                       ;//è®¡ç®—å‡çº§å¼€å§‹æ ¡éªŒå’Œ
+    unsigned int UP_Packet_Len                                      ;//ç½‘å…³å‘é€å‡çº§å¯åŠ¨æŒ‡ä»¤åŒ…å­—èŠ‚æ€»é•¿åº¦
+    unsigned int UP_Root_CRC_Sum                                    ;//è¿œç¨‹å‡çº§å¼€å§‹æ ¡éªŒå’Œ
     
-    UP_Packet_Len  =   UP_Root_Stat_BuF[6]                          ;//Éı¼¶Æô¶¯Ö¸Áî°ü×Ö½Ú³¤¶È
+    UP_Packet_Len  =   UP_Root_Stat_BuF[6]                          ;//å‡çº§å¯åŠ¨æŒ‡ä»¤åŒ…å­—èŠ‚é•¿åº¦
     UP_Packet_Len  =   UP_Packet_Len  <<  8                         ;
     UP_Packet_Len  =   UP_Packet_Len +UP_Root_Stat_BuF[7]           ;
     
@@ -39,53 +39,53 @@ char Root_UP_Net_Begin(void)                                        //Íø¹Ø·¢ËÍÉı
     
     if(UP_CRC_B_Sum==UP_Root_CRC_Sum)
     {
-        Flash_WriteChar(57,'V')                                     ;//Ğ´±êÖ¾Î»
-        for(NET_CNT=0;NET_CNT<9;NET_CNT++)                           //Ğ´Éı¼¶³ÌĞòÖÖÀà1+Éı¼¶ÎÄ¼ş°æ±¾ºÅ8
+        Flash_WriteChar(57,'V')                                     ;//å†™æ ‡å¿—ä½
+        for(NET_CNT=0;NET_CNT<9;NET_CNT++)                           //å†™å‡çº§ç¨‹åºç§ç±»1+å‡çº§æ–‡ä»¶ç‰ˆæœ¬å·8
         {   
            _NOP();_NOP();_NOP();_NOP();_NOP();
            Flash_WriteChar(58+NET_CNT,UP_Root_Stat_BuF[8+NET_CNT])  ;      
         } 
         
-        for(NET_CNT=0;NET_CNT<10;NET_CNT++)                           //Ğ´Éı¼¶³ÌĞòÖÖÀà1+Éı¼¶ÎÄ¼ş°æ±¾ºÅ8
+        for(NET_CNT=0;NET_CNT<10;NET_CNT++)                           //å†™å‡çº§ç¨‹åºç§ç±»1+å‡çº§æ–‡ä»¶ç‰ˆæœ¬å·8
         {   
            _NOP();_NOP();_NOP();_NOP();_NOP();
            Flash_WriteChar(87+NET_CNT,UP_Root_Stat_BuF[17+NET_CNT])  ;      
         }
         
         _NOP();_NOP();_NOP();_NOP();_NOP();
-        READ_UP_SPI_FLASH()                                         ;//×ªÒÆÈí¼ş°æ±¾ºÅ¼°Éı¼¶ÀàĞÍ
+        READ_UP_SPI_FLASH()                                         ;//è½¬ç§»è½¯ä»¶ç‰ˆæœ¬å·åŠå‡çº§ç±»å‹
         
-        UP_STR_A10_Type  =   UP_Root_Stat_BuF[8]                    ;//Éı¼¶¿ØÖÆÏµÍ³ÀàĞÍ
-        switch(UP_STR_A10_Type)                                      //Éı¼¶ÎÄ¼ş°æ±¾ºÅ
+        UP_STR_A10_Type  =   UP_Root_Stat_BuF[8]                    ;//å‡çº§æ§åˆ¶ç³»ç»Ÿç±»å‹
+        switch(UP_STR_A10_Type)                                      //å‡çº§æ–‡ä»¶ç‰ˆæœ¬å·
         {   
             case 0x12:
             {
-                TRAN_UP_SPI_BUF(8)                                  ;//×ªÒÆÈí¼ş°æ±¾ºÅ¼°CRCĞ£Ñé
-                Module_Status[4]   |=    0x03                       ;//Éı¼¶±êÖ¾
-                ANS_Up_Stat_Buf[8] |=    0x12                       ;//»Ø¸´Æ½Ì¨Éı¼¶Æô¶¯Ö¸ÁîÊı×é
-                ANS_UP_STAT_2_NET()                                 ;//»Ø¸´Éı¼¶Æô¶¯Ö¸ÁîÆ½Ì¨Êı¾İ
+                TRAN_UP_SPI_BUF(8)                                  ;//è½¬ç§»è½¯ä»¶ç‰ˆæœ¬å·åŠCRCæ ¡éªŒ
+                Module_Status[4]   |=    0x03                       ;//å‡çº§æ ‡å¿—
+                ANS_Up_Stat_Buf[8] |=    0x12                       ;//å›å¤å¹³å°å‡çº§å¯åŠ¨æŒ‡ä»¤æ•°ç»„
+                ANS_UP_STAT_2_NET()                                 ;//å›å¤å‡çº§å¯åŠ¨æŒ‡ä»¤å¹³å°æ•°æ®
                 return 1                                            ;
-            } //0x03==Éı¼¶ÏÔÊ¾Æ÷;
+            } //0x03==å‡çº§æ˜¾ç¤ºå™¨;
             
             case 0x11:
             {
                 Module_Status[4]   |=    0x0C                       ;
                 TRAN_UP_SPI_BUF(16)                                 ;
                 break                                               ;
-            } //0x0C==Éı¼¶¿ØÖÆÆ÷;
+            } //0x0C==å‡çº§æ§åˆ¶å™¨;
             
             case 0x10:
             {
                 Module_Status[4]   |=    0x30                       ; 
                 TRAN_UP_SPI_BUF(24)                                 ;
                 break                                               ;
-            } //0x30==Éı¼¶ÓÍÃÅ¿ØÖÆÆ÷ÏµÍ³ÀàĞÍ
+            } //0x30==å‡çº§æ²¹é—¨æ§åˆ¶å™¨ç³»ç»Ÿç±»å‹
             
             case 0x13:
             {
                 TRAN_UP_SPI_BUF(32)                                 ;
                 break                                               ;
-            } //0xC0==Éı¼¶GPS,GSMÏµÍ³ÀàĞÍ
+            } //0xC0==å‡çº§GPS,GSMç³»ç»Ÿç±»å‹
             
            default:
                 break                                               ;
@@ -97,63 +97,63 @@ char Root_UP_Net_Begin(void)                                        //Íø¹Ø·¢ËÍÉı
 
 
 /*******************************************************************\
-*	      º¯ÊıÃû£ºRoot_UP_Net_Begin             
-*	      ×÷ÓÃÓò£ºÄÚ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ×ªÒÆÈí¼ş°æ±¾ºÅ
-*	      ²ÎÊı£º  Move_Num==×ªÒÆÈí¼ş°æ±¾ÀàĞÍ
-          ¸ñÊ½£º  ÎŞ
-*	      ·µ»ØÖµ£ºÎŞ    
+*	      å‡½æ•°åï¼šRoot_UP_Net_Begin             
+*	      ä½œç”¨åŸŸï¼šå†…éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  è½¬ç§»è½¯ä»¶ç‰ˆæœ¬å·
+*	      å‚æ•°ï¼š  Move_Num==è½¬ç§»è½¯ä»¶ç‰ˆæœ¬ç±»å‹
+          æ ¼å¼ï¼š  æ— 
+*	      è¿”å›å€¼ï¼šæ—     
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
-void TRAN_UP_SPI_BUF(char Move_Num)                                  //×ªÒÆÈí¼ş°æ±¾ºÅ
+void TRAN_UP_SPI_BUF(char Move_Num)                                  //è½¬ç§»è½¯ä»¶ç‰ˆæœ¬å·
 {
-    unsigned char UP_Num,RT_Num                                     ;//×ªÒÆµ±Ç°Èí¼ş°æ±¾ºÅ¼ÆÊıÓÃ
+    unsigned char UP_Num,RT_Num                                     ;//è½¬ç§»å½“å‰è½¯ä»¶ç‰ˆæœ¬å·è®¡æ•°ç”¨
     
     Move_Num    =   Move_Num-8                                      ;
     for(UP_Num=0;UP_Num<8;UP_Num++)                                 
     {
-        ANS_Up_Stat_Buf[10+UP_Num]=Soft_VER_memory[UP_Num+Move_Num] ;//×ªÒÆµ±Ç°Èí¼ş°æ±¾ºÅ
+        ANS_Up_Stat_Buf[10+UP_Num]=Soft_VER_memory[UP_Num+Move_Num] ;//è½¬ç§»å½“å‰è½¯ä»¶ç‰ˆæœ¬å·
     }
     
-    for(RT_Num=0;RT_Num<18;RT_Num++)                                 //Æô¶¯Éı¼¶³ÌĞòÎÄ¼ş¸øSPI
+    for(RT_Num=0;RT_Num<18;RT_Num++)                                 //å¯åŠ¨å‡çº§ç¨‹åºæ–‡ä»¶ç»™SPI
     {
-        UP_Stat_SPI_BuF[RT_Num]=UP_Root_Stat_BuF[8+1+RT_Num]       ;//Éı¼¶³ÌĞòÖÖÀà,Éı¼¶ÎÄ¼ş°æ±¾ºÅ    
+        UP_Stat_SPI_BuF[RT_Num]=UP_Root_Stat_BuF[8+1+RT_Num]       ;//å‡çº§ç¨‹åºç§ç±»,å‡çº§æ–‡ä»¶ç‰ˆæœ¬å·    
     }
 }
 
 
 
 /*******************************************************************\
-*	      º¯ÊıÃû£ºREAD_UP_SPI_FLASH             
-*	      ×÷ÓÃÓò£ºÄÚ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ×ªÒÆÈí¼ş°æ±¾ºÅ
-*	      ²ÎÊı£º  Move_Num==×ªÒÆÈí¼ş°æ±¾ÀàĞÍ
-          ¸ñÊ½£º  ÎŞ
-*	      ·µ»ØÖµ£ºÎŞ    
+*	      å‡½æ•°åï¼šREAD_UP_SPI_FLASH             
+*	      ä½œç”¨åŸŸï¼šå†…éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  è½¬ç§»è½¯ä»¶ç‰ˆæœ¬å·
+*	      å‚æ•°ï¼š  Move_Num==è½¬ç§»è½¯ä»¶ç‰ˆæœ¬ç±»å‹
+          æ ¼å¼ï¼š  æ— 
+*	      è¿”å›å€¼ï¼šæ—     
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
-void READ_UP_SPI_FLASH(void)                                         //×ªÒÆÈí¼ş°æ±¾ºÅ¼°Éı¼¶ÀàĞÍ
+void READ_UP_SPI_FLASH(void)                                         //è½¬ç§»è½¯ä»¶ç‰ˆæœ¬å·åŠå‡çº§ç±»å‹
 {
-    unsigned char ST_Num                                            ;//×ªÒÆµ±Ç°Èí¼ş°æ±¾ºÅ¼ÆÊıÓÃ
-    char* RTUP_ADD   = (char *)0x1839                               ;//Éı¼¶Èí¼ş°æ±¾ºÅ ±êÖ¾Î»Ê×µØÖ·001839
+    unsigned char ST_Num                                            ;//è½¬ç§»å½“å‰è½¯ä»¶ç‰ˆæœ¬å·è®¡æ•°ç”¨
+    char* RTUP_ADD   = (char *)0x1839                               ;//å‡çº§è½¯ä»¶ç‰ˆæœ¬å· æ ‡å¿—ä½é¦–åœ°å€001839
     
     if(* (RTUP_ADD)=='V')
     {
-        UP_STR_A10_Type  =   * (RTUP_ADD+1)                         ;//Éı¼¶¿ØÖÆÏµÍ³ÀàĞÍ
-        for(ST_Num=0;ST_Num<8;ST_Num++)                              //×ªÒÆÉı¼¶°æ±¾ºÅ¸øË÷ÒıÉı¼¶°ü 
+        UP_STR_A10_Type  =   * (RTUP_ADD+1)                         ;//å‡çº§æ§åˆ¶ç³»ç»Ÿç±»å‹
+        for(ST_Num=0;ST_Num<8;ST_Num++)                              //è½¬ç§»å‡çº§ç‰ˆæœ¬å·ç»™ç´¢å¼•å‡çº§åŒ… 
         {
             ANS_UP_SPI_Num_BuF[14+ST_Num]=* (RTUP_ADD+2+ST_Num);  
-            UP_Stat_SPI_BuF[ST_Num]      =* (RTUP_ADD+2+ST_Num);//Éı¼¶³ÌĞòÖÖÀà,Éı¼¶ÎÄ¼ş°æ±¾ºÅ
+            UP_Stat_SPI_BuF[ST_Num]      =* (RTUP_ADD+2+ST_Num);//å‡çº§ç¨‹åºç§ç±»,å‡çº§æ–‡ä»¶ç‰ˆæœ¬å·
         }
         
-        for(ST_Num=0;ST_Num<10;ST_Num++)                              //×ªÒÆÉı¼¶°æ±¾ºÅ¸øË÷ÒıÉı¼¶°ü 
+        for(ST_Num=0;ST_Num<10;ST_Num++)                              //è½¬ç§»å‡çº§ç‰ˆæœ¬å·ç»™ç´¢å¼•å‡çº§åŒ… 
         {
-            UP_Stat_SPI_BuF[8+ST_Num]      =* (RTUP_ADD+30+ST_Num);//Éı¼¶³ÌĞòÖÖÀà,Éı¼¶ÎÄ¼ş°æ±¾ºÅ
+            UP_Stat_SPI_BuF[8+ST_Num]      =* (RTUP_ADD+30+ST_Num);//å‡çº§ç¨‹åºç§ç±»,å‡çº§æ–‡ä»¶ç‰ˆæœ¬å·
         }
         UP_SPI_Num_Flag=0x11;
         UP_Send_Times=0;
-        //Module_Status[4]|=0x03;//Éı¼¶±êÖ¾  
+        //Module_Status[4]|=0x03;//å‡çº§æ ‡å¿—  
     }
 }

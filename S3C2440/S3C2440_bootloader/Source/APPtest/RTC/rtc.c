@@ -12,10 +12,10 @@ extern int pwcount = 0;
 void CloseAlarm(void);
 extern void Delay(int time);
 //********************************************************************
-void Get_Rtc(struct tm *tim) //¶Á³öµ±Ç°µÄÊ±¼äº¯Êı
+void Get_Rtc(struct tm *tim) //è¯»å‡ºå½“å‰çš„æ—¶é—´å‡½æ•°
 {
-    rRTCCON = 0x01; //RTC¶ÁĞ´Ê¹ÄÜ£¬Ñ¡ÔñBCDÊ±ÖÓ¡¢¼ÆÊıÆ÷£¬ÎŞ¸´Î»
-//month = rBCDMON; //¶ÁÈ¡Äê£¬ÔÂ£¬ÈÕ£¬Ê±£¬·Ö£¬Ãë¸÷¸ö¼Ä´æÆ÷µÄÊı¾İ¡£
+    rRTCCON = 0x01; //RTCè¯»å†™ä½¿èƒ½ï¼Œé€‰æ‹©BCDæ—¶é’Ÿã€è®¡æ•°å™¨ï¼Œæ— å¤ä½
+//month = rBCDMON; //è¯»å–å¹´ï¼Œæœˆï¼Œæ—¥ï¼Œæ—¶ï¼Œåˆ†ï¼Œç§’å„ä¸ªå¯„å­˜å™¨çš„æ•°æ®ã€‚
 //date = rBCDDATE;
 //weekday = rBCDDAY;
 //hour = rBCDHOUR;
@@ -32,59 +32,59 @@ void Get_Rtc(struct tm *tim) //¶Á³öµ±Ç°µÄÊ±¼äº¯Êı
 //time.tm_yday=DaysInYear(time) ;                  /* Days in year.[0-365] */
 //time.tm_isdst;                 /* DST.         [-1/0/1]*/
 
-    rRTCCON = 0x0; //RTC¶ÁĞ´½ûÖ¹£¬Ñ¡ÔñBCDÊ±ÖÓ¡¢¼ÆÊıÆ÷£¬ÎŞ¸´Î»
+    rRTCCON = 0x0; //RTCè¯»å†™ç¦æ­¢ï¼Œé€‰æ‹©BCDæ—¶é’Ÿã€è®¡æ•°å™¨ï¼Œæ— å¤ä½
     Uart_Printf("RTC\n");
-    Uart_Printf("%dÄê ",tim->tm_year);
-    Uart_Printf("%dÔÂ ",tim->tm_mon);
-    Uart_Printf("%dÈÕ ",tim->tm_mday);
-    Uart_Printf("ĞÇÆÚ%d ",tim->tm_wday);
+    Uart_Printf("%då¹´ ",tim->tm_year);
+    Uart_Printf("%dæœˆ ",tim->tm_mon);
+    Uart_Printf("%dæ—¥ ",tim->tm_mday);
+    Uart_Printf("æ˜ŸæœŸ%d ",tim->tm_wday);
     Uart_Printf("%d:",tim->tm_hour);
     Uart_Printf("%d:",tim->tm_min);
     Uart_Printf("%d\n",tim->tm_sec);
 
-//Uart_Printf("%dÄê%dÔÂ%dÈÕ%dÊ±",time.tm_year,time.tm_mon,time.tm_mday,time.tm_hour);
+//Uart_Printf("%då¹´%dæœˆ%dæ—¥%dæ—¶",time.tm_year,time.tm_mon,time.tm_mday,time.tm_hour);
 }
 //******************************************************************************
-// ÀûÓÃÖĞ¶Ï£¬½øĞĞÊµÊ±Ê±ÖÓRTCºÍÄÖÖÓµÄ½øĞĞ
+// åˆ©ç”¨ä¸­æ–­ï¼Œè¿›è¡Œå®æ—¶æ—¶é’ŸRTCå’Œé—¹é’Ÿçš„è¿›è¡Œ
 //***************************************************************************
-void __irq TICKINT_Handler(void) //RTCÖĞ¶Ï·şÎñº¯Êı
+void __irq TICKINT_Handler(void) //RTCä¸­æ–­æœåŠ¡å‡½æ•°
 {
-//Get_Rtc(); //¶Á³öµ±Ç°µÄÊ±¼äº¯Êı
+//Get_Rtc(); //è¯»å‡ºå½“å‰çš„æ—¶é—´å‡½æ•°
     Lcd_ClearScr(0);
 // Lcd_Clear1616(0,134,78);
 //Lcd_ClearScr(0);
 //Lcd_ClearScr(0);
-    ClearPending(BIT_TICK); //Çå³ıTICKÖĞ¶Ïº¯Êı¡£¼´·Ö±ğÍùrSRCPND£¬
+    ClearPending(BIT_TICK); //æ¸…é™¤TICKä¸­æ–­å‡½æ•°ã€‚å³åˆ†åˆ«å¾€rSRCPNDï¼Œ
 //rGPBDAT &=~(1<<0);
 
 }
 /*
-void __irq IsrAlarm(void) //ÀûÓÃÖĞ¶Ï£¬ÄÖÖÓÊµÊ±½øĞĞÖĞ¶Ïº¯Êı
+void __irq IsrAlarm(void) //åˆ©ç”¨ä¸­æ–­ï¼Œé—¹é’Ÿå®æ—¶è¿›è¡Œä¸­æ–­å‡½æ•°
 {
-ClearPending(BIT_RTC); //SRCPND,INTPND·Ö±ğÖÃ1.
+ClearPending(BIT_RTC); //SRCPND,INTPNDåˆ†åˆ«ç½®1.
 Uart_Printf("mini2440 RTCALM oucer \n");
 
-rGPBDAT |=(1<<0); //·äÃùÆ÷Ïì
+rGPBDAT |=(1<<0); //èœ‚é¸£å™¨å“
 
-CloseAlarm(); //¹ØÄÖÖÓ£¬¼´Èç¹ûÒª¿ªÄÖÖÓµÄÏÈÒª°ÑËü¹ØÁË£¬ÔÙ¿ª¡£
+CloseAlarm(); //å…³é—¹é’Ÿï¼Œå³å¦‚æœè¦å¼€é—¹é’Ÿçš„å…ˆè¦æŠŠå®ƒå…³äº†ï¼Œå†å¼€ã€‚
 }*/
 //******************************************************************************
 
-//ÉèÖÃRTC ALARM Ê±¼ä
+//è®¾ç½®RTC ALARM æ—¶é—´
 /*
-void setRTCalm(U8 almmon,U8 almdate)//Äê¡¢ÔÂ¡¢ÈÕ¡¢Ê±¡¢·Ö¡¢Ãë
+void setRTCalm(U8 almmon,U8 almdate)//å¹´ã€æœˆã€æ—¥ã€æ—¶ã€åˆ†ã€ç§’
 {
-rRTCCON=0x01; //RTCCONÊµÊ±Ê±ÖÓ¿ØÖÆ¼Ä´æÆ÷
+rRTCCON=0x01; //RTCCONå®æ—¶æ—¶é’Ÿæ§åˆ¶å¯„å­˜å™¨
 //rALMYEAR = almyear;
 rALMMON = almmon;
 rALMDATE = almdate;
 //rALMHOUR = almhour;
 //rALMMIN = almmin;
 // rALMSEC = almsec;
-rRTCCON = 0; //¶ÁÈ¡Êı¾İÍêºó½ûÖ¹Ê¹ÄÜĞÅºÅ£¬ÒÔ·ÀÎó²Ù×÷£¬
+rRTCCON = 0; //è¯»å–æ•°æ®å®Œåç¦æ­¢ä½¿èƒ½ä¿¡å·ï¼Œä»¥é˜²è¯¯æ“ä½œï¼Œ
 }*/
 
-//ÖÃÊ±ÖÓ¶¨Ê±Ê±¼ä
+//ç½®æ—¶é’Ÿå®šæ—¶æ—¶é—´
 /*void setRTCtime(U8 wRTCmon,U8 wRTCdate,U8 wRTCday,U8 wRTChour ,U8 wRTCmin ,U8 wRTCsec)
 {
 rRTCCON=0x01;
@@ -112,45 +112,45 @@ void setRTCtime(struct tm *tim)
 }
 
 //****************************************************************************
-//Ê±ÖÓºÍÄÖÖÓµÄ¿ª¹Ø²Ù×÷º¯Êı:
-//OpenRtc(); //RTC¿ªº¯Êı CloseRtc(); //RTC¹Øº¯Êı
-//OpenAlarm():¿ªÄÖÖÓ¹¦ÄÜº¯Êı CloseAlarm():¹ØÄÖÖÓ¹¦ÄÜº¯Êı
+//æ—¶é’Ÿå’Œé—¹é’Ÿçš„å¼€å…³æ“ä½œå‡½æ•°:
+//OpenRtc(); //RTCå¼€å‡½æ•° CloseRtc(); //RTCå…³å‡½æ•°
+//OpenAlarm():å¼€é—¹é’ŸåŠŸèƒ½å‡½æ•° CloseAlarm():å…³é—¹é’ŸåŠŸèƒ½å‡½æ•°
 //****************************************************************************
 
 void OpenRtc(void)
 {
-    pISR_TICK=(unsigned)TICKINT_Handler; //Ö´ĞĞRTCÖĞ¶Ï·şÎñº¯Êı
-    rTICNT=0xFF; //TICNT¸Ã¼Ä´æÆ÷ÓÃÓÚÊÇ·ñÔÊĞíÊ±¼äµÎ´ğÖĞ¶ÏºÍÊ±¼äÖĞ¶ÏµÄ¼ÆÊıÖµ¡£
-//TICNT[7]Îª0£¬½ûÖ¹£¬Îª1£¬Ê¹ÄÜ¡£
-//TICNT[6:0]Ê±¼äµÎ´ğ¼ÆÊıÖµ£¬1-127£¬×Ô¶¯µİ¼õ£¬²»ÄÜ¶ÁÈ¡ÆäÊµÊ±ÊıÖµ¡£
-    EnableIrq(BIT_TICK); //¿ªRTCÖĞ¶Ï·şÎñ
+    pISR_TICK=(unsigned)TICKINT_Handler; //æ‰§è¡ŒRTCä¸­æ–­æœåŠ¡å‡½æ•°
+    rTICNT=0xFF; //TICNTè¯¥å¯„å­˜å™¨ç”¨äºæ˜¯å¦å…è®¸æ—¶é—´æ»´ç­”ä¸­æ–­å’Œæ—¶é—´ä¸­æ–­çš„è®¡æ•°å€¼ã€‚
+//TICNT[7]ä¸º0ï¼Œç¦æ­¢ï¼Œä¸º1ï¼Œä½¿èƒ½ã€‚
+//TICNT[6:0]æ—¶é—´æ»´ç­”è®¡æ•°å€¼ï¼Œ1-127ï¼Œè‡ªåŠ¨é€’å‡ï¼Œä¸èƒ½è¯»å–å…¶å®æ—¶æ•°å€¼ã€‚
+    EnableIrq(BIT_TICK); //å¼€RTCä¸­æ–­æœåŠ¡
 }
 
-//RTC¹Ø
+//RTCå…³
 void CloseRtc(void)
 {
-    rTICNT &= ~(1<<7); //½ûÖ¹TICNT
-    DisableIrq(BIT_TICK); //¹ØRTCÖĞ¶Ï·şÎñ
+    rTICNT &= ~(1<<7); //ç¦æ­¢TICNT
+    DisableIrq(BIT_TICK); //å…³RTCä¸­æ–­æœåŠ¡
 
 }
 /*
-//¿ªÄÖÖÓ¹¦ÄÜº¯Êı
+//å¼€é—¹é’ŸåŠŸèƒ½å‡½æ•°
 void OpenAlarm()
 {
-pISR_RTC = (unsigned)IsrAlarm; //ÖĞ¶Ï¼Ä´æÆ÷ISRÖĞµÄRTCÖĞ¶ÏÎ»
+pISR_RTC = (unsigned)IsrAlarm; //ä¸­æ–­å¯„å­˜å™¨ISRä¸­çš„RTCä¸­æ–­ä½
 ClearPending(BIT_RTC);
-rRTCALM = (0x7f); //RTCALMÄÖÖÓ¿ØÖÆ¼Ä´æÆ÷£¬
-//¡¾0-7¡¿·Ö±ğ¶ÔÓ¦Ãëµ½ÄêµÄÄÖÖÓ Ê¹ÄÜ£¬
-//ÏàÓ¦Î»0±íÊ¾½ûÖ¹£¬1±íÊ¾ÔÊĞí
-EnableIrq(BIT_RTC); //¿ªÖĞ¶Ï
+rRTCALM = (0x7f); //RTCALMé—¹é’Ÿæ§åˆ¶å¯„å­˜å™¨ï¼Œ
+//ã€0-7ã€‘åˆ†åˆ«å¯¹åº”ç§’åˆ°å¹´çš„é—¹é’Ÿ ä½¿èƒ½ï¼Œ
+//ç›¸åº”ä½0è¡¨ç¤ºç¦æ­¢ï¼Œ1è¡¨ç¤ºå…è®¸
+EnableIrq(BIT_RTC); //å¼€ä¸­æ–­
 
 }*/
 /*
-//¹ØÄÖÖÓ¹¦ÄÜº¯Êı
+//å…³é—¹é’ŸåŠŸèƒ½å‡½æ•°
 void CloseAlarm(void)
 {
-rRTCALM = 0; //RTCALMÄÖÖÓ¿ØÖÆ¼Ä´æÆ÷ËùÓĞÎ»½ûÖ¹
-DisableIrq(BIT_RTC); //¹ØÖĞ¶Ï
+rRTCALM = 0; //RTCALMé—¹é’Ÿæ§åˆ¶å¯„å­˜å™¨æ‰€æœ‰ä½ç¦æ­¢
+DisableIrq(BIT_RTC); //å…³ä¸­æ–­
 }*/
 //****************************************************************************
 
@@ -161,7 +161,7 @@ U32 Gettime(void)
     U8 buf[20];
     char i;
     Uart_Printf("Press Time sync!\n");
-    Uart_GetKey(); //Çå´®¿Ú»º´æ
+    Uart_GetKey(); //æ¸…ä¸²å£ç¼“å­˜
     val =0;
     for(i=0; i<12; i++) {
         buf[i] = Uart_Getch();
@@ -229,10 +229,10 @@ extern void Settime(void)
             setRTCtime(&tim1);
 
             Uart_Printf("SET time !\n");
-            Uart_Printf("%dÄê ",tim1.tm_year);
-            Uart_Printf("%dÔÂ ",tim1.tm_mon);
-            Uart_Printf("%dÈÕ ",tim1.tm_mday);
-            Uart_Printf("ĞÇÆÚ%d ",tim1.tm_wday);
+            Uart_Printf("%då¹´ ",tim1.tm_year);
+            Uart_Printf("%dæœˆ ",tim1.tm_mon);
+            Uart_Printf("%dæ—¥ ",tim1.tm_mday);
+            Uart_Printf("æ˜ŸæœŸ%d ",tim1.tm_wday);
             Uart_Printf("%d:",tim1.tm_hour);
             Uart_Printf("%d:",tim1.tm_min);
             Uart_Printf("%d\n",tim1.tm_sec);

@@ -18,14 +18,14 @@
 
 extern void memtest(void)
 {
-	//Lcd_ClearScr(0x0);   //ºÚÉ«
+	//Lcd_ClearScr(0x0);   //é»‘è‰²
 		Versions();
 		MemoryTest();
 	//	print(0,20,"Press any key is continue !",0xFF);
 		{
 		print(0,20,"Press any key is continue !",0xFF);
 		while(!KeyScan());
-		//Lcd_ClearScr(0x0);   //ºÚÉ«
+		//Lcd_ClearScr(0x0);   //é»‘è‰²
 		//Versions();
 		}
 while(!(KEY_BACK==KeyScan()));

@@ -1,29 +1,29 @@
 #include "msp430x54x.h"
 #include "GSM.h"
 
-char LOOK_M_SD_ER_Flag                                              ;//Ëø³µÖ¸Áî·¢ËÍÊ§°Ü±êÖ¾ ÖØ·¢
+char LOOK_M_SD_ER_Flag                                              ;//é”è½¦æŒ‡ä»¤å‘é€å¤±è´¥æ ‡å¿— é‡å‘
 
 #define  NET_LOOK_M_BUF_SIZE 10
-char REC_LOOK_M_BUF[NET_LOOK_M_BUF_SIZE]                              ;//½ÓÊÕ GPSÖÕ¶ËËø³µ/½âËøÃüÁî
-char ANS_LOOK_M_BUF[NET_LOOK_M_BUF_SIZE];//GPSÖÕ¶ËËø³µ/½âËøÃüÁî »Ø¸´
+char REC_LOOK_M_BUF[NET_LOOK_M_BUF_SIZE]                              ;//æ¥æ”¶ GPSç»ˆç«¯é”è½¦/è§£é”å‘½ä»¤
+char ANS_LOOK_M_BUF[NET_LOOK_M_BUF_SIZE];//GPSç»ˆç«¯é”è½¦/è§£é”å‘½ä»¤ å›å¤
 
-extern void Tran_ID_CmdNum(char* ID_Addr,char CmdNum)                   ;//×ª´æIDºÅºÍÃüÁî±àÂë                              
-extern void Delayms(unsigned long int ms)                           ;//XX*1MsÑÓÊ±
+extern void Tran_ID_CmdNum(char* ID_Addr,char CmdNum)                   ;//è½¬å­˜IDå·å’Œå‘½ä»¤ç¼–ç                               
+extern void Delayms(unsigned long int ms)                           ;//XX*1Mså»¶æ—¶
 /*******************************************************************\
-*	      º¯ÊıÃû£ºGSM_Lock_Monitor             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ½ÓÊÕ¡¢´¦ÀíÆ½Ì¨Êı¾İ  
-*	      ²ÎÊı£º 0x03==Ëø³µ£»0x00==½âËø 
-          ¸ñÊ½£º ID(4)+ÃüÁî±àÂë0x69(2)+Ëø³µÖ¸Áî(2)
-*	      ·µ»ØÖµ£º·µ»ØËø³µ¡¢½âËøÃüÁî    
+*	      å‡½æ•°åï¼šGSM_Lock_Monitor             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  æ¥æ”¶ã€å¤„ç†å¹³å°æ•°æ®  
+*	      å‚æ•°ï¼š 0x03==é”è½¦ï¼›0x00==è§£é” 
+          æ ¼å¼ï¼š ID(4)+å‘½ä»¤ç¼–ç 0x69(2)+é”è½¦æŒ‡ä»¤(2)
+*	      è¿”å›å€¼ï¼šè¿”å›é”è½¦ã€è§£é”å‘½ä»¤    
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
 char GSM_Lock_Monitor()
 {
     unsigned char   LK_CNT                                              ;
     
-    unsigned int CAL_LOOK_M_CRC,NET_LOOK_M_CRC                          ;//Ğ£ÑéºÍ
+    unsigned int CAL_LOOK_M_CRC,NET_LOOK_M_CRC                          ;//æ ¡éªŒå’Œ
       
     NET_LOOK_M_CRC =   REC_LOOK_M_BUF[9]                                ;
     NET_LOOK_M_CRC =   NET_LOOK_M_CRC  <<8                              ;
@@ -32,10 +32,10 @@ char GSM_Lock_Monitor()
                                 NET_LOOK_M_BUF_SIZE-2)                  ;//8
     if(CAL_LOOK_M_CRC==NET_LOOK_M_CRC)
     {
-        Tran_ID_CmdNum(ANS_LOOK_M_BUF,0x96)                            ;//×ª´æIDºÅºÍÃüÁî±àÂë
+        Tran_ID_CmdNum(ANS_LOOK_M_BUF,0x96)                            ;//è½¬å­˜IDå·å’Œå‘½ä»¤ç¼–ç 
         if((REC_LOOK_M_BUF[6]&REC_LOOK_M_BUF[7])==0x03)
         {
-            Module_Status[2] |=0x03                                     ;//1¼¶Ëø³µ£¨ÏŞÖÆÆô¶¯£©Ëø³µ
+            Module_Status[2] |=0x03                                     ;//1çº§é”è½¦ï¼ˆé™åˆ¶å¯åŠ¨ï¼‰é”è½¦
             GPS_GSM_System_Stu[2]|=0x03                                 ;
             ANS_LOOK_M_BUF[6]=0x03                                      ;
             ANS_LOOK_M_BUF[7]=0x03                                      ;
@@ -50,7 +50,7 @@ char GSM_Lock_Monitor()
         
         if((REC_LOOK_M_BUF[6]&REC_LOOK_M_BUF[7])==0x0C)
         {
-            Module_Status[3] |=0x0C                                     ;//2¼¶Ëø³µ£¨ÏŞÖÆ¹¦ÂÊ£©Ëø³µ
+            Module_Status[3] |=0x0C                                     ;//2çº§é”è½¦ï¼ˆé™åˆ¶åŠŸç‡ï¼‰é”è½¦
             GPS_GSM_System_Stu[3]|=0x0C                                 ;
             ANS_LOOK_M_BUF[6]=0x0C                                      ;
             ANS_LOOK_M_BUF[7]=0x0C                                      ;
@@ -64,7 +64,7 @@ char GSM_Lock_Monitor()
         
         if((REC_LOOK_M_BUF[6]&REC_LOOK_M_BUF[7])==0x00)
         {
-            Module_Status[2] &= ~0x03                                   ;//ÏŞÖÆÆô¶¯\ÏŞÖÆ¹¦ÂÊ½âËø
+            Module_Status[2] &= ~0x03                                   ;//é™åˆ¶å¯åŠ¨\é™åˆ¶åŠŸç‡è§£é”
             GPS_GSM_System_Stu[2]&= ~0x03                               ; 
             Module_Status[3] &= ~0x0C                                   ;
             GPS_GSM_System_Stu[3]&= ~0x0C                               ;
@@ -84,15 +84,15 @@ char GSM_Lock_Monitor()
         ANS_LOOK_M_BUF[9]    =   (char)((CAL_LOOK_M_CRC>>8)&0xFF)       ;
     
         LOOK_M_SD_ER_Flag   =    1                                      ;
-        if(GSM_SendData(ANS_LOOK_M_BUF,NET_LOOK_M_BUF_SIZE))             //Êı¾İ·¢ËÍ
+        if(GSM_SendData(ANS_LOOK_M_BUF,NET_LOOK_M_BUF_SIZE))             //æ•°æ®å‘é€
         {
            LOOK_M_SD_ER_Flag    =   0                                   ;
            return 1                                                     ;
         }
     
-        if(LOOK_M_SD_ER_Flag)                                           //Ê§°ÜÖØ·¢ 
+        if(LOOK_M_SD_ER_Flag)                                           //å¤±è´¥é‡å‘ 
         {
-           Delayms(200);//XX*1MsÑÓÊ±
+           Delayms(200);//XX*1Mså»¶æ—¶
            LOOK_M_SD_ER_Flag     =   0;
            if(GSM_SendData(ANS_LOOK_M_BUF,NET_LOOK_M_BUF_SIZE))
            {          
@@ -107,35 +107,35 @@ char GSM_Lock_Monitor()
 
 
 /**********************************************************************\
-*	      º¯ÊıÃû£ºRD_LOCK_BUS_FLASH             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ¶ÁÈ¡Ëø³µ×´Ì¬
-*	      ²ÎÊı£º  
-          ¸ñÊ½£º ID(4)+ÃüÁî±àÂë0x87(2)+Ëø³µ×´Ì¬(2)+CRC(2)
-*	      ·µ»ØÖµ£º
+*	      å‡½æ•°åï¼šRD_LOCK_BUS_FLASH             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  è¯»å–é”è½¦çŠ¶æ€
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š ID(4)+å‘½ä»¤ç¼–ç 0x87(2)+é”è½¦çŠ¶æ€(2)+CRC(2)
+*	      è¿”å›å€¼ï¼š
 *
-*	      ĞŞ¸ÄÀúÊ·£º2013.10.22 -½¯±¾Çì
+*	      ä¿®æ”¹å†å²ï¼š2013.10.22 -è’‹æœ¬åº†
 \**********************************************************************/
 void RD_LOCK_BUS_FLASH(void)
 {
-    char* LK_BS_Addr    =  (char *)0x1805                           ;//Ëø³µÊ×µØÖ·
+    char* LK_BS_Addr    =  (char *)0x1805                           ;//é”è½¦é¦–åœ°å€
     
     
     if((*(LK_BS_Addr) & *(LK_BS_Addr+1))==0x03)
     {
-        Module_Status[2]   |=    0x03                               ;//Ëø³µ
+        Module_Status[2]   |=    0x03                               ;//é”è½¦
         GPS_GSM_System_Stu[2]  |=    0x03                           ;
     }
     
     if((*(LK_BS_Addr) & *(LK_BS_Addr+1))==0x0C)
     {
-        Module_Status[3] |=0x0C                                     ;//2¼¶Ëø³µ£¨ÏŞÖÆ¹¦ÂÊ£©Ëø³µ
+        Module_Status[3] |=0x0C                                     ;//2çº§é”è½¦ï¼ˆé™åˆ¶åŠŸç‡ï¼‰é”è½¦
         GPS_GSM_System_Stu[3]|=0x0C                                 ;
     }
     
     if((*(LK_BS_Addr) & *(LK_BS_Addr+1))==0x00)
     {
-        Module_Status[2] &= ~0x03                                   ;//ÏŞÖÆÆô¶¯\ÏŞÖÆ¹¦ÂÊ½âËø
+        Module_Status[2] &= ~0x03                                   ;//é™åˆ¶å¯åŠ¨\é™åˆ¶åŠŸç‡è§£é”
         GPS_GSM_System_Stu[2]&= ~0x03                               ; 
         Module_Status[3] &= ~0x0C                                   ;
         GPS_GSM_System_Stu[3]&= ~0x0C                               ;

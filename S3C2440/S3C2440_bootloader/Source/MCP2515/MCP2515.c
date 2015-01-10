@@ -10,7 +10,7 @@
 ** or its suppliers and licensors. The Material is protected by worldwide
 ** copyright and trade secret laws and treaty provisions. No part of the
 ** Material may be used, copied, reproduced, modified, published, uploaded,
-** posted, transmitted, distributed, or disclosed in any way without Intel’s
+** posted, transmitted, distributed, or disclosed in any way without IntelæŠ¯
 ** prior express written permission.
 
 ** No license under any patent, copyright, trade secret or other intellectual
@@ -19,7 +19,7 @@
 ** estoppel or otherwise. Any license under such intellectual property rights
 ** must be express and approved by Intel in writing.
 */
-#define X16M 1	//16M¾§Õñ
+#define X16M 1	//16Mæ™¶æŒ¯
 
 #include "MCP2515.h"
 #include <stdio.h>
@@ -32,9 +32,9 @@
 #include "Delay.h"
 extern void Uart_Printf(char *fmt,...);
 
-//Ä£ÄâÊµÏÖSPI
+//æ¨¡æ‹Ÿå®ç°SPI
 //***************************************************************************
-//È«¾Ö±äÁ¿
+//å…¨å±€å˜é‡
 
 //U8 ntxbuffer;		//the Number of Tx Buffer 
 //
@@ -44,23 +44,23 @@ U32 ReceiveNum;
 U32 RecErrNum;
 //#define Crystal 16MHz
 
-#define LED1_OUT            ( rGPBCON = rGPBCON & (~(3<<16)) | (1<<16) )        //GPB8   GPSÉ¾³ı
+#define LED1_OUT            ( rGPBCON = rGPBCON & (~(3<<16)) | (1<<16) )        //GPB8   GPSåˆ é™¤
 #define LED1_Off            ( rGPBDAT = rGPBDAT | (1<<8) )
 #define LED1_On             ( rGPBDAT = rGPBDAT & (~(1<<8))  )
 
-#define LED2_OUT            ( rGPBCON = rGPBCON & (~(3<<14)) | (1<<14) )        //GPB7    ÓÃÓÚCAN¶ÁÏÔÊ¾
+#define LED2_OUT            ( rGPBCON = rGPBCON & (~(3<<14)) | (1<<14) )        //GPB7    ç”¨äºCANè¯»æ˜¾ç¤º
 #define LED2_Off            ( rGPBDAT = rGPBDAT | (1<<7) )
 #define LED2_On             ( rGPBDAT = rGPBDAT & (~(1<<7))  )
 
-#define LED3_OUT            ( rGPBCON = rGPBCON & (~(3<<12)) | (1<<12) )        //GPB6    ÓÃÓÚCANĞ´ÏÔÊ¾
+#define LED3_OUT            ( rGPBCON = rGPBCON & (~(3<<12)) | (1<<12) )        //GPB6    ç”¨äºCANå†™æ˜¾ç¤º
 #define LED3_Off            ( rGPBDAT = rGPBDAT | (1<<6) )
 #define LED3_On             ( rGPBDAT = rGPBDAT & (~(1<<6))  )
 
-#define LED4_OUT            ( rGPBCON = rGPBCON & (~(3<<10)) | (1<<10) )        //GPB5 ÓÃÓÚÏµÍ³Ñ­»·ÏÔÊ¾
+#define LED4_OUT            ( rGPBCON = rGPBCON & (~(3<<10)) | (1<<10) )        //GPB5 ç”¨äºç³»ç»Ÿå¾ªç¯æ˜¾ç¤º
 #define LED4_Off            ( rGPBDAT = rGPBDAT | (1<<5) )
 #define LED4_On             ( rGPBDAT = rGPBDAT & (~(1<<5))  )
 /****************************************************************************
-¡¾¹¦ÄÜËµÃ÷¡¿SPI½Ó¿ÚIOÆ¬Ñ¡³õÊ¼»¯
+ã€åŠŸèƒ½è¯´æ˜ã€‘SPIæ¥å£IOç‰‡é€‰åˆå§‹åŒ–
 ****************************************************************************/
 void MCP2510_IO_CS_Init( void ) 
 {
@@ -68,30 +68,30 @@ void MCP2510_IO_CS_Init( void )
    MCP2510_SI_OUT ;
    MCP2510_SCK_OUT ;
    MCP2510_SO_IN ;
-   MCP2510_SO_PULLUP ;		//ÔÊĞíÉÏÀ­
-   //MCP2510_SO_DISPULLUP ;		//½ûÖ¹ÉÏÀ­
+   MCP2510_SO_PULLUP ;		//å…è®¸ä¸Šæ‹‰
+   //MCP2510_SO_DISPULLUP ;		//ç¦æ­¢ä¸Šæ‹‰
 
    MCP2510_SI_L ;		//SI put 0
    MCP2510_SCK_L ;		//SCK put 0
-   { U16 k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //ÑÓÊ±ÖÁÉÙ300ns
+   { U16 k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //å»¶æ—¶è‡³å°‘300ns
    MCP2510_CS_H ;			// unselect the MCP2510
-   { U16 k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //ÑÓÊ±ÖÁÉÙ300ns
+   { U16 k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //å»¶æ—¶è‡³å°‘300ns
 }
 
 /****************************************************************************
-¡¾¹¦ÄÜËµÃ÷¡¿SPI½Ó¿Ú¶ÁĞ´¿ªÊ¼£¬Æ¬Ñ¡ÓĞĞ§
+ã€åŠŸèƒ½è¯´æ˜ã€‘SPIæ¥å£è¯»å†™å¼€å§‹ï¼Œç‰‡é€‰æœ‰æ•ˆ
 ****************************************************************************/
 void MCP2510_RW_Start( void ) 
 {
    MCP2510_SI_L ;		//SI put 0
    MCP2510_SCK_L ;		//SCK put 0
-   { U16 k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //ÑÓÊ±ÖÁÉÙ300ns
+   { U16 k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //å»¶æ—¶è‡³å°‘300ns
    MCP2510_CS_L ;			// Select the MCP2510
-   { U16 k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //ÑÓÊ±ÖÁÉÙ300ns
+   { U16 k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //å»¶æ—¶è‡³å°‘300ns
 }
 
 /****************************************************************************
-¡¾¹¦ÄÜËµÃ÷¡¿SPI½Ó¿ÚĞ´ÈëÊı¾İ
+ã€åŠŸèƒ½è¯´æ˜ã€‘SPIæ¥å£å†™å…¥æ•°æ®
 ****************************************************************************/
 void Spi_Write( U8 Data ) 
 {
@@ -104,16 +104,16 @@ void Spi_Write( U8 Data )
 		else
 			MCP2510_SI_L;		//SI put 0
 
-		{ U16 k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //ÑÓÊ±ÖÁÉÙ300ns
+		{ U16 k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //å»¶æ—¶è‡³å°‘300ns
 		MCP2510_SCK_H ;		//SCK put 1
 		Data = Data<<1 ;
 		MCP2510_SCK_L ;		//SCK put 0
-		{ U16 k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //ÑÓÊ±ÖÁÉÙ300ns
+		{ U16 k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //å»¶æ—¶è‡³å°‘300ns
 	}
 }
 
 /****************************************************************************
-¡¾¹¦ÄÜËµÃ÷¡¿SPI½Ó¿Ú¶Á³öÊı¾İ
+ã€åŠŸèƒ½è¯´æ˜ã€‘SPIæ¥å£è¯»å‡ºæ•°æ®
 ****************************************************************************/
 U8 Spi_Read( )
 {
@@ -123,23 +123,23 @@ U8 Spi_Read( )
 	for( m = 0; m < 8; m++ )
 	{
 		MCP2510_SCK_H ;		//SCK put 1
-		{ U16 k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //ÑÓÊ±ÖÁÉÙ300ns
+		{ U16 k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //å»¶æ—¶è‡³å°‘300ns
 		data = data<<1;
 		if( MCP2510_SO_GET != 0 )
 			data |= 0x01 ;
 		else
 			data &= 0xfe;
 
-		{ U16 k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //ÑÓÊ±ÖÁÉÙ300ns
+		{ U16 k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //å»¶æ—¶è‡³å°‘300ns
 		MCP2510_SCK_L ;		//SCK put 0
-		{ U16 k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //ÑÓÊ±ÖÁÉÙ300ns
+		{ U16 k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //å»¶æ—¶è‡³å°‘300ns
 	}
 
 	return (data);
 }
 
 /****************************************************************************
-¡¾¹¦ÄÜËµÃ÷¡¿ Send Command to MCP2510 via SPI 
+ã€åŠŸèƒ½è¯´æ˜ã€‘ Send Command to MCP2510 via SPI 
 ****************************************************************************/
 void SendCMDMCP2510( U8 CMD )
 {
@@ -149,7 +149,7 @@ void SendCMDMCP2510( U8 CMD )
 }
 
 /****************************************************************************
-¡¾¹¦ÄÜËµÃ÷¡¿Èí¼ş¸´Î»MCP2510
+ã€åŠŸèƒ½è¯´æ˜ã€‘è½¯ä»¶å¤ä½MCP2510
 ****************************************************************************/
 void MCP2510_Reset()
 {
@@ -159,7 +159,7 @@ void MCP2510_Reset()
 }
 
 /****************************************************************************
-¡¾¹¦ÄÜËµÃ÷¡¿ÏòMCP2510Ö¸¶¨µØÖ·Ğ´ÈëÒ»¸ö×Ö½Ú
+ã€åŠŸèƒ½è¯´æ˜ã€‘å‘MCP2510æŒ‡å®šåœ°å€å†™å…¥ä¸€ä¸ªå­—èŠ‚
 ****************************************************************************/
 void MCP2510_Write( U8 address, U8 value)
 {
@@ -173,11 +173,11 @@ void MCP2510_Write( U8 address, U8 value)
 }
 
 /****************************************************************************
-¡¾¹¦ÄÜËµÃ÷¡¿ĞŞ¸ÄÖ¸¶¨µØÖ·¼Ä´æÆ÷µÄÄ³Ğ©Î»
+ã€åŠŸèƒ½è¯´æ˜ã€‘ä¿®æ”¹æŒ‡å®šåœ°å€å¯„å­˜å™¨çš„æŸäº›ä½
 ****************************************************************************/
 void MCP2510_WriteBits( U8 address, U8 data, U8 mask )
 {
-	// 1ĞŞ¸Ä 0 ²»±ä
+	// 1ä¿®æ”¹ 0 ä¸å˜
 	MCP2510_RW_Start() ;
 
 	Spi_Write( MCP2510INSTR_BITMDFY );
@@ -189,7 +189,7 @@ void MCP2510_WriteBits( U8 address, U8 data, U8 mask )
 }
 
 /****************************************************************************
-¡¾¹¦ÄÜËµÃ÷¡¿              Read often used status
+ã€åŠŸèƒ½è¯´æ˜ã€‘              Read often used status
 //Status 	 7    	6    	5    	4    	3    	2  	1	0
 //		|	|	|	|	|	|	|	|									
 //		|	|	|	|	|	|	|	|___CANINTF.RX0IF
@@ -209,7 +209,7 @@ unsigned char MCP2510_ReadStatus()
 
 	Spi_Write(MCP2510INSTR_RDSTAT);
 	result = Spi_Read() ;
-	Spi_Write( 0 ) ;		//Êı¾İÖØ¸´Êä³ö
+	Spi_Write( 0 ) ;		//æ•°æ®é‡å¤è¾“å‡º
 	MCP2510_CS_H ;
 
 //	if( MCP2510_DEBUG )		Uart_Printf( "StatusREG = 0x%x\n", result ) ;
@@ -217,7 +217,7 @@ unsigned char MCP2510_ReadStatus()
 }
 
 /****************************************************************************
-¡¾¹¦ÄÜËµÃ÷¡¿´ÓMCP2510Ö¸¶¨µØÖ·ÖĞ¶Á³öÒ»¸ö×Ö½Ú
+ã€åŠŸèƒ½è¯´æ˜ã€‘ä»MCP2510æŒ‡å®šåœ°å€ä¸­è¯»å‡ºä¸€ä¸ªå­—èŠ‚
 ****************************************************************************/
 unsigned char MCP2510_Read( U8 address )
 {
@@ -235,7 +235,7 @@ unsigned char MCP2510_Read( U8 address )
 }
 
 /****************************************************************************
-¡¾¹¦ÄÜËµÃ÷¡¿ĞòÁĞ¶ÁÈ¡MCP2510Êı¾İ	
+ã€åŠŸèƒ½è¯´æ˜ã€‘åºåˆ—è¯»å–MCP2510æ•°æ®	
 ****************************************************************************/
 void MCP2510_SRead( U8 address, unsigned char* pdata, U8 nlength )
 {
@@ -256,7 +256,7 @@ void MCP2510_SRead( U8 address, unsigned char* pdata, U8 nlength )
 
 
 /****************************************************************************
-¡¾¹¦ÄÜËµÃ÷¡¿ĞòÁĞĞ´ÈëMCP2510Êı¾İ	
+ã€åŠŸèƒ½è¯´æ˜ã€‘åºåˆ—å†™å…¥MCP2510æ•°æ®	
 ****************************************************************************/
 void MCP2510_Swrite( U8 address, unsigned char* pdata, U8 nlength)
 {
@@ -276,7 +276,7 @@ void MCP2510_Swrite( U8 address, unsigned char* pdata, U8 nlength)
 }
 
 /****************************************************************************
-¡¾¹¦ÄÜËµÃ÷¡¿
+ã€åŠŸèƒ½è¯´æ˜ã€‘
 ****************************************************************************/
 void MCP2510_SetBandRate(CanBandRate bandrate, int IsBackNormal)
 {
@@ -386,12 +386,12 @@ void MCP2510_SetBandRate(CanBandRate bandrate, int IsBackNormal)
 }
 
 /****************************************************************************
-¡¾¹¦ÄÜËµÃ÷¡¿¶ÁÈ¡MCP2510 CAN×ÜÏßID
-²ÎÊı: addressÎªMCP2510¼Ä´æÆ÷µØÖ·
-	can_idÎª·µ»ØµÄIDÖµ
-·µ»ØÖµ
-TRUE£¬±íÊ¾ÊÇÀ©Õ¹ID(29Î»)
-FALSE£¬±íÊ¾·ÇÀ©Õ¹ID(11Î»)
+ã€åŠŸèƒ½è¯´æ˜ã€‘è¯»å–MCP2510 CANæ€»çº¿ID
+å‚æ•°: addressä¸ºMCP2510å¯„å­˜å™¨åœ°å€
+	can_idä¸ºè¿”å›çš„IDå€¼
+è¿”å›å€¼
+TRUEï¼Œè¡¨ç¤ºæ˜¯æ‰©å±•ID(29ä½)
+FALSEï¼Œè¡¨ç¤ºéæ‰©å±•ID(11ä½)
 ****************************************************************************/
 int MCP2510_Read_Can_ID( U8 address, U32* can_id)
 {
@@ -412,15 +412,15 @@ int MCP2510_Read_Can_ID( U8 address, U32* can_id)
 }
 
 /***********************************************************\
-*	¶ÁÈ¡MCP2510 ½ÓÊÕµÄÊı¾İ							*
-*	²ÎÊı: nbufferÎªµÚ¼¸¸ö»º³åÇø¿ÉÒÔÎª3»òÕß4	*
-*			can_idÎª·µ»ØµÄIDÖµ							*
-*			rxRTR±íÊ¾ÊÇ·ñÊÇRXRTRÔ¶³ÌÖ¡						*
-*			data±íÊ¾¶ÁÈ¡µÄÊı¾İ						*
-*			dlc±íÊ¾data length code							*
-*	·µ»ØÖµ												*
-*		TRUE£¬±íÊ¾ÊÇÀ©Õ¹×ÜÏß						*
-*		FALSE£¬±íÊ¾·ÇÀ©Õ¹×ÜÏß						*
+*	è¯»å–MCP2510 æ¥æ”¶çš„æ•°æ®							*
+*	å‚æ•°: nbufferä¸ºç¬¬å‡ ä¸ªç¼“å†²åŒºå¯ä»¥ä¸º3æˆ–è€…4	*
+*			can_idä¸ºè¿”å›çš„IDå€¼							*
+*			rxRTRè¡¨ç¤ºæ˜¯å¦æ˜¯RXRTRè¿œç¨‹å¸§						*
+*			dataè¡¨ç¤ºè¯»å–çš„æ•°æ®						*
+*			dlcè¡¨ç¤ºdata length code							*
+*	è¿”å›å€¼												*
+*		TRUEï¼Œè¡¨ç¤ºæ˜¯æ‰©å±•æ€»çº¿						*
+*		FALSEï¼Œè¡¨ç¤ºéæ‰©å±•æ€»çº¿						*
 \***********************************************************/
 int MCP2510_Read_Can(U8 nbuffer, int* rxRTR, U32* can_id, U8* data , U8* dlc)
 {
@@ -447,14 +447,14 @@ int MCP2510_Read_Can(U8 nbuffer, int* rxRTR, U32* can_id, U8* data , U8* dlc)
 
 
 /***********************************************************\
-*	Ğ´ÈëMCP2510 ·¢ËÍµÄÊı¾İ							*
-*	²ÎÊı: nbufferÎªµÚ¼¸¸ö»º³åÇø¿ÉÒÔÎª0¡¢1¡¢2	*
-*			ext±íÊ¾ÊÇ·ñÊÇÀ©Õ¹×ÜÏß					*
-*			can_idÎª·µ»ØµÄIDÖµ							*
-*			rxRTR±íÊ¾ÊÇ·ñÊÇRXRTR						*
-*			data±íÊ¾¶ÁÈ¡µÄÊı¾İ						*
-*			dlc±íÊ¾data length code							*
-*		FALSE£¬±íÊ¾·ÇÀ©Õ¹×ÜÏß						*
+*	å†™å…¥MCP2510 å‘é€çš„æ•°æ®							*
+*	å‚æ•°: nbufferä¸ºç¬¬å‡ ä¸ªç¼“å†²åŒºå¯ä»¥ä¸º0ã€1ã€2	*
+*			extè¡¨ç¤ºæ˜¯å¦æ˜¯æ‰©å±•æ€»çº¿					*
+*			can_idä¸ºè¿”å›çš„IDå€¼							*
+*			rxRTRè¡¨ç¤ºæ˜¯å¦æ˜¯RXRTR						*
+*			dataè¡¨ç¤ºè¯»å–çš„æ•°æ®						*
+*			dlcè¡¨ç¤ºdata length code							*
+*		FALSEï¼Œè¡¨ç¤ºéæ‰©å±•æ€»çº¿						*
 \***********************************************************/
 void MCP2510_Write_Can( U8 nbuffer, int ext, U32 can_id, int rxRTR, U8* data,U8 dlc )
 {
@@ -467,35 +467,35 @@ void MCP2510_Write_Can( U8 nbuffer, int ext, U32 can_id, int rxRTR, U8* data,U8 
 }
 
 /*******************************************\
-*	ÉèÖÃMCP2510 CAN×ÜÏßID				*
-*	²ÎÊı: addressÎªMCP2510¼Ä´æÆ÷µØÖ·*
-*			can_idÎªÉèÖÃµÄIDÖµ			*
-*			IsExt±íÊ¾ÊÇ·ñÎªÀ©Õ¹ID	*
+*	è®¾ç½®MCP2510 CANæ€»çº¿ID				*
+*	å‚æ•°: addressä¸ºMCP2510å¯„å­˜å™¨åœ°å€*
+*			can_idä¸ºè®¾ç½®çš„IDå€¼			*
+*			IsExtè¡¨ç¤ºæ˜¯å¦ä¸ºæ‰©å±•ID	*
 \*******************************************/
 void MCP2510_Write_Can_ID(U8 address, U32 can_id, int IsExt)
 {
 	U32 tbufdata;
 
 	if (IsExt) {
-		can_id&=0x1fffffff;	//29Î»
+		can_id&=0x1fffffff;	//29ä½
 		tbufdata=can_id &0xffff;
 		tbufdata<<=16;
 		tbufdata|=(can_id>>(18-5)&(~0x1f));
 		tbufdata |= TXB_EXIDE_M;
 	}
 	else{
-		can_id&=0x7ff;	//11Î»
+		can_id&=0x7ff;	//11ä½
 		tbufdata= (can_id>>3)|((can_id&0x7)<<13);
 	}
 	MCP2510_Swrite(address, (unsigned char*)&tbufdata, 4);
 }
 
 /***********************************************************************************\
-								·¢ËÍÊı¾İ
-	²ÎÊı:
-		data£¬·¢ËÍÊı¾İ
+								å‘é€æ•°æ®
+	å‚æ•°:
+		dataï¼Œå‘é€æ•°æ®
 
-	Note: Ê¹ÓÃÈı¸ö»º³åÇøÑ­»··¢ËÍ£¬Ã»ÓĞ×ö»º³åÇøÓĞĞ§¼ì²â
+	Note: ä½¿ç”¨ä¸‰ä¸ªç¼“å†²åŒºå¾ªç¯å‘é€ï¼Œæ²¡æœ‰åšç¼“å†²åŒºæœ‰æ•ˆæ£€æµ‹
 \***********************************************************************************/
 	/*
 void Can_Write(U32 id, U8 *pdata, unsigned char dlc, int IsExt, int rxRTR)
@@ -543,11 +543,11 @@ void Can_Write(U32 id, U8 *pdata, unsigned char dlc, int IsExt, int rxRTR)
 }*/
 
 /***********************************************************************************\
-                                ·¢ËÍÊı¾İ
-    ²ÎÊı:
-        data£¬·¢ËÍÊı¾İ
+                                å‘é€æ•°æ®
+    å‚æ•°:
+        dataï¼Œå‘é€æ•°æ®
 
-    Note: Ê¹ÓÃÈı¸ö»º³åÇøÑ­»··¢ËÍ£¬Ã»ÓĞ×ö»º³åÇøÓĞĞ§¼ì²â
+    Note: ä½¿ç”¨ä¸‰ä¸ªç¼“å†²åŒºå¾ªç¯å‘é€ï¼Œæ²¡æœ‰åšç¼“å†²åŒºæœ‰æ•ˆæ£€æµ‹
 \***********************************************************************************/
 void Can_Write(U32 CAN_id, U8 *pdata, unsigned char dlc, int IsExt, int rxRTR)
 {
@@ -557,8 +557,8 @@ void Can_Write(U32 CAN_id, U8 *pdata, unsigned char dlc, int IsExt, int rxRTR)
     
     //U32 rINTMSK_BAK;
     
-    //±¸·İÖĞ¶Ï
-    //´Ë´¦ÖĞ¶ÏĞë½ûÓÃ ·ñÔò½ÓÊÕ×Ü»á¶ªÊ§ Ò²Í¨¹ıÁ¬Ğø·¢ËÍÁ½´Î¿É½â¾ö
+    //å¤‡ä»½ä¸­æ–­
+    //æ­¤å¤„ä¸­æ–­é¡»ç¦ç”¨ å¦åˆ™æ¥æ”¶æ€»ä¼šä¸¢å¤± ä¹Ÿé€šè¿‡è¿ç»­å‘é€ä¸¤æ¬¡å¯è§£å†³
     //rINTMSK_BAK = rINTMSK;
     //DisableIrq(BIT_ALLMSK);
    
@@ -567,13 +567,13 @@ void Can_Write(U32 CAN_id, U8 *pdata, unsigned char dlc, int IsExt, int rxRTR)
    
     switch(ntxbuffer){
     case 0:
-    //TXREQ ·¢ËÍMCU½«´ËÎ»ÖÃ 1 ÒÔÇëÇó±¨ÎÄ·¢ËÍ£­±¨ÎÄ·¢ËÍºó¸ÃÎ»×Ô¶¯ÇåÁã
+    //TXREQ å‘é€MCUå°†æ­¤ä½ç½® 1 ä»¥è¯·æ±‚æŠ¥æ–‡å‘é€ï¼æŠ¥æ–‡å‘é€åè¯¥ä½è‡ªåŠ¨æ¸…é›¶
     MCP2510_WriteBits(TXB0CTRL, (TXB_TXREQ_M | TXB_TXP10_M), 0xff) ;
 
     do
     {
         MCP2510_WriteBits(CANINTF, (U8)(~(TX0INT)), TX0INT); // Clear interrupt
-        // ¼ì²âTXREQÊÇ·ñ·¢ËÍÍê³É
+        // æ£€æµ‹TXREQæ˜¯å¦å‘é€å®Œæˆ
         err = MCP2510_Read(TXB0CTRL) ;
         if ( (err & TXB_TXREQ_M)==0x08  )
         {
@@ -596,13 +596,13 @@ void Can_Write(U32 CAN_id, U8 *pdata, unsigned char dlc, int IsExt, int rxRTR)
     break;
 
     case 1:
-    //TXREQ ·¢ËÍMCU½«´ËÎ»ÖÃ 1 ÒÔÇëÇó±¨ÎÄ·¢ËÍ£­±¨ÎÄ·¢ËÍºó¸ÃÎ»×Ô¶¯ÇåÁã
+    //TXREQ å‘é€MCUå°†æ­¤ä½ç½® 1 ä»¥è¯·æ±‚æŠ¥æ–‡å‘é€ï¼æŠ¥æ–‡å‘é€åè¯¥ä½è‡ªåŠ¨æ¸…é›¶
     MCP2510_WriteBits(TXB1CTRL, (TXB_TXREQ_M | TXB_TXP10_M), 0xff) ;
 
     do
     {
         MCP2510_WriteBits(CANINTF, (U8)(~(TX1INT)), TX1INT); // Clear interrupt
-        // ¼ì²âTXREQÊÇ·ñ·¢ËÍÍê³É
+        // æ£€æµ‹TXREQæ˜¯å¦å‘é€å®Œæˆ
         err = MCP2510_Read(TXB1CTRL) ;
         if ( (err & TXB_TXREQ_M)==0x08  )
         {
@@ -624,13 +624,13 @@ void Can_Write(U32 CAN_id, U8 *pdata, unsigned char dlc, int IsExt, int rxRTR)
     ntxbuffer=2;
     break;    
     case 2:
-    //TXREQ ·¢ËÍMCU½«´ËÎ»ÖÃ 1 ÒÔÇëÇó±¨ÎÄ·¢ËÍ£­±¨ÎÄ·¢ËÍºó¸ÃÎ»×Ô¶¯ÇåÁã
+    //TXREQ å‘é€MCUå°†æ­¤ä½ç½® 1 ä»¥è¯·æ±‚æŠ¥æ–‡å‘é€ï¼æŠ¥æ–‡å‘é€åè¯¥ä½è‡ªåŠ¨æ¸…é›¶
     MCP2510_WriteBits(TXB2CTRL, (TXB_TXREQ_M | TXB_TXP10_M), 0xff) ;
 
     do
     {
         MCP2510_WriteBits(CANINTF, (U8)(~(TX2INT)), TX2INT); // Clear interrupt
-        // ¼ì²âTXREQÊÇ·ñ·¢ËÍÍê³É
+        // æ£€æµ‹TXREQæ˜¯å¦å‘é€å®Œæˆ
         err = MCP2510_Read(TXB2CTRL) ;
         if ( (err & TXB_TXREQ_M) ==0x08 )
         {
@@ -660,10 +660,10 @@ void Can_Write(U32 CAN_id, U8 *pdata, unsigned char dlc, int IsExt, int rxRTR)
 }
 
 /***********************************************************************************\
-								²éÑ¯ÊÇ·ñÊÕµ½Êı¾İ
-	·µ»ØÖµ:Èç¹ûÃ»ÓĞÊı¾İ£¬Ôò·µ»Ø-1£¬
-			·ñÔò£¬·µ»ØÊÕµ½Êı¾İµÄ»º³åÇøºÅ
-	Note: Èç¹ûÁ½¸ö»º³åÇø¶¼ÊÕµ½Êı¾İ£¬Ôò·µ»ØµÚÒ»¸ö»º³åÇø
+								æŸ¥è¯¢æ˜¯å¦æ”¶åˆ°æ•°æ®
+	è¿”å›å€¼:å¦‚æœæ²¡æœ‰æ•°æ®ï¼Œåˆ™è¿”å›-1ï¼Œ
+			å¦åˆ™ï¼Œè¿”å›æ”¶åˆ°æ•°æ®çš„ç¼“å†²åŒºå·
+	Note: å¦‚æœä¸¤ä¸ªç¼“å†²åŒºéƒ½æ”¶åˆ°æ•°æ®ï¼Œåˆ™è¿”å›ç¬¬ä¸€ä¸ªç¼“å†²åŒº
 \***********************************************************************************/
 int Can_Poll()
 {
@@ -678,7 +678,7 @@ int Can_Poll()
 }
 
 /****************************************************************************
-¡¾¹¦ÄÜËµÃ÷¡¿
+ã€åŠŸèƒ½è¯´æ˜ã€‘
 ****************************************************************************/
 int Can_Read(int n, U32* id, U8 *pdata,  U8*dlc, int* rxRTR, int *isExt)
 {
@@ -713,7 +713,7 @@ int Can_Read(int n, U32* id, U8 *pdata,  U8*dlc, int* rxRTR, int *isExt)
 }
 
 /****************************************************************************
-¡¾¹¦ÄÜËµÃ÷¡¿
+ã€åŠŸèƒ½è¯´æ˜ã€‘
 ****************************************************************************/
 // Setup the CAN buffers used by the application.
 // We currently use only one for reception and one for transmission.
@@ -734,45 +734,45 @@ extern void Can_Setup(void)
 
     // But there is a bug in the chip, so we have to activate roll-over.
 	//void MCP2510_WriteBits( U8 address, U8 data, U8 mask );
-	MCP2510_WriteBits(RXB0CTRL, (RXB_RXM0|RXB_BUKT), 0xFF);		//¹Ø±ÕÆÁ±ÎÂË²¨¹¦ÄÜ£¬½ÓÊÕËùÓĞ±¨ÎÄ£¬ÔÊĞí¹ö´æ 
-	MCP2510_WriteBits(RXB1CTRL, RXB_RXM0, 0xFF);		//¹Ø±ÕÆÁ±ÎÂË²¨¹¦ÄÜ£¬½ÓÊÕËùÓĞ±¨ÎÄ
-//	RXB0CTRL---½ÓÊÕ»º³åÆ÷0¿ØÖÆ¼Ä´æÆ÷£¨0X60£©
-//  7:    Î´ÓÃ £¬¶Á0
-//	6-5:  RXM:½ÓÊÕ»º³åÆ÷¹¤×÷Ä£Ê½Î»
-//          11=¹Ø±ÕÆÁ±Î¡¢ÂË²¨¹¦ÄÜ£»½ÓÊÕËùÓĞ±¨ÎÄ
-//          10=Ö»½ÓÊÕ·ûºÏÂË²¨Ìõ¼şµÄ´øÀ©Õ¹±êÊ¶·ûµÄÓĞĞ§±¨ÎÄ
-//          01=Ö»½ÓÊÕ·ûºÏÂË²¨Ìõ¼şµÄ´ø±ê×¼±êÊ¶·ûµÄÓĞĞ§±¨ÎÄ
-//          00=½ÓÊÕ·ûºÏÂË²¨Ìõ¼şµÄËùÓĞ´øÀ©Õ¹±êÊ¶·û»ò±ê×¼±êÊ¶·ûµÄËùÓĞ±¨ÎÄ
-//  4:  Î´ÓÃ  £¬¶Á0
-//  3£º  RXRTR£º½ÓÊÕµ½Ô¶³Ì´«ËÍÇëÇó £»1=½ÓÊÕµ½Ô¶³Ì´«ËÍÇëÇó£¬0=Î´½ÓÊÕµ½Ô¶³Ì´«ËÍÇëÇó
-//  2£ºBUKT£º¹ö´æÊ¹ÄÜÎ»   1=ÈôRXB0Âú£¬RXB0½ÓÊÕµ½µÄ±¨ÎÄ½«±»¹ö´æÖÁRXB1£¬0=¹ö´æ½ûÖ¹
-//  1£º  Ö»¶ÁÎ»
-//  0£ºFILHIT£ºÂË²¨Æ÷ÃüÖĞÎ»----Ö¸Ã÷Ê¹ÄÜ±¨ÎÄ½ÓÊÕµÄÑéÊÕÂË²¨¼Ä´æÆ÷±àºÅ
-//         1=ÑéÊÕÂË²¨¼Ä´æÆ÷1£¨RXF1£©
-//         0=ÑéÊÕÂË²¨¼Ä´æÆ÷0£¨RXF0£©
+	MCP2510_WriteBits(RXB0CTRL, (RXB_RXM0|RXB_BUKT), 0xFF);		//å…³é—­å±è”½æ»¤æ³¢åŠŸèƒ½ï¼Œæ¥æ”¶æ‰€æœ‰æŠ¥æ–‡ï¼Œå…è®¸æ»šå­˜ 
+	MCP2510_WriteBits(RXB1CTRL, RXB_RXM0, 0xFF);		//å…³é—­å±è”½æ»¤æ³¢åŠŸèƒ½ï¼Œæ¥æ”¶æ‰€æœ‰æŠ¥æ–‡
+//	RXB0CTRL---æ¥æ”¶ç¼“å†²å™¨0æ§åˆ¶å¯„å­˜å™¨ï¼ˆ0X60ï¼‰
+//  7:    æœªç”¨ ï¼Œè¯»0
+//	6-5:  RXM:æ¥æ”¶ç¼“å†²å™¨å·¥ä½œæ¨¡å¼ä½
+//          11=å…³é—­å±è”½ã€æ»¤æ³¢åŠŸèƒ½ï¼›æ¥æ”¶æ‰€æœ‰æŠ¥æ–‡
+//          10=åªæ¥æ”¶ç¬¦åˆæ»¤æ³¢æ¡ä»¶çš„å¸¦æ‰©å±•æ ‡è¯†ç¬¦çš„æœ‰æ•ˆæŠ¥æ–‡
+//          01=åªæ¥æ”¶ç¬¦åˆæ»¤æ³¢æ¡ä»¶çš„å¸¦æ ‡å‡†æ ‡è¯†ç¬¦çš„æœ‰æ•ˆæŠ¥æ–‡
+//          00=æ¥æ”¶ç¬¦åˆæ»¤æ³¢æ¡ä»¶çš„æ‰€æœ‰å¸¦æ‰©å±•æ ‡è¯†ç¬¦æˆ–æ ‡å‡†æ ‡è¯†ç¬¦çš„æ‰€æœ‰æŠ¥æ–‡
+//  4:  æœªç”¨  ï¼Œè¯»0
+//  3ï¼š  RXRTRï¼šæ¥æ”¶åˆ°è¿œç¨‹ä¼ é€è¯·æ±‚ ï¼›1=æ¥æ”¶åˆ°è¿œç¨‹ä¼ é€è¯·æ±‚ï¼Œ0=æœªæ¥æ”¶åˆ°è¿œç¨‹ä¼ é€è¯·æ±‚
+//  2ï¼šBUKTï¼šæ»šå­˜ä½¿èƒ½ä½   1=è‹¥RXB0æ»¡ï¼ŒRXB0æ¥æ”¶åˆ°çš„æŠ¥æ–‡å°†è¢«æ»šå­˜è‡³RXB1ï¼Œ0=æ»šå­˜ç¦æ­¢
+//  1ï¼š  åªè¯»ä½
+//  0ï¼šFILHITï¼šæ»¤æ³¢å™¨å‘½ä¸­ä½----æŒ‡æ˜ä½¿èƒ½æŠ¥æ–‡æ¥æ”¶çš„éªŒæ”¶æ»¤æ³¢å¯„å­˜å™¨ç¼–å·
+//         1=éªŒæ”¶æ»¤æ³¢å¯„å­˜å™¨1ï¼ˆRXF1ï¼‰
+//         0=éªŒæ”¶æ»¤æ³¢å¯„å­˜å™¨0ï¼ˆRXF0ï¼‰
 //
-//	RXB1CTRL---½ÓÊÕ»º³åÆ÷1¿ØÖÆ¼Ä´æÆ÷£¨0X70£©
-//  7:    Î´ÓÃ £¬¶Á0
-//	6-5:  RXM:½ÓÊÕ»º³åÆ÷¹¤×÷Ä£Ê½Î»
-//          11=¹Ø±ÕÆÁ±Î¡¢ÂË²¨¹¦ÄÜ£»½ÓÊÕËùÓĞ±¨ÎÄ
-//          10=Ö»½ÓÊÕ·ûºÏÂË²¨Ìõ¼şµÄ´øÀ©Õ¹±êÊ¶·ûµÄÓĞĞ§±¨ÎÄ
-//          01=Ö»½ÓÊÕ·ûºÏÂË²¨Ìõ¼şµÄ´ø±ê×¼±êÊ¶·ûµÄÓĞĞ§±¨ÎÄ
-//          00=½ÓÊÕ·ûºÏÂË²¨Ìõ¼şµÄËùÓĞ´øÀ©Õ¹±êÊ¶·û»ò±ê×¼±êÊ¶·ûµÄËùÓĞ±¨ÎÄ
-//  4:  Î´ÓÃ  £¬¶Á0
-//  3£º  RXRTR£º½ÓÊÕµ½Ô¶³Ì´«ËÍÇëÇó £»1=½ÓÊÕµ½Ô¶³Ì´«ËÍÇëÇó£¬0=Î´½ÓÊÕµ½Ô¶³Ì´«ËÍÇëÇó
-//  2-0: FILHIT ÂË²¨Æ÷ÃüÖĞÎ»----Ö¸Ã÷Ê¹ÄÜ±¨ÎÄ½ÓÊÕµÄÑéÊÕÂË²¨¼Ä´æÆ÷±àºÅ
-//        101=ÑéÊÕÂË²¨¼Ä´æÆ÷5(RXF5)
-//        100=ÑéÊÕÂË²¨¼Ä´æÆ÷4(RXF4)
-//        011=ÑéÊÕÂË²¨¼Ä´æÆ÷3(RXF3)
-//        010=ÑéÊÕÂË²¨¼Ä´æÆ÷2(RXF2)
-//        001=ÑéÊÕÂË²¨¼Ä´æÆ÷1(RXF1)(Ö»ÓĞµ±RXB0CTRLÖĞµÄBULKÎ»ÖÃ1Ê±)
-//        000=ÑéÊÕÂË²¨¼Ä´æÆ÷0(RXF0)(Ö»ÓĞµ±RXB0CTRLÖĞµÄBULKÎ»ÖÃ1Ê±)
+//	RXB1CTRL---æ¥æ”¶ç¼“å†²å™¨1æ§åˆ¶å¯„å­˜å™¨ï¼ˆ0X70ï¼‰
+//  7:    æœªç”¨ ï¼Œè¯»0
+//	6-5:  RXM:æ¥æ”¶ç¼“å†²å™¨å·¥ä½œæ¨¡å¼ä½
+//          11=å…³é—­å±è”½ã€æ»¤æ³¢åŠŸèƒ½ï¼›æ¥æ”¶æ‰€æœ‰æŠ¥æ–‡
+//          10=åªæ¥æ”¶ç¬¦åˆæ»¤æ³¢æ¡ä»¶çš„å¸¦æ‰©å±•æ ‡è¯†ç¬¦çš„æœ‰æ•ˆæŠ¥æ–‡
+//          01=åªæ¥æ”¶ç¬¦åˆæ»¤æ³¢æ¡ä»¶çš„å¸¦æ ‡å‡†æ ‡è¯†ç¬¦çš„æœ‰æ•ˆæŠ¥æ–‡
+//          00=æ¥æ”¶ç¬¦åˆæ»¤æ³¢æ¡ä»¶çš„æ‰€æœ‰å¸¦æ‰©å±•æ ‡è¯†ç¬¦æˆ–æ ‡å‡†æ ‡è¯†ç¬¦çš„æ‰€æœ‰æŠ¥æ–‡
+//  4:  æœªç”¨  ï¼Œè¯»0
+//  3ï¼š  RXRTRï¼šæ¥æ”¶åˆ°è¿œç¨‹ä¼ é€è¯·æ±‚ ï¼›1=æ¥æ”¶åˆ°è¿œç¨‹ä¼ é€è¯·æ±‚ï¼Œ0=æœªæ¥æ”¶åˆ°è¿œç¨‹ä¼ é€è¯·æ±‚
+//  2-0: FILHIT æ»¤æ³¢å™¨å‘½ä¸­ä½----æŒ‡æ˜ä½¿èƒ½æŠ¥æ–‡æ¥æ”¶çš„éªŒæ”¶æ»¤æ³¢å¯„å­˜å™¨ç¼–å·
+//        101=éªŒæ”¶æ»¤æ³¢å¯„å­˜å™¨5(RXF5)
+//        100=éªŒæ”¶æ»¤æ³¢å¯„å­˜å™¨4(RXF4)
+//        011=éªŒæ”¶æ»¤æ³¢å¯„å­˜å™¨3(RXF3)
+//        010=éªŒæ”¶æ»¤æ³¢å¯„å­˜å™¨2(RXF2)
+//        001=éªŒæ”¶æ»¤æ³¢å¯„å­˜å™¨1(RXF1)(åªæœ‰å½“RXB0CTRLä¸­çš„BULKä½ç½®1æ—¶)
+//        000=éªŒæ”¶æ»¤æ³¢å¯„å­˜å™¨0(RXF0)(åªæœ‰å½“RXB0CTRLä¸­çš„BULKä½ç½®1æ—¶)
 	
 }
 
 
 /****************************************************************************
-¡¾¹¦ÄÜËµÃ÷¡¿
+ã€åŠŸèƒ½è¯´æ˜ã€‘
 ****************************************************************************/
 extern void Init_MCP2510(CanBandRate bandrate)
 {
@@ -781,17 +781,17 @@ extern void Init_MCP2510(CanBandRate bandrate)
 	MCP2510_IO_CS_Init() ;
 	MCP2510_Reset();
 
-	MCP2510_SetBandRate(bandrate,false);		//ÉèÖÃ²¨ÌØÂÊ
+	MCP2510_SetBandRate(bandrate,false);		//è®¾ç½®æ³¢ç‰¹ç‡
 
 	// Disable interrups.
-	MCP2510_Write(CANINTE, NO_IE);  		//½ûÖ¹ËùÓĞÖĞ¶Ï
+	MCP2510_Write(CANINTE, NO_IE);  		//ç¦æ­¢æ‰€æœ‰ä¸­æ–­
 		
 	// Mark all filter bits as don't care:
-	MCP2510_Write_Can_ID(RXM0SIDH, 0,0);	//±ê×¼Ö¡
+	MCP2510_Write_Can_ID(RXM0SIDH, 0,0);	//æ ‡å‡†å¸§
 	MCP2510_Write_Can_ID(RXM1SIDH, 0,0);
-	//0.RXBnCTRL.FILHIT ¾ö¶¨ÁËÊ¹ÓÃÄÇ¸öÂË²¨Æ÷½øĞĞÂË²¨
-	//1. ÆÁ±Î¼Ä´æÆ÷¾ö¶¨ÁË¶ÔÄÄÒ»Î»½øĞĞĞ£Ñé
-	//2. ÑéÊÕÂË²¨Æ÷¾ö¶¨ÁË¶Ôµ±Ç°Î»Æ¥ÅäµÄÖµ
+	//0.RXBnCTRL.FILHIT å†³å®šäº†ä½¿ç”¨é‚£ä¸ªæ»¤æ³¢å™¨è¿›è¡Œæ»¤æ³¢
+	//1. å±è”½å¯„å­˜å™¨å†³å®šäº†å¯¹å“ªä¸€ä½è¿›è¡Œæ ¡éªŒ
+	//2. éªŒæ”¶æ»¤æ³¢å™¨å†³å®šäº†å¯¹å½“å‰ä½åŒ¹é…çš„å€¼
 	// Anyway, set all filters to 0:
 	MCP2510_Write_Can_ID(RXF0SIDH, 0, 0);
 	MCP2510_Write_Can_ID(RXF1SIDH, 0, 0);
@@ -801,11 +801,11 @@ extern void Init_MCP2510(CanBandRate bandrate)
 	MCP2510_Write_Can_ID(RXF4SIDH, 0, 0);
 	MCP2510_Write_Can_ID(RXF5SIDH, 0, 0);
 
-	//MCP2510_Write(CLKCTRL, MODE_LOOPBACK| CLKEN | CLK8);//»Ø»·Ä£Ê½
-    //Èç¹û²»ÄÜÓÃÁ½Ì¨Éè±¸Áª»úÊµÑéµÄ»°£¬¿ÉÒÔÑ¡Ôñ»Ø»·Ä£Ê½
-	MCP2510_Write(CLKCTRL, MODE_NORMAL| CLKEN | CLK8);//±ê×¼Ä£Ê½
+	//MCP2510_Write(CLKCTRL, MODE_LOOPBACK| CLKEN | CLK8);//å›ç¯æ¨¡å¼
+    //å¦‚æœä¸èƒ½ç”¨ä¸¤å°è®¾å¤‡è”æœºå®éªŒçš„è¯ï¼Œå¯ä»¥é€‰æ‹©å›ç¯æ¨¡å¼
+	MCP2510_Write(CLKCTRL, MODE_NORMAL| CLKEN | CLK8);//æ ‡å‡†æ¨¡å¼
 	
-  	//MCP2510_Write(CLKCTRL, MODE_LISTENONLY| CLKEN | CLK8);//¼àÌıÄ£Ê½
+  	//MCP2510_Write(CLKCTRL, MODE_LISTENONLY| CLKEN | CLK8);//ç›‘å¬æ¨¡å¼
 
 	// Clear, deactivate the three transmit buffers
 	a = TXB0CTRL;
@@ -816,7 +816,7 @@ extern void Init_MCP2510(CanBandRate bandrate)
 	        }
        	a += 2; // We did not clear CANSTAT or CANCTRL
 	}
-	//½ÓÊÕ·ûºÏÂË²¨Æ÷Ìõ¼şµÄËùÓĞ´øÀ©Õ¹±êÊ¶·û»ò±ê×¼±êÊ¶·ûµÄÓĞĞ§±¨ÎÄ
+	//æ¥æ”¶ç¬¦åˆæ»¤æ³¢å™¨æ¡ä»¶çš„æ‰€æœ‰å¸¦æ‰©å±•æ ‡è¯†ç¬¦æˆ–æ ‡å‡†æ ‡è¯†ç¬¦çš„æœ‰æ•ˆæŠ¥æ–‡
 	// and the two receive buffers.
 	MCP2510_Write(RXB0CTRL, 0);
 	MCP2510_Write(RXB1CTRL, 0);
@@ -829,7 +829,7 @@ extern void Init_MCP2510(CanBandRate bandrate)
 }
 
 /****************************************************************************
-¡¾¹¦ÄÜËµÃ÷¡¿MCP2510ÊµÑé³ÌĞò
+ã€åŠŸèƒ½è¯´æ˜ã€‘MCP2510å®éªŒç¨‹åº
 ****************************************************************************/
 void Test_MCP2510(void)
 {
@@ -847,8 +847,8 @@ void Test_MCP2510(void)
 	Init_MCP2510(BandRate_250kbps);
 	Can_Setup();
 	
-    Uart_Init(0,115200);//³õÊ¼»¯´®¿Ú¿ØÖÆ¼Ä´æÆ÷£¬ÉèÖÃÕıÈ·µÄ²¨ÌØÂÊ
-    Uart_Select(0);//Ñ¡Ôñ´®¿Ú£¬ÕâÀïÎÒÃÇÑ¡´®¿Ú0
+    Uart_Init(0,115200);//åˆå§‹åŒ–ä¸²å£æ§åˆ¶å¯„å­˜å™¨ï¼Œè®¾ç½®æ­£ç¡®çš„æ³¢ç‰¹ç‡
+    Uart_Select(0);//é€‰æ‹©ä¸²å£ï¼Œè¿™é‡Œæˆ‘ä»¬é€‰ä¸²å£0
 	
 	Uart_Printf( "\nCAN BUS TEST \n" );
 	Uart_Printf( "Press 'ESC' key to Exit this program !\n\n" );
@@ -857,7 +857,7 @@ void Test_MCP2510(void)
    // while(1)
     {
 #if 1    
-		Can_Write( 0x5a, data_write, 8, false, false);//·¢ËÍ±¨ÎÄ  ±ê×¼Ä£Ê½ÏÂ±ØĞëÓĞ½ÓÊÕ¶Ë²ÅÄÜ·¢ËÍ³É¹¦
+		Can_Write( 0x5a, data_write, 8, false, false);//å‘é€æŠ¥æ–‡  æ ‡å‡†æ¨¡å¼ä¸‹å¿…é¡»æœ‰æ¥æ”¶ç«¯æ‰èƒ½å‘é€æˆåŠŸ
 //		Can_Write( 0x5b, data_write, 8, false, false);
 //#else		
 		while( (i=Can_Poll())==-1 ) ;
@@ -919,7 +919,7 @@ static void __irq Eint8_23_ISR(void)
     //rEINTMASK=0xFFFFFFFF;
     //Delay(10);
     Disable_CANINT();
-    MCP2510_Write(CANINTE, NO_IE);          //½ûÖ¹ËùÓĞÖĞ¶Ï
+    MCP2510_Write(CANINTE, NO_IE);          //ç¦æ­¢æ‰€æœ‰ä¸­æ–­
     tempisr = Can_Poll();
     Can_Read(tempisr, &CanId, data_read, &dlc, 0, 0);
 
@@ -944,7 +944,7 @@ static void __irq Eint8_23_ISR(void)
 /*
     if (((MCP2510_Read(MCP2510REG_CANSTAT)) & 0xe0) != 0)
     {
-        Init_MCP2510(BandRate_250kbps);             //MCP2515³õÊ¼»¯
+        Init_MCP2510(BandRate_250kbps);             //MCP2515åˆå§‹åŒ–
         Can_Setup();
     }
     */
@@ -952,7 +952,7 @@ static void __irq Eint8_23_ISR(void)
    //Lcd_SetPosition(0, 12);
    //Printf( "RECIVE Data=%x,%x,%x,%x,%x,%x,%x,%x\n\n", data_read[0], data_read[1], data_read[2], data_read[3], data_read[4], data_read[5], data_read[6], data_read[7] );
    //Lcd_Update();
-        //Ğ£Ñé½ÓÊÕµÄ±¨ÎÄÊÇ·ñÕıÈ·
+        //æ ¡éªŒæ¥æ”¶çš„æŠ¥æ–‡æ˜¯å¦æ­£ç¡®
         for (i = 3; i < 8; ++i)
         {
             if (data_write[i] != data_read[i])
@@ -965,7 +965,7 @@ static void __irq Eint8_23_ISR(void)
         }
 
 	
-    MCP2510_Write(CANINTE, RX0IE | RX1IE);  //¿ªCANÖĞ¶Ï
+    MCP2510_Write(CANINTE, RX0IE | RX1IE);  //å¼€CANä¸­æ–­
     Enable_CANINT();
     // LED2_Off;
 }
@@ -973,20 +973,20 @@ void Init_CANReciveINT(void)
 {
 
 	#if GPS
-	rGPGCON = rGPGCON & ~(3 << 2) | (2 << 2); //GPG1ÉèÖÃÎªEINT9
+	rGPGCON = rGPGCON & ~(3 << 2) | (2 << 2); //GPG1è®¾ç½®ä¸ºEINT9
     rGPGDAT = rGPGDAT | (1 << 1);
     rGPGUP |= (1 << 1); //disable GPG3 pull up
 
-    //rEXTINT1 = (rEXTINT1 & ~(7<<4));//|(2<<4);   //µÍµçÆ½´¥·¢  //EINT9 £­>falling edge triggered
-    rEXTINT1 = (rEXTINT1 & ~(7 << 4)) | (2 << 4); //ÏÂ½µÑØ´¥·¢  //EINT9 £­>falling edge triggered
+    //rEXTINT1 = (rEXTINT1 & ~(7<<4));//|(2<<4);   //ä½ç”µå¹³è§¦å‘  //EINT9 ï¼>falling edge triggered
+    rEXTINT1 = (rEXTINT1 & ~(7 << 4)) | (2 << 4); //ä¸‹é™æ²¿è§¦å‘  //EINT9 ï¼>falling edge triggered
 
 	#else
-    rGPGCON = rGPGCON & ~(3 << 6) | (1 << 7); //GPG3ÉèÖÃÎªEINT11
+    rGPGCON = rGPGCON & ~(3 << 6) | (1 << 7); //GPG3è®¾ç½®ä¸ºEINT11
     rGPGDAT = rGPGDAT | (1 << 3);
     rGPGUP |= (1 << 3); //disable GPG3 pull up
 
-    //rEXTINT1 = (rEXTINT1 & ~(7<<12));//|(2<<12);   //µÍµçÆ½´¥·¢  //EINT11 £­>falling edge triggered
-    rEXTINT1 = (rEXTINT1 & ~(7 << 12)) | (2 << 12); //ÏÂ½µÑØ´¥·¢  //EINT11 £­>falling edge triggered
+    //rEXTINT1 = (rEXTINT1 & ~(7<<12));//|(2<<12);   //ä½ç”µå¹³è§¦å‘  //EINT11 ï¼>falling edge triggered
+    rEXTINT1 = (rEXTINT1 & ~(7 << 12)) | (2 << 12); //ä¸‹é™æ²¿è§¦å‘  //EINT11 ï¼>falling edge triggered
     #endif
 
     pISR_EINT8_23 = (unsigned)Eint8_23_ISR;
@@ -994,9 +994,9 @@ void Init_CANReciveINT(void)
     
 }
 
-//Ô´¹ÒÆğ¼Ä´æÆ÷£¨SRCPND£©=0 ÖĞ¶ÏÎ´±»ÇëÇó£»=1 ÖĞ¶ÏÔ´ÉùÃ÷ÁËÖĞ¶ÏÇëÇó
-//ÖĞ¶Ï¹ÒÆğ¼Ä´æÆ÷£¨INTPND£© =0 Î´ÇëÇóÖĞ¶Ï£»=1 ÖĞ¶ÏÔ´ÒÑÉùÃ÷ÁËÖĞ¶ÏÇëÇó
+//æºæŒ‚èµ·å¯„å­˜å™¨ï¼ˆSRCPNDï¼‰=0 ä¸­æ–­æœªè¢«è¯·æ±‚ï¼›=1 ä¸­æ–­æºå£°æ˜äº†ä¸­æ–­è¯·æ±‚
+//ä¸­æ–­æŒ‚èµ·å¯„å­˜å™¨ï¼ˆINTPNDï¼‰ =0 æœªè¯·æ±‚ä¸­æ–­ï¼›=1 ä¸­æ–­æºå·²å£°æ˜äº†ä¸­æ–­è¯·æ±‚
 
-//ÖĞ¶ÏÆÁ±Î¼Ä´æÆ÷£¨INTMSK£© =0 ÔÊĞíÖĞ¶Ï£» =1 ÖĞ¶Ï¹ÒÆğ
-//Íâ²¿ÖĞ¶ÏÆÁ±Î¼Ä´æÆ÷(EINTMASK)    =0 Ê¹ÄÜÖĞ¶Ï£»=1 ½ûÖ¹ÖĞ¶Ï
-//Íâ²¿ÖĞ¶Ï¹ÒÆğ¼Ä´æÆ÷£¨EINTPEND£©Ğ´1ÇåÁã´ËÎ»£»=0 Ê¹ÄÜÖĞ¶Ï£»=1 ½ûÖ¹ÖĞ¶Ï
+//ä¸­æ–­å±è”½å¯„å­˜å™¨ï¼ˆINTMSKï¼‰ =0 å…è®¸ä¸­æ–­ï¼› =1 ä¸­æ–­æŒ‚èµ·
+//å¤–éƒ¨ä¸­æ–­å±è”½å¯„å­˜å™¨(EINTMASK)    =0 ä½¿èƒ½ä¸­æ–­ï¼›=1 ç¦æ­¢ä¸­æ–­
+//å¤–éƒ¨ä¸­æ–­æŒ‚èµ·å¯„å­˜å™¨ï¼ˆEINTPENDï¼‰å†™1æ¸…é›¶æ­¤ä½ï¼›=0 ä½¿èƒ½ä¸­æ–­ï¼›=1 ç¦æ­¢ä¸­æ–­

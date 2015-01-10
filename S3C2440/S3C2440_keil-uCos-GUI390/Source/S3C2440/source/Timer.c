@@ -38,7 +38,7 @@ Initial Timer0 use for ucos time tick
 ********************************************************************************************************/
 void Timer0Init(void)
 {
-	// ��ʱ������
+	// 定时器设置
 
 	
 	rTCON = rTCON & (~0xf) ;			// clear manual update bit, stop Timer0
@@ -67,12 +67,12 @@ extern void OSTickISR(void);
 
 void ISRInit(void)
 {
-	// �����жϿ�����
-	rPRIORITY = 0x00000000;		// ʹ��Ĭ�ϵĹ̶������ȼ�
-	rINTMOD = 0x00000000;		// �����жϾ�ΪIRQ�ж�
+	// 设置中断控制器
+	rPRIORITY = 0x00000000;		// 使用默认的固定的优先级
+	rINTMOD = 0x00000000;		// 所有中断均为IRQ中断
   pISR_TIMER0= (uint32) OSTickISR;
 	//pISR_TIMER0= (uint32)  Timer0_ISR;
 	
-	rINTMSK &= ~(1<<10);			// ��TIMER0�ж�����
+	rINTMSK &= ~(1<<10);			// 打开TIMER0中断允许
 	IntCnt=0;
 }

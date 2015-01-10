@@ -10,7 +10,7 @@ extern void Versions(void);
 
 extern void buzTest(void)
 {
-       	Lcd_ClearScr(0x0);   //ºÚÉ«
+       	Lcd_ClearScr(0x0);   //é»‘è‰²
 		Versions();
 		print(0,2,"Starting Buzzer Test",0xFF);
 		

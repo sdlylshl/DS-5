@@ -17,7 +17,7 @@ Support 512/page NAND Flash only
 
 
 struct Partition{
-    U32 offset;//ÆğÊ¼µØÖ·£¬¼´Æ«ÒÆµØÖ·
+    U32 offset;//èµ·å§‹åœ°å€ï¼Œå³åç§»åœ°å€
     U32 size;
     char *name;
 };
@@ -91,13 +91,13 @@ static U16 NandAddr;
 static U8 fs_yaffs;
 static U32 StartPage, BlockCnt;
 
-//È«¾Ö±äÁ¿
+//å…¨å±€å˜é‡
 U8 have_nandflash;
 
 //#include "u24440mon.h"
-//ÏÂÔØ·½Ê½Éè¶¨
-extern U8  com_usb;       //ÏÂÔØ·½Ê½          0.USB 1.´®¿ÚÏÂÔØ  ;ÆäËû USB
-extern U8 download_run;   // ÊÇ·ñÏÂÔØµ½NANDÖĞ 0:run 1:DownLoad 
+//ä¸‹è½½æ–¹å¼è®¾å®š
+extern U8  com_usb;       //ä¸‹è½½æ–¹å¼          0.USB 1.ä¸²å£ä¸‹è½½  ;å…¶ä»– USB
+extern U8 download_run;   // æ˜¯å¦ä¸‹è½½åˆ°NANDä¸­ 0:run 1:DownLoad 
 
 
 extern volatile U32 downloadAddress;
@@ -155,7 +155,7 @@ static void InitNandCfg(void)
 #ifdef	WIAT_BUSY_HARD
 #define	WaitNFBusy()	while(NFIsBusy())
 #else
-static U32 WaitNFBusy(void)	// R/B Î´½ÓºÃ?
+static U32 WaitNFBusy(void)	// R/B æœªæ¥å¥½?
 {
 	U8 stat;
 	
@@ -203,7 +203,7 @@ U32 EraseBlock(U32 addr)
 
 	addr &= ~0x3f;
 	
-	/*ÏÈ¼ì²âÊÇ·ñÎª»µ¿é£¬ÈôÊÇ»µ¿éµÄ»°Ôò²»ÔÙ²Á³ı£¬³§¼Ò±ê¼ÇµÄ»µ¿é²»Òª¶¯  pht 090422*/
+	/*å…ˆæ£€æµ‹æ˜¯å¦ä¸ºåå—ï¼Œè‹¥æ˜¯åå—çš„è¯åˆ™ä¸å†æ“¦é™¤ï¼Œå‚å®¶æ ‡è®°çš„åå—ä¸è¦åŠ¨  pht 090422*/
 //	if(CheckBadBlk(addr))
 //		return 1;
 
@@ -293,9 +293,9 @@ U32 WritePage(U32 addr, U8 *buf)
 	 	}
 	 }else{
 	 	
-		WrNFDat(0xff);//2048£¬»µ¿é±êÖ¾
+		WrNFDat(0xff);//2048ï¼Œåå—æ ‡å¿—
 	    SEccUnlock();
-		WrNFDat(tmp[0]);//ECCĞ£ÑéÂë
+		WrNFDat(tmp[0]);//ECCæ ¡éªŒç 
 		WrNFDat(tmp[1]);
 		WrNFDat(tmp[2]);
 		WrNFDat(tmp[3]);
@@ -338,7 +338,7 @@ void NF_WritePageBP(U32 Block,U32 Page, U8 *buf){
 	
 	NF_addr = (Block<<6)+Page;
 		for(i=0; i<2048; i++) {
-			if(!(i&0x3f))//²Á³ıflash£¬²¢¼ì²âÊÇ·ñÊÇ»µ¿é
+			if(!(i&0x3f))//æ“¦é™¤flashï¼Œå¹¶æ£€æµ‹æ˜¯å¦æ˜¯åå—
 				if(EraseBlock(NF_addr)){
 					i+=64;
 					continue;
@@ -411,7 +411,7 @@ void InitNandFlash(int info)
 	i = ReadChipId();
 	if(info)
 		printf("NAND ID is 0x%04x \n", i);
-		//Ìí¼Ó MTÖ§³Ö
+		//æ·»åŠ  MTæ”¯æŒ
 	if((i==0xecda) || (i==0xadda)||(i==0x2CDA)){
 		have_nandflash = 1;	
 		NandAddr = 1;
@@ -514,7 +514,7 @@ void cpy_bpage()
 	memcpy((char *)BPAGE_MAGIC_ADD,bpage_magic,8);
 	memcpy((unsigned int *)BPAGE_ADD,boot_params.bpage,boot_params.bpage[0]*4+4);
 }
-//Ìí¼Ó»µ¿éĞÅÏ¢
+//æ·»åŠ åå—ä¿¡æ¯
 void add_bpage(unsigned int seq)
 {
 		int i, j;
@@ -585,8 +585,8 @@ void WrFileToNF(void)
 	StartPage = nf_part->offset>>11;
 	BlockCnt  = nf_part->size>>17;
 	printf("offset 0x%08x, size 0x%08x [%s]\n", nf_part->offset, nf_part->size, nf_part->name);
-//	printf("\n    ·ÉÁèÇ¶ÈëÊ½      www.witech.com.cn\n");
-	if(!strcmp(nf_part->name,"wince"))//strcmp ´®±È½Ï ²»¹Ü´óĞ¡Ğ´
+//	printf("\n    é£å‡ŒåµŒå…¥å¼      www.witech.com.cn\n");
+	if(!strcmp(nf_part->name,"wince"))//strcmp ä¸²æ¯”è¾ƒ ä¸ç®¡å¤§å°å†™
 	{
 		puts("\nThe 'wince' partition is reserved for wince. please use eboot\n");
 		return;
@@ -609,7 +609,7 @@ void WrFileToNF(void)
 		return;
 	}
 	
-	//if(!strcmp(nf_part->name,"wince"))//strcmp ´®±È½Ï ²»¹Ü´óĞ¡Ğ´
+	//if(!strcmp(nf_part->name,"wince"))//strcmp ä¸²æ¯”è¾ƒ ä¸ç®¡å¤§å°å†™
 		//wince_rewrite();
 	if(!strcmp(nf_part->name,"fs_yaffs"))
 		fs_yaffs=2;
@@ -622,7 +622,7 @@ void WrFileToNF(void)
 		if(!(i&0x3f)) {
 			
 			if(EraseBlock(i+StartPage)) {
-				/*±ê¼Ç»µ¿é²¢Ìø¹ı»µ¿é*/
+				/*æ ‡è®°åå—å¹¶è·³è¿‡åå—*/
 				nf_part->size -= 64<<11;	//partition available size - 1 block size
 				if(downloadFileSize>nf_part->size) {
 					puts("Program nand flash fail\n");
@@ -718,8 +718,8 @@ int search_params(void)
 		if(!nf_part)
 			return ret;
 		page = nf_part->offset>>11;
-		page_cnt = nf_part->size>>11; //Ã¿Ò³ÓĞ2^11 2048×Ö½Ú£¬Çó³öËùÕ¼ÓÃµÄÒ³Êı¡£
-		//Ò³Ğ´
+		page_cnt = nf_part->size>>11; //æ¯é¡µæœ‰2^11 2048å­—èŠ‚ï¼Œæ±‚å‡ºæ‰€å ç”¨çš„é¡µæ•°ã€‚
+		//é¡µå†™
 		
 		InitNandFlash(0);	//don't show info in InitNandFlash!
 		//search from the last page
@@ -762,7 +762,7 @@ int search_params(void)
 	return ret;
 }
 
-//flashµÄĞ´²Ù×÷±ØĞë´ÓÒ»¿éµÄµÚÒ»Ò³¿ªÊ¼Ğ´
+//flashçš„å†™æ“ä½œå¿…é¡»ä»ä¸€å—çš„ç¬¬ä¸€é¡µå¼€å§‹å†™
 int save_params(void)
 {
 	
@@ -789,7 +789,7 @@ int save_params(void)
 		memcpy(dat, &boot_params, sizeof(boot_params));
 
 		for(i=0; i<page_cnt; i++) {
-			if(!(i&0x3f))//²Á³ıflash£¬²¢¼ì²âÊÇ·ñÊÇ»µ¿é
+			if(!(i&0x3f))//æ“¦é™¤flashï¼Œå¹¶æ£€æµ‹æ˜¯å¦æ˜¯åå—
 				if(EraseBlock(page)){
 					i+=64;
 					continue;
@@ -832,7 +832,7 @@ int set_params(void)
 			printf("please enter value:");
 			i = key;
 			if((&boot_params.start + i)==&boot_params.user_params) {
-				//È·±£ÊäÈëµÄ×Ö½ÚÊı²»³¬¹ı127!
+				//ç¡®ä¿è¾“å…¥çš„å­—èŠ‚æ•°ä¸è¶…è¿‡127!
 				char cmd[128];
 				memset(cmd, 0, sizeof(cmd));
 				Uart_GetString(cmd);

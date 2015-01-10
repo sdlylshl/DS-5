@@ -1,5 +1,5 @@
 /**************************************************************
-The initial and control for 320°¡240 16Bpp TFT LCD----LCD_LTV350QV-F04
+The initial and control for 320√ó240 16Bpp TFT LCD----LCD_LTV350QV-F04
 **************************************************************/
 #include <stdarg.h>
 #include <string.h>
@@ -33,13 +33,13 @@ The initial and control for 320°¡240 16Bpp TFT LCD----LCD_LTV350QV-F04
 #define LINEVAL_TFT_240320	(LCD_YSIZE_TFT_240320-1)
 
 //Timing parameter for LCD LQ035Q7DB02
-#define VBPD_240320		(3)		//¥π÷±Õ¨≤Ω–≈∫≈µƒ∫ÛºÁ1
-#define VFPD_240320		(5)		//¥π÷±Õ¨≤Ω–≈∫≈µƒ«∞ºÁ5
-#define VSPW_240320		(15)		//¥π÷±Õ¨≤Ω–≈∫≈µƒ¬ˆøÌ1
+#define VBPD_240320		(3)		//ÂûÇÁõ¥ÂêåÊ≠•‰ø°Âè∑ÁöÑÂêéËÇ©1
+#define VFPD_240320		(5)		//ÂûÇÁõ¥ÂêåÊ≠•‰ø°Âè∑ÁöÑÂâçËÇ©5
+#define VSPW_240320		(15)		//ÂûÇÁõ¥ÂêåÊ≠•‰ø°Âè∑ÁöÑËÑâÂÆΩ1
 
-#define HBPD_240320		(58)		//ÀÆ∆ΩÕ¨≤Ω–≈∫≈µƒ∫ÛºÁ35
-#define HFPD_240320		(15)		//ÀÆ∆ΩÕ¨≤Ω–≈∫≈µƒ«∞ºÁ19
-#define HSPW_240320		(8)		//ÀÆ∆ΩÕ¨≤Ω–≈∫≈µƒ¬ˆøÌ5
+#define HBPD_240320		(58)		//Ê∞¥Âπ≥ÂêåÊ≠•‰ø°Âè∑ÁöÑÂêéËÇ©35
+#define HFPD_240320		(15)		//Ê∞¥Âπ≥ÂêåÊ≠•‰ø°Âè∑ÁöÑÂâçËÇ©19
+#define HSPW_240320		(8)		//Ê∞¥Âπ≥ÂêåÊ≠•‰ø°Âè∑ÁöÑËÑâÂÆΩ5
 
 #define CLKVAL_TFT_240320	(4) 	
 //FCLK=180MHz,HCLK=90MHz,VCLK=6.5MHz
@@ -51,7 +51,7 @@ The initial and control for 320°¡240 16Bpp TFT LCD----LCD_LTV350QV-F04
 
 //extern void Uart_Printf(char *f, ...) ;
 
-extern unsigned char xyx_320_240[];	//øÌ240£¨∏ﬂ320
+extern unsigned char xyx_320_240[];	//ÂÆΩ240ÔºåÈ´ò320
 extern const unsigned char ok2440[];
 extern const unsigned char TE2440[];
 extern const unsigned char TE2440_ii[];
@@ -63,7 +63,7 @@ extern unsigned char __VGA[];
   unsigned short LCD_BUFFER[SCR_YSIZE_TFT_240320][SCR_XSIZE_TFT_240320];//240*320
 
 /**************************************************************
-320°¡240 16Bpp TFT LCDπ¶ƒ‹ƒ£øÈ≥ı ºªØ
+320√ó240 16Bpp TFT LCDÂäüËÉΩÊ®°ÂùóÂàùÂßãÂåñ
 **************************************************************/
 static void Lcd_PowerEnable(int invpwren,int pwren);
 static void Lcd_Init(void)
@@ -93,7 +93,7 @@ static void Lcd_Init(void)
 }
 
 /**************************************************************
-LCD ”∆µ∫Õøÿ÷∆–≈∫≈ ‰≥ˆªÚ’ﬂÕ£÷π£¨1ø™∆Ù ”∆µ ‰≥ˆ
+LCDËßÜÈ¢ëÂíåÊéßÂà∂‰ø°Âè∑ËæìÂá∫ÊàñËÄÖÂÅúÊ≠¢Ôºå1ÂºÄÂêØËßÜÈ¢ëËæìÂá∫
 **************************************************************/
 static void Lcd_EnvidOnOff(int onoff)
 {
@@ -104,7 +104,7 @@ static void Lcd_EnvidOnOff(int onoff)
 }
 
 /**************************************************************
-320°¡240 16Bpp TFT LCD µÁ‘¥øÿ÷∆“˝Ω≈ πƒ‹
+320√ó240 16Bpp TFT LCD ÁîµÊ∫êÊéßÂà∂ÂºïËÑö‰ΩøËÉΩ
 **************************************************************/
 static void Lcd_PowerEnable(int invpwren,int pwren)
 {
@@ -119,7 +119,7 @@ static void Lcd_PowerEnable(int invpwren,int pwren)
 }
 
 /**************************************************************
-320°¡240 16Bpp TFT LCD“∆∂Øπ€≤Ï¥∞ø⁄
+320√ó240 16Bpp TFT LCDÁßªÂä®ËßÇÂØüÁ™óÂè£
 **************************************************************/
 static void Lcd_MoveViewPort(int vx,int vy)
 {
@@ -139,7 +139,7 @@ static void Lcd_MoveViewPort(int vx,int vy)
 }    
 
 /**************************************************************
-320°¡240 16Bpp TFT LCD“∆∂Øπ€≤Ï¥∞ø⁄
+320√ó240 16Bpp TFT LCDÁßªÂä®ËßÇÂØüÁ™óÂè£
 **************************************************************/
 static void MoveViewPort(void)
 {
@@ -192,7 +192,7 @@ static void MoveViewPort(void)
 }
 
 /**************************************************************
-320°¡240 16Bpp TFT LCDµ•∏ˆœÛÀÿµƒœ‘ æ ˝æ› ‰≥ˆ
+320√ó240 16Bpp TFT LCDÂçï‰∏™Ë±°Á¥†ÁöÑÊòæÁ§∫Êï∞ÊçÆËæìÂá∫
 **************************************************************/
 void PutPixel(U32 x,U32 y, U16 c )
 {
@@ -207,7 +207,7 @@ void GUI_Point(U32 x,U32 y, U16 c )
 }
 
 /**************************************************************
-320°¡240 16Bpp TFT LCD»´∆¡ÃÓ≥‰Ãÿ∂®—’…´µ•‘™ªÚ«Â∆¡
+320√ó240 16Bpp TFT LCDÂÖ®Â±èÂ°´ÂÖÖÁâπÂÆöÈ¢úËâ≤ÂçïÂÖÉÊàñÊ∏ÖÂ±è
 **************************************************************/
 void Lcd_ClearScr( U16 c)
 {
@@ -223,7 +223,7 @@ void Lcd_ClearScr( U16 c)
 }
 
 /**************************************************************
-LCD∆¡ƒªœ‘ æ¥π÷±∑≠◊™
+LCDÂ±èÂπïÊòæÁ§∫ÂûÇÁõ¥ÁøªËΩ¨
 // LCD display is flipped vertically
 // But, think the algorithm by mathematics point.
 //   3I2
@@ -352,7 +352,7 @@ LCD∆¡ƒªœ‘ æ¥π÷±∑≠◊™
 }
 
 /**************************************************************
-‘⁄LCD∆¡ƒª…œª≠“ª∏ˆæÿ–Œ
+Âú®LCDÂ±èÂπï‰∏äÁîª‰∏Ä‰∏™Áü©ÂΩ¢
 **************************************************************/
 void Glib_Rectangle(int x1,int y1,int x2,int y2,int color)
 {
@@ -363,7 +363,7 @@ void Glib_Rectangle(int x1,int y1,int x2,int y2,int color)
 }
 
 /**************************************************************
-‘⁄LCD∆¡ƒª…œ”√—’…´ÃÓ≥‰“ª∏ˆæÿ–Œ
+Âú®LCDÂ±èÂπï‰∏äÁî®È¢úËâ≤Â°´ÂÖÖ‰∏Ä‰∏™Áü©ÂΩ¢
 **************************************************************/
 void Glib_FilledRectangle(int x1,int y1,int x2,int y2,int color)
 {
@@ -374,7 +374,7 @@ void Glib_FilledRectangle(int x1,int y1,int x2,int y2,int color)
 }
 
 /**************************************************************
-‘⁄LCD∆¡ƒª…œ÷∏∂®◊¯±Íµ„ª≠“ª∏ˆ÷∏∂®¥Û–°µƒÕº∆¨
+Âú®LCDÂ±èÂπï‰∏äÊåáÂÆöÂùêÊ†áÁÇπÁîª‰∏Ä‰∏™ÊåáÂÆöÂ§ßÂ∞èÁöÑÂõæÁâá
 **************************************************************/
 void Paint_Bmp(int x0,int y0,int h,int l,unsigned char bmp[])
 {
@@ -398,7 +398,7 @@ void Paint_Bmp(int x0,int y0,int h,int l,unsigned char bmp[])
 
 #if 1
 /**************************************************************
-‘⁄LCD∆¡ƒª…œ÷∏∂®◊¯±Íµ„–¥ASCII¬Î
+Âú®LCDÂ±èÂπï‰∏äÊåáÂÆöÂùêÊ†áÁÇπÂÜôASCIIÁ†Å
 **************************************************************/
 void Lcd_PutASCII(unsigned int x,unsigned int y,unsigned char ch,unsigned int c,unsigned int bk_c,unsigned int st)
 {
@@ -431,7 +431,7 @@ void Lcd_PutASCII(unsigned int x,unsigned int y,unsigned char ch,unsigned int c,
 }
 
 /**************************************************************
-‘⁄LCD∆¡ƒª…œ÷∏∂®◊¯±Íµ„–¥∫∫◊÷
+Âú®LCDÂ±èÂπï‰∏äÊåáÂÆöÂùêÊ†áÁÇπÂÜôÊ±âÂ≠ó
 **************************************************************/
 void Lcd_PutHZ(unsigned int x,unsigned int y,unsigned short int QW,unsigned int c,unsigned int bk_c,unsigned int st)
 {
@@ -441,7 +441,7 @@ void Lcd_PutHZ(unsigned int x,unsigned int y,unsigned short int QW,unsigned int 
 	pZK = &__CHS[ (  ( (QW >> 8) - 1 )*94 + (QW & 0x00FF)- 1 )*32 ];
 	for( i = 0 ; i < 16 ; i++ )
 	{
-		//◊Û
+		//Â∑¶
 		mask = 0x80;
         buf = pZK[i*2];
         for( j = 0 ; j < 8 ; j++ )
@@ -459,7 +459,7 @@ void Lcd_PutHZ(unsigned int x,unsigned int y,unsigned short int QW,unsigned int 
             mask = mask >> 1;
         } 
         
-		//”“
+		//Âè≥
 		mask = 0x80;
         buf = pZK[i*2 + 1];
         for( j = 0 ; j < 8 ; j++ )
@@ -503,7 +503,7 @@ void Lcd_printf(unsigned int x,unsigned int y,unsigned int c,unsigned int bk_c,u
 
 			default:
 				{
-					if( *pStr > 0xA0 & *(pStr+1) > 0xA0 )  //÷–Œƒ ‰≥ˆ
+					if( *pStr > 0xA0 & *(pStr+1) > 0xA0 )  //‰∏≠ÊñáËæìÂá∫
                     {
                         Lcd_PutHZ( x , y , (*pStr - 0xA0)*0x0100 + *(pStr+1) - 0xA0 , c , bk_c , st);
 
@@ -511,7 +511,7 @@ void Lcd_printf(unsigned int x,unsigned int y,unsigned int c,unsigned int bk_c,u
                         i++;
 
                         x += 16;
-                    }else               //”¢Œƒ ‰≥ˆ
+                    }else               //Ëã±ÊñáËæìÂá∫
                     {
                         Lcd_PutASCII( x , y , *pStr , c , bk_c , st );
 

@@ -6,7 +6,7 @@
 *   					(c) Copyright 2002, Micrium Inc., Weston, FL
 *   					(c) Copyright 2002, SEGGER Microcontroller Systeme GmbH
 *
-*   		   µC/GUI is protected by international copyright laws. Knowledge of the
+*   		   Á§ê/GUI is protected by international copyright laws. Knowledge of the
 *   		   source code may not be used to write a similar product. This file may
 *   		   only be used in accordance with a license and should not be redistributed
 *   		   in any way. We appreciate your understanding and fairness.
@@ -169,7 +169,7 @@ static const KEYSIM _aID[] = {
 };
 
 static const GUI_ConstString _apListBox[] = {
-"English", "Deutsch", "FranÁais", "Japanese", "Italiano", NULL
+"English", "Deutsch", "FranÈè∞is", "Japanese", "Italiano", NULL
 };
 
 #elif !(GUIDEMO_TINY)

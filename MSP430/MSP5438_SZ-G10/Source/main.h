@@ -11,16 +11,16 @@
 //*****************************************************************************//
                         //GSM
 //extern unsigned char GSM_STATUS                         ;
-//0 Õı³£ 0x01¹Ø»ú 0x02ĞİÃß 0x04 SIM¿¨ 0x08 GSMÍøÂçÕı³£ 0x10GPRSÍøÂçÕı³£ 0x20 TCPIPÕı³£
-//extern char *SIM_AT_QCCID_Query                         ;//AT+CPIN  ÊäÈë PIN
-//extern char GSM_CREG_Init()                             ;//+CREG: 0,1ÍøÂç³õÊ¼»¯
+//0 æ­£å¸¸ 0x01å…³æœº 0x02ä¼‘çœ  0x04 SIMå¡ 0x08 GSMç½‘ç»œæ­£å¸¸ 0x10GPRSç½‘ç»œæ­£å¸¸ 0x20 TCPIPæ­£å¸¸
+//extern char *SIM_AT_QCCID_Query                         ;//AT+CPIN  è¾“å…¥ PIN
+//extern char GSM_CREG_Init()                             ;//+CREG: 0,1ç½‘ç»œåˆå§‹åŒ–
 extern void GSM_UCA0_Init(void)                                     ;
 extern void LPM_GSM_Globl_IN(void)                                  ;
 extern void LPM_GSM_Globl_OUT(void)                                 ;
 //*****************************************************************************//
                         //SPI
-extern void SPI( void )                                             ;//Í¨¹ıSPI¶Ë¿Ú·¢ËÍÊı¾İ
-extern void Init_UCB2SPI(void)                                      ;//ÉèÖÃSPI¶Ë¿Ú 
+extern void SPI( void )                                             ;//é€šè¿‡SPIç«¯å£å‘é€æ•°æ®
+extern void Init_UCB2SPI(void)                                      ;//è®¾ç½®SPIç«¯å£ 
 
 
 
@@ -29,15 +29,15 @@ extern void Init_UCB2SPI(void)                                      ;//ÉèÖÃSPI¶Ë
                         //GPS
 
 
-extern char LOW_POW_GPS_Flag                            ;//ÏÈÊ¹ÓÃGPSÊı¾İ´¦ÀíÍê³É±êÖ¾ 00==Î´Íê³É£»11==Íê³É
-extern unsigned char GPS_LOCATE_OK                      ;//GPS¶¨Î»±êÖ¾
-extern void Init_UCA1UART(void)                         ;//GPS³õÊ¼»¯¿ªÆô
-extern void Close_UCA1UART(void)                        ;//GPS³õÊ¼»¯¹Ø±Õ
+extern char LOW_POW_GPS_Flag                            ;//å…ˆä½¿ç”¨GPSæ•°æ®å¤„ç†å®Œæˆæ ‡å¿— 00==æœªå®Œæˆï¼›11==å®Œæˆ
+extern unsigned char GPS_LOCATE_OK                      ;//GPSå®šä½æ ‡å¿—
+extern void Init_UCA1UART(void)                         ;//GPSåˆå§‹åŒ–å¼€å¯
+extern void Close_UCA1UART(void)                        ;//GPSåˆå§‹åŒ–å…³é—­
 
-extern void GPS_Start()                                 ;//GPSµçÔ´¿ªÆô
-extern void GPS_Stop()                                  ;//GPSµçÔ´¹Ø±Õ
-extern void SHUT_GPS_UCA1(void)                         ;//¹Ø±ÕGPSÖĞ¶Ï
-extern void Do_GPS_Data(void)                           ;//½ÓÊÕ¡¢´¦ÀíGPSÊı¾İ
+extern void GPS_Start()                                 ;//GPSç”µæºå¼€å¯
+extern void GPS_Stop()                                  ;//GPSç”µæºå…³é—­
+extern void SHUT_GPS_UCA1(void)                         ;//å…³é—­GPSä¸­æ–­
+extern void Do_GPS_Data(void)                           ;//æ¥æ”¶ã€å¤„ç†GPSæ•°æ®
 //*****************************************************************************//
 
 
@@ -46,18 +46,18 @@ extern void Do_GPS_Data(void)                           ;//½ÓÊÕ¡¢´¦ÀíGPSÊı¾İ
 
 //*****************************************************************************//
                         //MSP_430
-unsigned char LPM                                       ;//µÍ¹¦ºÄÄ£Ê½
-extern unsigned char RD_FLASH_OK_FLAG                   ;//¶ÁÈ¡flash±êÖ¾11==OK£»00==fail
+unsigned char LPM                                       ;//ä½åŠŸè€—æ¨¡å¼
+extern unsigned char RD_FLASH_OK_FLAG                   ;//è¯»å–flashæ ‡å¿—11==OKï¼›00==fail
 
-void Time_Count_Value_Init(void)                        ;//Ê±¼ä¼ÆÊıÇåÁã
-extern void Init_CLK(void)                              ;//³õÊ¼»¯Ö÷Ê±ÖÓ: MCLK = XT1
-extern void Init_EXTERNAL_HF_OSC_CLK(void)              ;//³õÊ¼»¯Ö÷Ê±ÖÓ: MCLK = XT2  
-extern void Init_ADC()                                  ;//³õÊ¼»¯ADC12    
-extern void Close_ADC()                                 ;//¹Ø±ÕADC12 
-extern void VmainMon()                                  ;//¼ì²âÖ÷µçÔ´µçÑ¹£¬Ğè×öÆ«²î²¹³¥ºÍÆ½¾ù´¦Àí    
-extern void Control_Strategy()                          ;//LPM µÍ¹¦ºÄ×ª»»²ßÂÔ
-extern void Init_TimerWDT()                             ;//Ê¹ÄÜWDTÖĞ¶Ï
-extern void TIME_A0_Init(void)                      ;//ÉèÖÃTimerA0
+void Time_Count_Value_Init(void)                        ;//æ—¶é—´è®¡æ•°æ¸…é›¶
+extern void Init_CLK(void)                              ;//åˆå§‹åŒ–ä¸»æ—¶é’Ÿ: MCLK = XT1
+extern void Init_EXTERNAL_HF_OSC_CLK(void)              ;//åˆå§‹åŒ–ä¸»æ—¶é’Ÿ: MCLK = XT2  
+extern void Init_ADC()                                  ;//åˆå§‹åŒ–ADC12    
+extern void Close_ADC()                                 ;//å…³é—­ADC12 
+extern void VmainMon()                                  ;//æ£€æµ‹ä¸»ç”µæºç”µå‹ï¼Œéœ€åšåå·®è¡¥å¿å’Œå¹³å‡å¤„ç†    
+extern void Control_Strategy()                          ;//LPM ä½åŠŸè€—è½¬æ¢ç­–ç•¥
+extern void Init_TimerWDT()                             ;//ä½¿èƒ½WDTä¸­æ–­
+extern void TIME_A0_Init(void)                      ;//è®¾ç½®TimerA0
 
 
 

@@ -35,8 +35,8 @@ typedef struct {
 	char string[128];
 	unsigned int bpage[50];
 
-//Ã¿¸öParamItemÕ¼ÓÃ16×Ö½Ú  ¹²Õ¼ÓÃ 16*18 +128+50*4 =616
-//800¸ö×Ö½Ú×î¶à¿ÉÒÔ´¢´æ29ÌõParamItem
+//æ¯ä¸ªParamItemå ç”¨16å­—èŠ‚  å…±å ç”¨ 16*18 +128+50*4 =616
+//800ä¸ªå­—èŠ‚æœ€å¤šå¯ä»¥å‚¨å­˜29æ¡ParamItem
 } BootParams;
 
 typedef struct {
@@ -56,17 +56,17 @@ extern int set_params(void);
 
 #ifdef GLOBAL_PARAMS
 
-//Ğ¡ÓÚµÈÓÚ512¸ö×Ö½Ú,×î¶à±£´æ24¸öITEMºÍ128×Ö½ÚÓÃ»§¶¨ÒåµÄ×Ö·û´®
+//å°äºç­‰äº512ä¸ªå­—èŠ‚,æœ€å¤šä¿å­˜24ä¸ªITEMå’Œ128å­—èŠ‚ç”¨æˆ·å®šä¹‰çš„å­—ç¬¦ä¸²
 BootParams boot_params = {
-	//Æô¶¯ÉèÖÃ
+	//å¯åŠ¨è®¾ç½®
 	{"auto-run", 1},	//0=boot without parameters,1=boot with parameters
 	//{"cpuclk",   2},	//0=200M, 1=300M, 2=400M, 3=440M
 	{"rundelay", 0},	//0 seconds
-	// ´®¿ÚÉèÖÃ
+	// ä¸²å£è®¾ç½®
 	{"serial",   0},	//0=serial port 0, 1=serial port 1
 	{"AppRunAddr",   0x32000000},
 	{"baudrate", 115200},
-	//»úÆ÷ĞÅÏ¢ÉèÖÃ for Linux 
+	//æœºå™¨ä¿¡æ¯è®¾ç½® for Linux 
 	{"machine",  913},	
 	{"runAddr",  0x30201000},
 	{"rootfs",   3},
@@ -74,17 +74,17 @@ BootParams boot_params = {
 	
 	{"displayS",  1},	//0=320*240  1=640*480	2 = 800*600
 	{"displayM",  0},	//0= lcd	1=vga	2=tv
-	{"initrdA",  0x30200000},	//RAM ³õÊ¼»¯µØÖ·
-	{"initrdL",  0x02000000},	//³õÊ¼»¯RAM³¤¶È
-	{"memsize",  0x04000000},	//RAM´æ´¢Æ÷´óĞ¡ 64M
+	{"initrdA",  0x30200000},	//RAM åˆå§‹åŒ–åœ°å€
+	{"initrdL",  0x02000000},	//åˆå§‹åŒ–RAMé•¿åº¦
+	{"memsize",  0x04000000},	//RAMå­˜å‚¨å™¨å¤§å° 64M
 	
 	//PCB6V3
 	
-	{"AppSize", 0},			//NEW ADD FOR V3 	Ó¦ÓÃ³ÌĞòÊµ¼Ê´óĞ¡
-	{"Debug", 0},			//NEW ADD FOR V3 	ÊÇ·ñ´òÓ¡µ÷ÊÔĞÅÏ¢
-	{"diagnose",0},		//NEW ADD FOR V3 	Ê×´ÎÆô¶¯Îª0 ×Ô¶¯½øÈë²âÊÔÄ£Ê½ 
-	{"Com Usb",1},			//NEW ADD FOR V3    0 ´®¿ÚÏÂÔØ 1 usbÏÂÔØ
-	{"16XOSC8",0},			// 					CAN Ä£¿é¾§Õñ 0 16M ¡¢1 8M
+	{"AppSize", 0},			//NEW ADD FOR V3 	åº”ç”¨ç¨‹åºå®é™…å¤§å°
+	{"Debug", 0},			//NEW ADD FOR V3 	æ˜¯å¦æ‰“å°è°ƒè¯•ä¿¡æ¯
+	{"diagnose",0},		//NEW ADD FOR V3 	é¦–æ¬¡å¯åŠ¨ä¸º0 è‡ªåŠ¨è¿›å…¥æµ‹è¯•æ¨¡å¼ 
+	{"Com Usb",1},			//NEW ADD FOR V3    0 ä¸²å£ä¸‹è½½ 1 usbä¸‹è½½
+	{"16XOSC8",0},			// 					CAN æ¨¡å—æ™¶æŒ¯ 0 16M ã€1 8M
 	//{"devfs",    1},
 	//{"ostore",   0},	//0=nand, 1=nor
 	{"userpara", sizeof(DEFAULT_USER_PARAMS)},
@@ -92,7 +92,7 @@ BootParams boot_params = {
 	{0}
 };
 
-//Ğ¡ÓÚµÈÓÚ256×Ö½Ú
+//å°äºç­‰äº256å­—èŠ‚
 VenderParams vend_params = {
 	{"VendID",   0x76543210},
 	{"ProdID",   0xfedcba98},
@@ -103,7 +103,7 @@ VenderParams vend_params = {
 };
 
 #else
-//×¢Òâboot_params ²»Òª´óÓÚ0x800×Ö½Ú
+//æ³¨æ„boot_params ä¸è¦å¤§äº0x800å­—èŠ‚
 extern BootParams boot_params;
 extern VenderParams vend_params;
 

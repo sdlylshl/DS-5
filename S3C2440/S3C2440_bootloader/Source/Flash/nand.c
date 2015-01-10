@@ -12,7 +12,7 @@
 #include "bootpara.h"
 
 struct Partition{
-    U32 offset;//ÆğÊ¼µØÖ·£¬¼´Æ«ÒÆµØÖ·
+    U32 offset;//èµ·å§‹åœ°å€ï¼Œå³åç§»åœ°å€
     U32 size;
     char *name;
 };
@@ -65,7 +65,7 @@ struct Partition *NandSelPart(char *info)
             //return i;
             return &NandPart[i];
         }
-        if (i == 0x20) //¿Õ¸ñ ½øÈëMyAPP
+        if (i == 0x20) //ç©ºæ ¼ è¿›å…¥MyAPP
         {
             //StartPage = NandPart[i].offset>>11;
             //BlockCnt  = NandPart[i].size>>17;
@@ -457,8 +457,8 @@ char CheckApp(){
 		if(!nf_part)
 			return -1;
 		page = nf_part->offset>>11;
-		page_cnt = nf_part->size>>11; //Ã¿Ò³ÓĞ2^11 2048×Ö½Ú£¬Çó³öËùÕ¼ÓÃµÄÒ³Êı¡£
-		//Ò³Ğ´
+		page_cnt = nf_part->size>>11; //æ¯é¡µæœ‰2^11 2048å­—èŠ‚ï¼Œæ±‚å‡ºæ‰€å ç”¨çš„é¡µæ•°ã€‚
+		//é¡µå†™
 		
 		InitNandFlash(0);	//don't show info in InitNandFlash!
 		//search from the last page

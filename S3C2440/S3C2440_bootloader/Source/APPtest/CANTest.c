@@ -37,15 +37,15 @@ extern void CanTest0(void)
     U8 data_read[8] ;
 
     //      RETAILMSG(1,(TEXT( "\r\nCAN BUS Test[ MCP2510 ], press ESC key to exit !\r\n") ) ) ;
-    Lcd_ClearScr(0x0);   //ºÚÉ«
+    Lcd_ClearScr(0x0);   //é»‘è‰²
     Versions();
     print(0, 2, "Starting Can Test !", 0xFF);
 
     Init_MCP2510(BandRate_250kbps);
     Can_Setup();
 
-    //   Uart_Init(0,115200);//³õÊ¼»¯´®¿Ú¿ØÖÆ¼Ä´æÆ÷£¬ÉèÖÃÕıÈ·µÄ²¨ÌØÂÊ
-    //   Uart_Select(0);//Ñ¡Ôñ´®¿Ú£¬ÕâÀïÎÒÃÇÑ¡´®¿Ú0
+    //   Uart_Init(0,115200);//åˆå§‹åŒ–ä¸²å£æ§åˆ¶å¯„å­˜å™¨ï¼Œè®¾ç½®æ­£ç¡®çš„æ³¢ç‰¹ç‡
+    //   Uart_Select(0);//é€‰æ‹©ä¸²å£ï¼Œè¿™é‡Œæˆ‘ä»¬é€‰ä¸²å£0
 
     Uart_Printf( "\nCAN BUS TEST \n" );
     Uart_Printf( "Press 'ESC' key to Exit this program !\n\n" );
@@ -55,7 +55,7 @@ extern void CanTest0(void)
         // while(1)
     {
 
-        Can_Write( CAN_SEND_ID, data_write, 8, false, false);//·¢ËÍ±¨ÎÄ  ±ê×¼Ä£Ê½ÏÂ±ØĞëÓĞ½ÓÊÕ¶Ë²ÅÄÜ·¢ËÍ³É¹¦
+        Can_Write( CAN_SEND_ID, data_write, 8, false, false);//å‘é€æŠ¥æ–‡  æ ‡å‡†æ¨¡å¼ä¸‹å¿…é¡»æœ‰æ¥æ”¶ç«¯æ‰èƒ½å‘é€æˆåŠŸ
         //      Can_Write( 0x5b, data_write, 8, false, false);
         //#else
         while ( (i = Can_Poll()) == -1 ) ;
@@ -69,7 +69,7 @@ extern void CanTest0(void)
         Uart_Printf( "numbers=%d\n" , j + 1);
         Uart_Printf( "Data=%x,%x,%x,%x,%x,%x,%x,%x\n\n", data_read[0], data_read[1], data_read[2], data_read[3], data_read[4], data_read[5], data_read[6], data_read[7] );
         //if ( Uart_GetKey() == 0x1b ) break;
-        Lcd_ClearScr(0x0);   //ºÚÉ«
+        Lcd_ClearScr(0x0);   //é»‘è‰²
         Versions();
         print(0, 2, "Starting Can Test !", 0xFF);
         print(0, 4, "ID =", 0xFF);
@@ -106,12 +106,12 @@ extern void CanTest0(void)
     while (!(KEY_BACK == KeyScan()));
 }
 /**
- * 1.SendNum·¢ËÍ´ÎÊı
- * 2.seNum·¢ËÍÊ§°Ü´ÎÊı
- * 3.rNum½ÓÊÕ´ÎÊı
- * 4.reNum½ÓÊÕ´íÎó´ÎÊı
+ * 1.SendNumå‘é€æ¬¡æ•°
+ * 2.seNumå‘é€å¤±è´¥æ¬¡æ•°
+ * 3.rNumæ¥æ”¶æ¬¡æ•°
+ * 4.reNumæ¥æ”¶é”™è¯¯æ¬¡æ•°
  *
- * ÎóÂëÂÊ
+ * è¯¯ç ç‡
  */
 /*
 extern void CanTest2(void)
@@ -124,10 +124,10 @@ extern void CanTest2(void)
     char tmp[20];
     char flg;
 
-    int PollX; //½ÓÊÕ»º³åÆ÷ºÅ ¡¾0£¬1¡¿
+    int PollX; //æ¥æ”¶ç¼“å†²å™¨å· ã€0ï¼Œ1ã€‘
     U8 data_write[8] = {1, 2, 3, 4, 5, 6, 7, 8};
     U8 data_read[8] ;
-    U32 dat_send = 0; //´ı·¢ËÍÊı¾İ
+    U32 dat_send = 0; //å¾…å‘é€æ•°æ®
     U32 i, j, k;
     U32 TimeOut;
     U32 SendNum = 0;
@@ -135,19 +135,19 @@ extern void CanTest2(void)
     U32 rNum = 0;
     U32 reNum = 0;
 
-    //ÅäÖÃLCDÏÔÊ¾
+    //é…ç½®LCDæ˜¾ç¤º
     Lcd_Init();
 
 
 
-    //Uart_Init(0,115200);//³õÊ¼»¯´®¿Ú¿ØÖÆ¼Ä´æÆ÷£¬ÉèÖÃÕıÈ·µÄ²¨ÌØÂÊ
-    //Uart_Select(0);//Ñ¡Ôñ´®¿Ú£¬ÕâÀïÎÒÃÇÑ¡´®¿Ú0
+    //Uart_Init(0,115200);//åˆå§‹åŒ–ä¸²å£æ§åˆ¶å¯„å­˜å™¨ï¼Œè®¾ç½®æ­£ç¡®çš„æ³¢ç‰¹ç‡
+    //Uart_Select(0);//é€‰æ‹©ä¸²å£ï¼Œè¿™é‡Œæˆ‘ä»¬é€‰ä¸²å£0
     Uart_Printf( "\nCAN BUS TEST \n" );
     Uart_Printf( "Press 'ESC' key to Exit this program !\n\n" );
 
-    //CAN ³õÊ¼»¯
+    //CAN åˆå§‹åŒ–
     Init_MCP2510(BandRate_250kbps);
-    //ÉèÖÃ½ÓÊÕÂË²¨Æ÷
+    //è®¾ç½®æ¥æ”¶æ»¤æ³¢å™¨
     Can_Setup();
  
 
@@ -156,24 +156,24 @@ extern void CanTest2(void)
     {
         if (k++ > 0xFFFFFF00)
         {
-            //³õÊ¼»¯
+            //åˆå§‹åŒ–
             k = 0;
             SendNum = 0;
             seNum = 0;
             rNum = 0;
             reNum = 0;
-            //ÔİÍ£
+            //æš‚åœ
         }
 
 
-        // ´®¿ÚÊä³ö
+        // ä¸²å£è¾“å‡º
         Uart_Printf( "i=%d" , i);
         ///temp=MCP2510_Read_Can(U8 nbuffer,&rxRTR,&id,data_read ,&dlc)
         Uart_Printf( "ID=0x%x\n", id );
         Uart_Printf( "numbers=%d\n" , j + 1);
         Uart_Printf( "Data=%x,%x,%x,%x,%x,%x,%x,%x\n\n", data_read[0], data_read[1], data_read[2], data_read[3], data_read[4], data_read[5], data_read[6], data_read[7] );
 
-        //LCDÊä³ö
+        //LCDè¾“å‡º
         Versions();
         //Lcd_SetPosition(0, 4);
         Lcd_TextAlignMid();
@@ -193,19 +193,19 @@ extern void CanTest2(void)
         data_write[6] = (SendNum & 0xFF0000) >> 16;
         data_write[7] = (SendNum & 0xFF000000) >> 24;
 
-        //¶Á»º³åÆ÷ÇåÁã
+        //è¯»ç¼“å†²å™¨æ¸…é›¶
         for ( j = 0; j < 8; j++)
             data_read[j] = 0 ;
 
-        //CAN ·¢ËÍ
+        //CAN å‘é€
         SendNum++;
-        Can_Write( CAN_SEND_ID, data_write, 8, false, false); //·¢ËÍ±¨ÎÄ  ±ê×¼Ä£Ê½ÏÂ±ØĞëÓĞ½ÓÊÕ¶Ë²ÅÄÜ·¢ËÍ³É¹¦
+        Can_Write( CAN_SEND_ID, data_write, 8, false, false); //å‘é€æŠ¥æ–‡  æ ‡å‡†æ¨¡å¼ä¸‹å¿…é¡»æœ‰æ¥æ”¶ç«¯æ‰èƒ½å‘é€æˆåŠŸ
 
        
-        //µÈ´ıCAN½ÓÊÕ
-        TimeOut = 10000; //Éè¶¨³¬Ê±Ê±¼äms
+        //ç­‰å¾…CANæ¥æ”¶
+        TimeOut = 10000; //è®¾å®šè¶…æ—¶æ—¶é—´ms
 
-        //Can_Poll ²éÑ¯»º³åÆ÷ÖĞÊÇ·ñÓĞÊı¾İ Èç¹ûÓĞÔò·µ»Ø»º³åÆ÷ºÅ ·ñÔò·µ»Ø-1
+        //Can_Poll æŸ¥è¯¢ç¼“å†²å™¨ä¸­æ˜¯å¦æœ‰æ•°æ® å¦‚æœæœ‰åˆ™è¿”å›ç¼“å†²å™¨å· å¦åˆ™è¿”å›-1
 
         while ( ((PollX = Can_Poll()) == -1) && (TimeOut) )
         {
@@ -216,7 +216,7 @@ extern void CanTest2(void)
 
         }
 
-        //ÊÕµ½Ó¦´ğ±¨ÎÄ
+        //æ”¶åˆ°åº”ç­”æŠ¥æ–‡
         if (TimeOut)
         {
 
@@ -224,7 +224,7 @@ extern void CanTest2(void)
             rNum++;
         }
 
-        //Ğ£Ñé½ÓÊÕµÄ±¨ÎÄÊÇ·ñÕıÈ·
+        //æ ¡éªŒæ¥æ”¶çš„æŠ¥æ–‡æ˜¯å¦æ­£ç¡®
         for (i = 3; i < 8; ++i)
         {
             if (data_write[i] != data_read[i])
@@ -238,7 +238,7 @@ extern void CanTest2(void)
 
      Delay(10000);
 
-        //ÈÎÒâ¼üÔİÍ£
+        //ä»»æ„é”®æš‚åœ
         if (KeyScan())
         {
             Delay(5000);
@@ -249,9 +249,9 @@ extern void CanTest2(void)
 
 }
 */
-U32         CanId;      //can_idÎª·µ»ØµÄIDÖµ
-U8          dlc;        //dlc±íÊ¾data length code 0~8×Ö½Ú
-//U32       rxRTR;      //rxRTR±íÊ¾ÊÇ·ñÊÇRXRTRÔ¶³ÌÖ¡
+U32         CanId;      //can_idä¸ºè¿”å›çš„IDå€¼
+U8          dlc;        //dlcè¡¨ç¤ºdata length code 0~8å­—èŠ‚
+//U32       rxRTR;      //rxRTRè¡¨ç¤ºæ˜¯å¦æ˜¯RXRTRè¿œç¨‹å¸§
 //U32       isExt;
 U8          data_read[8] ;
 U8          data_write[8];
@@ -269,59 +269,59 @@ void CanTest(void)
     char tmp[20];
     char flg;
 
-    int PollX; //½ÓÊÕ»º³åÆ÷ºÅ ¡¾0£¬1¡¿
+    int PollX; //æ¥æ”¶ç¼“å†²å™¨å· ã€0ï¼Œ1ã€‘
     U32 i, j, k;
     U32 TimeOut;
    
 
 
-    //ÅäÖÃLCDÏÔÊ¾
+    //é…ç½®LCDæ˜¾ç¤º
     Lcd_Init();
 
-    //CAN ³õÊ¼»¯
+    //CAN åˆå§‹åŒ–
     Init_MCP2510(BandRate_250kbps);
-    //ÉèÖÃ½ÓÊÕÂË²¨Æ÷
+    //è®¾ç½®æ¥æ”¶æ»¤æ³¢å™¨
     Can_Setup();
     Init_CANReciveINT();
-    Init_Timer1(); //¿ªÆôCAN·¢ËÍÖĞ¶Ï
-    CanId = 0;    //can_idÎª·µ»ØµÄIDÖµ
-    dlc = 0;      //dlc±íÊ¾data length code 0~8×Ö½Ú
+    Init_Timer1(); //å¼€å¯CANå‘é€ä¸­æ–­
+    CanId = 0;    //can_idä¸ºè¿”å›çš„IDå€¼
+    dlc = 0;      //dlcè¡¨ç¤ºdata length code 0~8å­—èŠ‚
     SendNum = 0;
     SendErrNum = 0;
     ReceiveNum = 0;
     RecErrNum = 0;
 
     flg = 0;
-    //³¤°´·µ»Ø¼üÍË³ö
+    //é•¿æŒ‰è¿”å›é”®é€€å‡º
     while (!(KEY_BACK == KeyScan()))
     {
         /*
         if (k++ > 0xFFFFFF00)
         {
-            //³õÊ¼»¯
+            //åˆå§‹åŒ–
             k = 0;
             SendNum = 0;
             seNum = 0;
             rNum = 0;
             reNum = 0;
-            //ÔİÍ£
+            //æš‚åœ
         }
         */
-        //CanId = 0;    //can_idÎª·µ»ØµÄIDÖµ
+        //CanId = 0;    //can_idä¸ºè¿”å›çš„IDå€¼
 
-        //¶Á»º³åÆ÷ÇåÁã
+        //è¯»ç¼“å†²å™¨æ¸…é›¶
 
         // SendNum++;
         // data_write[4] = SendNum & 0xFF;
         // data_write[5] = (SendNum & 0xFF00) >> 8;
         // data_write[6] = (SendNum & 0xFF0000) >> 16;
         // data_write[7] = (SendNum & 0xFF000000) >> 24;
-        //CAN ·¢ËÍ
+        //CAN å‘é€
         
-        // Can_Write( CAN_SEND_ID, data_write, 8, false, false); //·¢ËÍ±¨ÎÄ  ±ê×¼Ä£Ê½ÏÂ±ØĞëÓĞ½ÓÊÕ¶Ë²ÅÄÜ·¢ËÍ³É¹¦
-       // Can_Write( CAN_SEND_ID, data_write, 8, false, false); //·¢ËÍ±¨ÎÄ  ±ê×¼Ä£Ê½ÏÂ±ØĞëÓĞ½ÓÊÕ¶Ë²ÅÄÜ·¢ËÍ³É¹¦
+        // Can_Write( CAN_SEND_ID, data_write, 8, false, false); //å‘é€æŠ¥æ–‡  æ ‡å‡†æ¨¡å¼ä¸‹å¿…é¡»æœ‰æ¥æ”¶ç«¯æ‰èƒ½å‘é€æˆåŠŸ
+       // Can_Write( CAN_SEND_ID, data_write, 8, false, false); //å‘é€æŠ¥æ–‡  æ ‡å‡†æ¨¡å¼ä¸‹å¿…é¡»æœ‰æ¥æ”¶ç«¯æ‰èƒ½å‘é€æˆåŠŸ
 		
-            //LCDÊä³ö
+            //LCDè¾“å‡º
         //Lcd_Clear();
         //Versions();
         Lcd_SetPosition(0, 4);
@@ -342,7 +342,7 @@ void CanTest(void)
         Lcd_Update();
 
 
-        // ´®¿ÚÊä³ö
+        // ä¸²å£è¾“å‡º
        // Uart_Printf( "i=%d" , i);
         ///temp=MCP2510_Read_Can(U8 nbuffer,&rxRTR,&id,data_read ,&dlc)
         //Uart_Printf( "ID=0x%x\n", CanId );
@@ -350,7 +350,7 @@ void CanTest(void)
        // Uart_Printf( "Data=%x,%x,%x,%x,%x,%x,%x,%x\n\n", data_read[0], data_read[1], data_read[2], data_read[3], data_read[4], data_read[5], data_read[6], data_read[7] );
 
     
-        //ÈÎÒâ¼üÔİÍ£
+        //ä»»æ„é”®æš‚åœ
         if ((KeyScan())&&(KEY_BACK != KeyScan()))
         {
             Delay(5000);

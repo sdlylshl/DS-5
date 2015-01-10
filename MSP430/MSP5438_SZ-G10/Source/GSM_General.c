@@ -4,16 +4,16 @@
 #include ".\GSM\UP\Root_Up.h"
 
 char Open_Box_Flag;
-extern void Time_Count_Value_Init(void)                          ;//Ê±¼ä¼ÆÊýÇåÁã
+extern void Time_Count_Value_Init(void)                          ;//æ—¶é—´è®¡æ•°æ¸…é›¶
 /**********************************************************************\
-*	      º¯ÊýÃû£ºLPM_GSM_Globl_Init             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ´¦ÀíIPµØÖ·\PortºÅ  
-*	      ²ÎÊý£º  
-          ¸ñÊ½£º ID(4)+ÃüÁî±àÂë0x87(2)+IPµØÖ·(4)+PortºÅ(2)
-*	      ·µ»ØÖµ£º·µ»ØIPµØÖ·\PortºÅ   
+*	      å‡½æ•°åï¼šLPM_GSM_Globl_Init             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å¤„ç†IPåœ°å€\Portå·  
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š ID(4)+å‘½ä»¤ç¼–ç 0x87(2)+IPåœ°å€(4)+Portå·(2)
+*	      è¿”å›žå€¼ï¼šè¿”å›žIPåœ°å€\Portå·   
 *
-*	      ÐÞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹åŽ†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \**********************************************************************/
 void LPM_GSM_Globl_IN(void)
 {
@@ -24,15 +24,15 @@ void LPM_GSM_Globl_IN(void)
     
     THR_Mint_Time_Cnt   =   0;
     CONNECT_FAIL_Flag   =   0;
-    RD_Data_1_Min_Cnt   =   0;//½âÎö MUC Ó¦´ðÊ±¼ä¼ÆÊý
-    Soft_Vers_Cnt       =   0;//·¢ËÍÈí¼þ°æ±¾ºÅÊ±¼ä¼ÆÊ±
-    Heart_Beat_Send_Cnt =   0;//ÐÄÌø·¢ËÍ´ÎÊý¼ÆÊý
+    RD_Data_1_Min_Cnt   =   0;//è§£æž MUC åº”ç­”æ—¶é—´è®¡æ•°
+    Soft_Vers_Cnt       =   0;//å‘é€è½¯ä»¶ç‰ˆæœ¬å·æ—¶é—´è®¡æ—¶
+    Heart_Beat_Send_Cnt =   0;//å¿ƒè·³å‘é€æ¬¡æ•°è®¡æ•°
     Time_Count_Value_Init();
-    Sys_NOW_UP_Flag=0x66;//µÍ¹¦ºÄÄ£Ê½
-    CREG_Zhu_Ce_Cnt=0 ;//×¢²áÍøÂç²éÑ¯×¢²á´ÎÊý
-    One_JI_Warn_Cnt=0;//Ò»¼¶±¨¾¯¼ÆÊý
-    Two_JI_Warn_Cnt=0;//¶þ¼¶±¨¾¯¼ÆÊý
-    GSM_INIT_TIME_CNT=SECD_10;//GSM³õÊ¼»¯¼ÆÊ±ÓÃ
+    Sys_NOW_UP_Flag=0x66;//ä½ŽåŠŸè€—æ¨¡å¼
+    CREG_Zhu_Ce_Cnt=0 ;//æ³¨å†Œç½‘ç»œæŸ¥è¯¢æ³¨å†Œæ¬¡æ•°
+    One_JI_Warn_Cnt=0;//ä¸€çº§æŠ¥è­¦è®¡æ•°
+    Two_JI_Warn_Cnt=0;//äºŒçº§æŠ¥è­¦è®¡æ•°
+    GSM_INIT_TIME_CNT=SECD_10;//GSMåˆå§‹åŒ–è®¡æ—¶ç”¨
 }
 
 
@@ -41,14 +41,14 @@ void LPM_GSM_Globl_IN(void)
 
 
 /**********************************************************************\
-*	      º¯ÊýÃû£ºLPM_GSM_Globl_Init             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ´¦ÀíIPµØÖ·\PortºÅ  
-*	      ²ÎÊý£º  
-          ¸ñÊ½£º ID(4)+ÃüÁî±àÂë0x87(2)+IPµØÖ·(4)+PortºÅ(2)
-*	      ·µ»ØÖµ£º·µ»ØIPµØÖ·\PortºÅ   
+*	      å‡½æ•°åï¼šLPM_GSM_Globl_Init             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å¤„ç†IPåœ°å€\Portå·  
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š ID(4)+å‘½ä»¤ç¼–ç 0x87(2)+IPåœ°å€(4)+Portå·(2)
+*	      è¿”å›žå€¼ï¼šè¿”å›žIPåœ°å€\Portå·   
 *
-*	      ÐÞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹åŽ†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \**********************************************************************/
 void LPM_GSM_Globl_OUT(void)
 {
@@ -56,16 +56,16 @@ void LPM_GSM_Globl_OUT(void)
     MCU_Data_TimeOut    =   MSP_A0_Min_2            ;
     MCU_ACK_TimeOut     =   MSP_A0_Min_1          ;
     HeartBeat_TimeOut   =   MSP_A0_Min_1            ;
-    UDP_Built_flag      =   0x00                    ;//11==ÍøÂç½¨Á¢£¬00==ÍøÂç¶Ï¿ª»òÕßÃ»ÓÐ½¨Á¢
-    Heart_Beat_Send_Cnt =0                          ;//ÐÄÌø·¢ËÍ´ÎÊý¼ÆÊý
+    UDP_Built_flag      =   0x00                    ;//11==ç½‘ç»œå»ºç«‹ï¼Œ00==ç½‘ç»œæ–­å¼€æˆ–è€…æ²¡æœ‰å»ºç«‹
+    Heart_Beat_Send_Cnt =0                          ;//å¿ƒè·³å‘é€æ¬¡æ•°è®¡æ•°
     Time_Count_Value_Init();
-    Sys_NOW_UP_Flag=0x55;//Î´Éý¼¶
-    One_JI_Warn_Cnt=0;//Ò»¼¶±¨¾¯¼ÆÊý
-    Two_JI_Warn_Cnt=0;//¶þ¼¶±¨¾¯¼ÆÊý
-    CREG_Zhu_Ce_Cnt=0 ;//×¢²áÍøÂç²éÑ¯×¢²á´ÎÊý
+    Sys_NOW_UP_Flag=0x55;//æœªå‡çº§
+    One_JI_Warn_Cnt=0;//ä¸€çº§æŠ¥è­¦è®¡æ•°
+    Two_JI_Warn_Cnt=0;//äºŒçº§æŠ¥è­¦è®¡æ•°
+    CREG_Zhu_Ce_Cnt=0 ;//æ³¨å†Œç½‘ç»œæŸ¥è¯¢æ³¨å†Œæ¬¡æ•°
     Module_Status[0] &=~0xC0;
     GPS_GSM_System_Stu[0]&=~0xC0;
-    GSM_INIT_TIME_CNT=0;//GSM³õÊ¼»¯¼ÆÊ±ÓÃ
+    GSM_INIT_TIME_CNT=0;//GSMåˆå§‹åŒ–è®¡æ—¶ç”¨
 }
 
 

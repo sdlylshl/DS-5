@@ -1,55 +1,55 @@
 /*******************************************************************
-*ÎÄ¼şÃû£ºshuzu.h
-*´´½¨Ê±¼ä£º2013Äê05ÔÂ13ÈÕ
-*´´½¨ÈË£º  
-*°æ±¾ºÅ£º1.0
-*¹¦ÄÜ£º¶¨ÒåÒ»Ğ©msp430Óë¼à¿ØÆ÷SPIÍ¨ĞÅµÄÊı×éºÍ³õÊ¼»¯µÄ¶¨Òå              
-*¼şÊôĞÔ£ºÌØÊâÎÄ¼ş£¨Ö»ÓëSPIÓĞ¹Ø£©
-*ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*æ–‡ä»¶åï¼šshuzu.h
+*åˆ›å»ºæ—¶é—´ï¼š2013å¹´05æœˆ13æ—¥
+*åˆ›å»ºäººï¼š  
+*ç‰ˆæœ¬å·ï¼š1.0
+*åŠŸèƒ½ï¼šå®šä¹‰ä¸€äº›msp430ä¸ç›‘æ§å™¨SPIé€šä¿¡çš„æ•°ç»„å’Œåˆå§‹åŒ–çš„å®šä¹‰              
+*ä»¶å±æ€§ï¼šç‰¹æ®Šæ–‡ä»¶ï¼ˆåªä¸SPIæœ‰å…³ï¼‰
+*ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 ******************************************************************/
-unsigned char SPIB2_DATA[255];//½ÓÊÕÊı¾İµÄÊı×é
+unsigned char SPIB2_DATA[255];//æ¥æ”¶æ•°æ®çš„æ•°ç»„
 
-unsigned char lenth_crc,lenth_data;//½ÓÊÕÊı¾İCRCĞ£ÑéÊ¹ÓÃµÄ±äÁ¿
+unsigned char lenth_crc,lenth_data;//æ¥æ”¶æ•°æ®CRCæ ¡éªŒä½¿ç”¨çš„å˜é‡
 
-unsigned char TX_Data_CRCL,TX_Data_CRCH;//·¢ËÍÊı¾İCRCĞ£ÑéÊ¹ÓÃµÄ±äÁ¿
-unsigned int TX_Data_CRC,TX_Data_crc_Length;//·¢ËÍÊı¾İCRCĞ£ÑéÊ¹ÓÃµÄ±äÁ¿
+unsigned char TX_Data_CRCL,TX_Data_CRCH;//å‘é€æ•°æ®CRCæ ¡éªŒä½¿ç”¨çš„å˜é‡
+unsigned int TX_Data_CRC,TX_Data_crc_Length;//å‘é€æ•°æ®CRCæ ¡éªŒä½¿ç”¨çš„å˜é‡
 
-unsigned char flg=0,flag_do=0,cnt;//Ê¶±ğ±¨Í·¡¢Êı¾İÀàĞÍµÄ±äÁ¿
-
-
-unsigned int contents,ID_Flag;//Ö÷º¯ÊıÖĞÊ¹ÓÃµÄ±äÁ¿
+unsigned char flg=0,flag_do=0,cnt;//è¯†åˆ«æŠ¥å¤´ã€æ•°æ®ç±»å‹çš„å˜é‡
 
 
-unsigned char WOSHOU_CRC_OK,WOSHOU_CRC_ERR,TX_Data_num,SHEBEI_ID_CRC_OK,SHEBEI_ID_CRC_ERR,//¿ØÖÆ430·¢ËÍÊı¾İµÄ±äÁ¿
-			  SHEBEI_Soft_VER_CRC_OK,SHEBEI_Soft_VER_CRC_ERR;//¿ØÖÆ430·¢ËÍÊı¾İµÄ±äÁ¿
+unsigned int contents,ID_Flag;//ä¸»å‡½æ•°ä¸­ä½¿ç”¨çš„å˜é‡
 
-unsigned char ID_cnt;//Ö÷º¯ÊıÖĞÊ¹ÓÃµÄ±äÁ¿£¨¸ù¾İĞèÒªÌí¼Ó£©
 
-unsigned char SHEBEI_ID_memory[4],CONTENT_DATA_memory[62],Soft_VER_cnt,Soft_VER_memory[32];//´æ´¢½ÓÊÕµÄÊı¾İ
+unsigned char WOSHOU_CRC_OK,WOSHOU_CRC_ERR,TX_Data_num,SHEBEI_ID_CRC_OK,SHEBEI_ID_CRC_ERR,//æ§åˆ¶430å‘é€æ•°æ®çš„å˜é‡
+			  SHEBEI_Soft_VER_CRC_OK,SHEBEI_Soft_VER_CRC_ERR;//æ§åˆ¶430å‘é€æ•°æ®çš„å˜é‡
+
+unsigned char ID_cnt;//ä¸»å‡½æ•°ä¸­ä½¿ç”¨çš„å˜é‡ï¼ˆæ ¹æ®éœ€è¦æ·»åŠ ï¼‰
+
+unsigned char SHEBEI_ID_memory[4],CONTENT_DATA_memory[62],Soft_VER_cnt,Soft_VER_memory[32];//å­˜å‚¨æ¥æ”¶çš„æ•°æ®
 
 unsigned char GPS_mold_VER[18],GPS_VER_OK,GPS_VER_num,mode_num,
 			 
-			  Mode_Parameter[30],Mode_Parameter_OK,Mode_Parameter_ERR[30],Mode_Parameter_ASK_ERR,Mode_Parameter_cnt;//Ö÷»úÇëÇóºó£¬´Ó»ú·¢¸øÖ÷»úÊı¾İ
+			  Mode_Parameter[30],Mode_Parameter_OK,Mode_Parameter_ERR[30],Mode_Parameter_ASK_ERR,Mode_Parameter_cnt;//ä¸»æœºè¯·æ±‚åï¼Œä»æœºå‘ç»™ä¸»æœºæ•°æ®
 
 unsigned char GPS_temp[38],GPS_cnt,GPS_temp_OK,GPS_Data_num;
-unsigned char CONTENT_DATA_cnt;//Ä£Äâ½ÓÊÕ³£Ì¬Êı¾İ
-unsigned char GPS_mold_VER_cnt;//Ä£ÄâGPS°æ±¾ºÅ
+unsigned char CONTENT_DATA_cnt;//æ¨¡æ‹Ÿæ¥æ”¶å¸¸æ€æ•°æ®
+unsigned char GPS_mold_VER_cnt;//æ¨¡æ‹ŸGPSç‰ˆæœ¬å·
 extern unsigned char ID_Write_Flag; 
-extern unsigned long int One_Mint_Warn_Cnt;//Ò»·ÖÖÓ¼ÆÊı
+extern unsigned long int One_Mint_Warn_Cnt;//ä¸€åˆ†é’Ÿè®¡æ•°
 
 
 #define Update_SIZE 1036
-unsigned char Update_Data[Update_SIZE];//Éı¼¶°üÊı¾İ
+unsigned char Update_Data[Update_SIZE];//å‡çº§åŒ…æ•°æ®
 
 
-unsigned int Update_Datar_cnt,TX_Update_Data_num,Index;//Éı¼¶°üÊı¾İ
+unsigned int Update_Datar_cnt,TX_Update_Data_num,Index;//å‡çº§åŒ…æ•°æ®
 
 unsigned char Update_Command_Data[28],Update_Command_Datar_cnt,Update_Command_Data_OK,TX_Update_Command_Data_num,Update_Data_OK;
 			  
 
-unsigned char GPS_Soft_VER[8]={0x42,0x47,0x31,0x30,0x30,0x14,0x05,0x19};//GPSÈí¼ş°æ±¾ºÅ BG.1.00-140519
+unsigned char GPS_Soft_VER[8]={0x42,0x47,0x31,0x30,0x30,0x14,0x05,0x19};//GPSè½¯ä»¶ç‰ˆæœ¬å· BG.1.00-140519
 
-unsigned char Module_State[16],Module_State_cnt,Module_State_OK,Module_State_num;//6.25Ìí¼Ó
+unsigned char Module_State[16],Module_State_cnt,Module_State_OK,Module_State_num;//6.25æ·»åŠ 
 
 char GSM_MCU[62],Do_SPI,ARM_DATA_STU;
 extern char Module_Status[6],GPS_Inf[28];
@@ -58,56 +58,56 @@ unsigned char GPS_temp_cnt;
 unsigned char Soft_VER_OK ; 
 extern char HML_Mode_BuF[21];
 extern char Work_Mode_SPI_OK_Flag ;
-extern unsigned char UP_Stat_SPI_BuF[18];//´æ·ÅÍø¹Ø·¢ËÍÉı¼¶Æô¶¯Ö¸Áî
+extern unsigned char UP_Stat_SPI_BuF[18];//å­˜æ”¾ç½‘å…³å‘é€å‡çº§å¯åŠ¨æŒ‡ä»¤
 unsigned char Ask_index;
 unsigned char Data_Bag_TX_Finish=1;
-extern unsigned int      SPI_UP_BIT_SUM                                    ;//ÀÛ¼ÆÒÑ½ÓÊÕÎÄ¼ş×Ö½ÚÊı
+extern unsigned int      SPI_UP_BIT_SUM                                    ;//ç´¯è®¡å·²æ¥æ”¶æ–‡ä»¶å­—èŠ‚æ•°
 unsigned char WOSHOU_OK;
 /**********************************************************************
-       Ä£ÄâĞÔÊı¾İ
+       æ¨¡æ‹Ÿæ€§æ•°æ®
 *********************************************************************/
 
 
 
 /**********************************************************************
-       430·¢ËÍµÄ»ØÓ¦ºÍÊı¾İµ½¼à¿ØÆ÷(CRCµÍÎ»ÔÚÇ°) Ã»ÓĞCRCĞ£ÑéºÍÍ£Ö¹·û
+       430å‘é€çš„å›åº”å’Œæ•°æ®åˆ°ç›‘æ§å™¨(CRCä½ä½åœ¨å‰) æ²¡æœ‰CRCæ ¡éªŒå’Œåœæ­¢ç¬¦
 *********************************************************************/
-unsigned char SPI_T_WOSHOU_OK[12]={0x3c,0x3a,0x55,0xaa,0x00,0x02,0x4f,0x4b};//»Ø¸´ÎÕÊÖ
+unsigned char SPI_T_WOSHOU_OK[12]={0x3c,0x3a,0x55,0xaa,0x00,0x02,0x4f,0x4b};//å›å¤æ¡æ‰‹
 unsigned char SPI_T_WOSHOU_ERR[12]={0x3c,0x3a,0x55,0xaa,0x00,0x02,0x4e,0x4f};//
 
-unsigned char SPI_T_SHEBEI_ID_OK[12]={0x3c,0x3a,0x10,0x01,0x00,0x02,0x4f,0x4b};//»Ø¸´Éè±¸ID
+unsigned char SPI_T_SHEBEI_ID_OK[12]={0x3c,0x3a,0x10,0x01,0x00,0x02,0x4f,0x4b};//å›å¤è®¾å¤‡ID
 unsigned char SPI_T_SHEBEI_ID_ERR[12]={0x3c,0x3a,0x10,0x01,0x00,0x02,0x4e,0x4f};//
 
-//unsigned char SPI_T_CONTENT_DATA_OK[12]={0x3c,0x3a,0x20,0x02,0x00,0x02,0x4f,0x4b};//»Ø¸´³£Ì¬Êı¾İ
+//unsigned char SPI_T_CONTENT_DATA_OK[12]={0x3c,0x3a,0x20,0x02,0x00,0x02,0x4f,0x4b};//å›å¤å¸¸æ€æ•°æ®
 //unsigned char SPI_T_CONTENT_DATA_ERR[12]={0x3c,0x3a,0x20,0x02,0x00,0x02,0x4e,0x4f};//
 
-unsigned char SPI_T_SHEBEI_Soft_VER_OK[12]={0x3c,0x3a,0x20,0x02,0x00,0x02,0x4f,0x4b};//»Ø¸´Éè±¸Èí¼ş°æ±¾ºÅ
+unsigned char SPI_T_SHEBEI_Soft_VER_OK[12]={0x3c,0x3a,0x20,0x02,0x00,0x02,0x4f,0x4b};//å›å¤è®¾å¤‡è½¯ä»¶ç‰ˆæœ¬å·
 unsigned char SPI_T_SHEBEI_Soft_VER_ERR[12]={0x3c,0x3a,0x20,0x02,0x00,0x02,0x4e,0x4f};//
 #define UP_SYSTEM_C_SIZE 1200
-extern unsigned char UP_SYSTEM_C_LANG[UP_SYSTEM_C_SIZE]                         ;//Éı¼¶°üÊı¾İ
+extern unsigned char UP_SYSTEM_C_LANG[UP_SYSTEM_C_SIZE]                         ;//å‡çº§åŒ…æ•°æ®
 
 /**********************************************************************
-		¹¦ÄÜ		
+		åŠŸèƒ½		
 *********************************************************************/
-#define SPI_WOSHOU 21930 //ÎÕÊÖ 0x55 0xaa
-#define SPI_SHEBEI_ID 4097 //Éè±¸ID 0x10 0x01
-#define SPI_CONTENT_DATA 20485 //³£Ì¬Êı¾İ 0x50 0x05
-#define SHEBEI_Soft_VER 8194//Éè±¸Èí¼ş°æ±¾ºÅ 0x20 0x02
-#define ASK_GPS 40961//ÇëÇóGPSÊı¾İ 0xa0 0x01
-#define ASK_GPS_VER 12291//ÇëÇóGPS°æ±¾ºÅ 0x30 0x03
-#define ASK_Mode_Parameter 45057//ÇëÇó¸÷µµÄ£Ê½²ÎÊı 0xB0 0x01
-#define ASK_Module_State 24582 //ÇëÇóÄ£¿é×´Ì¬ 0x60 0x06
+#define SPI_WOSHOU 21930 //æ¡æ‰‹ 0x55 0xaa
+#define SPI_SHEBEI_ID 4097 //è®¾å¤‡ID 0x10 0x01
+#define SPI_CONTENT_DATA 20485 //å¸¸æ€æ•°æ® 0x50 0x05
+#define SHEBEI_Soft_VER 8194//è®¾å¤‡è½¯ä»¶ç‰ˆæœ¬å· 0x20 0x02
+#define ASK_GPS 40961//è¯·æ±‚GPSæ•°æ® 0xa0 0x01
+#define ASK_GPS_VER 12291//è¯·æ±‚GPSç‰ˆæœ¬å· 0x30 0x03
+#define ASK_Mode_Parameter 45057//è¯·æ±‚å„æ¡£æ¨¡å¼å‚æ•° 0xB0 0x01
+#define ASK_Module_State 24582 //è¯·æ±‚æ¨¡å—çŠ¶æ€ 0x60 0x06
 
-#define ASK_Monitor_Update 49153//ÇëÇóÏÔÊ¾Æ÷µÄÉı¼¶°ü 0xC0 0x01
-#define ASK_Monitor_Update_Index 53249 //ÇëÇóÏÔÊ¾Æ÷µÄÉı¼¶Ë÷Òı 0xD0 0x01
-#define ASK_Monitor_Update_Index_content 57345 //ÇëÇóÏÔÊ¾Æ÷µÄÃ¿°üÊı¾İÄÚÈİ 0xE0 0x01
+#define ASK_Monitor_Update 49153//è¯·æ±‚æ˜¾ç¤ºå™¨çš„å‡çº§åŒ… 0xC0 0x01
+#define ASK_Monitor_Update_Index 53249 //è¯·æ±‚æ˜¾ç¤ºå™¨çš„å‡çº§ç´¢å¼• 0xD0 0x01
+#define ASK_Monitor_Update_Index_content 57345 //è¯·æ±‚æ˜¾ç¤ºå™¨çš„æ¯åŒ…æ•°æ®å†…å®¹ 0xE0 0x01
 
-#define ASK_Controller_Update 49154 //ÇëÇó¿ØÖÆÆ÷µÄÉı¼¶°ü 0xC0 0x02
-#define ASK_Controller_Update_Index 53250 //ÇëÇó¿ØÖÆÆ÷µÄÉı¼¶Ë÷Òı 0xD0 0x02
-#define ASK_Controller_Update_Index_content 57346 //ÇëÇó¿ØÖÆÆ÷µÄÃ¿°üÊı¾İÄÚÈİ 0xE0 0x02
+#define ASK_Controller_Update 49154 //è¯·æ±‚æ§åˆ¶å™¨çš„å‡çº§åŒ… 0xC0 0x02
+#define ASK_Controller_Update_Index 53250 //è¯·æ±‚æ§åˆ¶å™¨çš„å‡çº§ç´¢å¼• 0xD0 0x02
+#define ASK_Controller_Update_Index_content 57346 //è¯·æ±‚æ§åˆ¶å™¨çš„æ¯åŒ…æ•°æ®å†…å®¹ 0xE0 0x02
 
-#define ASK_Motor_Update 49155 //ÇëÇóÓÍÃÅ¿ØÖÆÆ÷µÄÉı¼¶°ü 0xC0 0x03
-#define ASK_Motor_Update_Index 53251 //ÇëÇóÓÍÃÅ¿ØÖÆÆ÷µÄÉı¼¶Ë÷Òı 0xD0 0x03
-#define ASK_Motor_Update_Index_content 57347 //ÇëÇóÓÍÃÅµç»úµÄÃ¿°üÊı¾İÄÚÈİ 0xE0 0x03
+#define ASK_Motor_Update 49155 //è¯·æ±‚æ²¹é—¨æ§åˆ¶å™¨çš„å‡çº§åŒ… 0xC0 0x03
+#define ASK_Motor_Update_Index 53251 //è¯·æ±‚æ²¹é—¨æ§åˆ¶å™¨çš„å‡çº§ç´¢å¼• 0xD0 0x03
+#define ASK_Motor_Update_Index_content 57347 //è¯·æ±‚æ²¹é—¨ç”µæœºçš„æ¯åŒ…æ•°æ®å†…å®¹ 0xE0 0x03
 
 

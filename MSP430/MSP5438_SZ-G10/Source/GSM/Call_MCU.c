@@ -2,27 +2,27 @@
 #include "msp430x54x.h"
 #include "GSM.h"
 
-unsigned char CALL_MCU_TIME_FLAG=0x00                                ;//ºô½ÐGPSÖÕ¶ËÉÏ±¨¶¨Î»Êý¾ÝÃüÁî±êÖ¾Î» 11==·¢ËÍMCU
-unsigned long int CALL_MCU_TIME_CNT                                  ;//Ê±¼ä¼ÆÊý
+unsigned char CALL_MCU_TIME_FLAG=0x00                                ;//å‘¼å«GPSç»ˆç«¯ä¸ŠæŠ¥å®šä½æ•°æ®å‘½ä»¤æ ‡å¿—ä½ 11==å‘é€MCU
+unsigned long int CALL_MCU_TIME_CNT                                  ;//æ—¶é—´è®¡æ•°
 
 #define  CALL_MCU_BUF_SIZE 12
-char  REC_CALL_MCU_BUF[CALL_MCU_BUF_SIZE]                            ;//½ÓÊÕMCUÊý¾ÝÉÏ´«Ê±¼ä¼ä¸ôÉèÖÃ
-char CALL_MCU_CRC(void)                                              ;//»Ø¸´ÉÏ±¨¶¨Î»Êý¾ÝÃüÁî
+char  REC_CALL_MCU_BUF[CALL_MCU_BUF_SIZE]                            ;//æŽ¥æ”¶MCUæ•°æ®ä¸Šä¼ æ—¶é—´é—´éš”è®¾ç½®
+char CALL_MCU_CRC(void)                                              ;//å›žå¤ä¸ŠæŠ¥å®šä½æ•°æ®å‘½ä»¤
 /*******************************************************************\
-*	      º¯ÊýÃû£ºCall_MCU_Data             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ºô½ÐGPSÖÕ¶ËÉÏ±¨¶¨Î»Êý¾ÝÃüÁî
-*	      ²ÎÊý£º  
-          ¸ñÊ½£º  
-*	      ·µ»ØÖµ£º   
+*	      å‡½æ•°åï¼šCall_MCU_Data             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å‘¼å«GPSç»ˆç«¯ä¸ŠæŠ¥å®šä½æ•°æ®å‘½ä»¤
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š  
+*	      è¿”å›žå€¼ï¼š   
 *
-*	      ÐÞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹åŽ†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
-char Call_MCU_Data(void)                                             //ºô½ÐGPSÖÕ¶ËÉÏ±¨¶¨Î»Êý¾ÝÃüÁî
+char Call_MCU_Data(void)                                             //å‘¼å«GPSç»ˆç«¯ä¸ŠæŠ¥å®šä½æ•°æ®å‘½ä»¤
 {
     if((CALL_MCU_TIME_FLAG==0x11)&&(CALL_MCU_TIME_CNT>SECD_2))
     {   
-        CALL_MCU_TIME_CNT   =   0                                   ;//Ê±¼ä¼ÆÊý
+        CALL_MCU_TIME_CNT   =   0                                   ;//æ—¶é—´è®¡æ•°
         MCU_Data_Count  =   MCU_Data_TimeOut    +   1               ;
         Heart_Beat_Count=   10240                                   ;
         if(GSM_Send_MCU())                                             
@@ -36,27 +36,27 @@ char Call_MCU_Data(void)                                             //ºô½ÐGPSÖÕ
 
 
 
-char SD_CALL_MCU_FLAG                                               ;//Ö¸Áî·¢ËÍÊ§°Ü±êÖ¾ ÖØ·¢
-char  ANS_CALL_MCU_BUF[CALL_MCU_BUF_SIZE];//MCUÊý¾ÝÉÏ´«Ê±¼ä¼ä¸ôÉèÖÃ»Ø¸´ Sd_MCU_Time
+char SD_CALL_MCU_FLAG                                               ;//æŒ‡ä»¤å‘é€å¤±è´¥æ ‡å¿— é‡å‘
+char  ANS_CALL_MCU_BUF[CALL_MCU_BUF_SIZE];//MCUæ•°æ®ä¸Šä¼ æ—¶é—´é—´éš”è®¾ç½®å›žå¤ Sd_MCU_Time
 /*******************************************************************\
-*	      º¯ÊýÃû£ºANSW_CALL_MCU             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ºô½ÐGPSÖÕ¶ËÉÏ±¨¶¨Î»Êý¾ÝÃüÁî
-*	      ²ÎÊý£º  
-          ¸ñÊ½£º  
-*	      ·µ»ØÖµ£º   
+*	      å‡½æ•°åï¼šANSW_CALL_MCU             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å‘¼å«GPSç»ˆç«¯ä¸ŠæŠ¥å®šä½æ•°æ®å‘½ä»¤
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š  
+*	      è¿”å›žå€¼ï¼š   
 *
-*	      ÐÞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹åŽ†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
-char ANSW_CALL_MCU(void)                                            //»Ø¸´ÉÏ±¨¶¨Î»Êý¾ÝÃüÁî
+char ANSW_CALL_MCU(void)                                            //å›žå¤ä¸ŠæŠ¥å®šä½æ•°æ®å‘½ä»¤
 {
-    unsigned char CAL_Num                                               ;//¼ÆÊýÓÃ
-    unsigned int CAL_MCU_CRC                                            ;//ºô½ÐGPSÖÕ¶ËÉÏ±¨¶¨Î»Êý¾ÝÃüÁî Ð£ÑéºÍ
+    unsigned char CAL_Num                                               ;//è®¡æ•°ç”¨
+    unsigned int CAL_MCU_CRC                                            ;//å‘¼å«GPSç»ˆç«¯ä¸ŠæŠ¥å®šä½æ•°æ®å‘½ä»¤ æ ¡éªŒå’Œ
     if(CALL_MCU_CRC()==1)  
     {
-        Tran_ID_CmdNum(ANS_CALL_MCU_BUF,0x9A)                   ;//×ª´æIDºÅºÍÃüÁî±àÂë 
+        Tran_ID_CmdNum(ANS_CALL_MCU_BUF,0x9A)                   ;//è½¬å­˜IDå·å’Œå‘½ä»¤ç¼–ç  
         
-        for(CAL_Num=0;CAL_Num<4;CAL_Num++)                               //»Ø¸´ºô½Ð¼ä¸ô¡¢ºô½ÐÊ±³¤
+        for(CAL_Num=0;CAL_Num<4;CAL_Num++)                               //å›žå¤å‘¼å«é—´éš”ã€å‘¼å«æ—¶é•¿
         {            
             ANS_CALL_MCU_BUF[6+CAL_Num]=REC_CALL_MCU_BUF[6+CAL_Num]     ;      
         } 
@@ -67,15 +67,15 @@ char ANSW_CALL_MCU(void)                                            //»Ø¸´ÉÏ±¨¶¨
         ANS_CALL_MCU_BUF[11]    =   (char)((CAL_MCU_CRC>>8)&0xFF)       ;
         
         SD_CALL_MCU_FLAG  = 1                                           ;
-        if(GSM_SendData(ANS_CALL_MCU_BUF,CALL_MCU_BUF_SIZE))             //Êý¾Ý·¢ËÍ   
+        if(GSM_SendData(ANS_CALL_MCU_BUF,CALL_MCU_BUF_SIZE))             //æ•°æ®å‘é€   
         {
            SD_CALL_MCU_FLAG  =0                                         ;
            return 1                                                     ;
         }
         
-        if(SD_CALL_MCU_FLAG)                                             //Ê§°ÜÖØ·¢
+        if(SD_CALL_MCU_FLAG)                                             //å¤±è´¥é‡å‘
         {
-           Delayms(200);//XX*1MsÑÓÊ±
+           Delayms(200);//XX*1Mså»¶æ—¶
            SD_CALL_MCU_FLAG  = 0;
            if(GSM_SendData(ANS_CALL_MCU_BUF,CALL_MCU_BUF_SIZE))         
            {          
@@ -93,19 +93,19 @@ char ANSW_CALL_MCU(void)                                            //»Ø¸´ÉÏ±¨¶¨
 
 
 /*******************************************************************\
-*	      º¯ÊýÃû£ºCALL_MCU_CRC             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ºô½ÐGPSÖÕ¶ËÉÏ±¨¶¨Î»Êý¾ÝÃüÁî
-*	      ²ÎÊý£º  
-          ¸ñÊ½£º  
-*	      ·µ»ØÖµ£º   
+*	      å‡½æ•°åï¼šCALL_MCU_CRC             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å‘¼å«GPSç»ˆç«¯ä¸ŠæŠ¥å®šä½æ•°æ®å‘½ä»¤
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š  
+*	      è¿”å›žå€¼ï¼š   
 *
-*	      ÐÞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹åŽ†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
-char CALL_MCU_CRC(void)                                            //»Ø¸´ÉÏ±¨¶¨Î»Êý¾ÝÃüÁî
+char CALL_MCU_CRC(void)                                            //å›žå¤ä¸ŠæŠ¥å®šä½æ•°æ®å‘½ä»¤
 {
   
-    unsigned int CAL_CALL_MCU_CRC,NET_CALL_MCU_CRC                        ;//ºô½ÐGPSÖÕ¶ËÉÏ±¨¶¨Î»Êý¾ÝÃüÁî Ð£ÑéºÍ
+    unsigned int CAL_CALL_MCU_CRC,NET_CALL_MCU_CRC                        ;//å‘¼å«GPSç»ˆç«¯ä¸ŠæŠ¥å®šä½æ•°æ®å‘½ä»¤ æ ¡éªŒå’Œ
     
     NET_CALL_MCU_CRC=   REC_CALL_MCU_BUF[11]                              ;
     NET_CALL_MCU_CRC =   NET_CALL_MCU_CRC  <<8                            ;
@@ -115,7 +115,7 @@ char CALL_MCU_CRC(void)                                            //»Ø¸´ÉÏ±¨¶¨Î
     if(CAL_CALL_MCU_CRC==NET_CALL_MCU_CRC)
     {
         CALL_MCU_TIME_CNT   =   0                                         ;
-        CALL_MCU_TIME_FLAG  =   0x11                                      ;// 11==·¢ËÍMCU
+        CALL_MCU_TIME_FLAG  =   0x11                                      ;// 11==å‘é€MCU
         return 1                                                          ;
     }
     return 0                                                              ;  

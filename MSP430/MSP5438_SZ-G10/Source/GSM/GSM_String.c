@@ -1,22 +1,22 @@
 
 
 //GSM_String
-//×Ö·û´®²éÕÒ
+//å­—ç¬¦ä¸²æŸ¥æ‰¾
 extern int GSM_strstr (const char * Main_str,const char * search_str);
-//×Ö·û´®³¤¶È
+//å­—ç¬¦ä¸²é•¿åº¦
 extern int GSM_strlen (const char * str);
-//×Ö·û´®±È½Ï
+//å­—ç¬¦ä¸²æ¯”è¾ƒ
 extern int GSM_strcmp (const char * src,const char * dst);
-//×Ö·û´®·Ö¸î
+//å­—ç¬¦ä¸²åˆ†å‰²
 extern char * GSM_strsep (char **stringp, const char *delim);
-//Êý×Ö×ª×Ö·û´®
+//æ•°å­—è½¬å­—ç¬¦ä¸²
 extern void GSM_ltoa(char offset, char*ps,unsigned long src);
-//×Ö·û´®×ªÊý×Ö
+//å­—ç¬¦ä¸²è½¬æ•°å­—
 extern long GSM_atol( const char * str );
 
 #define NULL ((void *)0)
 
-//ÔÚMain_strÖÐ²éÕÒ search_str ·µ»ØMain_strÖÐÊý×éµÄÏÂ±í 0Î´ÕÒµ½
+//åœ¨Main_strä¸­æŸ¥æ‰¾ search_str è¿”å›žMain_strä¸­æ•°ç»„çš„ä¸‹è¡¨ 0æœªæ‰¾åˆ°
 // 7==strstr("12345678","78"); 
 int GSM_strstr (const char * Main_str,const char * search_str)
 {
@@ -68,7 +68,7 @@ int GSM_strcmp (const char * src,const char * dst)
 
         return( ret );
 }
-//ÔÚ×Ö·û´®ÖÐ²éÕÒ¸ø¶¨×Ö·ûµÚÒ»¸öÆ¥Åä´¦
+//åœ¨å­—ç¬¦ä¸²ä¸­æŸ¥æ‰¾ç»™å®šå­—ç¬¦ç¬¬ä¸€ä¸ªåŒ¹é…å¤„
 static char * GSM_strchr (
         const char * string,
         int ch
@@ -81,7 +81,7 @@ static char * GSM_strchr (
                 return((char *)string);
         return(NULL);
 }
-//ÔÚ×Ö·û´®ÖÐ²éÕÒ¸ø¶¨×Ö·û¼¯ÖÐµÄ×Ö·û 
+//åœ¨å­—ç¬¦ä¸²ä¸­æŸ¥æ‰¾ç»™å®šå­—ç¬¦é›†ä¸­çš„å­—ç¬¦ 
 static char * GSM_strpbrk( register const char *cs, register const char *delim )
 {
         register const char *search;
@@ -98,8 +98,8 @@ static char * GSM_strpbrk( register const char *cs, register const char *delim )
         return( NULL );                 /* no matching character found     */
 }
 
-//×Ö·û´®·Ö¸î
-//Ó¦ÓÃÊµÀý
+//å­—ç¬¦ä¸²åˆ†å‰²
+//åº”ç”¨å®žä¾‹
 //	char str1[]="x=\n12\nab";
 //	char *p=str1;
 //	char *tk,*tk1;
@@ -155,11 +155,11 @@ char * GSM_strsep (char **stringp, const char *delim)
 
 
 /*-------------------------------------------------
-×Ö·û´®Ñ°ÕÒ
-    ×Ö·û´®°üº¬Ä³×Ö·û´®Ê±£¬·µ»Ø_OK, Ö»ÒªÓÐ 1 ¸ö²»Í¬£¬·µ»Ø_ERROR
-    char  ptr: ´æ´¢ÇøÖ¸Õë
+å­—ç¬¦ä¸²å¯»æ‰¾
+    å­—ç¬¦ä¸²åŒ…å«æŸå­—ç¬¦ä¸²æ—¶ï¼Œè¿”å›ž_OK, åªè¦æœ‰ 1 ä¸ªä¸åŒï¼Œè¿”å›ž_ERROR
+    char  ptr: å­˜å‚¨åŒºæŒ‡é’ˆ
 
-     ·µ»ØÊý¾ÝÏàµÈµÄÄ©Î²Î»ÖÃ
+     è¿”å›žæ•°æ®ç›¸ç­‰çš„æœ«å°¾ä½ç½®
      0 1 2 3 4 5 6 7 8    ===> i = 3
            3 4 5 6 |      ===> j = 4
                    |
@@ -168,7 +168,7 @@ char * GSM_strsep (char **stringp, const char *delim)
                    |
           i + j == 7
           
-author£ºwangtai
+authorï¼šwangtai
 
 -------------------------------------------------*/
 
@@ -176,7 +176,7 @@ char  StrSearch(char  *a, char  *b, unsigned char  aLength, unsigned char  bLeng
 {
     char  i, j, n;
     
-    if(aLength < bLength)   //  ÖØÒªÌõ¼þ
+    if(aLength < bLength)   //  é‡è¦æ¡ä»¶
     {
     	return  0;
     }
@@ -200,7 +200,7 @@ char  StrSearch(char  *a, char  *b, unsigned char  aLength, unsigned char  bLeng
         
         if(n == bLength)
         {
-            return  (i+j); // ·µ»Ø±È½Ï×Ö·û´®µÄºóÒ»¸ö×Ö½ÚµÄÎ»ÖÃ
+            return  (i+j); // è¿”å›žæ¯”è¾ƒå­—ç¬¦ä¸²çš„åŽä¸€ä¸ªå­—èŠ‚çš„ä½ç½®
         }    
     }
     
@@ -208,10 +208,10 @@ char  StrSearch(char  *a, char  *b, unsigned char  aLength, unsigned char  bLeng
 }
 
 
-//ps[10]=4294967295 4×Ö½Ú×î´óÖµ
+//ps[10]=4294967295 4å­—èŠ‚æœ€å¤§å€¼
 void GSM_ltoa(char offset, char*ps,unsigned long src)
 {
-    //µÍÎ»ÔÚ¸ß¶Ë£¬µÍÎ»ÔÚµÍµØÖ·£» Ð¡¶ËÄ£Ê½
+    //ä½Žä½åœ¨é«˜ç«¯ï¼Œä½Žä½åœ¨ä½Žåœ°å€ï¼› å°ç«¯æ¨¡å¼
     char *s = ps+offset;
     char i;
     for(i=0;i<10;i++)

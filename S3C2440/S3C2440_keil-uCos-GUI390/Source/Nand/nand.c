@@ -96,7 +96,7 @@ static void InitNandCfg(void)
 #ifdef	WIAT_BUSY_HARD
 #define	WaitNFBusy()	while(NFIsBusy())
 #else
-static U32 WaitNFBusy(void)	// R/B δ�Ӻ�?
+static U32 WaitNFBusy(void)	// R/B 未接好?
 {
 	U8 stat;
 	

@@ -174,9 +174,9 @@ void GUIDEMO_DialogCount(void) {
   
   GUIDEMO_Wait(); 
 	
-  WM_DeleteWindow(hDlgFrame);   //É¾³ıÇ°¾°´°   
+  WM_DeleteWindow(hDlgFrame);   //åˆ é™¤å‰æ™¯çª—   
 	
-  WM_SetCallback(WM_HBKWIN, 0); //É¾³ı»Øµ÷º¯Êı
+  WM_SetCallback(WM_HBKWIN, 0); //åˆ é™¤å›è°ƒå‡½æ•°
   
   GUI_Clear();   
   

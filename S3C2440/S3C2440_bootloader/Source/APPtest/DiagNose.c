@@ -89,7 +89,7 @@ void DiagNose(void)
 
     EepromClearAll();
 
-    Lcd_ClearScr(0x0);   //ºÚÉ«
+    Lcd_ClearScr(0x0);   //é»‘è‰²
    // print(20,20,"Test Finish !!!",0xFF0000);
     
     boot_params.diagnose.val=0x5A;

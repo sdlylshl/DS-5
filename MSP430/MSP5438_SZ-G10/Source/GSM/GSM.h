@@ -32,26 +32,26 @@
 #define MSP_Hour_20  73728000
 #define MSP_Hour_30  110592000  
 
-#define GPS_Model_Bug  0x03   //11 GPS¡¾Ä£¿é¹ÊÕÏ¡¿ÌáÊ¾£»
-#define GPS_No_Signal  0x0C   //11 GPSÎŞĞÅºÅ£»
-#define GPS_Ant_Open   0x30   //11 GPS¡¾ÌìÏß¼ôÏß/Î´½Ó¡¿£»
-#define GPS_Position   0xC0   //11 GPS¶¨Î»±êÖ¾£»
+#define GPS_Model_Bug  0x03   //11 GPSã€æ¨¡å—æ•…éšœã€‘æç¤ºï¼›
+#define GPS_No_Signal  0x0C   //11 GPSæ— ä¿¡å·ï¼›
+#define GPS_Ant_Open   0x30   //11 GPSã€å¤©çº¿å‰ªçº¿/æœªæ¥ã€‘ï¼›
+#define GPS_Position   0xC0   //11 GPSå®šä½æ ‡å¿—ï¼›
 /*******************************************************************\
-*	      ÎÄ¼şÃû£ºGSM_Brust.c      //Í»·¢Êı¾İ´¦Àí
+*	      æ–‡ä»¶åï¼šGSM_Brust.c      //çªå‘æ•°æ®å¤„ç†
 \*******************************************************************/
 #define Receive_Gprs_Data    0x01
 #define GSM_Get_GPS    0x03
 
 #define  NET_Up_Speed_BUF_SIZE 10
-extern char REC_Up_Speed_BUF[NET_Up_Speed_BUF_SIZE];//½ÓÊÕÔÊĞí»»¿¨ ÎŞ¿¨ÉıËÙ
+extern char REC_Up_Speed_BUF[NET_Up_Speed_BUF_SIZE];//æ¥æ”¶å…è®¸æ¢å¡ æ— å¡å‡é€Ÿ
 extern char LPM3_Open_Box_Gsm_Flag;
 
-extern char* Low_Pow_Time_Addr   ;//µÍ¹¦ºÄÊ±¼ä¼ä¸ôÉèÖÃ±êÖ¾µØÖ·
+extern char* Low_Pow_Time_Addr   ;//ä½åŠŸè€—æ—¶é—´é—´éš”è®¾ç½®æ ‡å¿—åœ°å€
 
 
 
-extern unsigned char GPS_Vmain_Bat;//Ğîµç³ØµçÑ¹ µç³Ø
-extern unsigned char LPM                                       ;//µÍ¹¦ºÄÄ£Ê½
+extern unsigned char GPS_Vmain_Bat;//è“„ç”µæ± ç”µå‹ ç”µæ± 
+extern unsigned char LPM                                       ;//ä½åŠŸè€—æ¨¡å¼
 extern unsigned char GSM_STATUS                                         ;
 extern unsigned int M72D_RX_Buf_Cnt                                     ;                             
 extern unsigned char packet_type                                        ;
@@ -60,9 +60,9 @@ extern unsigned char packet_type                                        ;
 extern unsigned char M72D_Brust_RX_Buf[M72D_Brust_RX_BUF_SIZE]          ;
 extern unsigned char M72D_Brust_STATUS                                  ; 
 #define PACKET_Query 0x01
-#define M72D_Query_RX_BUF_SIZE 50                                       //Êı¾İ´«Êä×î´ó×Ö½ÚÊı
+#define M72D_Query_RX_BUF_SIZE 50                                       //æ•°æ®ä¼ è¾“æœ€å¤§å­—èŠ‚æ•°
 extern unsigned char M72D_Query_RX_Buf[M72D_Query_RX_BUF_SIZE]          ;
-extern unsigned char M72D_Query_STATUS                                  ;//ÅäÖÃ°ü½ÓÊÕÍê³É 0 ÎŞÏìÓ¦ 0x01 OK 0x02 ERRO 0x04 Êı¾İÒç³ö
+extern unsigned char M72D_Query_STATUS                                  ;//é…ç½®åŒ…æ¥æ”¶å®Œæˆ 0 æ— å“åº” 0x01 OK 0x02 ERRO 0x04 æ•°æ®æº¢å‡º
 #define PACKET_CONFIG 0x02
 #define M72D_SetConfig_RX_BUF_SIZE 50                         
 extern unsigned char M72D_SetConfig_RX_Buf[M72D_SetConfig_RX_BUF_SIZE]  ;
@@ -74,70 +74,70 @@ extern unsigned char M72D_ServerData_STATUS                             ;
 #define PACKET_NETCONFIG 0x08
 #define M72D_NetConfig_RX_BUF_SIZE 100                        
 extern unsigned char M72D_NetConfig_RX_Buf[M72D_NetConfig_RX_BUF_SIZE]  ;
-extern unsigned char M72D_NetConfig_STATUS                              ;//ÍøÂç°ü½ÓÊÕÍê³É 0 ÎŞÏìÓ¦ 0x01 OK 0x02 ERRO 0x04 Êı¾İÒç³ö
+extern unsigned char M72D_NetConfig_STATUS                              ;//ç½‘ç»œåŒ…æ¥æ”¶å®Œæˆ 0 æ— å“åº” 0x01 OK 0x02 ERRO 0x04 æ•°æ®æº¢å‡º
 #define PCKET_OTHER 0x10
 #define M72D_Other_RX_BUF_SIZE 100                         
 extern unsigned char M72D_Other_RX_Buf[M72D_Other_RX_BUF_SIZE]          ;
 extern unsigned char M72D_Other_STATUS                                  ; 
 
 
-#define OUT_EDGE_BUF_SZ 25                                               //Ô½½ç±¨¾¯ÃüÁîÉèÖÃ»º´æ´óĞ¡
-extern char NET_OUT_EDGE_BUF[OUT_EDGE_BUF_SZ]                           ;//Æ½Ì¨ÏÂ·¢Ô½½ç±¨¾¯ÃüÁî
+#define OUT_EDGE_BUF_SZ 25                                               //è¶Šç•ŒæŠ¥è­¦å‘½ä»¤è®¾ç½®ç¼“å­˜å¤§å°
+extern char NET_OUT_EDGE_BUF[OUT_EDGE_BUF_SZ]                           ;//å¹³å°ä¸‹å‘è¶Šç•ŒæŠ¥è­¦å‘½ä»¤
 #define  MCU_TIME_BUF_SZ 12
-extern char REC_MCU_TIME_BUF[MCU_TIME_BUF_SZ]                           ;//½ÓÊÕMCUÊı¾İÉÏ´«Ê±¼ä¼ä¸ôÉèÖÃ
+extern char REC_MCU_TIME_BUF[MCU_TIME_BUF_SZ]                           ;//æ¥æ”¶MCUæ•°æ®ä¸Šä¼ æ—¶é—´é—´éš”è®¾ç½®
 #define  WORK_MODE_BUF_SZ 29
-extern char REC_WORK_MODE_BUF[WORK_MODE_BUF_SZ]                         ;//½ÓÊÕMCUÊı¾İÉÏ´«Ê±¼ä¼ä¸ôÉèÖÃ
+extern char REC_WORK_MODE_BUF[WORK_MODE_BUF_SZ]                         ;//æ¥æ”¶MCUæ•°æ®ä¸Šä¼ æ—¶é—´é—´éš”è®¾ç½®
 #define  NET_IP_PORT_BUF_SIZE 14
-extern char REC_IP_PORT_BUF[NET_IP_PORT_BUF_SIZE]                       ;//½ÓÊÕIP¶Ë¿ÚºÅ
+extern char REC_IP_PORT_BUF[NET_IP_PORT_BUF_SIZE]                       ;//æ¥æ”¶IPç«¯å£å·
 #define  NET_LOOK_M_BUF_SIZE 10
-extern char REC_LOOK_M_BUF[NET_LOOK_M_BUF_SIZE]                         ;//½ÓÊÕ GPSÖÕ¶ËËø³µ/½âËøÃüÁî
+extern char REC_LOOK_M_BUF[NET_LOOK_M_BUF_SIZE]                         ;//æ¥æ”¶ GPSç»ˆç«¯é”è½¦/è§£é”å‘½ä»¤
 #define  CALL_MCU_BUF_SIZE 12
-extern char  REC_CALL_MCU_BUF[CALL_MCU_BUF_SIZE]                        ;//½ÓÊÕMCUÊı¾İÉÏ´«Ê±¼ä¼ä¸ôÉèÖÃ
+extern char  REC_CALL_MCU_BUF[CALL_MCU_BUF_SIZE]                        ;//æ¥æ”¶MCUæ•°æ®ä¸Šä¼ æ—¶é—´é—´éš”è®¾ç½®
 
-extern char UDP_Built_STR[41]                                           ;//É½ÖØ½¨»úGPS¹ÜÀíÆ½Ì¨¶Ë¿Ú
-extern char GSM_MCU[62]                                                 ;//ÏÔÊ¾Æ÷MCUÊı¾İ»º´æ
-extern char GPS_Inf[28]                                                 ;//ÏÔÊ¾¼°Æ½Ì¨GPSÊı¾İ»º´æ
-extern char GSM_Send_MCU_Buf[106]                                        ;//ÉÏ±¨MCUÊı¾İÃüÁî(»Ø¸´)
+extern char UDP_Built_STR[41]                                           ;//å±±é‡å»ºæœºGPSç®¡ç†å¹³å°ç«¯å£
+extern char GSM_MCU[62]                                                 ;//æ˜¾ç¤ºå™¨MCUæ•°æ®ç¼“å­˜
+extern char GPS_Inf[28]                                                 ;//æ˜¾ç¤ºåŠå¹³å°GPSæ•°æ®ç¼“å­˜
+extern char GSM_Send_MCU_Buf[106]                                        ;//ä¸ŠæŠ¥MCUæ•°æ®å‘½ä»¤(å›å¤)
 
-extern char UP_Root_Stat_BuF[29]                                        ;//´æ·ÅÍø¹Ø·¢ËÍÉı¼¶Æô¶¯Ö¸Áî
-extern char Module_Status[6]                                            ;//Ä£¿é×´Ì¬ĞÅÏ¢GPSĞÅÏ¢+GSMĞÅÏ¢+ÏµÍ³×´Ì¬1¡¢2+Éı¼¶×´Ì¬1¡¢2
-extern char GPS_GSM_System_Stu[4]                                       ;//Ò»Ìå»ú×´Ì¬´æ´¢
-extern char GPS_GSM_ID_Memory[4]                                        ;//Ò»Ìå»úÉè±¸IDÖÕ¶ËºÅ
+extern char UP_Root_Stat_BuF[29]                                        ;//å­˜æ”¾ç½‘å…³å‘é€å‡çº§å¯åŠ¨æŒ‡ä»¤
+extern char Module_Status[6]                                            ;//æ¨¡å—çŠ¶æ€ä¿¡æ¯GPSä¿¡æ¯+GSMä¿¡æ¯+ç³»ç»ŸçŠ¶æ€1ã€2+å‡çº§çŠ¶æ€1ã€2
+extern char GPS_GSM_System_Stu[4]                                       ;//ä¸€ä½“æœºçŠ¶æ€å­˜å‚¨
+extern char GPS_GSM_ID_Memory[4]                                        ;//ä¸€ä½“æœºè®¾å¤‡IDç»ˆç«¯å·
 #define UP_SYSTEM_C_SIZE 1200
-extern unsigned char UP_SYSTEM_C_LANG[UP_SYSTEM_C_SIZE]                         ;//Éı¼¶°üÊı¾İ
+extern unsigned char UP_SYSTEM_C_LANG[UP_SYSTEM_C_SIZE]                         ;//å‡çº§åŒ…æ•°æ®
 #define  GSM_GSP_BUF_SIZE 40
-extern char  GSM_GSP_BUF[GSM_GSP_BUF_SIZE];//GSM½ÓÊÕ¾­Î³¶ÈÊ±¼äĞÅÏ¢»º´æ
+extern char  GSM_GSP_BUF[GSM_GSP_BUF_SIZE];//GSMæ¥æ”¶ç»çº¬åº¦æ—¶é—´ä¿¡æ¯ç¼“å­˜
 
 
 
 //****************************************************************************//
-extern int GSM_strstr (const char * Main_str,const char * search_str)   ;//GSM_String//×Ö·û´®²éÕÒ
-extern int GSM_strlen (const char * str)                                ;//×Ö·û´®³¤¶È
-extern int GSM_strcmp (const char * src,const char * dst)               ;//×Ö·û´®±È½Ï
-extern char * GSM_strsep (char **stringp, const char *delim)            ;//×Ö·û´®·Ö¸î
-extern void GSM_ltoa(char offset, char*ps,unsigned long src)            ;//Êı×Ö×ª×Ö·û´®
-extern long GSM_atol( const char * str )                                ;//×Ö·û´®×ªÊı×Ö
+extern int GSM_strstr (const char * Main_str,const char * search_str)   ;//GSM_String//å­—ç¬¦ä¸²æŸ¥æ‰¾
+extern int GSM_strlen (const char * str)                                ;//å­—ç¬¦ä¸²é•¿åº¦
+extern int GSM_strcmp (const char * src,const char * dst)               ;//å­—ç¬¦ä¸²æ¯”è¾ƒ
+extern char * GSM_strsep (char **stringp, const char *delim)            ;//å­—ç¬¦ä¸²åˆ†å‰²
+extern void GSM_ltoa(char offset, char*ps,unsigned long src)            ;//æ•°å­—è½¬å­—ç¬¦ä¸²
+extern long GSM_atol( const char * str )                                ;//å­—ç¬¦ä¸²è½¬æ•°å­—
 extern unsigned char GSM_SendCMD(char paktype, const char * s,
                                  unsigned int Len,int ms)               ;//GSM_CMD
 extern char GSM_SendData(const char * Data,int num)                     ;
 extern unsigned char ASCIITOHEX( unsigned char Input_H,
-                                unsigned char Input_L );//½«ASCII×Ö·û×ª»»Îª16½øÖÆµÄÊı
+                                unsigned char Input_L );//å°†ASCIIå­—ç¬¦è½¬æ¢ä¸º16è¿›åˆ¶çš„æ•°
 extern unsigned int crc_modbus2(unsigned char *puchMsg, 
                                 unsigned int usDataLen)                 ;//CRC
-extern char Compare_String(char *Source,char *Target,unsigned int Count);//±È½ÏÁ½¸ö×Ö·û´®ÊÇ·ñÏàÍ¬
-extern void Flash_WriteChar(unsigned int Addr,unsigned char Data)       ;//ÏòFlashÖĞĞ´ÈëÒ»¸ö×Ö½Ú
-extern void Tran_ID_CmdNum(char* ID_Addr,char CmdNum)                   ;//×ª´æIDºÅºÍÃüÁî±àÂë                              
-extern void Delayms(unsigned long int ms)                               ;//XX*1MsÑÓÊ±
-extern unsigned char HEX_TO_ASCII(char One_Char)                        ;//16½øÖÆ×Ö·û×ª»»ASCII
-extern void Tran_ID_CmdNum(char* ID_Addr,char CmdNum)                   ;//×ª´æIDºÅºÍÃüÁî±àÂë                              
-extern char SAVE_SIM_NUM_FH(unsigned char CMD_LEN)                      ;//´æ´¢ÊÖ»ú¿¨ºÅ 
-extern void SIM_CHG_WARN(void)                        ;//¸ü»»ÊÖ»ú¿¨±¨¾¯ 
-extern void Do_GSM_GPS_Data(void);//´¦ÀíGSM½ÓÊÕGPSÊı¾İ
+extern char Compare_String(char *Source,char *Target,unsigned int Count);//æ¯”è¾ƒä¸¤ä¸ªå­—ç¬¦ä¸²æ˜¯å¦ç›¸åŒ
+extern void Flash_WriteChar(unsigned int Addr,unsigned char Data)       ;//å‘Flashä¸­å†™å…¥ä¸€ä¸ªå­—èŠ‚
+extern void Tran_ID_CmdNum(char* ID_Addr,char CmdNum)                   ;//è½¬å­˜IDå·å’Œå‘½ä»¤ç¼–ç                               
+extern void Delayms(unsigned long int ms)                               ;//XX*1Mså»¶æ—¶
+extern unsigned char HEX_TO_ASCII(char One_Char)                        ;//16è¿›åˆ¶å­—ç¬¦è½¬æ¢ASCII
+extern void Tran_ID_CmdNum(char* ID_Addr,char CmdNum)                   ;//è½¬å­˜IDå·å’Œå‘½ä»¤ç¼–ç                               
+extern char SAVE_SIM_NUM_FH(unsigned char CMD_LEN)                      ;//å­˜å‚¨æ‰‹æœºå¡å· 
+extern void SIM_CHG_WARN(void)                        ;//æ›´æ¢æ‰‹æœºå¡æŠ¥è­¦ 
+extern void Do_GSM_GPS_Data(void);//å¤„ç†GSMæ¥æ”¶GPSæ•°æ®
 
-extern char GSM_Lock_Monitor()                                          ;//0x03==Ëø³µ£»0x00½âËø 
-extern char IP_Port_Reset()                                             ;//´¦ÀíIPµØÖ·\PortºÅ  
-extern char Work_Mode_Set()                                             ;//ÏµÍ³ÔËĞĞ¹¤×÷Ä£Ê½²ÎÊı
-extern char Root_UP_Net_Begin(void)                                     ;//Íø¹Ø·¢ËÍÉı¼¶Æô¶¯Ö¸Áî
+extern char GSM_Lock_Monitor()                                          ;//0x03==é”è½¦ï¼›0x00è§£é” 
+extern char IP_Port_Reset()                                             ;//å¤„ç†IPåœ°å€\Portå·  
+extern char Work_Mode_Set()                                             ;//ç³»ç»Ÿè¿è¡Œå·¥ä½œæ¨¡å¼å‚æ•°
+extern char Root_UP_Net_Begin(void)                                     ;//ç½‘å…³å‘é€å‡çº§å¯åŠ¨æŒ‡ä»¤
 extern char TCPIP_BASIC_SET(void)                                       ;
 extern char SIM_NUM_CHECK(void)                                         ;
 extern char GSM_CREG_Init()                                             ;
@@ -147,105 +147,105 @@ extern void GSM_NOM_POW_ON(void)                                            ;//G
 extern void GSM_Sleep()                                                 ;
 extern void GSM_Stop()                                                  ;
 extern void GSM_State()                                                 ;
-extern void DO_ROOT_UP(void)                                            ;//´¦ÀíÔ¶³ÌÉı¼¶³ÌĞò
-extern char UP_A2_NUM_CRC(void)                                         ;//Éı¼¶³ÌĞòCRCĞ£Ñé
+extern void DO_ROOT_UP(void)                                            ;//å¤„ç†è¿œç¨‹å‡çº§ç¨‹åº
+extern char UP_A2_NUM_CRC(void)                                         ;//å‡çº§ç¨‹åºCRCæ ¡éªŒ
 extern void GSM()                                                       ;
 extern char GSM_Heart_Beat()                                            ;//GSM_HEART_BEAT.C
 extern char GSM_Send_MCU(void)                                              ;//GSM_Send_MCU_Data.c
 extern void RecData()                                                   ;
-extern char MCU_Time_Set()                                              ;//MCUÊı¾İÉÏ´«Ê±¼ä¼ä¸ôÉèÖÃ 
-extern char Call_MCU_Data(void)                                         ;//ºô½ĞGPSÖÕ¶ËÉÏ±¨¶¨Î»Êı¾İÃüÁî
-extern void SHUT_GPS_UCA1(void)                                         ;//¹Ø±ÕGPSÖĞ¶Ï
-extern void Init_UCA0UART(void)                                         ;//GPSÖĞ¶Ï³õÊ¼»¯
-extern void RE_START_GSM(void)                                          ;//ÖØÆôÏµÍ³
-extern char CONNECT_FAIL_RESET(void)                                    ;//´¦ÀíConect_FailÁ´½Ó
-extern char OUT_EDGE_SET(void)                                          ;//Ô½½ç±¨¾¯ÃüÁîÉèÖÃ
-extern char ANSW_CALL_MCU(void)                                         ;//»Ø¸´ÉÏ±¨¶¨Î»Êı¾İÃüÁî
-extern void RD_MCU_TIME_FLASH(void)                                     ;//¶ÁÈ¡Ê±¼äÉèÖÃFLASH
+extern char MCU_Time_Set()                                              ;//MCUæ•°æ®ä¸Šä¼ æ—¶é—´é—´éš”è®¾ç½® 
+extern char Call_MCU_Data(void)                                         ;//å‘¼å«GPSç»ˆç«¯ä¸ŠæŠ¥å®šä½æ•°æ®å‘½ä»¤
+extern void SHUT_GPS_UCA1(void)                                         ;//å…³é—­GPSä¸­æ–­
+extern void Init_UCA0UART(void)                                         ;//GPSä¸­æ–­åˆå§‹åŒ–
+extern void RE_START_GSM(void)                                          ;//é‡å¯ç³»ç»Ÿ
+extern char CONNECT_FAIL_RESET(void)                                    ;//å¤„ç†Conect_Failé“¾æ¥
+extern char OUT_EDGE_SET(void)                                          ;//è¶Šç•ŒæŠ¥è­¦å‘½ä»¤è®¾ç½®
+extern char ANSW_CALL_MCU(void)                                         ;//å›å¤ä¸ŠæŠ¥å®šä½æ•°æ®å‘½ä»¤
+extern void RD_MCU_TIME_FLASH(void)                                     ;//è¯»å–æ—¶é—´è®¾ç½®FLASH
 extern void GSM_NOM_POW_OFF(void)                                       ;
 extern void SHUT_GSM_UCA0(void)                                         ;
 extern void GPS_Stop()                                                  ;
-extern char GSM_Brust()                                                     ;//Í»·¢Êı¾İ´¦Àí
+extern char GSM_Brust()                                                     ;//çªå‘æ•°æ®å¤„ç†
 extern void Open_Box_Check(void);
-extern void Write_Open_Box_Flash(void);//¿ªºĞ¼ì²â±¨¾¯Flash
-extern void Send_SIM_Card_NUM(void);//¿ª»ú·¢ËÍÊÖ»ú¿¨ºÅ
-extern void Change_SIM_Card_NUM(void);//ÔÊĞí¸ü»»ÊÖ»ú¿¨ºÅ
+extern void Write_Open_Box_Flash(void);//å¼€ç›’æ£€æµ‹æŠ¥è­¦Flash
+extern void Send_SIM_Card_NUM(void);//å¼€æœºå‘é€æ‰‹æœºå¡å·
+extern void Change_SIM_Card_NUM(void);//å…è®¸æ›´æ¢æ‰‹æœºå¡å·
 extern void Send_GSM_GPS_AT_Cmd(void);
-extern void VmainMon(void);//¼ì²âÖ÷µçÔ´µçÑ¹¼°ï®µç³ØµçÑ¹   
-extern unsigned char GSM_SIM_Signal();//ĞÅºÅÖÊÁ¿Ç¿¶È
-extern void ExitLMP_SendMCU(void);//ÍË³öµÍ¹¦ºÄ·¢ËÍMCUÊı¾İ 
-extern char CHECK_MCU_WARN(void);//¼ì²âMCU±¨¾¯ 
-extern char Allow_Up_Speed(void);//´¦ÀíÔÊĞí»»¿¨ ÎŞ¿¨ÉıËÙ
-extern void READ_UP_SPI_FLASH(void); //×ªÒÆÈí¼ş°æ±¾ºÅ¼°Éı¼¶ÀàĞÍ
+extern void VmainMon(void);//æ£€æµ‹ä¸»ç”µæºç”µå‹åŠé”‚ç”µæ± ç”µå‹   
+extern unsigned char GSM_SIM_Signal();//ä¿¡å·è´¨é‡å¼ºåº¦
+extern void ExitLMP_SendMCU(void);//é€€å‡ºä½åŠŸè€—å‘é€MCUæ•°æ® 
+extern char CHECK_MCU_WARN(void);//æ£€æµ‹MCUæŠ¥è­¦ 
+extern char Allow_Up_Speed(void);//å¤„ç†å…è®¸æ¢å¡ æ— å¡å‡é€Ÿ
+extern void READ_UP_SPI_FLASH(void); //è½¬ç§»è½¯ä»¶ç‰ˆæœ¬å·åŠå‡çº§ç±»å‹
 
 
 extern unsigned int RD_UCA0_Time                                             ;
 //extern void GSM_Value_Init(void);
 
 
-extern unsigned long int Soft_Vers_Cnt                                  ;//·¢ËÍÈí¼ş°æ±¾ºÅÊ±¼ä¼ÆÊ±
-extern unsigned long int RD_Data_1_Min_Cnt                              ;//½âÎö MUC Ó¦´ğÊ±¼ä¼ÆÊı
-extern unsigned long int HeartBeat_TimeOut                              ;//ÅäÖÃĞÄÌø°ü·¢ËÍÊ±¼ä  61425
-extern unsigned long int MCU_Data_TimeOut                               ;//ÅäÖÃÊı¾İ°ü·¢ËÍÊ±¼ä   
-extern unsigned long int MCU_ACK_TimeOut                                ;//1min ²éÑ¯Ó¦´ğ°ü ÎŞÓ¦´ğÔòÖØ·¢
-extern unsigned long int MCU_TimeOut                                    ;//Êı¾İ°ü·¢ËÍÊ±¼ä 
-extern unsigned long int Heart_Beat_Send_Cnt                          ;//ĞÄÌø·¢ËÍ´ÎÊı¼ÆÊı
-extern unsigned long int THR_Mint_Time_Cnt                              ;//3.5·ÖÖÓÊ±¼ä¼ÆÊı£¬ÓÃÓÚ²»ÉÏ´«Êı¾İ¼ì²â
+extern unsigned long int Soft_Vers_Cnt                                  ;//å‘é€è½¯ä»¶ç‰ˆæœ¬å·æ—¶é—´è®¡æ—¶
+extern unsigned long int RD_Data_1_Min_Cnt                              ;//è§£æ MUC åº”ç­”æ—¶é—´è®¡æ•°
+extern unsigned long int HeartBeat_TimeOut                              ;//é…ç½®å¿ƒè·³åŒ…å‘é€æ—¶é—´  61425
+extern unsigned long int MCU_Data_TimeOut                               ;//é…ç½®æ•°æ®åŒ…å‘é€æ—¶é—´   
+extern unsigned long int MCU_ACK_TimeOut                                ;//1min æŸ¥è¯¢åº”ç­”åŒ… æ— åº”ç­”åˆ™é‡å‘
+extern unsigned long int MCU_TimeOut                                    ;//æ•°æ®åŒ…å‘é€æ—¶é—´ 
+extern unsigned long int Heart_Beat_Send_Cnt                          ;//å¿ƒè·³å‘é€æ¬¡æ•°è®¡æ•°
+extern unsigned long int THR_Mint_Time_Cnt                              ;//3.5åˆ†é’Ÿæ—¶é—´è®¡æ•°ï¼Œç”¨äºä¸ä¸Šä¼ æ•°æ®æ£€æµ‹
 extern unsigned int  GSM_TimeOut_1ms                                    ;//Timer
-extern unsigned long int Heart_Beat_Count                               ;//·¢ËÍĞÄÌø1msÊ±¼ä¼ÆÊı
-extern unsigned long int MCU_Data_Count                                 ;//1ms Êı¾İ°ü¼ÆÊı
-extern unsigned long int CALL_MCU_TIME_CNT                              ;//Ê±¼ä¼ÆÊı
-extern unsigned long int GSM_INIT_TIME_CNT                              ;//GSM³õÊ¼»¯¼ÆÊ±ÓÃ
-extern unsigned int SIM_CARD_TIME_OUT                              ;//SIM¿¨³õÊ¼»¯¼ÆÊ±ÓÃ
-extern unsigned long int RD_Data_Time                                   ;//½âÎö MUC Ó¦´ğÊ±¼ä¼ÆÊı
-extern unsigned long int RD_Data_1_Min_Cnt                                        ;//½âÎö MUC Ó¦´ğÊ±¼ä¼ÆÊı
-extern unsigned long int SIM_Card_Work_Cnt;//·¢·¢ËÍÊÖ»ú¿¨ºÅÊ±¼ä¼ÆÊ±
-extern unsigned long int No_SIM_CARD_Cnt;//¼ì²â²»µ½SIM¿¨³õÊ¼»¯¼ÆÊı
-extern unsigned long GSM_GPS_AT_Cmd_Cnt;//·¢ËÍGSM»ñÈ¡µØÀíĞÅÏ¢¼ÆÊı
-extern unsigned long int ExitLMP_Time_Cnt;//ÍË³öµÍ¹¦ºÄÊ±¼ÆÊı
-extern unsigned long int One_JI_Warn_Cnt;//Ò»¼¶±¨¾¯¼ÆÊı
-extern unsigned long int Two_JI_Warn_Cnt;//¶ş¼¶±¨¾¯¼ÆÊı
-extern unsigned long int One_Degree_Alert_Time;//1¼¶±¨¾¯¼ÆÊı
+extern unsigned long int Heart_Beat_Count                               ;//å‘é€å¿ƒè·³1msæ—¶é—´è®¡æ•°
+extern unsigned long int MCU_Data_Count                                 ;//1ms æ•°æ®åŒ…è®¡æ•°
+extern unsigned long int CALL_MCU_TIME_CNT                              ;//æ—¶é—´è®¡æ•°
+extern unsigned long int GSM_INIT_TIME_CNT                              ;//GSMåˆå§‹åŒ–è®¡æ—¶ç”¨
+extern unsigned int SIM_CARD_TIME_OUT                              ;//SIMå¡åˆå§‹åŒ–è®¡æ—¶ç”¨
+extern unsigned long int RD_Data_Time                                   ;//è§£æ MUC åº”ç­”æ—¶é—´è®¡æ•°
+extern unsigned long int RD_Data_1_Min_Cnt                                        ;//è§£æ MUC åº”ç­”æ—¶é—´è®¡æ•°
+extern unsigned long int SIM_Card_Work_Cnt;//å‘å‘é€æ‰‹æœºå¡å·æ—¶é—´è®¡æ—¶
+extern unsigned long int No_SIM_CARD_Cnt;//æ£€æµ‹ä¸åˆ°SIMå¡åˆå§‹åŒ–è®¡æ•°
+extern unsigned long GSM_GPS_AT_Cmd_Cnt;//å‘é€GSMè·å–åœ°ç†ä¿¡æ¯è®¡æ•°
+extern unsigned long int ExitLMP_Time_Cnt;//é€€å‡ºä½åŠŸè€—æ—¶è®¡æ•°
+extern unsigned long int One_JI_Warn_Cnt;//ä¸€çº§æŠ¥è­¦è®¡æ•°
+extern unsigned long int Two_JI_Warn_Cnt;//äºŒçº§æŠ¥è­¦è®¡æ•°
+extern unsigned long int One_Degree_Alert_Time;//1çº§æŠ¥è­¦è®¡æ•°
 
 
-extern char MSP430_POWER_ON_FLAG;//11=ÉÏµç£»55=¶Ïµç
-extern unsigned char GPS_Data_OK_Flag                                     ;//ÏÈÊ¹ÓÃGPSÊı¾İ´¦ÀíÍê³É±êÖ¾ 00==Î´Íê³É£»11==Íê³É
-extern unsigned char Soft_VER_OK                                        ;//Èí¼ş°æ±¾ºÅ(ÏÔÊ¾Æ÷£¬¿ØÖÆÆ÷£¬ÓÍÃÅµç»úÈí¼ş°æ±¾ºÅ)
-extern unsigned char UP_SPI_Num_Flag                                           ;//11==ARMË÷ÒªÊı¾İ(°üÊıË÷ÒıºÅ,Ã¿°ü×Ö½ÚÊı)
-extern unsigned char CONNECT_FAIL_Flag                                  ;//CONNECT FAILÔÊĞíÊ¹ÄÜ
-extern unsigned char POWER_ON_FLAG                                      ;//11=¹Ø»ú£»55=¿ª»ú
-extern unsigned char UDP_Built_flag                                     ;//11==ÍøÂç½¨Á¢£¬00==ÍøÂç¶Ï¿ª»òÕßÃ»ÓĞ½¨Á¢
-extern unsigned char UDP_Built_flag                                     ;//11==ÍøÂç½¨Á¢£¬00==ÍøÂç¶Ï¿ª»òÕßÃ»ÓĞ½¨Á¢
-extern unsigned char GSM_ECHO                                           ;//ÅäÖÃ´ò¿ª»ØÏÔ 0x80
+extern char MSP430_POWER_ON_FLAG;//11=ä¸Šç”µï¼›55=æ–­ç”µ
+extern unsigned char GPS_Data_OK_Flag                                     ;//å…ˆä½¿ç”¨GPSæ•°æ®å¤„ç†å®Œæˆæ ‡å¿— 00==æœªå®Œæˆï¼›11==å®Œæˆ
+extern unsigned char Soft_VER_OK                                        ;//è½¯ä»¶ç‰ˆæœ¬å·(æ˜¾ç¤ºå™¨ï¼Œæ§åˆ¶å™¨ï¼Œæ²¹é—¨ç”µæœºè½¯ä»¶ç‰ˆæœ¬å·)
+extern unsigned char UP_SPI_Num_Flag                                           ;//11==ARMç´¢è¦æ•°æ®(åŒ…æ•°ç´¢å¼•å·,æ¯åŒ…å­—èŠ‚æ•°)
+extern unsigned char CONNECT_FAIL_Flag                                  ;//CONNECT FAILå…è®¸ä½¿èƒ½
+extern unsigned char POWER_ON_FLAG                                      ;//11=å…³æœºï¼›55=å¼€æœº
+extern unsigned char UDP_Built_flag                                     ;//11==ç½‘ç»œå»ºç«‹ï¼Œ00==ç½‘ç»œæ–­å¼€æˆ–è€…æ²¡æœ‰å»ºç«‹
+extern unsigned char UDP_Built_flag                                     ;//11==ç½‘ç»œå»ºç«‹ï¼Œ00==ç½‘ç»œæ–­å¼€æˆ–è€…æ²¡æœ‰å»ºç«‹
+extern unsigned char GSM_ECHO                                           ;//é…ç½®æ‰“å¼€å›æ˜¾ 0x80
 extern char GSM_SIM_Iint_Sig_Num                                    ;
 
 
 
-extern unsigned int  BAT_V_main                               ;//Ğîµç³ØµçÑ¹ µç³Ø
-extern unsigned int  LI_BAT_VOL                               ;//ï®µç³ØµçÑ¹ µç³Ø
+extern unsigned int  BAT_V_main                               ;//è“„ç”µæ± ç”µå‹ ç”µæ± 
+extern unsigned int  LI_BAT_VOL                               ;//é”‚ç”µæ± ç”µå‹ ç”µæ± 
 
 
-extern char SIM_Card_ER_Flag;//·¢ËÍÊÖ»ú¿¨ºÅÊ§°Ü±êÖ¾ ÖØ·¢
-extern char SD_SOFT_V_ER_Flag                                           ;//·¢ËÍÈí¼ş°æ±¾ºÅÊ§°Ü±êÖ¾ ÖØ·¢
-extern char ARM_DATA_STU                                                ;//Êı¾İÓĞĞ§±êÖ¾
-extern char MCU_Data_ACK                                                ;//ÇëÇó·¢ËÍÊı¾İ±êÖ¾Î»  
-extern char LOW_POW_GSM_Flag                                            ;//ÏÈÊ¹ÓÃGPSÊı¾İ´¦ÀíÍê³É±êÖ¾ 00==Î´Íê³É£»11==Íê³É
-extern char JG_OUT_EDGE_Flag                                            ;//Ô½½ç±¨¾¯ÅĞ¶Ï±êÖ¾Î» 11=¿ÉÒÔÅĞ¶Ï
-extern char Sys_NOW_UP_Flag;//ÏµÍ³ÕıÔÚÉı¼¶±êÖ¾ 11==ÔÚÉı¼¶ 55 Î´Éı¼¶
+extern char SIM_Card_ER_Flag;//å‘é€æ‰‹æœºå¡å·å¤±è´¥æ ‡å¿— é‡å‘
+extern char SD_SOFT_V_ER_Flag                                           ;//å‘é€è½¯ä»¶ç‰ˆæœ¬å·å¤±è´¥æ ‡å¿— é‡å‘
+extern char ARM_DATA_STU                                                ;//æ•°æ®æœ‰æ•ˆæ ‡å¿—
+extern char MCU_Data_ACK                                                ;//è¯·æ±‚å‘é€æ•°æ®æ ‡å¿—ä½  
+extern char LOW_POW_GSM_Flag                                            ;//å…ˆä½¿ç”¨GPSæ•°æ®å¤„ç†å®Œæˆæ ‡å¿— 00==æœªå®Œæˆï¼›11==å®Œæˆ
+extern char JG_OUT_EDGE_Flag                                            ;//è¶Šç•ŒæŠ¥è­¦åˆ¤æ–­æ ‡å¿—ä½ 11=å¯ä»¥åˆ¤æ–­
+extern char Sys_NOW_UP_Flag;//ç³»ç»Ÿæ­£åœ¨å‡çº§æ ‡å¿— 11==åœ¨å‡çº§ 55 æœªå‡çº§
 extern char Open_Box_Flag;
-extern char SIM_Card_Work_Flag;//ÉÏµçÊÖ»ú¿¨ºÅ±êÖ¾
-extern char Change_SIM_Card_Flag;//ÉÏµç¸ü»»ÊÖ»ú¿¨ºÅ±êÖ¾
-extern void Read_No_Chg_Card_Flash(void);//¶Á»»¿¨ÎŞ¿¨Flash 
-extern void Write_No_Chg_Card_Flash(void);//Ğ´»»¿¨ÎŞ¿¨Flash 
-extern void RD_Up_Speed_FLASH(void);//´¦ÀíÔÊĞí»»¿¨ ÎŞ¿¨ÉıËÙ
-extern char Send_Soft_Version(void)                                 ;//·¢ËÍÈí¼ş°æ±¾ºÅ
+extern char SIM_Card_Work_Flag;//ä¸Šç”µæ‰‹æœºå¡å·æ ‡å¿—
+extern char Change_SIM_Card_Flag;//ä¸Šç”µæ›´æ¢æ‰‹æœºå¡å·æ ‡å¿—
+extern void Read_No_Chg_Card_Flash(void);//è¯»æ¢å¡æ— å¡Flash 
+extern void Write_No_Chg_Card_Flash(void);//å†™æ¢å¡æ— å¡Flash 
+extern void RD_Up_Speed_FLASH(void);//å¤„ç†å…è®¸æ¢å¡ æ— å¡å‡é€Ÿ
+extern char Send_Soft_Version(void)                                 ;//å‘é€è½¯ä»¶ç‰ˆæœ¬å·
 
-extern unsigned int CREG_Zhu_Ce_Cnt ;//×¢²áÍøÂç²éÑ¯×¢²á´ÎÊı
+extern unsigned int CREG_Zhu_Ce_Cnt ;//æ³¨å†Œç½‘ç»œæŸ¥è¯¢æ³¨å†Œæ¬¡æ•°
 
 
 /**********************************************************************\
-    extern void Test_IP_Port(void);²âÊÔIPµØÖ·\PortºÅ  
+    extern void Test_IP_Port(void);æµ‹è¯•IPåœ°å€\Portå·  
 \**********************************************************************/
-extern void Ceshi_Allow_Up_Speed(void);//²âÊÔ´¦ÀíÔÊĞí»»¿¨ ÎŞ¿¨ÉıËÙ
+extern void Ceshi_Allow_Up_Speed(void);//æµ‹è¯•å¤„ç†å…è®¸æ¢å¡ æ— å¡å‡é€Ÿ
 
 #endif

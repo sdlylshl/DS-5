@@ -278,15 +278,15 @@ void GUIDEMO_VmVideo(void) {
 
   GUIDEMO_Wait(); 
 
-	for (i = 0; i < countof(hBut); i++)	//É¾³ý°´Å¥
+	for (i = 0; i < countof(hBut); i++)	//åˆ é™¤æŒ‰é’®
 	{
 		BUTTON_Delete(hBut[i]);
 	}
 
-	_DeleteAllWindow(); //É¾³ý´°Ìå 
+	_DeleteAllWindow(); //åˆ é™¤çª—ä½“ 
 	
-  WM_DeleteWindow(hWinVideo);   //É¾³ý´°Ìå 	
-  WM_SetCallback(WM_HBKWIN, 0); //É¾³ý»Øµ÷º¯Êý
+  WM_DeleteWindow(hWinVideo);   //åˆ é™¤çª—ä½“ 	
+  WM_SetCallback(WM_HBKWIN, 0); //åˆ é™¤å›žè°ƒå‡½æ•°
   
   GUI_Clear();   
 

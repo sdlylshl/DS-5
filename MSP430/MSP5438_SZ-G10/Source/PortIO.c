@@ -12,87 +12,87 @@ extern unsigned char GSM_STATUS;
 
 extern void Init_LPM_IO();
 
-extern unsigned char LPM_GPS_LOCATE_OK;//µÍ¹¦ºÄÄ£Ê½ÏÂ,GPS¶¨Î»³É¹¦
+extern unsigned char LPM_GPS_LOCATE_OK;//ä½ŽåŠŸè€—æ¨¡å¼ä¸‹,GPSå®šä½æˆåŠŸ
 unsigned char Power_down2on;
 /*
 void Init_LPM_IO()
 {
-    //Í¨¹ýPxREN¿ØÖÆÉÏÏÂÀ­µç×èÊ¹ÄÜ£¬Í¨¹ýPxOUT¾ö¶¨ÉÏÀ­»¹ÊÇÏÂÀ­
-    //ÉÏÏÂÀ­µç×è 30K~50K
-    //Çý¶¯ÄÜÁ¦ µÍÇýµçÁ÷Îª2mA ¸ßÇýµçÁ÷Îª 5mA
-    //ËùÓÐI/OµçÁ÷×ÜºÍ²»³¬¹ý48mA
-    P1OUT    = 0x00;//Êä³öÎª0
-    P1DIR    = 0x00;//ÊäÈë
-    P1REN    = 0X00;//½ûÓÃµç×è
-    P1DS     = 0X00;//µÍÇý¶¯ÄÜÁ¦
-    P1SEL    = 0X00;//ÆÕÍ¨IO
-    P1IES    = 0X00;//ÉÏÉýÑØ´¥·¢
-    P1IE     = 0X00;//½ûÓÃÖÐ¶Ï
-    P1IFG    = 0X00;//ÎÞÖÐ¶Ï´¥·¢
+    //é€šè¿‡PxRENæŽ§åˆ¶ä¸Šä¸‹æ‹‰ç”µé˜»ä½¿èƒ½ï¼Œé€šè¿‡PxOUTå†³å®šä¸Šæ‹‰è¿˜æ˜¯ä¸‹æ‹‰
+    //ä¸Šä¸‹æ‹‰ç”µé˜» 30K~50K
+    //é©±åŠ¨èƒ½åŠ› ä½Žé©±ç”µæµä¸º2mA é«˜é©±ç”µæµä¸º 5mA
+    //æ‰€æœ‰I/Oç”µæµæ€»å’Œä¸è¶…è¿‡48mA
+    P1OUT    = 0x00;//è¾“å‡ºä¸º0
+    P1DIR    = 0x00;//è¾“å…¥
+    P1REN    = 0X00;//ç¦ç”¨ç”µé˜»
+    P1DS     = 0X00;//ä½Žé©±åŠ¨èƒ½åŠ›
+    P1SEL    = 0X00;//æ™®é€šIO
+    P1IES    = 0X00;//ä¸Šå‡æ²¿è§¦å‘
+    P1IE     = 0X00;//ç¦ç”¨ä¸­æ–­
+    P1IFG    = 0X00;//æ— ä¸­æ–­è§¦å‘
 
-    P2OUT    = 0x00;//Êä³öÎª0
-    P2DIR    = 0x00;//ÊäÈë
-    P2REN    = 0X00;//½ûÓÃµç×è
-    P2DS     = 0X00;//µÍÇý¶¯ÄÜÁ¦
-    P2SEL    = 0X00;//ÆÕÍ¨IO
-    P2IES    = 0X00;//ÉÏÉýÑØ´¥·¢
-    P2IE     = 0X00;//½ûÓÃÖÐ¶Ï
-    P2IFG    = 0X00;//ÎÞÖÐ¶Ï´¥·¢
+    P2OUT    = 0x00;//è¾“å‡ºä¸º0
+    P2DIR    = 0x00;//è¾“å…¥
+    P2REN    = 0X00;//ç¦ç”¨ç”µé˜»
+    P2DS     = 0X00;//ä½Žé©±åŠ¨èƒ½åŠ›
+    P2SEL    = 0X00;//æ™®é€šIO
+    P2IES    = 0X00;//ä¸Šå‡æ²¿è§¦å‘
+    P2IE     = 0X00;//ç¦ç”¨ä¸­æ–­
+    P2IFG    = 0X00;//æ— ä¸­æ–­è§¦å‘
 
-    P3OUT    = 0x00;//Êä³öÎª0
-    P3DIR    = 0x00;//ÊäÈë
-    P3REN    = 0X00;//½ûÓÃµç×è
-    P3DS     = 0X00;//µÍÇý¶¯ÄÜÁ¦
-    P3SEL    = 0X00;//ÆÕÍ¨IO
+    P3OUT    = 0x00;//è¾“å‡ºä¸º0
+    P3DIR    = 0x00;//è¾“å…¥
+    P3REN    = 0X00;//ç¦ç”¨ç”µé˜»
+    P3DS     = 0X00;//ä½Žé©±åŠ¨èƒ½åŠ›
+    P3SEL    = 0X00;//æ™®é€šIO
 
-    P4OUT    = 0x00;//Êä³öÎª0
-    P4DIR    = 0x00;//ÊäÈë
-    P4REN    = 0X00;//½ûÓÃµç×è
-    P4DS     = 0X00;//µÍÇý¶¯ÄÜÁ¦
-    P4SEL    = 0X00;//ÆÕÍ¨IO
+    P4OUT    = 0x00;//è¾“å‡ºä¸º0
+    P4DIR    = 0x00;//è¾“å…¥
+    P4REN    = 0X00;//ç¦ç”¨ç”µé˜»
+    P4DS     = 0X00;//ä½Žé©±åŠ¨èƒ½åŠ›
+    P4SEL    = 0X00;//æ™®é€šIO
 
-    P5OUT    = 0x00;//Êä³öÎª0
-    P5DIR    = 0x00;//ÊäÈë
-    P5REN    = 0X00;//½ûÓÃµç×è
-    P5DS     = 0X00;//µÍÇý¶¯ÄÜÁ¦
-    P5SEL    = 0X00;//ÆÕÍ¨IO
+    P5OUT    = 0x00;//è¾“å‡ºä¸º0
+    P5DIR    = 0x00;//è¾“å…¥
+    P5REN    = 0X00;//ç¦ç”¨ç”µé˜»
+    P5DS     = 0X00;//ä½Žé©±åŠ¨èƒ½åŠ›
+    P5SEL    = 0X00;//æ™®é€šIO
 
-    P6OUT    = 0x00;//Êä³öÎª0
-    P6DIR    = 0x00;//ÊäÈë
-    P6REN    = 0X00;//½ûÓÃµç×è
-    P6DS     = 0X00;//µÍÇý¶¯ÄÜÁ¦
-    P6SEL    = 0X00;//ÆÕÍ¨IO
+    P6OUT    = 0x00;//è¾“å‡ºä¸º0
+    P6DIR    = 0x00;//è¾“å…¥
+    P6REN    = 0X00;//ç¦ç”¨ç”µé˜»
+    P6DS     = 0X00;//ä½Žé©±åŠ¨èƒ½åŠ›
+    P6SEL    = 0X00;//æ™®é€šIO
 
-    P7OUT    = 0x00;//Êä³öÎª0
-    P7DIR    = 0x00;//ÊäÈë
-    P7REN    = 0X00;//½ûÓÃµç×è
-    P7DS     = 0X00;//µÍÇý¶¯ÄÜÁ¦
-    P7SEL    = 0X00;//ÆÕÍ¨IO
+    P7OUT    = 0x00;//è¾“å‡ºä¸º0
+    P7DIR    = 0x00;//è¾“å…¥
+    P7REN    = 0X00;//ç¦ç”¨ç”µé˜»
+    P7DS     = 0X00;//ä½Žé©±åŠ¨èƒ½åŠ›
+    P7SEL    = 0X00;//æ™®é€šIO
 
-    P8OUT    = 0x00;//Êä³öÎª0
-    P8DIR    = 0x00;//ÊäÈë
-    P8REN    = 0X00;//½ûÓÃµç×è
-    P8DS     = 0X00;//µÍÇý¶¯ÄÜÁ¦
-    P8SEL    = 0X00;//ÆÕÍ¨IO
+    P8OUT    = 0x00;//è¾“å‡ºä¸º0
+    P8DIR    = 0x00;//è¾“å…¥
+    P8REN    = 0X00;//ç¦ç”¨ç”µé˜»
+    P8DS     = 0X00;//ä½Žé©±åŠ¨èƒ½åŠ›
+    P8SEL    = 0X00;//æ™®é€šIO
 
 
-    P9OUT    = 0x00;//Êä³öÎª0
-    P9DIR    = 0x00;//ÊäÈë
-    P9REN    = 0X00;//½ûÓÃµç×è
-    P9DS     = 0X00;//µÍÇý¶¯ÄÜÁ¦
-    P9SEL    = 0X00;//ÆÕÍ¨IO
+    P9OUT    = 0x00;//è¾“å‡ºä¸º0
+    P9DIR    = 0x00;//è¾“å…¥
+    P9REN    = 0X00;//ç¦ç”¨ç”µé˜»
+    P9DS     = 0X00;//ä½Žé©±åŠ¨èƒ½åŠ›
+    P9SEL    = 0X00;//æ™®é€šIO
 
-    P10OUT    = 0x00;//Êä³öÎª0
-    P10DIR    = 0x00;//ÊäÈë
-    P10REN    = 0X00;//½ûÓÃµç×è
-    P10DS     = 0X00;//µÍÇý¶¯ÄÜÁ¦
-    P10SEL    = 0X00;//ÆÕÍ¨IO
+    P10OUT    = 0x00;//è¾“å‡ºä¸º0
+    P10DIR    = 0x00;//è¾“å…¥
+    P10REN    = 0X00;//ç¦ç”¨ç”µé˜»
+    P10DS     = 0X00;//ä½Žé©±åŠ¨èƒ½åŠ›
+    P10SEL    = 0X00;//æ™®é€šIO
 
-    P11OUT    = 0x00;//Êä³öÎª0
-    P11DIR    = 0x00;//ÊäÈë
-    P11REN    = 0X00;//½ûÓÃµç×è
-    P11DS     = 0X00;//µÍÇý¶¯ÄÜÁ¦
-    P11SEL    = 0X00;//ÆÕÍ¨IO
+    P11OUT    = 0x00;//è¾“å‡ºä¸º0
+    P11DIR    = 0x00;//è¾“å…¥
+    P11REN    = 0X00;//ç¦ç”¨ç”µé˜»
+    P11DS     = 0X00;//ä½Žé©±åŠ¨èƒ½åŠ›
+    P11SEL    = 0X00;//æ™®é€šIO
 }
 
 */
@@ -115,21 +115,21 @@ __interrupt void Port2(void)
 {
 	
 	__delay_cycles(1000);
-    //²âÊÔÓÃ
-    //P1OUT  ^= BIT0;//P1.0×´Ì¬È¡·´,¿ØÖÆLED
+    //æµ‹è¯•ç”¨
+    //P1OUT  ^= BIT0;//P1.0çŠ¶æ€å–å,æŽ§åˆ¶LED
 
-    //ÉÏµç¼ì²â p1.0  P2.0   IOÖÐ¶Ï
-    //ÉÏµçÊÇ¸ßµçÆ½
-    if((P2IFG&PWRON)) {//P2.0ÉÏÉýÑØ´¥·¢
-        //ÍË³öµÍ¹¦ºÄÄ£Ê½
+    //ä¸Šç”µæ£€æµ‹ p1.0  P2.0   IOä¸­æ–­
+    //ä¸Šç”µæ˜¯é«˜ç”µå¹³
+    if((P2IFG&PWRON)) {//P2.0ä¸Šå‡æ²¿è§¦å‘
+        //é€€å‡ºä½ŽåŠŸè€—æ¨¡å¼
         LPM = 0;
-        //¹Ø±Õ ÉÏµç¡¢Õð¶¯¡¢¿ªºÐ
+        //å…³é—­ ä¸Šç”µã€éœ‡åŠ¨ã€å¼€ç›’
         Power_down2on=1;
 		LPM3_EXIT;
 
     } else if(P2IFG&SHAKE) {
-        //Õð¶¯»½ÐÑ      P2.1        IOÖÐ¶Ï
-        //¹ØÖÐ¶Ï
+        //éœ‡åŠ¨å”¤é†’      P2.1        IOä¸­æ–­
+        //å…³ä¸­æ–­
 		LPM_SHAKE_CNT++;
 		if(LPM_SHAKE_CNT==1000)
 		{
@@ -139,7 +139,7 @@ __interrupt void Port2(void)
 		}
         
     } else if(P2IFG&OPEN) {
-        //¿ªºÐ»½ÐÑ      P2.3        IOÖÐ¶Ï
+        //å¼€ç›’å”¤é†’      P2.3        IOä¸­æ–­
       //LPM = 5;//08.29DIGH
       /*if((P2IES&OPEN)==0x00)
       {
@@ -162,7 +162,7 @@ __interrupt void Port2(void)
       LPM3_EXIT;
       
     } else if(P2IFG&RING) {
-        //À´µç»½ÐÑ p2.0  P2.6       IOÖÐ¶Ï
+        //æ¥ç”µå”¤é†’ p2.0  P2.6       IOä¸­æ–­
         //LPM = 6;
 		LPM3_EXIT;
     }
@@ -171,7 +171,7 @@ __interrupt void Port2(void)
     
     
     
-	if(P2IFG&LOCATE)//Ê¹ÓÃP2IFG±È½ÏºÃ
+	if(P2IFG&LOCATE)//ä½¿ç”¨P2IFGæ¯”è¾ƒå¥½
 	{
 	    LPM_GPS_CNT++;
 		if(LPM_GPS_CNT==5)
@@ -183,7 +183,7 @@ __interrupt void Port2(void)
 		}
 			
 	}
-    P2IFG=0;//ÇåÖÐ¶Ï±êÖ¾
+    P2IFG=0;//æ¸…ä¸­æ–­æ ‡å¿—
     //LPM3_EXIT;
 }
 

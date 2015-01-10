@@ -188,7 +188,7 @@ void Touch_MainTask(void) {
 }
 
 
-void CalibrateTask(void* pdata) {//´¥ÃşÆÁĞ£×¼ÈÎÎñÈë¿Ú
+void CalibrateTask(void* pdata) {//è§¦æ‘¸å±æ ¡å‡†ä»»åŠ¡å…¥å£
  int aPhysX[2], aPhysY[2], aLogX[2], aLogY[2], i;
  GUI_SetBkColor(GUI_WHITE);
  GUI_Clear();

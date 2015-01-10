@@ -631,11 +631,11 @@ void LcdBkLtSet(U32 HiRatio)
 
 	if(!HiRatio)
 	{
-		rGPBCON  = rGPBCON & (~(3<<2)) | (1<<2) ;	//GPB1ÉèÖÃÎªoutput
+		rGPBCON  = rGPBCON & (~(3<<2)) | (1<<2) ;	//GPB1è®¾ç½®ä¸ºoutput
 		rGPBDAT &= ~(1<<1);
 		return;
 	}
-	rGPBCON = rGPBCON & (~(3<<2)) | (2<<2) ;		//GPB1ÉèÖÃÎªTOUT1
+	rGPBCON = rGPBCON & (~(3<<2)) | (2<<2) ;		//GPB1è®¾ç½®ä¸ºTOUT1
 	
 	if( HiRatio > 100 )
 		HiRatio = 100 ;	
@@ -652,6 +652,6 @@ void LcdBkLtSet(U32 HiRatio)
 	rTCMPB1  = ( rTCNTB1*(100-HiRatio))/100 ;	//if set inverter on,  when TCNT2<=TCMP2, TOUT is low,  TCNT2>TCMP2, TOUT is high
 
 	rTCON = rTCON & (~(0xf<<8)) | (0x0e<<8) ;
-	//×Ô¶¯ÖØ×°,Êä³öÈ¡·´¹Ø±Õ,¸üÐÂTCNTBn¡¢TCMPBn,ËÀÇø¿ØÖÆÆ÷¹Ø±Õ
-	rTCON = rTCON & (~(0xf<<8)) | (0x0d<<8) ;		//¿ªÆô±³¹â¿ØÖÆ
+	//è‡ªåŠ¨é‡è£…,è¾“å‡ºå–åå…³é—­,æ›´æ–°TCNTBnã€TCMPBn,æ­»åŒºæŽ§åˆ¶å™¨å…³é—­
+	rTCON = rTCON & (~(0xf<<8)) | (0x0d<<8) ;		//å¼€å¯èƒŒå…‰æŽ§åˆ¶
 }

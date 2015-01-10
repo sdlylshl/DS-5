@@ -2,82 +2,82 @@
 
 #include "GPS.h"
 
-char GPS_Inf[28]                                                    ;//ÏÔÊ¾¼°Æ½Ì¨GPSÊı¾İ»º´æ
+char GPS_Inf[28]                                                    ;//æ˜¾ç¤ºåŠå¹³å°GPSæ•°æ®ç¼“å­˜
 
-unsigned long int GPS_LOCATE_Time  = 0                              ;//GPS½ÓÊÕÊ±¼ä10S
+unsigned long int GPS_LOCATE_Time  = 0                              ;//GPSæ¥æ”¶æ—¶é—´10S
 
-char LOW_POW_GPS_Flag =0x55                                         ;//ÏÈÊ¹ÓÃGPSÊı¾İ´¦ÀíÍê³É±êÖ¾ 00==Î´Íê³É£»11==Íê³É
-unsigned char GPS_Data_OK_Flag                                     ;//ÏÈÊ¹ÓÃGPSÊı¾İ´¦ÀíÍê³É±êÖ¾ 00==Î´Íê³É£»11==Íê³É
-char *GPS_Buffer_RMC                                                ;//GPS_RX_Buffer½ÓÊÕÊı×éÊ×µØÖ·
-char *GPS_Buffer_GGA                                                ;//GPS_RX_Buffer½ÓÊÕÊı×éÊ×µØÖ·
-char *GPS_Head_STR                                                  ;//£¤GPSÍ·ÎÄ¼şÖ¸Õë
-char *GPGGA_Save_STR                                                ;//GPGGA»º´æÖ¸Õë
-char *UTC_Time                                                      ;//UTCÊ±¼ä×Ö·ûÖ¸Õë  
-char *GPS_GPRMC_Data_Use                                            ;//GPRMCÊı¾İÓĞĞ§±êÖ¾Î»Ö¸Õë
-char *GPS_GPGGA_Data_Use                                            ;//GPGGAÊı¾İÓĞĞ§±êÖ¾Î»Ö¸Õë
-char *GPS_Latitude                                                  ;//Î³¶ÈÊı¾İÖ¸Õë
-char *GPS_North_South                                               ;//Î³¶È±±Î³ÄÏÎ³Êı¾İ
-char *GPS_Longitude                                                 ;//¾­¶ÈÊı¾İÖ¸Õë
-char *GPS_West_East                                                 ;//¾­¶È±±Î³ÄÏÎ³Êı¾İ
-char *GPS_Move_Speed                                                ;//ÒÆ¶¯ËÙ¶ÈÊı¾İµ¥Î»m/s
-char *GPS_Course_Degree                                             ;//·½Ïò½Ç0-360
-char *UTC_Time_YMD                                                  ;//UTCÊ±¼äÄêÔÂÈÕ 
-char *GPS_Magnetic_Degree                                           ;//µØ´ÅÆ«½Ç0-360
-char *GPS_Magnetic_Degree_Dir                                       ;//µØ´ÅÆ«½Ç·½Ïò
-char *Position_Output_Mode                                          ;//¶¨Î»Ä£Ê½Êä³ö 
-char *GPRMC_Check_Sum                                               ;//GPRMCÊı¾İĞ£ÑéºÍ
-char *GGA_Sates_Used                                                ;//¿ÉÓÃĞÇÊı
-char *GGA_MSL_Altitude                                              ;//º£°Î¸ß¶È
+char LOW_POW_GPS_Flag =0x55                                         ;//å…ˆä½¿ç”¨GPSæ•°æ®å¤„ç†å®Œæˆæ ‡å¿— 00==æœªå®Œæˆï¼›11==å®Œæˆ
+unsigned char GPS_Data_OK_Flag                                     ;//å…ˆä½¿ç”¨GPSæ•°æ®å¤„ç†å®Œæˆæ ‡å¿— 00==æœªå®Œæˆï¼›11==å®Œæˆ
+char *GPS_Buffer_RMC                                                ;//GPS_RX_Bufferæ¥æ”¶æ•°ç»„é¦–åœ°å€
+char *GPS_Buffer_GGA                                                ;//GPS_RX_Bufferæ¥æ”¶æ•°ç»„é¦–åœ°å€
+char *GPS_Head_STR                                                  ;//ï¿¥GPSå¤´æ–‡ä»¶æŒ‡é’ˆ
+char *GPGGA_Save_STR                                                ;//GPGGAç¼“å­˜æŒ‡é’ˆ
+char *UTC_Time                                                      ;//UTCæ—¶é—´å­—ç¬¦æŒ‡é’ˆ  
+char *GPS_GPRMC_Data_Use                                            ;//GPRMCæ•°æ®æœ‰æ•ˆæ ‡å¿—ä½æŒ‡é’ˆ
+char *GPS_GPGGA_Data_Use                                            ;//GPGGAæ•°æ®æœ‰æ•ˆæ ‡å¿—ä½æŒ‡é’ˆ
+char *GPS_Latitude                                                  ;//çº¬åº¦æ•°æ®æŒ‡é’ˆ
+char *GPS_North_South                                               ;//çº¬åº¦åŒ—çº¬å—çº¬æ•°æ®
+char *GPS_Longitude                                                 ;//ç»åº¦æ•°æ®æŒ‡é’ˆ
+char *GPS_West_East                                                 ;//ç»åº¦åŒ—çº¬å—çº¬æ•°æ®
+char *GPS_Move_Speed                                                ;//ç§»åŠ¨é€Ÿåº¦æ•°æ®å•ä½m/s
+char *GPS_Course_Degree                                             ;//æ–¹å‘è§’0-360
+char *UTC_Time_YMD                                                  ;//UTCæ—¶é—´å¹´æœˆæ—¥ 
+char *GPS_Magnetic_Degree                                           ;//åœ°ç£åè§’0-360
+char *GPS_Magnetic_Degree_Dir                                       ;//åœ°ç£åè§’æ–¹å‘
+char *Position_Output_Mode                                          ;//å®šä½æ¨¡å¼è¾“å‡º 
+char *GPRMC_Check_Sum                                               ;//GPRMCæ•°æ®æ ¡éªŒå’Œ
+char *GGA_Sates_Used                                                ;//å¯ç”¨æ˜Ÿæ•°
+char *GGA_MSL_Altitude                                              ;//æµ·æ‹”é«˜åº¦
 
 
-unsigned long int GPS_J_Data=0                                      ;//¾­¶È×îÖÕÉÏ´«ĞÅÏ¢
-unsigned long int GPS_W_Data=0                                      ;//Î³¶È×îÖÕÉÏ´«ĞÅÏ¢
-int GPS_Speed_Data=0                                                ;//ÔËĞĞËÙ¶È×îÖÕÉÏ´«ĞÅÏ¢
-unsigned int GPS_Course_Degree_Data=0                               ;//·½Ïò½Ç0-360
-unsigned char GPRMC_Check_Sum_Data=0                                ;//GPRMCĞ£ÑéºÍ
-unsigned char GGA_Sates_Used_Data=0                                 ;//¿ÉÓÃĞÇÊı
-int  GGA_MSL_Altitude_Data=0                                        ;//º£°Î¸ß¶È
-unsigned char UTC_Time_Year=0                                       ;//UTCÊ±¼äÄê 
-unsigned char UTC_Time_Moth=0                                       ;//UTCÊ±¼äÔÂ
-unsigned char UTC_Time_dayy=0                                       ;//UTCÊ±¼äÈÕ 
-unsigned char UTC_Time_Hour                                         ;//UTCÊ±¼äĞ¡Ê± 
-unsigned char UTC_Time_Mint                                         ;//UTCÊ±¼ä·ÖÖÓ  
-unsigned char UTC_Time_Secd                                         ;//UTCÊ±¼äÃë 
+unsigned long int GPS_J_Data=0                                      ;//ç»åº¦æœ€ç»ˆä¸Šä¼ ä¿¡æ¯
+unsigned long int GPS_W_Data=0                                      ;//çº¬åº¦æœ€ç»ˆä¸Šä¼ ä¿¡æ¯
+int GPS_Speed_Data=0                                                ;//è¿è¡Œé€Ÿåº¦æœ€ç»ˆä¸Šä¼ ä¿¡æ¯
+unsigned int GPS_Course_Degree_Data=0                               ;//æ–¹å‘è§’0-360
+unsigned char GPRMC_Check_Sum_Data=0                                ;//GPRMCæ ¡éªŒå’Œ
+unsigned char GGA_Sates_Used_Data=0                                 ;//å¯ç”¨æ˜Ÿæ•°
+int  GGA_MSL_Altitude_Data=0                                        ;//æµ·æ‹”é«˜åº¦
+unsigned char UTC_Time_Year=0                                       ;//UTCæ—¶é—´å¹´ 
+unsigned char UTC_Time_Moth=0                                       ;//UTCæ—¶é—´æœˆ
+unsigned char UTC_Time_dayy=0                                       ;//UTCæ—¶é—´æ—¥ 
+unsigned char UTC_Time_Hour                                         ;//UTCæ—¶é—´å°æ—¶ 
+unsigned char UTC_Time_Mint                                         ;//UTCæ—¶é—´åˆ†é’Ÿ  
+unsigned char UTC_Time_Secd                                         ;//UTCæ—¶é—´ç§’ 
 extern char ARM_DATA_STU                                            ;
-extern unsigned char LPM                                            ;//µÍ¹¦ºÄÄ£Ê½
+extern unsigned char LPM                                            ;//ä½åŠŸè€—æ¨¡å¼
 /*******************************************************************\
-*	      º¯ÊıÃû£ºDo_GPS_Data             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ½ÓÊÕ¡¢´¦ÀíGPSÊı¾İ  
-*	      ²ÎÊı£º  
-           1¡¢Í¨¹ı¿ØÖÆGPSÊı¾İÀàĞÍ£¨00=ÎŞÏìÓ¦£»11=GPRMC£»22=GPGGA£©¿ØÖÆ²½Öè
-           2¡¢Do_GPS_Mesg_OK_Flag£ºGPSÊı¾İ´¦ÀíÍê³É±êÖ¾ 00==Î´Íê³É£»11==Íê³É
-           3¡¢Open_UCA1_UART_Init(void)==ÓÃ½ÓÊÕÍê³ÉÊı¾İ²»¿ÉÓÃÊ±´ò¿ªGPSÖĞ¶Ï
-*	      ·µ»ØÖµ£ºÎŞ     
+*	      å‡½æ•°åï¼šDo_GPS_Data             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  æ¥æ”¶ã€å¤„ç†GPSæ•°æ®  
+*	      å‚æ•°ï¼š  
+           1ã€é€šè¿‡æ§åˆ¶GPSæ•°æ®ç±»å‹ï¼ˆ00=æ— å“åº”ï¼›11=GPRMCï¼›22=GPGGAï¼‰æ§åˆ¶æ­¥éª¤
+           2ã€Do_GPS_Mesg_OK_Flagï¼šGPSæ•°æ®å¤„ç†å®Œæˆæ ‡å¿— 00==æœªå®Œæˆï¼›11==å®Œæˆ
+           3ã€Open_UCA1_UART_Init(void)==ç”¨æ¥æ”¶å®Œæˆæ•°æ®ä¸å¯ç”¨æ—¶æ‰“å¼€GPSä¸­æ–­
+*	      è¿”å›å€¼ï¼šæ—      
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
-void Do_GPS_Data(void)                                            //½ÓÊÕ¡¢´¦ÀíGPSÊı¾İ
+void Do_GPS_Data(void)                                            //æ¥æ”¶ã€å¤„ç†GPSæ•°æ®
 {
   
   if(GPS_LOCATE_Time>MSP_A0_Min_10)
   {
       GPS_LOCATE_Time=0;
-      GPS_GSM_System_Stu[0]|=0x0C;//GPSÎŞĞÅºÅ
+      GPS_GSM_System_Stu[0]|=0x0C;//GPSæ— ä¿¡å·
       Module_Status[0]|=0x0C;
   }
   
-  GPS_ANT_STATUS();//GPSÌìÏß¼ì²â
+  GPS_ANT_STATUS();//GPSå¤©çº¿æ£€æµ‹
   Send_GSM_GPS_AT_Cmd();
   
   switch (Want_GPS_Data_Type) 
   {
      case 0x01:
       {
-         if(GPS_LOCATE_Time>10240)                                   //GPS½ÓÊÕÊ±¼ä10S
+         if(GPS_LOCATE_Time>10240)                                   //GPSæ¥æ”¶æ—¶é—´10S
          {   
              GPS_LOCATE_Time=0                                      ;
-             GPS_UCA1_Init()                                        ;//´ò¿ªGPS½ÓÊÕ³õÊ¼»¯
+             GPS_UCA1_Init()                                        ;//æ‰“å¼€GPSæ¥æ”¶åˆå§‹åŒ–
              Want_GPS_Data_Type=0x22                                ;
          }
          break;
@@ -85,19 +85,19 @@ void Do_GPS_Data(void)                                            //½ÓÊÕ¡¢´¦ÀíGP
     
     case 0x11:
       {
-        if(GPS_R_OK_End_Flag==0x11)                                  //GPSÖĞ¶Ï½ÓÊÕ³É¹¦±êÖ¾ 00==Î´½ÓÊÕ£»0x11==GPRMC£»0x22==GPGGA£»
+        if(GPS_R_OK_End_Flag==0x11)                                  //GPSä¸­æ–­æ¥æ”¶æˆåŠŸæ ‡å¿— 00==æœªæ¥æ”¶ï¼›0x11==GPRMCï¼›0x22==GPGGAï¼›
           {
-            GPS_R_OK_End_Flag  = 0x00                               ;//GPSÖĞ¶Ï½ÓÊÕ³É¹¦±êÖ¾ 00==Î´½ÓÊÕ£»0x11==GPRMC£»0x22==GPGGA£»
-            Do_GPS_RMC_Data()                                       ;//´¦ÀíGPRMCÊı¾İ°üUTCÊ±¼äÊı¾İ´¦Àí
+            GPS_R_OK_End_Flag  = 0x00                               ;//GPSä¸­æ–­æ¥æ”¶æˆåŠŸæ ‡å¿— 00==æœªæ¥æ”¶ï¼›0x11==GPRMCï¼›0x22==GPGGAï¼›
+            Do_GPS_RMC_Data()                                       ;//å¤„ç†GPRMCæ•°æ®åŒ…UTCæ—¶é—´æ•°æ®å¤„ç†
           }
          break                                                      ;
       }
     case 0x22:
       {
-         if(GPS_R_OK_End_Flag==0x22)                                 //GPSÖĞ¶Ï½ÓÊÕ³É¹¦±êÖ¾ 00==Î´½ÓÊÕ£»0x11==GPRMC£»0x22==GPGGA£»
+         if(GPS_R_OK_End_Flag==0x22)                                 //GPSä¸­æ–­æ¥æ”¶æˆåŠŸæ ‡å¿— 00==æœªæ¥æ”¶ï¼›0x11==GPRMCï¼›0x22==GPGGAï¼›
          {
-            GPS_R_OK_End_Flag  = 0x00                               ;//GPSÖĞ¶Ï½ÓÊÕ³É¹¦±êÖ¾ 00==Î´½ÓÊÕ£»0x11==GPRMC£»0x22==GPGGA£»
-            Do_GPS_GGA_Data()                                       ;//´¦ÀíGPRMCÊı¾İ°üUTCÊ±¼äÊı¾İ´¦Àí
+            GPS_R_OK_End_Flag  = 0x00                               ;//GPSä¸­æ–­æ¥æ”¶æˆåŠŸæ ‡å¿— 00==æœªæ¥æ”¶ï¼›0x11==GPRMCï¼›0x22==GPGGAï¼›
+            Do_GPS_GGA_Data()                                       ;//å¤„ç†GPRMCæ•°æ®åŒ…UTCæ—¶é—´æ•°æ®å¤„ç†
          }       
          break;
       }
@@ -106,21 +106,21 @@ void Do_GPS_Data(void)                                            //½ÓÊÕ¡¢´¦ÀíGP
          GSM_SIM_Iint_Sig_Num=GSM_SIM_Signal();
          if((GSM_SIM_Iint_Sig_Num<32))                               //(GSM_SIM_Iint_Sig_Num>0)&&
          {
-            VmainMon();//¼ì²âÖ÷µçÔ´µçÑ¹¼°ï®µç³ØµçÑ¹   
+            VmainMon();//æ£€æµ‹ä¸»ç”µæºç”µå‹åŠé”‚ç”µæ± ç”µå‹   
             Want_GPS_Data_Type=0x11; 
          }
-         Delayms(200);//XX*1MsÑÓÊ±
+         Delayms(200);//XX*1Mså»¶æ—¶
          break;
       }
     case 0x44:
     { 
-         GSM_GPS_AT_Cmd_Cnt=0;//·¢ËÍGSM»ñÈ¡µØÀíĞÅÏ¢¼ÆÊı
-         GPS_Data_OK_Flag =0x11                                     ;//ÏÈÊ¹ÓÃGPSÊı¾İ´¦ÀíÍê³É±êÖ¾ 00==Î´Íê³É£»11==Íê³É
-         ARM_DATA_STU |=0x04                                        ;//GPSĞÅÏ¢¶¨Î»
-         Module_Status[0] =0xC0                                     ;//Ä£¿é×´Ì¬ĞÅÏ¢GPSĞÅÏ¢+GSMĞÅÏ¢+ÏµÍ³×´Ì¬1¡¢2+Éı¼¶×´Ì¬1¡¢2
-         GPS_GSM_System_Stu[0]=0xC0                                 ;//GPS×´Ì¬´æ´¢        
+         GSM_GPS_AT_Cmd_Cnt=0;//å‘é€GSMè·å–åœ°ç†ä¿¡æ¯è®¡æ•°
+         GPS_Data_OK_Flag =0x11                                     ;//å…ˆä½¿ç”¨GPSæ•°æ®å¤„ç†å®Œæˆæ ‡å¿— 00==æœªå®Œæˆï¼›11==å®Œæˆ
+         ARM_DATA_STU |=0x04                                        ;//GPSä¿¡æ¯å®šä½
+         Module_Status[0] =0xC0                                     ;//æ¨¡å—çŠ¶æ€ä¿¡æ¯GPSä¿¡æ¯+GSMä¿¡æ¯+ç³»ç»ŸçŠ¶æ€1ã€2+å‡çº§çŠ¶æ€1ã€2
+         GPS_GSM_System_Stu[0]=0xC0                                 ;//GPSçŠ¶æ€å­˜å‚¨        
          Want_GPS_Data_Type=0x01                                    ;
-         LOW_POW_GPS_Flag =0x11                                     ;//ÏÈÊ¹ÓÃGPSÊı¾İ´¦ÀíÍê³É±êÖ¾ 00==Î´Íê³É£»11==Íê³É
+         LOW_POW_GPS_Flag =0x11                                     ;//å…ˆä½¿ç”¨GPSæ•°æ®å¤„ç†å®Œæˆæ ‡å¿— 00==æœªå®Œæˆï¼›11==å®Œæˆ
          break                                                      ;
     }
     default:
@@ -129,206 +129,206 @@ void Do_GPS_Data(void)                                            //½ÓÊÕ¡¢´¦ÀíGP
 }
 
 /*******************************************************************\
-*	      º¯ÊıÃû£ºDo_GPS_RMC_Data             
-*	      ×÷ÓÃÓò£º±¾µØÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ´¦ÀíGPRMCÊı¾İ°üÊı¾İ
-*	      ²ÎÊı£º 
-*	      ·µ»ØÖµ£ºÎŞ     
+*	      å‡½æ•°åï¼šDo_GPS_RMC_Data             
+*	      ä½œç”¨åŸŸï¼šæœ¬åœ°æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å¤„ç†GPRMCæ•°æ®åŒ…æ•°æ®
+*	      å‚æ•°ï¼š 
+*	      è¿”å›å€¼ï¼šæ—      
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*****************************************************************/
-void Do_GPS_RMC_Data(void)                                         //´¦ÀíGPRMCÊı¾İ°üUTCÊ±¼äÊı¾İ´¦Àí
+void Do_GPS_RMC_Data(void)                                         //å¤„ç†GPRMCæ•°æ®åŒ…UTCæ—¶é—´æ•°æ®å¤„ç†
 {
-    GPS_Buffer_RMC =GPS_RX_Buffer                                   ;//GPS_RX_Buffer½ÓÊÕÊı×éÊ×µØÖ·
-    GPS_Head_STR=GSM_strsep (&GPS_Buffer_RMC, ",")                  ;//1 ¶ÁÈ¡£¤Êı¾İ°üÍ·ÎÄ¼şÖ¸Õë
-    UTC_Time=GSM_strsep (&GPS_Buffer_RMC, ",")                      ;//2 ¶ÁÈ¡UTCÊ±¼äÊı¾İÖ¸Õë
-    GPS_GPRMC_Data_Use=GSM_strsep (&GPS_Buffer_RMC, ",")            ;//3 GPRMCÊı¾İ°üÓĞĞ§±êÖ¾Î»
+    GPS_Buffer_RMC =GPS_RX_Buffer                                   ;//GPS_RX_Bufferæ¥æ”¶æ•°ç»„é¦–åœ°å€
+    GPS_Head_STR=GSM_strsep (&GPS_Buffer_RMC, ",")                  ;//1 è¯»å–ï¿¥æ•°æ®åŒ…å¤´æ–‡ä»¶æŒ‡é’ˆ
+    UTC_Time=GSM_strsep (&GPS_Buffer_RMC, ",")                      ;//2 è¯»å–UTCæ—¶é—´æ•°æ®æŒ‡é’ˆ
+    GPS_GPRMC_Data_Use=GSM_strsep (&GPS_Buffer_RMC, ",")            ;//3 GPRMCæ•°æ®åŒ…æœ‰æ•ˆæ ‡å¿—ä½
 
       if(*GPS_GPRMC_Data_Use=='A')
       {
-         Want_GPS_Data_Type = 0x44                                  ;//ĞèÒªGPSÊı¾İÀàĞÍ00==ÎŞÏìÓ¦£»
-         GPS_Latitude=GSM_strsep (&GPS_Buffer_RMC, ",")             ;//Î³¶ÈÊı¾İÖ¸Õë
-         GPS_North_South=GSM_strsep (&GPS_Buffer_RMC, ",")          ;//Î³¶È±±Î³ÄÏÎ³Êı¾İ
-         GPS_Longitude=GSM_strsep (&GPS_Buffer_RMC, ",")            ;//¾­¶ÈÊı¾İÖ¸Õë
-         GPS_West_East=GSM_strsep (&GPS_Buffer_RMC, ",")            ;//¾­¶È±±Î³ÄÏÎ³Êı¾İ
-         GPS_Move_Speed=GSM_strsep (&GPS_Buffer_RMC, ",")           ;//ÒÆ¶¯ËÙ¶ÈÊı¾İµ¥Î»m/s
-         GPS_Course_Degree=GSM_strsep (&GPS_Buffer_RMC, ",")        ;//·½Ïò½Ç0-360
-         UTC_Time_YMD=GSM_strsep (&GPS_Buffer_RMC, ",")             ;//UTCÊ±¼äÄêÔÂÈÕ 
-         GPS_Magnetic_Degree=GSM_strsep (&GPS_Buffer_RMC, ",")      ;//µØ´ÅÆ«½Ç0-360
-         GPS_Magnetic_Degree_Dir=GSM_strsep (&GPS_Buffer_RMC, ",")  ;//µØ´ÅÆ«½Ç·½Ïò
-         Position_Output_Mode=GSM_strsep (&GPS_Buffer_RMC, "*")     ;//¶¨Î»Ä£Ê½Êä³ö
-         GPRMC_Check_Sum =GPS_Buffer_RMC                            ;//GPRMCÊı¾İĞ£ÑéºÍ
-         GPS_Post_RMC_Mesg()                                        ;//´¦ÀíGPRMCÊı¾İ°ü¶¨Î»ĞÅÏ¢Êı¾İ´¦Àí
+         Want_GPS_Data_Type = 0x44                                  ;//éœ€è¦GPSæ•°æ®ç±»å‹00==æ— å“åº”ï¼›
+         GPS_Latitude=GSM_strsep (&GPS_Buffer_RMC, ",")             ;//çº¬åº¦æ•°æ®æŒ‡é’ˆ
+         GPS_North_South=GSM_strsep (&GPS_Buffer_RMC, ",")          ;//çº¬åº¦åŒ—çº¬å—çº¬æ•°æ®
+         GPS_Longitude=GSM_strsep (&GPS_Buffer_RMC, ",")            ;//ç»åº¦æ•°æ®æŒ‡é’ˆ
+         GPS_West_East=GSM_strsep (&GPS_Buffer_RMC, ",")            ;//ç»åº¦åŒ—çº¬å—çº¬æ•°æ®
+         GPS_Move_Speed=GSM_strsep (&GPS_Buffer_RMC, ",")           ;//ç§»åŠ¨é€Ÿåº¦æ•°æ®å•ä½m/s
+         GPS_Course_Degree=GSM_strsep (&GPS_Buffer_RMC, ",")        ;//æ–¹å‘è§’0-360
+         UTC_Time_YMD=GSM_strsep (&GPS_Buffer_RMC, ",")             ;//UTCæ—¶é—´å¹´æœˆæ—¥ 
+         GPS_Magnetic_Degree=GSM_strsep (&GPS_Buffer_RMC, ",")      ;//åœ°ç£åè§’0-360
+         GPS_Magnetic_Degree_Dir=GSM_strsep (&GPS_Buffer_RMC, ",")  ;//åœ°ç£åè§’æ–¹å‘
+         Position_Output_Mode=GSM_strsep (&GPS_Buffer_RMC, "*")     ;//å®šä½æ¨¡å¼è¾“å‡º
+         GPRMC_Check_Sum =GPS_Buffer_RMC                            ;//GPRMCæ•°æ®æ ¡éªŒå’Œ
+         GPS_Post_RMC_Mesg()                                        ;//å¤„ç†GPRMCæ•°æ®åŒ…å®šä½ä¿¡æ¯æ•°æ®å¤„ç†
       }
       else
       {
-         Open_UCA0_UART_Init()                                      ;//´ò¿ªGPSÖĞ¶Ï
+         Open_UCA0_UART_Init()                                      ;//æ‰“å¼€GPSä¸­æ–­
       }	
 }
 
 /*******************************************************************\
-*	      º¯ÊıÃû£ºDo_GPS_GGA_Data             
-*	      ×÷ÓÃÓò£º±¾µØÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ´¦ÀíGPGGAÊı¾İ°üÊı¾İ
-*	      ²ÎÊı£º 
-*	      ·µ»ØÖµ£ºÎŞ     
+*	      å‡½æ•°åï¼šDo_GPS_GGA_Data             
+*	      ä½œç”¨åŸŸï¼šæœ¬åœ°æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å¤„ç†GPGGAæ•°æ®åŒ…æ•°æ®
+*	      å‚æ•°ï¼š 
+*	      è¿”å›å€¼ï¼šæ—      
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*****************************************************************/
-void Do_GPS_GGA_Data(void)                                          //´¦ÀíGPGGAÊı¾İ°üÊı¾İ´¦Àí
+void Do_GPS_GGA_Data(void)                                          //å¤„ç†GPGGAæ•°æ®åŒ…æ•°æ®å¤„ç†
 {
-    unsigned int GGA_Numr=0                                         ;//GPGGAÊı¾İ°üÊı¾İ¼ÆÊı
-    GPS_Buffer_GGA  =  GPS_RX_Buffer                                ;//GPS_RX_Buffer½ÓÊÕÊı×éÊ×µØÖ·
+    unsigned int GGA_Numr=0                                         ;//GPGGAæ•°æ®åŒ…æ•°æ®è®¡æ•°
+    GPS_Buffer_GGA  =  GPS_RX_Buffer                                ;//GPS_RX_Bufferæ¥æ”¶æ•°ç»„é¦–åœ°å€
     for(GGA_Numr=0;GGA_Numr<6;GGA_Numr++)        
     {
-       GPGGA_Save_STR=GSM_strsep (&GPS_Buffer_GGA, ",")             ;//GPGGA»º´æÖ¸Õë
+       GPGGA_Save_STR=GSM_strsep (&GPS_Buffer_GGA, ",")             ;//GPGGAç¼“å­˜æŒ‡é’ˆ
     } 
-    GPS_GPGGA_Data_Use=GSM_strsep (&GPS_Buffer_GGA, ",")            ;//GPGGAÊı¾İÓĞĞ§±êÖ¾Î»Ö¸Õë
+    GPS_GPGGA_Data_Use=GSM_strsep (&GPS_Buffer_GGA, ",")            ;//GPGGAæ•°æ®æœ‰æ•ˆæ ‡å¿—ä½æŒ‡é’ˆ
     if(*GPS_GPGGA_Data_Use=='1'||*GPS_GPGGA_Data_Use=='6')
       {
-        GGA_Sates_Used=GSM_strsep (&GPS_Buffer_GGA, ",")            ;//¿ÉÓÃĞÇÊı
-        GPGGA_Save_STR=GSM_strsep (&GPS_Buffer_GGA, ",")            ;//GPGGA»º´æÖ¸Õë
-        GGA_MSL_Altitude=GSM_strsep (&GPS_Buffer_GGA, ",")          ;//º£°Î¸ß¶È
-        Want_GPS_Data_Type = 0x33                                   ;//Ö´ĞĞÏÂÒ»²½
-        GPS_Post_GGA_Mesg()                                         ;//´¦ÀíGPGGAÊı¾İ°ü¶¨Î»ĞÅÏ¢Êı¾İ´¦Àí
-        Open_UCA0_UART_Init()                                       ;//´ò¿ªGPSÖĞ¶Ï
+        GGA_Sates_Used=GSM_strsep (&GPS_Buffer_GGA, ",")            ;//å¯ç”¨æ˜Ÿæ•°
+        GPGGA_Save_STR=GSM_strsep (&GPS_Buffer_GGA, ",")            ;//GPGGAç¼“å­˜æŒ‡é’ˆ
+        GGA_MSL_Altitude=GSM_strsep (&GPS_Buffer_GGA, ",")          ;//æµ·æ‹”é«˜åº¦
+        Want_GPS_Data_Type = 0x33                                   ;//æ‰§è¡Œä¸‹ä¸€æ­¥
+        GPS_Post_GGA_Mesg()                                         ;//å¤„ç†GPGGAæ•°æ®åŒ…å®šä½ä¿¡æ¯æ•°æ®å¤„ç†
+        Open_UCA0_UART_Init()                                       ;//æ‰“å¼€GPSä¸­æ–­
       }
     else
     {
-      Open_UCA0_UART_Init()                                         ;//´ò¿ªGPSÖĞ¶Ï
+      Open_UCA0_UART_Init()                                         ;//æ‰“å¼€GPSä¸­æ–­
     }
 }
 
 
 /*******************************************************************\
-*	      º¯ÊıÃû£ºGPS_Post_GGA_Mesg             
-*	      ×÷ÓÃÓò£º±¾µØÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  
-*	      ²ÎÊı£º 
-*	      ·µ»ØÖµ£ºÎŞ     
+*	      å‡½æ•°åï¼šGPS_Post_GGA_Mesg             
+*	      ä½œç”¨åŸŸï¼šæœ¬åœ°æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  
+*	      å‚æ•°ï¼š 
+*	      è¿”å›å€¼ï¼šæ—      
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*****************************************************************/
-void GPS_Post_GGA_Mesg(void)                                       //´¦ÀíGPGGAÊı¾İ°ü¶¨Î»ĞÅÏ¢Êı¾İ´¦Àí
+void GPS_Post_GGA_Mesg(void)                                       //å¤„ç†GPGGAæ•°æ®åŒ…å®šä½ä¿¡æ¯æ•°æ®å¤„ç†
 {
-  unsigned int GGA_Num=0                                           ;//ÓÃÓÚ¾­Î³¶È´¦Àí¼ÆÊı
-  int GPS_Position_OK_MSL_Altitude=0                               ;//º£°Î¸ß¶È
+  unsigned int GGA_Num=0                                           ;//ç”¨äºç»çº¬åº¦å¤„ç†è®¡æ•°
+  int GPS_Position_OK_MSL_Altitude=0                               ;//æµ·æ‹”é«˜åº¦
  
-  GGA_Sates_Used_Data=ASCIITOHEX('0',*(GGA_Sates_Used++))          ;//¿ÉÓÃĞÇÊı
-  GGA_Sates_Used_Data=GGA_Sates_Used_Data*10+ASCIITOHEX('0',*(GGA_Sates_Used++));//¿ÉÓÃĞÇÊı
+  GGA_Sates_Used_Data=ASCIITOHEX('0',*(GGA_Sates_Used++))          ;//å¯ç”¨æ˜Ÿæ•°
+  GGA_Sates_Used_Data=GGA_Sates_Used_Data*10+ASCIITOHEX('0',*(GGA_Sates_Used++));//å¯ç”¨æ˜Ÿæ•°
   for(GGA_Num=0;GGA_Num<4;GGA_Num++)        
   {
      if(*(GGA_MSL_Altitude)!='.')
-      GPS_Position_OK_MSL_Altitude=GPS_Position_OK_MSL_Altitude*10+ASCIITOHEX('0',*(GGA_MSL_Altitude++));//¿ÉÓÃĞÇÊı
+      GPS_Position_OK_MSL_Altitude=GPS_Position_OK_MSL_Altitude*10+ASCIITOHEX('0',*(GGA_MSL_Altitude++));//å¯ç”¨æ˜Ÿæ•°
       else {break;}  
   } 
-  GGA_MSL_Altitude_Data=GPS_Position_OK_MSL_Altitude               ;//º£°Î¸ß¶È
+  GGA_MSL_Altitude_Data=GPS_Position_OK_MSL_Altitude               ;//æµ·æ‹”é«˜åº¦
 }
 
 
 /*******************************************************************\
-*	      º¯ÊıÃû£º´ò¿ªGPSÖĞ¶Ï             
-*	      ×÷ÓÃÓò£º±¾µØÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ½«GPSÊı¾İ´æÈëÆ½Ì¨Êı¾İ»º´æ£¬¼°ÏÔÊ¾»º´æ
-*	      ²ÎÊı£º  ÎŞ
-*	      ·µ»ØÖµ£ºÎŞ   
+*	      å‡½æ•°åï¼šæ‰“å¼€GPSä¸­æ–­             
+*	      ä½œç”¨åŸŸï¼šæœ¬åœ°æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å°†GPSæ•°æ®å­˜å…¥å¹³å°æ•°æ®ç¼“å­˜ï¼ŒåŠæ˜¾ç¤ºç¼“å­˜
+*	      å‚æ•°ï¼š  æ— 
+*	      è¿”å›å€¼ï¼šæ—    
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*****************************************************************/
-void Open_UCA0_UART_Init(void)                                     //´ò¿ªGPSÖĞ¶Ï
+void Open_UCA0_UART_Init(void)                                     //æ‰“å¼€GPSä¸­æ–­
 {
-    unsigned char Open_UCA1_Num=0                                 ;//ÓÃÓÚ¾­Î³¶È´¦Àí¼ÆÊı
+    unsigned char Open_UCA1_Num=0                                 ;//ç”¨äºç»çº¬åº¦å¤„ç†è®¡æ•°
     for(Open_UCA1_Num=0;Open_UCA1_Num<10;Open_UCA1_Num++)        
     {
-      GPS_RX_Buffer[Open_UCA1_Num]   =  '@'                       ;//»º´æÇåÁã
+      GPS_RX_Buffer[Open_UCA1_Num]   =  '@'                       ;//ç¼“å­˜æ¸…é›¶
     }
-   GPS_RX_Buffer_Cnt=0                                            ;//GPSÊı¾İ»º´æ¼ÆÊı
-   GPS_UCA1_Init()                                                ;//GPSÖĞ¶Ï³õÊ¼»¯   
+   GPS_RX_Buffer_Cnt=0                                            ;//GPSæ•°æ®ç¼“å­˜è®¡æ•°
+   GPS_UCA1_Init()                                                ;//GPSä¸­æ–­åˆå§‹åŒ–   
 }
 /*******************************************************************\
-*	      º¯ÊıÃû£ºDo_GPS_RMC_Data             
-*	      ×÷ÓÃÓò£º±¾µØÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  
-*	      ²ÎÊı£º 
-*	      ·µ»ØÖµ£ºÎŞ     
+*	      å‡½æ•°åï¼šDo_GPS_RMC_Data             
+*	      ä½œç”¨åŸŸï¼šæœ¬åœ°æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  
+*	      å‚æ•°ï¼š 
+*	      è¿”å›å€¼ï¼šæ—      
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 
 \*****************************************************************/
-void GPS_Post_RMC_Mesg(void)                                      //´¦ÀíGPRMCÊı¾İ°ü¶¨Î»ĞÅÏ¢Êı¾İ´¦Àí
+void GPS_Post_RMC_Mesg(void)                                      //å¤„ç†GPRMCæ•°æ®åŒ…å®šä½ä¿¡æ¯æ•°æ®å¤„ç†
 {
-    unsigned int Nermber=0                                          ;//ÓÃÓÚ¾­Î³¶È´¦Àí¼ÆÊı
-    unsigned long int GPS_Position_OK_gLat=0                        ;//Î³¶È´¦ÀíÁÙÊ±´æ·Å
-    unsigned long int GPS_Position_OK_gLong=0                       ;//¾­¶È´¦ÀíÁÙÊ±´æ·Å
-    unsigned int GPS_Position_OK_Speed=0                            ;//ÔËĞĞËÙ¶È´¦ÀíÁÙÊ±´æ·Å
-    unsigned int GPS_Position_OK_Degree=0                           ;//·½Ïò½Ç´¦ÀíÁÙÊ±´æ·Å
+    unsigned int Nermber=0                                          ;//ç”¨äºç»çº¬åº¦å¤„ç†è®¡æ•°
+    unsigned long int GPS_Position_OK_gLat=0                        ;//çº¬åº¦å¤„ç†ä¸´æ—¶å­˜æ”¾
+    unsigned long int GPS_Position_OK_gLong=0                       ;//ç»åº¦å¤„ç†ä¸´æ—¶å­˜æ”¾
+    unsigned int GPS_Position_OK_Speed=0                            ;//è¿è¡Œé€Ÿåº¦å¤„ç†ä¸´æ—¶å­˜æ”¾
+    unsigned int GPS_Position_OK_Degree=0                           ;//æ–¹å‘è§’å¤„ç†ä¸´æ—¶å­˜æ”¾
     
-    UTC_Time_Hour =ASCIITOHEX('0',*(UTC_Time++))*10                 ;//UTCÊ±¼äĞ¡Ê± 
+    UTC_Time_Hour =ASCIITOHEX('0',*(UTC_Time++))*10                 ;//UTCæ—¶é—´å°æ—¶ 
     UTC_Time_Hour =UTC_Time_Hour+ASCIITOHEX('0',*(UTC_Time++))      ; 
     //UTC_Time_TO_Secd=UTC_Time_Hour*3600                             ;
-    UTC_Time_Mint =ASCIITOHEX('0',*(UTC_Time++))*10                 ;//UTCÊ±¼ä·ÖÖÓ   
+    UTC_Time_Mint =ASCIITOHEX('0',*(UTC_Time++))*10                 ;//UTCæ—¶é—´åˆ†é’Ÿ   
     UTC_Time_Mint =UTC_Time_Mint+ASCIITOHEX('0',*(UTC_Time++))      ;
     //UTC_Time_TO_Secd=UTC_Time_TO_Secd+UTC_Time_Mint*60              ;
-    UTC_Time_Secd =ASCIITOHEX('0',*(UTC_Time++))*10                 ;//UTCÊ±¼äÃë   
+    UTC_Time_Secd =ASCIITOHEX('0',*(UTC_Time++))*10                 ;//UTCæ—¶é—´ç§’   
     UTC_Time_Secd =UTC_Time_Secd+ASCIITOHEX('0',*(UTC_Time++))      ; 
     //UTC_Time_TO_Secd=UTC_Time_TO_Secd+UTC_Time_Secd                 ;
     
-    UTC_Time_dayy =ASCIITOHEX('0',*(UTC_Time_YMD++))*10             ;//ÈÕÆÚ¶ÁÈ¡
+    UTC_Time_dayy =ASCIITOHEX('0',*(UTC_Time_YMD++))*10             ;//æ—¥æœŸè¯»å–
     UTC_Time_dayy =UTC_Time_dayy+ASCIITOHEX('0',*(UTC_Time_YMD++))  ; 
-    UTC_Time_Moth =ASCIITOHEX('0',*(UTC_Time_YMD++))*10             ;//ÔÂ·İ¶ÁÈ¡
+    UTC_Time_Moth =ASCIITOHEX('0',*(UTC_Time_YMD++))*10             ;//æœˆä»½è¯»å–
     UTC_Time_Moth =UTC_Time_Moth+ASCIITOHEX('0',*(UTC_Time_YMD++))  ;  
-    UTC_Time_Year =ASCIITOHEX('0',*(UTC_Time_YMD++))*10             ;//Äê·İ¶ÁÈ¡
+    UTC_Time_Year =ASCIITOHEX('0',*(UTC_Time_YMD++))*10             ;//å¹´ä»½è¯»å–
     UTC_Time_Year =UTC_Time_Year+ASCIITOHEX('0',*(UTC_Time_YMD++))  ; 
     
     
     
-    GPS_Position_OK_gLat=GPS_Position_OK_gLat*10+ASCIITOHEX('0',*(GPS_Latitude++));//Î³¶È
-    GPS_Position_OK_gLat=GPS_Position_OK_gLat*10+ASCIITOHEX('0',*(GPS_Latitude++));//Î³¶È
+    GPS_Position_OK_gLat=GPS_Position_OK_gLat*10+ASCIITOHEX('0',*(GPS_Latitude++));//çº¬åº¦
+    GPS_Position_OK_gLat=GPS_Position_OK_gLat*10+ASCIITOHEX('0',*(GPS_Latitude++));//çº¬åº¦
     GPS_Position_OK_gLat=GPS_Position_OK_gLat*6                                   ;
     for(Nermber=0;Nermber<5;Nermber++)        
     {
-     GPS_Position_OK_gLat=GPS_Position_OK_gLat*10+ASCIITOHEX('0',*(GPS_Latitude++));//Î³¶È
+     GPS_Position_OK_gLat=GPS_Position_OK_gLat*10+ASCIITOHEX('0',*(GPS_Latitude++));//çº¬åº¦
      if(Nermber == 1){GPS_Latitude++;}
     } 
     //if(*GPS_North_South=='S')
     //{
-    //     GPS_Position_OK_gLat=0-GPS_Position_OK_gLat;//ÓĞ·ûºÅ32Î»ÕûĞÍ±äÁ¿£¬>0 ±íÊ¾±±Î³£»0< ±íÊ¾ÄÏÎ³
+    //     GPS_Position_OK_gLat=0-GPS_Position_OK_gLat;//æœ‰ç¬¦å·32ä½æ•´å‹å˜é‡ï¼Œ>0 è¡¨ç¤ºåŒ—çº¬ï¼›0< è¡¨ç¤ºå—çº¬
     //}  
-    GPS_Position_OK_gLong=GPS_Position_OK_gLong*10+ASCIITOHEX('0',*(GPS_Longitude++));//¾­¶È 
-    GPS_Position_OK_gLong=GPS_Position_OK_gLong*10+ASCIITOHEX('0',*(GPS_Longitude++));//¾­¶È 
-    GPS_Position_OK_gLong=GPS_Position_OK_gLong*10+ASCIITOHEX('0',*(GPS_Longitude++));//¾­¶È 
-    GPS_Position_OK_gLong=GPS_Position_OK_gLong*6                                    ;//¾­¶È 
+    GPS_Position_OK_gLong=GPS_Position_OK_gLong*10+ASCIITOHEX('0',*(GPS_Longitude++));//ç»åº¦ 
+    GPS_Position_OK_gLong=GPS_Position_OK_gLong*10+ASCIITOHEX('0',*(GPS_Longitude++));//ç»åº¦ 
+    GPS_Position_OK_gLong=GPS_Position_OK_gLong*10+ASCIITOHEX('0',*(GPS_Longitude++));//ç»åº¦ 
+    GPS_Position_OK_gLong=GPS_Position_OK_gLong*6                                    ;//ç»åº¦ 
     for(Nermber=0;Nermber<5;Nermber++)        
     {
-     GPS_Position_OK_gLong=GPS_Position_OK_gLong*10+ASCIITOHEX('0',*(GPS_Longitude++));//¾­¶È 
+     GPS_Position_OK_gLong=GPS_Position_OK_gLong*10+ASCIITOHEX('0',*(GPS_Longitude++));//ç»åº¦ 
      if(Nermber == 1){GPS_Longitude++;}
     } 
     //if(*GPS_West_East=='W')
     //{
-    //    GPS_Position_OK_gLong=0-GPS_Position_OK_gLong                  ;//ÓĞ·ûºÅ32Î»ÕûĞÍ±äÁ¿£¬>0 ±íÊ¾¶«¾­£»0< ±íÊ¾Î÷¾­
+    //    GPS_Position_OK_gLong=0-GPS_Position_OK_gLong                  ;//æœ‰ç¬¦å·32ä½æ•´å‹å˜é‡ï¼Œ>0 è¡¨ç¤ºä¸œç»ï¼›0< è¡¨ç¤ºè¥¿ç»
     //}
     for(Nermber=0;Nermber<4;Nermber++)        
     {
      if(*(GPS_Move_Speed)!='.')
-      GPS_Position_OK_Speed=GPS_Position_OK_Speed*10+ASCIITOHEX('0',*(GPS_Move_Speed++));//ÔËĞĞËÙ¶È
+      GPS_Position_OK_Speed=GPS_Position_OK_Speed*10+ASCIITOHEX('0',*(GPS_Move_Speed++));//è¿è¡Œé€Ÿåº¦
       else {break;}  
     } 
   
     for(Nermber=0;Nermber<4;Nermber++)        
     {
      if(*(GPS_Course_Degree)!='.')
-      GPS_Position_OK_Degree=GPS_Position_OK_Degree*10+ASCIITOHEX('0',*(GPS_Course_Degree++));//·½Ïò½Ç0-360
+      GPS_Position_OK_Degree=GPS_Position_OK_Degree*10+ASCIITOHEX('0',*(GPS_Course_Degree++));//æ–¹å‘è§’0-360
       else {break;}  
     } 
     
-    GPRMC_Check_Sum_Data=ASCIITOHEX('0',*(GPRMC_Check_Sum++))       ;//GPRMCĞ£ÑéºÍ
+    GPRMC_Check_Sum_Data=ASCIITOHEX('0',*(GPRMC_Check_Sum++))       ;//GPRMCæ ¡éªŒå’Œ
     GPRMC_Check_Sum_Data=GPRMC_Check_Sum_Data*10+ASCIITOHEX('0',*(GPRMC_Check_Sum++)); 
     
     
-    if(*GPS_North_South=='S')                       //2013.09.05 ½¯±¾Çì ĞŞ¸Ä¾­Î³¶È´¦ÀíÎªÄÏÎ³,Î÷¾­×î¸ßÎ»Îª1 8000
+    if(*GPS_North_South=='S')                       //2013.09.05 è’‹æœ¬åº† ä¿®æ”¹ç»çº¬åº¦å¤„ç†ä¸ºå—çº¬,è¥¿ç»æœ€é«˜ä½ä¸º1 8000
     {   
         GPS_W_Data=1;
-        GPS_W_Data=GPS_W_Data<<31                   ;//ÓĞ·ûºÅ32Î»ÕûĞÍ±äÁ¿£¬>0 ±íÊ¾±±Î³£»0< ±íÊ¾ÄÏÎ³
+        GPS_W_Data=GPS_W_Data<<31                   ;//æœ‰ç¬¦å·32ä½æ•´å‹å˜é‡ï¼Œ>0 è¡¨ç¤ºåŒ—çº¬ï¼›0< è¡¨ç¤ºå—çº¬
     }
     else
     {
@@ -338,53 +338,53 @@ void GPS_Post_RMC_Mesg(void)                                      //´¦ÀíGPRMCÊı¾
     if(*GPS_West_East=='W')
     {
         GPS_J_Data=1;
-        GPS_J_Data=GPS_J_Data<<31                  ;//ÓĞ·ûºÅ32Î»ÕûĞÍ±äÁ¿£¬>0 ±íÊ¾¶«¾­£»0< ±íÊ¾Î÷¾­
+        GPS_J_Data=GPS_J_Data<<31                  ;//æœ‰ç¬¦å·32ä½æ•´å‹å˜é‡ï¼Œ>0 è¡¨ç¤ºä¸œç»ï¼›0< è¡¨ç¤ºè¥¿ç»
     }
     else
     {
         GPS_J_Data=0;
     }
 
-    GPS_W_Data=GPS_W_Data+GPS_Position_OK_gLat                      ;//Î³¶È×îÖÕÉÏ´«ĞÅÏ¢
-    GPS_J_Data=GPS_J_Data+GPS_Position_OK_gLong                     ;//¾­¶È×îÖÕÉÏ´«ĞÅÏ¢
-    GPS_Speed_Data=GPS_Position_OK_Speed                            ;//ÔËĞĞËÙ¶È×îÖÕÉÏ´«ĞÅÏ¢
-    GPS_Course_Degree_Data=GPS_Position_OK_Degree                   ;//·½Ïò½Ç0-360
+    GPS_W_Data=GPS_W_Data+GPS_Position_OK_gLat                      ;//çº¬åº¦æœ€ç»ˆä¸Šä¼ ä¿¡æ¯
+    GPS_J_Data=GPS_J_Data+GPS_Position_OK_gLong                     ;//ç»åº¦æœ€ç»ˆä¸Šä¼ ä¿¡æ¯
+    GPS_Speed_Data=GPS_Position_OK_Speed                            ;//è¿è¡Œé€Ÿåº¦æœ€ç»ˆä¸Šä¼ ä¿¡æ¯
+    GPS_Course_Degree_Data=GPS_Position_OK_Degree                   ;//æ–¹å‘è§’0-360
 
-    VmainMon()                                                      ;//¼ì²âÖ÷µçÔ´µçÑ¹¼°ï®µç³ØµçÑ¹
-    JG_OUT_EDGE()                                                   ;//ÅĞ¶ÏÔ½½ç±¨¾¯ 
-    Save_GPS_Inf_Buffer()                                           ;//½«GPSÊı¾İ´æÈë»º´æ
+    VmainMon()                                                      ;//æ£€æµ‹ä¸»ç”µæºç”µå‹åŠé”‚ç”µæ± ç”µå‹
+    JG_OUT_EDGE()                                                   ;//åˆ¤æ–­è¶Šç•ŒæŠ¥è­¦ 
+    Save_GPS_Inf_Buffer()                                           ;//å°†GPSæ•°æ®å­˜å…¥ç¼“å­˜
 }
 
 
 /*******************************************************************\
-*	      º¯ÊıÃû£ºSave_Net_Disp_Buffer             
-*	      ×÷ÓÃÓò£º±¾µØÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ½«GPSÊı¾İ´æÈëÆ½Ì¨Êı¾İ»º´æ£¬¼°ÏÔÊ¾»º´æ
-*	      ²ÎÊı£º  ÎŞ
-*	      ·µ»ØÖµ£ºÎŞ   
+*	      å‡½æ•°åï¼šSave_Net_Disp_Buffer             
+*	      ä½œç”¨åŸŸï¼šæœ¬åœ°æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å°†GPSæ•°æ®å­˜å…¥å¹³å°æ•°æ®ç¼“å­˜ï¼ŒåŠæ˜¾ç¤ºç¼“å­˜
+*	      å‚æ•°ï¼š  æ— 
+*	      è¿”å›å€¼ï¼šæ—    
 *
-*	      ĞŞ¸ÄÀúÊ·£º
-                   1.½¯±¾Çì ĞŞ¸ÄGPS¹¤×÷Ä£Ê½ µÍ¹¦ºÄ ÔËÊä È«ËÙÄ£Ê½
+*	      ä¿®æ”¹å†å²ï¼š
+                   1.è’‹æœ¬åº† ä¿®æ”¹GPSå·¥ä½œæ¨¡å¼ ä½åŠŸè€— è¿è¾“ å…¨é€Ÿæ¨¡å¼
 \*****************************************************************/
-void Save_GPS_Inf_Buffer(void)                                   //½«GPSÊı¾İ´æÈë»º´æ
+void Save_GPS_Inf_Buffer(void)                                   //å°†GPSæ•°æ®å­˜å…¥ç¼“å­˜
 {
   char UTC_TIME_BCD                                              ;
   
   UTC_TIME_BCD=UTC_Time_Year/10*16+UTC_Time_Year%10              ;
-  GPS_Inf[0]=UTC_TIME_BCD                                        ;//UTCÊ±¼äÄê 
+  GPS_Inf[0]=UTC_TIME_BCD                                        ;//UTCæ—¶é—´å¹´ 
   UTC_TIME_BCD=UTC_Time_Moth/10*16+UTC_Time_Moth%10              ;  
-  GPS_Inf[1]=UTC_TIME_BCD                                        ;//UTCÊ±¼äÔÂ
+  GPS_Inf[1]=UTC_TIME_BCD                                        ;//UTCæ—¶é—´æœˆ
   UTC_TIME_BCD=UTC_Time_dayy/10*16+UTC_Time_dayy%10              ;  
-  GPS_Inf[2]=UTC_TIME_BCD                                        ;//UTCÊ±¼äÈÕ 
+  GPS_Inf[2]=UTC_TIME_BCD                                        ;//UTCæ—¶é—´æ—¥ 
   
   UTC_TIME_BCD=UTC_Time_Hour/10*16+UTC_Time_Hour%10              ;  
-  GPS_Inf[3]=UTC_TIME_BCD                                        ;//UTCÊ±¼äĞ¡Ê±
+  GPS_Inf[3]=UTC_TIME_BCD                                        ;//UTCæ—¶é—´å°æ—¶
   UTC_TIME_BCD=UTC_Time_Mint/10*16+UTC_Time_Mint%10              ;  
-  GPS_Inf[4]=UTC_TIME_BCD                                        ;//UTCÊ±¼ä·ÖÖÓ  
+  GPS_Inf[4]=UTC_TIME_BCD                                        ;//UTCæ—¶é—´åˆ†é’Ÿ  
   UTC_TIME_BCD=UTC_Time_Secd/10*16+UTC_Time_Secd%10              ; 
-  GPS_Inf[5]=UTC_TIME_BCD                                        ;//UTCÊ±¼äÃë
+  GPS_Inf[5]=UTC_TIME_BCD                                        ;//UTCæ—¶é—´ç§’
 
-  GPS_Inf[9]=GPS_W_Data                                          ;//Î³¶È×îÖÕÉÏ´«ĞÅÏ¢
+  GPS_Inf[9]=GPS_W_Data                                          ;//çº¬åº¦æœ€ç»ˆä¸Šä¼ ä¿¡æ¯
   GPS_W_Data= GPS_W_Data >>8                                     ;
   GPS_Inf[8]=GPS_W_Data                                          ;
   GPS_W_Data= GPS_W_Data >>8                                     ;  
@@ -392,7 +392,7 @@ void Save_GPS_Inf_Buffer(void)                                   //½«GPSÊı¾İ´æÈë
   GPS_W_Data= GPS_W_Data >>8                                     ;
   GPS_Inf[6]=GPS_W_Data                                          ;
 
-  GPS_Inf[13]=GPS_J_Data                                         ;//¾­¶È×îÖÕÉÏ´«ĞÅÏ¢
+  GPS_Inf[13]=GPS_J_Data                                         ;//ç»åº¦æœ€ç»ˆä¸Šä¼ ä¿¡æ¯
   GPS_J_Data= GPS_J_Data >>8                                     ;
   GPS_Inf[12]=GPS_J_Data                                         ;
   GPS_J_Data= GPS_J_Data >>8                                     ;
@@ -401,40 +401,40 @@ void Save_GPS_Inf_Buffer(void)                                   //½«GPSÊı¾İ´æÈë
   GPS_Inf[10]=GPS_J_Data                                         ;
 
   if(GPS_Speed_Data>40)
-      GPS_Inf[14]=0x01                                          ;//GPSÄ£Ê½ 01==ÔËÊäÄ£Ê½
+      GPS_Inf[14]=0x01                                          ;//GPSæ¨¡å¼ 01==è¿è¾“æ¨¡å¼
   else
   {
 	   GPS_Inf[14]=LPM;
   }
   
   
-  GPS_Inf[15]=GGA_Sates_Used_Data                                ;//¿ÉÓÃĞÇÊı
+  GPS_Inf[15]=GGA_Sates_Used_Data                                ;//å¯ç”¨æ˜Ÿæ•°
   
   //GGA_MSL_Altitude_Data=GGA_MSL_Altitude_Data+5000               ;
   if(GGA_MSL_Altitude_Data>8000)
      GGA_MSL_Altitude_Data=0;
-  GPS_Inf[17]=GGA_MSL_Altitude_Data                              ;//º£°Î¸ß¶È
+  GPS_Inf[17]=GGA_MSL_Altitude_Data                              ;//æµ·æ‹”é«˜åº¦
   GGA_MSL_Altitude_Data= GGA_MSL_Altitude_Data >>8               ;    
   GPS_Inf[16]=GGA_MSL_Altitude_Data                              ; 
  
  
-  GPS_Inf[19]=GPS_Speed_Data                                     ;//ÒÆ¶¯ËÙ¶È
+  GPS_Inf[19]=GPS_Speed_Data                                     ;//ç§»åŠ¨é€Ÿåº¦
   GPS_Speed_Data= GPS_Speed_Data >>8                             ;  
   GPS_Inf[18]=GPS_Speed_Data                                     ;
   
-  GPS_Inf[21]=GPS_Course_Degree_Data                             ;//·½Ïò½Ç
+  GPS_Inf[21]=GPS_Course_Degree_Data                             ;//æ–¹å‘è§’
   GPS_Course_Degree_Data= GPS_Course_Degree_Data >>8             ;  
   GPS_Inf[20]=GPS_Course_Degree_Data                             ;
   
-  GPS_Inf[22]=0x00                                               ;//Ô¤Áô Î´ÓÃ
-  GPS_Inf[23]=GSM_SIM_Signal_Num                                 ;//ĞÅºÅÖÊÁ¿Ç¿¶È
+  GPS_Inf[22]=0x00                                               ;//é¢„ç•™ æœªç”¨
+  GPS_Inf[23]=GSM_SIM_Signal_Num                                 ;//ä¿¡å·è´¨é‡å¼ºåº¦
   
   
   GPS_Inf[25]=0                                         ;
-  GPS_Inf[24]=BAT_V_main                                         ;//µç³ØµçÑ¹
+  GPS_Inf[24]=BAT_V_main                                         ;//ç”µæ± ç”µå‹
   
   GPS_Inf[27]=0                                         ;
-  GPS_Inf[26]=LI_BAT_VOL                                         ;//ï®µç³ØµçÑ¹
+  GPS_Inf[26]=LI_BAT_VOL                                         ;//é”‚ç”µæ± ç”µå‹
 }
 
 

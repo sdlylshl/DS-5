@@ -1,167 +1,167 @@
 V5.3
-		1.Ìí¼ÓMC216 LCD±³¹â¿ØÖÆ
-		2.ÐÞÕýPrintf() ÊµÏÖLCDºÍDNWÍ¬Ê±Êä³ö
-		3.Èç¹ûÏëÈÃÊä³ö´òÓ¡µ½LCDÉÏ ÇëÊ¹ÓÃLcd_Update() ÊµÏÖ
+		1.æ·»åŠ MC216 LCDèƒŒå…‰æŽ§åˆ¶
+		2.ä¿®æ­£Printf() å®žçŽ°LCDå’ŒDNWåŒæ—¶è¾“å‡º
+		3.å¦‚æžœæƒ³è®©è¾“å‡ºæ‰“å°åˆ°LCDä¸Š è¯·ä½¿ç”¨Lcd_Update() å®žçŽ°
 V5.2
-		1.App ´óÐ¡¸´Ô­NandPart[]
-		2.Ìí¼ÓMC216 Keytest()
-		3.ÐÞÕý°´¼ü¶¨ÒåÌí¼Ó³ÌÐòÏÂÔØÒýµ¼
-		4.ÐÞÕýÇ¿ÖÆÒýµ¼Ô­Ê¼³ÌÐòKEY_KernalAPP
+		1.App å¤§å°å¤åŽŸNandPart[]
+		2.æ·»åŠ MC216 Keytest()
+		3.ä¿®æ­£æŒ‰é”®å®šä¹‰æ·»åŠ ç¨‹åºä¸‹è½½å¼•å¯¼
+		4.ä¿®æ­£å¼ºåˆ¶å¼•å¯¼åŽŸå§‹ç¨‹åºKEY_KernalAPP
 V5.1
-		1.Ôö¼ÓApp´óÐ¡NandPart[]
-V5.0 	1.ÆÁ±ÎBootÒý½Å
-		2.ÐÞ¸´16M¾§Õñ USBÎÊÌâ #define FIN 	(16000000)
+		1.å¢žåŠ Appå¤§å°NandPart[]
+V5.0 	1.å±è”½Bootå¼•è„š
+		2.ä¿®å¤16Mæ™¶æŒ¯ USBé—®é¢˜ #define FIN 	(16000000)
 		
-V4.9	1.Ìí¼ÓÓ¦ÓÃ³ÌÐò¶þ´ÎÒýµ¼LoadRunApp() kernel
-		2.Ìí¼Ó 1¡¢6×éºÏ¼ü¸´Î»
+V4.9	1.æ·»åŠ åº”ç”¨ç¨‹åºäºŒæ¬¡å¼•å¯¼LoadRunApp() kernel
+		2.æ·»åŠ  1ã€6ç»„åˆé”®å¤ä½
 V4.8
-		1.Ìí¼ÓMicronFlashÖ§³Ö MT29F2G08ABAEA
-		2.Ìí¼ÓÔËÐÐ½×¶ÎÖ¸Ê¾µÆ
-			¿ª»ú ResetHandler 		È« ÁÁ
-			¼ÓÔØFlash nand_boot_beg B1 ÁÁ
-			ZOÇøÇåÁã NORRoCopy		B2 ÁÁ
-			¼ÓÔØC³ÌÐò Main()    	B3 ÁÁ
-			//ÅäÖÃÊ±ÖÓÆµÂÊ 12M¾§Õñ    B4+ÁÁ
-			//¼ÓÔØBootLoader 		B1+B3ÁÁ
-			¼ÓÔØÓ¦ÓÃ³ÌÐò NandLoadRun_App B1+B2+B3 ÁÁ
+		1.æ·»åŠ MicronFlashæ”¯æŒ MT29F2G08ABAEA
+		2.æ·»åŠ è¿è¡Œé˜¶æ®µæŒ‡ç¤ºç¯
+			å¼€æœº ResetHandler 		å…¨ äº®
+			åŠ è½½Flash nand_boot_beg B1 äº®
+			ZOåŒºæ¸…é›¶ NORRoCopy		B2 äº®
+			åŠ è½½Cç¨‹åº Main()    	B3 äº®
+			//é…ç½®æ—¶é’Ÿé¢‘çŽ‡ 12Mæ™¶æŒ¯    B4+äº®
+			//åŠ è½½BootLoader 		B1+B3äº®
+			åŠ è½½åº”ç”¨ç¨‹åº NandLoadRun_App B1+B2+B3 äº®
 			
 V4.7 
-		1.ÐÞÕýÅäÖÃ12M¾§Õñºó USBÎÞ·¨¼ÓÔØ XTAL_16M
-		2.ÐÞÕýÏÔÊ¾½çÃæ²»¸üÐÂ
-		3.¹Ø±Õ·äÃùÆ÷
+		1.ä¿®æ­£é…ç½®12Mæ™¶æŒ¯åŽ USBæ— æ³•åŠ è½½ XTAL_16M
+		2.ä¿®æ­£æ˜¾ç¤ºç•Œé¢ä¸æ›´æ–°
+		3.å…³é—­èœ‚é¸£å™¨
 
 V4.6
-		1.Í¨¹ýÅäÖÃ def.h ÖÐµÄGPS Ö±½Ó¿ÉÔÚÏµÍ³ÎªGPSÒ»Ìå»úÓëÐÂµç¿ØÏµÍ³Ö®¼ä½øÐÐÑ¡Ôñ
-		2.version °æ±¾ºÅµÄÅäÖÃ Í¬Ñù×ªÒÆµ½def.hÖÐ
+		1.é€šè¿‡é…ç½® def.h ä¸­çš„GPS ç›´æŽ¥å¯åœ¨ç³»ç»Ÿä¸ºGPSä¸€ä½“æœºä¸Žæ–°ç”µæŽ§ç³»ç»Ÿä¹‹é—´è¿›è¡Œé€‰æ‹©
+		2.version ç‰ˆæœ¬å·çš„é…ç½® åŒæ ·è½¬ç§»åˆ°def.hä¸­
 		 
 V4.5    
-		1.Ôö¼Ó16M¾§Õñ option.inc Ä¬ÈÏÎª16M¡¢12M¾§ÕñÍ¨ÓÃÄ£Ê½
-			12M¾§ÕñÔËÐÐÔÚ300MHz 16M¾§ÕñÔËÐÐÔÚ400MHz 
+		1.å¢žåŠ 16Mæ™¶æŒ¯ option.inc é»˜è®¤ä¸º16Mã€12Mæ™¶æŒ¯é€šç”¨æ¨¡å¼
+			12Mæ™¶æŒ¯è¿è¡Œåœ¨300MHz 16Mæ™¶æŒ¯è¿è¡Œåœ¨400MHz 
 
 V4.4 
-		1.Ôö¼ÓCAN¶¨Ê±·¢ËÍ¹¦ÄÜ
+		1.å¢žåŠ CANå®šæ—¶å‘é€åŠŸèƒ½
 
 V4.3
-		1.Ôö¼ÓCAN×ÜÏß¼ì²â 
-		Can_Write()ÖÐ¶ÏÐë½ûÓÃ ·ñÔò½ÓÊÕ×Ü»á¶ªÊ§ Ò²Í¨¹ýÁ¬ÐøÖ´ÐÐÁ½´ÎCan_Write()
+		1.å¢žåŠ CANæ€»çº¿æ£€æµ‹ 
+		Can_Write()ä¸­æ–­é¡»ç¦ç”¨ å¦åˆ™æŽ¥æ”¶æ€»ä¼šä¸¢å¤± ä¹Ÿé€šè¿‡è¿žç»­æ‰§è¡Œä¸¤æ¬¡Can_Write()
 
 V4.2
-		sublime Text3ÂÒÂëÐÞ¸´
+		sublime Text3ä¹±ç ä¿®å¤
 		File -> Save with Encoding -> Western (Windows 1252)
 		
-		1.Ôö¼ÓCAN²âÊÔ¹¦ÄÜ
+		1.å¢žåŠ CANæµ‹è¯•åŠŸèƒ½
 V4.1
-		1.Í¨¹ýÅäÖÃKeyboard.h ÎÄ¼þ ¿ÉÑ¡°´¼ü¶Ë¿ÚÎªGPG0 ºÍGPH1
-		2.ÐÞ¸´Ó¦ÓÃ³ÌÐòÊ×¿éÎª»µ¿éÎÊÌâ NAND.c CheckApp()
+		1.é€šè¿‡é…ç½®Keyboard.h æ–‡ä»¶ å¯é€‰æŒ‰é”®ç«¯å£ä¸ºGPG0 å’ŒGPH1
+		2.ä¿®å¤åº”ç”¨ç¨‹åºé¦–å—ä¸ºåå—é—®é¢˜ NAND.c CheckApp()
 		
 V4.0
-		1.ÐÞ¸´GPSÒ»Ìå»ú°´¼üÎÊÌâ GPH1
-		2.ÐÞ¸´GPSÒ»Ìå»úÏÔÊ¾ÆÁ²»ÁÁ LCD_POWER ´ò¿ª
+		1.ä¿®å¤GPSä¸€ä½“æœºæŒ‰é”®é—®é¢˜ GPH1
+		2.ä¿®å¤GPSä¸€ä½“æœºæ˜¾ç¤ºå±ä¸äº® LCD_POWER æ‰“å¼€
 
 V3.9 
-		ÐÞ¸´Ê±¼äÍ¬²½£¬²»ÔÙ³öÏÖÔÚÕï¶ÏÖÐ£¬
-		ÏÂÔØÍê³ÌÐò Á¢¼´½øÐÐÊ±¼äÍ¬²½
+		ä¿®å¤æ—¶é—´åŒæ­¥ï¼Œä¸å†å‡ºçŽ°åœ¨è¯Šæ–­ä¸­ï¼Œ
+		ä¸‹è½½å®Œç¨‹åº ç«‹å³è¿›è¡Œæ—¶é—´åŒæ­¥
 V3.8 
-		ÐÞ¸´ Rebootº¯Êý
+		ä¿®å¤ Rebootå‡½æ•°
 		
 	
 V3.7 
-		Ìí¼Ó°´¼üÌáÊ¾
+		æ·»åŠ æŒ‰é”®æç¤º
 V3.6 
-		//´ý°ì
-		ÐÞ¸´ Î´½ÓÏÔÊ¾ÆÁµÄÊ±¼äÐÞ¸´
-		ÐÞ¸´ ÏÂÔØÍê³ÌÐò×Ô¶¯ÖØÆô
-		ÐÞ¸´ Ä¬ÈÏUSBÏÂÔØ
+		//å¾…åŠž
+		ä¿®å¤ æœªæŽ¥æ˜¾ç¤ºå±çš„æ—¶é—´ä¿®å¤
+		ä¿®å¤ ä¸‹è½½å®Œç¨‹åºè‡ªåŠ¨é‡å¯
+		ä¿®å¤ é»˜è®¤USBä¸‹è½½
 		
 
 V3.5
-	.....¸÷ÖÖÐÞ¸´
+	.....å„ç§ä¿®å¤
 V3.0 
-	Timer0_ISR ÓÃ×÷ÏÔÊ¾ÆÁµÄ×Ô¶¯Ë¢ÐÂ
-	Ã¿Ë¢ÐÂÒ»´ÎÏÔÊ¾ÆÁÐèÒª23ms
+	Timer0_ISR ç”¨ä½œæ˜¾ç¤ºå±çš„è‡ªåŠ¨åˆ·æ–°
+	æ¯åˆ·æ–°ä¸€æ¬¡æ˜¾ç¤ºå±éœ€è¦23ms
 V2.9
-	LCD ²ÉÓÃË«»º´æ¼¼Êõ ÓÅ»¯ÏÔÊ¾Ð§¹û
+	LCD é‡‡ç”¨åŒç¼“å­˜æŠ€æœ¯ ä¼˜åŒ–æ˜¾ç¤ºæ•ˆæžœ
 v2.6
-	¹Ø±ÕMMU
+	å…³é—­MMU
 		RW SPEED is 2 MB/S,22423 ms
 		RD SPEED is 2 MB/S,29605 ms
-	¿ªÆôMMU
+	å¼€å¯MMU
 		RW SPEED is 119 MB/S,544 ms
 		RD SPEED is 38 MB/S,1705 ms
 V2.5 
-	1.ÐÞ¸´¾¯¸æÐÅÏ¢
+	1.ä¿®å¤è­¦å‘Šä¿¡æ¯
 V2.4 
-	1.ÊµÏÖEEPROM²Á³ý¼°ÃÜÂë¼ì²â
+	1.å®žçŽ°EEPROMæ“¦é™¤åŠå¯†ç æ£€æµ‹
 v2.3
-	1.ÊµÏÖÎÄ±¾¾ÓÖÐ¶ÔÆë
-	2.Ê¹ÓÃ·½·¨ ÔÚ¾ÓÖÐÇ° ÏÈµ÷ÓÃLcd_TextAlignMid(); 
-	  ÏÂÒ»ÐÐ½«¾ÓÖÐÏÔÊ¾£¬ÔÙÏÂÒ»ÐÐ½«»Ø¸´µ½×ó¶ÔÆë×´Ì¬
+	1.å®žçŽ°æ–‡æœ¬å±…ä¸­å¯¹é½
+	2.ä½¿ç”¨æ–¹æ³• åœ¨å±…ä¸­å‰ å…ˆè°ƒç”¨Lcd_TextAlignMid(); 
+	  ä¸‹ä¸€è¡Œå°†å±…ä¸­æ˜¾ç¤ºï¼Œå†ä¸‹ä¸€è¡Œå°†å›žå¤åˆ°å·¦å¯¹é½çŠ¶æ€
 
 V2.2 
-	1.Ìí¼Ó×Ô¶¯»»ÐÐ
-	2.ÊµÏÖ´ø²ÎÊýÐ´ÆÁ
-	3.×Ô¶¯Çå³ý´ýÐ´µÄÐÐ
-	4.¿É×Ô¶¨ÒåÐÐ¼ä¾à Í¨¹ýÐÞ¸Ä Lcd_Driver.c ÖÐ FONT_PADDING µÄÖµ
-V2.0 ÐÞÕýºÍÔ­À´°æ±¾µÄ¼æÈÝ
+	1.æ·»åŠ è‡ªåŠ¨æ¢è¡Œ
+	2.å®žçŽ°å¸¦å‚æ•°å†™å±
+	3.è‡ªåŠ¨æ¸…é™¤å¾…å†™çš„è¡Œ
+	4.å¯è‡ªå®šä¹‰è¡Œé—´è· é€šè¿‡ä¿®æ”¹ Lcd_Driver.c ä¸­ FONT_PADDING çš„å€¼
+V2.0 ä¿®æ­£å’ŒåŽŸæ¥ç‰ˆæœ¬çš„å…¼å®¹
 V1.9.3
-	1. ÐÞÕýLCD¡ª¡ªDrive Çý¶¯
+	1. ä¿®æ­£LCDâ€”â€”Drive é©±åŠ¨
 V1.9.2	11:57 2013-1-9
-	¶ÔKeyboard ½øÐÐÐÞ¸´ 
-	³£Á¿ÓÃ´óÐ´±íÊ¾
+	å¯¹Keyboard è¿›è¡Œä¿®å¤ 
+	å¸¸é‡ç”¨å¤§å†™è¡¨ç¤º
 
 v1.9	10:01 2012-12-25
-	1. ÐÞÕýÊ±ÖÓÍ¬²½ÎÊÌâ
+	1. ä¿®æ­£æ—¶é’ŸåŒæ­¥é—®é¢˜
 v1.8 	18:26 2012-12-24
-	1. ÐÞ¸´EEPROM ÏÔÊ¾´íÎóBUG
-	2. Ìí¼Ó4ÖÖÔËÐÐÄ£Ê½*
-	3. ÐÞ¸´°æ±¾ÏÔÊ¾´íÎó
-	4. ÐÞ¸ÄµÚÒ»ÏîÎªÏÂÔØÄ£Ê½
+	1. ä¿®å¤EEPROM æ˜¾ç¤ºé”™è¯¯BUG
+	2. æ·»åŠ 4ç§è¿è¡Œæ¨¡å¼*
+	3. ä¿®å¤ç‰ˆæœ¬æ˜¾ç¤ºé”™è¯¯
+	4. ä¿®æ”¹ç¬¬ä¸€é¡¹ä¸ºä¸‹è½½æ¨¡å¼
 V1.7 10:48 2012-12-24
-	1. ÐÞÕý1.6 ´íÎó
+	1. ä¿®æ­£1.6 é”™è¯¯
 V1.6
-	1.ÄÚ´æ¼ì²â´íÎó
-	2.USBÏÂÔØ´íÎó  
+	1.å†…å­˜æ£€æµ‹é”™è¯¯
+	2.USBä¸‹è½½é”™è¯¯  
 
 V1.5	9:34 2012-12-20
 
-1. °æ±¾¿ÉÅäÖÃ
-2. ÅäÖÃÏîÖÐÔö¼Ó Ë¢»úÄ£Ê½
-3. ½«µ×²ãº¯Êý ÓëÓ¦ÓÃ·ÖÀë
-4. Ìí¼ÓÓ¦ÓÃ³ÌÐò¼ì²â ¼ì²âMyAPPÊÇ·ñË¢Èë
+1. ç‰ˆæœ¬å¯é…ç½®
+2. é…ç½®é¡¹ä¸­å¢žåŠ  åˆ·æœºæ¨¡å¼
+3. å°†åº•å±‚å‡½æ•° ä¸Žåº”ç”¨åˆ†ç¦»
+4. æ·»åŠ åº”ç”¨ç¨‹åºæ£€æµ‹ æ£€æµ‹MyAPPæ˜¯å¦åˆ·å…¥
 
-5. Ôö¼ÓEEPROM²Á³ý
-6. ÓÅ»¯³ÌÐòÏÂÔØ¼ì²â £¬½«Æä×ªÒÆµ½EEPROMÖÐ£¬
-EEPROM£ºµØÖ·       ¹¦ÄÜ
-    00          Ó²¼þ¼ì²â±êÖ¾0X5A
-    01          ÏÂÔØÄ£Ê½ 1 ´®¿ÚÏÂÔØ ÆäËûUSB
-    02          ¾§ÕñÉèÖÃ
+5. å¢žåŠ EEPROMæ“¦é™¤
+6. ä¼˜åŒ–ç¨‹åºä¸‹è½½æ£€æµ‹ ï¼Œå°†å…¶è½¬ç§»åˆ°EEPROMä¸­ï¼Œ
+EEPROMï¼šåœ°å€       åŠŸèƒ½
+    00          ç¡¬ä»¶æ£€æµ‹æ ‡å¿—0X5A
+    01          ä¸‹è½½æ¨¡å¼ 1 ä¸²å£ä¸‹è½½ å…¶ä»–USB
+    02          æ™¶æŒ¯è®¾ç½®
     
     2012.10.24
-1.Ôö¼Ó´óÐ¡¶Ë²âÊÔ
+1.å¢žåŠ å¤§å°ç«¯æµ‹è¯•
 
 2012.10.22
-1.MMU.c ÖÐÐÞ¸ÄÄÚ´æµÄÓ³Éä¹ØÏµMMU_SetMTT(0x30200000,0x33e00000,0x30200000,RW_CB); //bank6-2
+1.MMU.c ä¸­ä¿®æ”¹å†…å­˜çš„æ˜ å°„å…³ç³»MMU_SetMTT(0x30200000,0x33e00000,0x30200000,RW_CB); //bank6-2
   // MMU_SetMTT(0x30200000,0x33e00000,0x30200000,RW_NCNB); //bank6-2
 
 2012.10.10
 
-1.°æ±¾ºÅÔÚLCD_Driver.h ÖÐÍ¨¹ý Versions()¶¨Òå¡£
-2.¶Ô480x640µÄÆÁÄ» Èô×ÖÌåµÄ´óÐ¡Îª8x16 ÔòÒ»ÐÐ¿É·Å60¸öÓ¢ÎÄ£¬¹²´æ40ÐÐ
-3.EEPROM24C64 64*1024/8 =0x2000 ×Ö½Ú Ä¿Ç°Ê¹ÓÃµÄÖ»ÓÐÇ°0x350×Ö½Ú
-4.HexToBCDL() eg£º HexToBCDL(17)=0x17 ¹¤×÷Ê±¼ä´æ´¢·½Ê½Îª¸ßÎ»ÔÚÇ° HÄ£Ê½µÄ¹¤×÷Ê±¼ä µØÖ·Îª0x2b0´æ´¢µÄÊÇ¸ß×Ö½ÚµÄÊý¾Ý
-5.APPTest ÖÐÔö¼ÓÇå³ý¹¤×÷Ê±¼ä¹¦ÄÜ
-6.Í¬¹ýÅäÖÃNANDConfigÖÐCOM Usb¿ÉÑ¡ÔñDownLoad·½Ê½
+1.ç‰ˆæœ¬å·åœ¨LCD_Driver.h ä¸­é€šè¿‡ Versions()å®šä¹‰ã€‚
+2.å¯¹480x640çš„å±å¹• è‹¥å­—ä½“çš„å¤§å°ä¸º8x16 åˆ™ä¸€è¡Œå¯æ”¾60ä¸ªè‹±æ–‡ï¼Œå…±å­˜40è¡Œ
+3.EEPROM24C64 64*1024/8 =0x2000 å­—èŠ‚ ç›®å‰ä½¿ç”¨çš„åªæœ‰å‰0x350å­—èŠ‚
+4.HexToBCDL() egï¼š HexToBCDL(17)=0x17 å·¥ä½œæ—¶é—´å­˜å‚¨æ–¹å¼ä¸ºé«˜ä½åœ¨å‰ Hæ¨¡å¼çš„å·¥ä½œæ—¶é—´ åœ°å€ä¸º0x2b0å­˜å‚¨çš„æ˜¯é«˜å­—èŠ‚çš„æ•°æ®
+5.APPTest ä¸­å¢žåŠ æ¸…é™¤å·¥ä½œæ—¶é—´åŠŸèƒ½
+6.åŒè¿‡é…ç½®NANDConfigä¸­COM Usbå¯é€‰æ‹©DownLoadæ–¹å¼
 
 2012.10.11
-1.ÐÞ¸Ä2440lib.c ÖÐµÄ±³¹âµ÷½Ú
+1.ä¿®æ”¹2440lib.c ä¸­çš„èƒŒå…‰è°ƒèŠ‚
 
 V1.2
-1.Ôö¼Ó´®¿ÚÏÂÔØ¹¦ÄÜ
+1.å¢žåŠ ä¸²å£ä¸‹è½½åŠŸèƒ½
 
-2.¼Ó¿ìÓ¦ÓÃ³ÌÐò¼ÓÔØËÙ¶È
-£¨·¢ÏÖÓ¦ÓÃ³ÌÐòbug £¬Èç¹û²¿·Ö¼þËð»µºó£¬ÊÇ·ñ»áÓ°Ïì³ÌÐòµÄÕý³£ÔËÐÐ£¬Èç24c64£©
+2.åŠ å¿«åº”ç”¨ç¨‹åºåŠ è½½é€Ÿåº¦
+ï¼ˆå‘çŽ°åº”ç”¨ç¨‹åºbug ï¼Œå¦‚æžœéƒ¨åˆ†ä»¶æŸååŽï¼Œæ˜¯å¦ä¼šå½±å“ç¨‹åºçš„æ­£å¸¸è¿è¡Œï¼Œå¦‚24c64ï¼‰
 
-3.Ôö¼Ó ÄÚ´æ¶ÁÐ´²âÊÔ£¬¿É²âÊÔÄÚ´æµÄÔËÐÐËÙ¶È
+3.å¢žåŠ  å†…å­˜è¯»å†™æµ‹è¯•ï¼Œå¯æµ‹è¯•å†…å­˜çš„è¿è¡Œé€Ÿåº¦
 12A 250V
 1A 250V 2cm 0.5cm
 

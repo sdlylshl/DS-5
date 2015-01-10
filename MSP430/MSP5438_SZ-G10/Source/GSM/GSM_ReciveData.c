@@ -1,17 +1,17 @@
 
 #include "GSM.h"
 
-extern unsigned char Monitor_Update_Data[600]                              ;//ÏÔÊ¾Æ÷Éı¼¶°üÊı¾İ
-unsigned long int RD_Data_1_Min_Cnt                                        ;//½âÎö MUC Ó¦´ğÊ±¼ä¼ÆÊı
+extern unsigned char Monitor_Update_Data[600]                              ;//æ˜¾ç¤ºå™¨å‡çº§åŒ…æ•°æ®
+unsigned long int RD_Data_1_Min_Cnt                                        ;//è§£æ MUC åº”ç­”æ—¶é—´è®¡æ•°
     
    
 
-void RecData()//½âÎö ²¢½«Êı¾İ×ª´æ
+void RecData()//è§£æ å¹¶å°†æ•°æ®è½¬å­˜
 {
     if((RD_Data_1_Min_Cnt>1024)&&(UDP_Built_flag==0x11))
     {  
-        RD_Data_1_Min_Cnt    = 0                                           ;//½âÎö MUC Ó¦´ğÊ±¼ä¼ÆÊı
-        if(GSM_SendCMD(PAKET_DATA,"AT+QIRD=0,1,0,1024",0,200)==1)           //½«50--200½â¾ö512Êı¾İ¶ÁÈ¡ÎÊÌâ
+        RD_Data_1_Min_Cnt    = 0                                           ;//è§£æ MUC åº”ç­”æ—¶é—´è®¡æ•°
+        if(GSM_SendCMD(PAKET_DATA,"AT+QIRD=0,1,0,1024",0,200)==1)           //å°†50--200è§£å†³512æ•°æ®è¯»å–é—®é¢˜
         {
             char *str=(char *) M72D_ServerData_RX_Buf                      ;
             long len                                                       ;
@@ -20,11 +20,11 @@ void RecData()//½âÎö ²¢½«Êı¾İ×ª´æ
             
 
             if (GSM_ECHO & 0x01)                                           
-            {//´ø»ØÏÔ¹¦ÄÜ//Ö¸Áî³¤¶È+3×Ö½Ú(0x0D 0x0D 0x0A)+ÄÚÈİ
+            {//å¸¦å›æ˜¾åŠŸèƒ½//æŒ‡ä»¤é•¿åº¦+3å­—èŠ‚(0x0D 0x0D 0x0A)+å†…å®¹
                 str += 30+sizeof("AT+QIRD=0,1,0,1024")                     ;
             } 
             else 
-            {//2×Ö½Ú(0x0D 0x0A)+ÄÚÈİ +QIRD: 58.57.53.58:2013,UDP,10\r\n(28+i+2)+\r\n+OK
+            {//2å­—èŠ‚(0x0D 0x0A)+å†…å®¹ +QIRD: 58.57.53.58:2013,UDP,10\r\n(28+i+2)+\r\n+OK
                str +=30                                                    ; 
             }           
             len=GSM_atol(str)                                              ;
@@ -36,7 +36,7 @@ void RecData()//½âÎö ²¢½«Êı¾İ×ª´æ
     
 
             switch(*(str+4)&*(str+5))  
-            {    //½âÎö ²¢½«Êı¾İ×ª´æ
+            {    //è§£æ å¹¶å°†æ•°æ®è½¬å­˜
                 case 0x18:
                 {
                      if((*(str+6)==0xFF)&&(*(str+7)==0xFF))                 
@@ -45,19 +45,19 @@ void RecData()//½âÎö ²¢½«Êı¾İ×ª´æ
                 } 
                 
                 case 0x19:
-                {//¸ñÊ½£º²éÑ¯/ÉèÖÃ(1)+¾­Î³¶È(16)  OUT_EDGE_BUF_SZ==25
+                {//æ ¼å¼ï¼šæŸ¥è¯¢/è®¾ç½®(1)+ç»çº¬åº¦(16)  OUT_EDGE_BUF_SZ==25
                      if(len==OUT_EDGE_BUF_SZ)
                      {
                          for(OUT_Cnt=0;OUT_Cnt<OUT_EDGE_BUF_SZ;OUT_Cnt++,str++)
                          { 
                              NET_OUT_EDGE_BUF[OUT_Cnt]=*(str)              ;
                          }
-                         OUT_EDGE_SET()                                    ;//Ô½½ç±¨¾¯ÃüÁîÉèÖÃ
+                         OUT_EDGE_SET()                                    ;//è¶Šç•ŒæŠ¥è­¦å‘½ä»¤è®¾ç½®
                      }
                      break                                                 ;
                 }
                 case 0x23:
-                {   //MCUÊı¾İÉÏ´«Ê±¼ä¼ä¸ôÉèÖÃ   MCU_TIME_BUF_SZ==12
+                {   //MCUæ•°æ®ä¸Šä¼ æ—¶é—´é—´éš”è®¾ç½®   MCU_TIME_BUF_SZ==12
                     if(len==MCU_TIME_BUF_SZ)
                     {
                          for(TM_Cnt=0;TM_Cnt<MCU_TIME_BUF_SZ;TM_Cnt++,str++)
@@ -71,11 +71,11 @@ void RecData()//½âÎö ²¢½«Êı¾İ×ª´æ
                 
                 
                 case 0x38:
-                { //¹¤×÷²ÎÊı´¦Àí WORK_MODE_BUF_SZ=29                                                          
+                { //å·¥ä½œå‚æ•°å¤„ç† WORK_MODE_BUF_SZ=29                                                          
                     if(len==WORK_MODE_BUF_SZ)
                     {
                          for(RD_CNT=0;RD_CNT<WORK_MODE_BUF_SZ;RD_CNT++,str++)
-                         { //¸ñÊ½£ºHMLFB(20)+Î¢µ÷ÉÏÏŞ(1)
+                         { //æ ¼å¼ï¼šHMLFB(20)+å¾®è°ƒä¸Šé™(1)
                             REC_WORK_MODE_BUF[RD_CNT]=*(str)               ;
                          }
                          Work_Mode_Set()                                   ;
@@ -83,7 +83,7 @@ void RecData()//½âÎö ²¢½«Êı¾İ×ª´æ
                     break                                                  ;
                 }
                 case 0x69:                                     
-                {                                                           //½â³µ¡¢Ëø³µ´¦Àí
+                {                                                           //è§£è½¦ã€é”è½¦å¤„ç†
                      if(*(str+6)==0x03&&*(str+7)==0x03)       
                         Lock_Open_Bus_Flag  =0x11                          ; 
                      if(*(str+6)==0x00&&*(str+7)==0x00) 
@@ -92,7 +92,7 @@ void RecData()//½âÎö ²¢½«Êı¾İ×ª´æ
                      break                                                 ;
                 } 
                 case 0x78:                                             
-                {    //¸ñÊ½£ºIPµØÖ·(4)+PortºÅ(2)    NET_IP_PORT_BUF_SIZE 14
+                {    //æ ¼å¼ï¼šIPåœ°å€(4)+Portå·(2)    NET_IP_PORT_BUF_SIZE 14
                      if(len==NET_IP_PORT_BUF_SIZE)
                      {
                          for(IP_Cnt=0;IP_Cnt<NET_IP_PORT_BUF_SIZE;IP_Cnt++,str++)
@@ -104,7 +104,7 @@ void RecData()//½âÎö ²¢½«Êı¾İ×ª´æ
                      break                                                 ;
                 } 
                 case 0x98:                                      
-                {                                                           //Èí¼ş°æ±¾ºÅÉÏ´«»Ø¸´´¦Àí    
+                {                                                           //è½¯ä»¶ç‰ˆæœ¬å·ä¸Šä¼ å›å¤å¤„ç†    
                     if(len==8)
                     {
                          if(*(str+6)==0xFF&&*(str+7)==0xFF)
@@ -116,7 +116,7 @@ void RecData()//½âÎö ²¢½«Êı¾İ×ª´æ
                 }
                 
                 case 0xA1:                                      
-                {   //Íø¹Ø·¢ËÍÉı¼¶Æô¶¯Ö¸Áî                                     
+                {   //ç½‘å…³å‘é€å‡çº§å¯åŠ¨æŒ‡ä»¤                                     
                     if(len==29)
                     {
                         for(UP_Cnt=0;UP_Cnt<29;UP_Cnt++,str++)
@@ -130,19 +130,19 @@ void RecData()//½âÎö ²¢½«Êı¾İ×ª´æ
                 }
                 
                 case 0x2A:                                      
-                {                                                           //Éı¼¶Êı¾İ´¦Àí                                     
+                {                                                           //å‡çº§æ•°æ®å¤„ç†                                     
                      for(A2_Cnt=0;A2_Cnt<len;A2_Cnt++,str++)
                      { 
                         Monitor_Update_Data[A2_Cnt]=*(str)                 ;
                      }
-                     UP_A2_NUM_CRC()                                       ;//Éı¼¶³ÌĞòCRCĞ£Ñé
+                     UP_A2_NUM_CRC()                                       ;//å‡çº§ç¨‹åºCRCæ ¡éªŒ
                      RD_Data_1_Min_Cnt   =   512                           ;
                      break                                                 ;
                 }
                 
                 
                 case 0xA9:                                      
-                {   //ºô½ĞGPSÖÕ¶ËÉÏ±¨¶¨Î»Êı¾İÃüÁî                                     
+                {   //å‘¼å«GPSç»ˆç«¯ä¸ŠæŠ¥å®šä½æ•°æ®å‘½ä»¤                                     
                     if(len==10)
                     {
                         CALL_MCU_TIME_JIAN  =   *(str+7)                   ;                                         
@@ -157,17 +157,17 @@ void RecData()//½âÎö ²¢½«Êı¾İ×ª´æ
                         
                         CALL_MCU_TIME_JIAN  =   CALL_MCU_TIME_JIAN  *  1024;
                         CALL_MCU_TIME_CNT   =   0                          ;
-                        CALL_MCU_TIME_FLAG  =   0x11                       ;// 11==·¢ËÍMCU
+                        CALL_MCU_TIME_FLAG  =   0x11                       ;// 11==å‘é€MCU
                         
                         for(TM_Cnt=0;TM_Cnt<4;TM_Cnt++,str++)
                         {
                            ANS_CAL_MCU_BUF[6+TM_Cnt]=*(str+6)              ;
                         }
-                        ANSW_CALL_MCU()                                    ;//»Ø¸´ÉÏ±¨¶¨Î»Êı¾İÃüÁî
+                        ANSW_CALL_MCU()                                    ;//å›å¤ä¸ŠæŠ¥å®šä½æ•°æ®å‘½ä»¤
                     }
                     break                                                  ;
                 }
-                case 0xB2:                                                  // Êı¾İ°üÓ¦´ğ´¦Àí
+                case 0xB2:                                                  // æ•°æ®åŒ…åº”ç­”å¤„ç†
                 {
                       if(crc_modbus2((unsigned char *)str,len))      
                       break                                                ;

@@ -1,9 +1,9 @@
 #include "msp430x54x.h"
 #include "GSM.h"
 
-//0 ’˝≥£ 0x01πÿª˙ 0x02–›√ﬂ 0x04 SIMø® 0x08 GSMÕ¯¬Á’˝≥£ 0x10GPRSÕ¯¬Á’˝≥£ 0x20 TCPIP’˝≥£
+//0 Ê≠£Â∏∏ 0x01ÂÖ≥Êú∫ 0x02‰ºëÁú† 0x04 SIMÂç° 0x08 GSMÁΩëÁªúÊ≠£Â∏∏ 0x10GPRSÁΩëÁªúÊ≠£Â∏∏ 0x20 TCPIPÊ≠£Â∏∏
 extern unsigned char GSM_STATUS;
-//GSM ◊¥Ã¨
+//GSM Áä∂ÊÄÅ
 #define TCPIP_ERRO 0x20
 #define GPRS_ERRO 0x10
 #define GSM_ERRO 0x08
@@ -12,81 +12,81 @@ extern unsigned char GSM_STATUS;
 #define POWER_ERRO 0x01
 
 //*****************************************************************************//
-//M72DΩ” ’ª∫≥Â∆˜
-unsigned int M72D_RX_Buf_Cnt                                    ;//Ω” ’ª∫¥Êº∆ ˝∆˜
-unsigned int UP_Data_Cnt                                        ;//SIMø®≥ı ºªØº∆ ±”√
-unsigned char packet_type                                       ;//M72D  ∞¸¿‡–Õ
-//M72D Õª∑¢¥´ ‰÷∏¡ÓΩ” ’ª∫¥Ê∆˜ (Œ¥∑¢ÀÕ÷∏¡Ó º¥ø… ’µΩ ˝æ› »Á RING +QRD µ»)
-#define PACKET_BRUST 0x00                                        //PACKET_TYPE=0 (Õª∑¢Ω” ’∞¸)
+//M72DÊé•Êî∂ÁºìÂÜ≤Âô®
+unsigned int M72D_RX_Buf_Cnt                                    ;//Êé•Êî∂ÁºìÂ≠òËÆ°Êï∞Âô®
+unsigned int UP_Data_Cnt                                        ;//SIMÂç°ÂàùÂßãÂåñËÆ°Êó∂Áî®
+unsigned char packet_type                                       ;//M72D  ÂåÖÁ±ªÂûã
+//M72D Á™ÅÂèë‰º†ËæìÊåá‰ª§Êé•Êî∂ÁºìÂ≠òÂô® (Êú™ÂèëÈÄÅÊåá‰ª§ Âç≥ÂèØÊî∂Âà∞Êï∞ÊçÆ Â¶Ç RING +QRD Á≠â)
+#define PACKET_BRUST 0x00                                        //PACKET_TYPE=0 (Á™ÅÂèëÊé•Êî∂ÂåÖ)
 #define M72D_Brust_RX_BUF_SIZE 80                                
 unsigned char M72D_Brust_RX_Buf[M72D_Brust_RX_BUF_SIZE]          ;
-unsigned char M72D_Brust_STATUS                                  ;//Õª∑¢∞¸Ω” ’ÕÍ≥… 0 ŒﬁœÏ”¶ 0x01 OK 0x02 ERRO 0x04  ˝æ›“Á≥ˆ
+unsigned char M72D_Brust_STATUS                                  ;//Á™ÅÂèëÂåÖÊé•Êî∂ÂÆåÊàê 0 Êó†ÂìçÂ∫î 0x01 OK 0x02 ERRO 0x04 Êï∞ÊçÆÊ∫¢Âá∫
 unsigned char M72D_Brust_Cnt                                     ;
 
 
-#define PACKET_Query 0x01                                         //PACKET_TYPE=1 (ƒ£øÈ≤È—Ø∞¸)
-#define M72D_Query_RX_BUF_SIZE 50                                 // ˝æ›¥´ ‰◊Ó¥Û◊÷Ω⁄ ˝
+#define PACKET_Query 0x01                                         //PACKET_TYPE=1 (Ê®°ÂùóÊü•ËØ¢ÂåÖ)
+#define M72D_Query_RX_BUF_SIZE 50                                 //Êï∞ÊçÆ‰º†ËæìÊúÄÂ§ßÂ≠óËäÇÊï∞
 unsigned char M72D_Query_RX_Buf[M72D_Query_RX_BUF_SIZE];
-unsigned char M72D_Query_STATUS;     //≈‰÷√∞¸Ω” ’ÕÍ≥… 0 ŒﬁœÏ”¶ 0x01 OK 0x02 ERRO 0x04  ˝æ›“Á≥ˆ
+unsigned char M72D_Query_STATUS;     //ÈÖçÁΩÆÂåÖÊé•Êî∂ÂÆåÊàê 0 Êó†ÂìçÂ∫î 0x01 OK 0x02 ERRO 0x04 Êï∞ÊçÆÊ∫¢Âá∫
 
-//PACKET_TYPE=2 (ƒ£øÈ≈‰÷√∞¸)
+//PACKET_TYPE=2 (Ê®°ÂùóÈÖçÁΩÆÂåÖ)
 #define PACKET_CONFIG 0x02
-#define M72D_SetConfig_RX_BUF_SIZE 50                         // ˝æ›¥´ ‰◊Ó¥Û◊÷Ω⁄ ˝
+#define M72D_SetConfig_RX_BUF_SIZE 50                         //Êï∞ÊçÆ‰º†ËæìÊúÄÂ§ßÂ≠óËäÇÊï∞
 unsigned char M72D_SetConfig_RX_Buf[M72D_SetConfig_RX_BUF_SIZE];
-unsigned char M72D_SetConfig_STATUS; //≈‰÷√∞¸Ω” ’ÕÍ≥… 0 ŒﬁœÏ”¶ 0x01 OK 0x02 ERRO 0x04  ˝æ›“Á≥ˆ
+unsigned char M72D_SetConfig_STATUS; //ÈÖçÁΩÆÂåÖÊé•Êî∂ÂÆåÊàê 0 Êó†ÂìçÂ∫î 0x01 OK 0x02 ERRO 0x04 Êï∞ÊçÆÊ∫¢Âá∫
 
-//M72D  ˝æ›∞¸Ω” ’ª∫¥Ê ∞¸∫¨…˝º∂∞¸
-//PACKET_TYPE=4 ( ˝æ›Ω” ’∞¸)
+//M72D Êï∞ÊçÆÂåÖÊé•Êî∂ÁºìÂ≠ò ÂåÖÂê´ÂçáÁ∫ßÂåÖ
+//PACKET_TYPE=4 (Êï∞ÊçÆÊé•Êî∂ÂåÖ)
 #define PAKET_DATA 0x04
-#define M72D_ServerData_RX_BUF_SIZE 1200                         // ˝æ›¥´ ‰◊Ó¥Û◊÷Ω⁄ ˝
+#define M72D_ServerData_RX_BUF_SIZE 1200                         //Êï∞ÊçÆ‰º†ËæìÊúÄÂ§ßÂ≠óËäÇÊï∞
 unsigned char M72D_ServerData_RX_Buf[M72D_ServerData_RX_BUF_SIZE];
-unsigned char M72D_ServerData_STATUS; // ˝æ›∞¸Ω” ’ÕÍ≥… 0 ŒﬁœÏ”¶ 0x01 OK 0x02 ERRO 0x04  ˝æ›“Á≥ˆ
+unsigned char M72D_ServerData_STATUS; //Êï∞ÊçÆÂåÖÊé•Êî∂ÂÆåÊàê 0 Êó†ÂìçÂ∫î 0x01 OK 0x02 ERRO 0x04 Êï∞ÊçÆÊ∫¢Âá∫
 
-//M72D Õ¯¬Á≈‰÷√  ÷˜“™’Î∂‘≈‰÷√ ±º‰≥§µƒ∞¸Ω¯––…Ë÷√
-//PACKET_TYPE=8 (≥§ ±º‰∞¸)
+//M72D ÁΩëÁªúÈÖçÁΩÆ  ‰∏ªË¶ÅÈíàÂØπÈÖçÁΩÆÊó∂Èó¥ÈïøÁöÑÂåÖËøõË°åËÆæÁΩÆ
+//PACKET_TYPE=8 (ÈïøÊó∂Èó¥ÂåÖ)
 #define PACKET_NETCONFIG 0x08
-#define M72D_NetConfig_RX_BUF_SIZE 100                         // ˝æ›¥´ ‰◊Ó¥Û◊÷Ω⁄ ˝
+#define M72D_NetConfig_RX_BUF_SIZE 100                         //Êï∞ÊçÆ‰º†ËæìÊúÄÂ§ßÂ≠óËäÇÊï∞
 unsigned char M72D_NetConfig_RX_Buf[M72D_NetConfig_RX_BUF_SIZE];
-unsigned char M72D_NetConfig_STATUS; //Õ¯¬Á∞¸Ω” ’ÕÍ≥… 0 ŒﬁœÏ”¶ 0x01 OK 0x02 ERRO 0x04  ˝æ›“Á≥ˆ
+unsigned char M72D_NetConfig_STATUS; //ÁΩëÁªúÂåÖÊé•Êî∂ÂÆåÊàê 0 Êó†ÂìçÂ∫î 0x01 OK 0x02 ERRO 0x04 Êï∞ÊçÆÊ∫¢Âá∫
 
-//M72D Œ¥÷™∞¸
-//PACKET_TYPE=0x10 (Œ¥÷™∞¸)
+//M72D Êú™Áü•ÂåÖ
+//PACKET_TYPE=0x10 (Êú™Áü•ÂåÖ)
 #define PCKET_OTHER 0x10
-#define M72D_Other_RX_BUF_SIZE 100                         // ˝æ›¥´ ‰◊Ó¥Û◊÷Ω⁄ ˝
+#define M72D_Other_RX_BUF_SIZE 100                         //Êï∞ÊçÆ‰º†ËæìÊúÄÂ§ßÂ≠óËäÇÊï∞
 unsigned char M72D_Other_RX_Buf[M72D_Other_RX_BUF_SIZE];
-unsigned char M72D_Other_STATUS;              //Œ¥÷™∞¸Ω” ’ÕÍ≥… 0 ŒﬁœÏ”¶zx02 ERRO 0x04  ˝æ›“Á≥ˆ
+unsigned char M72D_Other_STATUS;              //Êú™Áü•ÂåÖÊé•Êî∂ÂÆåÊàê 0 Êó†ÂìçÂ∫îzx02 ERRO 0x04 Êï∞ÊçÆÊ∫¢Âá∫
 //*****************************************************************************//
 //GSM
 extern void GPS_UCA1_Init(void);
 extern void SHUT_GPS_UCA1(void);
 extern void GSM();
-extern char Conect_Fail_Reset(void)                                         ;//¥¶¿ÌConect_Fail¡¥Ω”
-extern char GSM_Brust()                                                     ;//Õª∑¢ ˝æ›¥¶¿Ì
+extern char Conect_Fail_Reset(void)                                         ;//Â§ÑÁêÜConect_FailÈìæÊé•
+extern char GSM_Brust()                                                     ;//Á™ÅÂèëÊï∞ÊçÆÂ§ÑÁêÜ
 //***************************************************************************//
-//  Init_UART(void): ≥ı ºªØUCA0   GSM                                        //
+//  Init_UART(void): ÂàùÂßãÂåñUCA0   GSM                                        //
 //***************************************************************************//
 void GSM_UCA0_Init(void)
 {
     //UCA0TX P3.4 UCA0RX P3.5
-    P3SEL |= BIT4 + BIT5; // —°‘Ò“˝Ω≈π¶ƒ‹
-    P3DIR |= BIT4; // TX…Ë÷√Œ™ ‰≥ˆ
-    //∆Ê≈º–£—È UCPEN      1‘ –Ì
-    //–£—È—°‘Ò UCPAR      0 ∆Ê–£—È  1≈º–£—È
-    //∑¢ÀÕºƒ¥Ê∆˜ UCMST    0µÕŒªœ»∑¢ 1 ∏ﬂŒªœ»∑¢
-    //◊÷∑˚≥§∂» UC7BIT     0  8Œª    1 7Œª
-    //Õ£÷πŒª—°‘Ò UCSPB    0 1ŒªÕ£÷πŒª 1 2ŒªÕ£÷πŒª
-    //UCSIƒ£ Ω—°‘Ò UCMODE 00 UARTƒ£ Ω 01 ∂‡ª˙ƒ£ Ω 10µÿ÷∑Œª∂‡ª˙ƒ£ Ω 11 ◊‘∂Ø≤®Ãÿ¬ ºÏ≤‚
-    //Õ¨≤Ωƒ£ Ω UCSYNC     0“Ï≤Ωƒ£ Ω 1 Õ¨≤Ωƒ£ Ω
-    //1Õ£÷πŒª 8 ˝æ›Œª Œﬁ–£—È “Ï≤Ω µÕŒªœ»∑¢
+    P3SEL |= BIT4 + BIT5; // ÈÄâÊã©ÂºïËÑöÂäüËÉΩ
+    P3DIR |= BIT4; // TXËÆæÁΩÆ‰∏∫ËæìÂá∫
+    //Â•áÂÅ∂Ê†°È™å UCPEN      1ÂÖÅËÆ∏
+    //Ê†°È™åÈÄâÊã© UCPAR      0 Â•áÊ†°È™å  1ÂÅ∂Ê†°È™å
+    //ÂèëÈÄÅÂØÑÂ≠òÂô® UCMST    0‰Ωé‰ΩçÂÖàÂèë 1 È´ò‰ΩçÂÖàÂèë
+    //Â≠óÁ¨¶ÈïøÂ∫¶ UC7BIT     0  8‰Ωç    1 7‰Ωç
+    //ÂÅúÊ≠¢‰ΩçÈÄâÊã© UCSPB    0 1‰ΩçÂÅúÊ≠¢‰Ωç 1 2‰ΩçÂÅúÊ≠¢‰Ωç
+    //UCSIÊ®°ÂºèÈÄâÊã© UCMODE 00 UARTÊ®°Âºè 01 Â§öÊú∫Ê®°Âºè 10Âú∞ÂùÄ‰ΩçÂ§öÊú∫Ê®°Âºè 11 Ëá™Âä®Ê≥¢ÁâπÁéáÊ£ÄÊµã
+    //ÂêåÊ≠•Ê®°Âºè UCSYNC     0ÂºÇÊ≠•Ê®°Âºè 1 ÂêåÊ≠•Ê®°Âºè
+    //1ÂÅúÊ≠¢‰Ωç 8Êï∞ÊçÆ‰Ωç Êó†Ê†°È™å ÂºÇÊ≠• ‰Ωé‰ΩçÂÖàÂèë
     UCA0CTL0 = 0;
-    // ±÷”‘¥—°‘Ò UCSSELx 00 Õ‚≤ø ±÷” UCLK 01 ACLK 10 SMCLK 11 SMCLK
-    //Ω” ’≥ˆ¥Ì÷–∂œ‘ –Ì UCRXEIE 0 ≤ª‘ –Ì 1 ‘ –Ì÷–∂œ
-    //Ω” ’¥Ú∂œ◊÷∑˚÷–∂œ‘ –Ì UCBRKIE 0 ≤ª…Ë÷√UCRXIFG 1…Ë÷√UCRXIFG
-    //ÀØ√ﬂ◊¥Ã¨ UCDORM 0≤ªÀØ√ﬂ 1 ÀØ√ﬂ
-    //∑¢ÀÕµÿ÷∑Œª UCTXADDR 0∑¢ÀÕµƒœ¬“ª÷° « ˝æ› 1 ∑¢ÀÕµƒœ¬“ª÷° «µÿ÷∑ £®∂‡ª˙ƒ£ Ω£©
-    //∑¢ÀÕ¥Ú∂œ 0∑¢ÀÕµƒœ¬“ª÷°≤ª «¥Ú∂œ £®◊‘∂Ø≤®Ãÿ¬ ºÏ≤‚£©
-    //»Ìº˛∏¥Œª‘ –Ì 0 Ω˚÷π 1 ‘ –Ì (∏¥Œª◊¥Ã¨œ¬ USCI±£≥÷¬ﬂº≠µÁ∆Ω)
-    UCA0CTL1 = UCSWRST; // ◊¥Ã¨ª˙∏¥Œª
+    //Êó∂ÈíüÊ∫êÈÄâÊã© UCSSELx 00 Â§ñÈÉ®Êó∂Èíü UCLK 01 ACLK 10 SMCLK 11 SMCLK
+    //Êé•Êî∂Âá∫Èîô‰∏≠Êñ≠ÂÖÅËÆ∏ UCRXEIE 0 ‰∏çÂÖÅËÆ∏ 1 ÂÖÅËÆ∏‰∏≠Êñ≠
+    //Êé•Êî∂ÊâìÊñ≠Â≠óÁ¨¶‰∏≠Êñ≠ÂÖÅËÆ∏ UCBRKIE 0 ‰∏çËÆæÁΩÆUCRXIFG 1ËÆæÁΩÆUCRXIFG
+    //Áù°Áú†Áä∂ÊÄÅ UCDORM 0‰∏çÁù°Áú† 1 Áù°Áú†
+    //ÂèëÈÄÅÂú∞ÂùÄ‰Ωç UCTXADDR 0ÂèëÈÄÅÁöÑ‰∏ã‰∏ÄÂ∏ßÊòØÊï∞ÊçÆ 1 ÂèëÈÄÅÁöÑ‰∏ã‰∏ÄÂ∏ßÊòØÂú∞ÂùÄ ÔºàÂ§öÊú∫Ê®°ÂºèÔºâ
+    //ÂèëÈÄÅÊâìÊñ≠ 0ÂèëÈÄÅÁöÑ‰∏ã‰∏ÄÂ∏ß‰∏çÊòØÊâìÊñ≠ ÔºàËá™Âä®Ê≥¢ÁâπÁéáÊ£ÄÊµãÔºâ
+    //ËΩØ‰ª∂Â§ç‰ΩçÂÖÅËÆ∏ 0 Á¶ÅÊ≠¢ 1 ÂÖÅËÆ∏ (Â§ç‰ΩçÁä∂ÊÄÅ‰∏ã USCI‰øùÊåÅÈÄªËæëÁîµÂπ≥)
+    UCA0CTL1 = UCSWRST; // Áä∂ÊÄÅÊú∫Â§ç‰Ωç
     UCA0CTL1 |= UCSSEL__SMCLK; // CLK =
     //1.048M  115200 BR=  9 BRS=1 BRF=0
     //1.048M  9600 BR=109 BRS=2 BRF=0
@@ -96,54 +96,54 @@ void GSM_UCA0_Init(void)
     //16M 9600   BR=1666 BRS=6 BRF=0
     //1M  9600   BR=104 BRS=1 BRF=0
     //32K 9600   BR=3   BRS=3 BRF=0
-    //≤®Ãÿ¬  115200
+    //Ê≥¢ÁâπÁéá 115200
     UCA0BR0 = 0x8A; // 32kHz/9600=3.41
     UCA0BR1 = 0x00;
     UCA0MCTL = UCBRS_7 + UCBRF_0; // UCBRSx=3, UCBRFx=0
 
-    UCA0CTL1 &= ~UCSWRST; // ∆Ù∂Ø◊¥Ã¨ª˙
-    UCA0IE |= UCRXIE; // ‘ –ÌΩ” ’÷–∂œ
+    UCA0CTL1 &= ~UCSWRST; // ÂêØÂä®Áä∂ÊÄÅÊú∫
+    UCA0IE |= UCRXIE; // ÂÖÅËÆ∏Êé•Êî∂‰∏≠Êñ≠
 
 }
 
 void SHUT_GSM_UCA0(void)
 {
     //UCA1TX P5.6  UCA1RX P5.7
-    P3SEL &= ~(BIT4 + BIT5); // …Ë÷√Œ™∆’Õ®IO
-    P3DIR &= ~(BIT4 + BIT5); // TX RX …Ë÷√Œ™ ‰»Î
-    //πÿ±’UCA1
-    UCA0CTL1 = UCSWRST; // ◊¥Ã¨ª˙∏¥Œª
+    P3SEL &= ~(BIT4 + BIT5); // ËÆæÁΩÆ‰∏∫ÊôÆÈÄöIO
+    P3DIR &= ~(BIT4 + BIT5); // TX RX ËÆæÁΩÆ‰∏∫ËæìÂÖ•
+    //ÂÖ≥Èó≠UCA1
+    UCA0CTL1 = UCSWRST; // Áä∂ÊÄÅÊú∫Â§ç‰Ωç
 }
 
 
 void GSM()
 {
-    //0 ’˝≥£ 0x01πÿª˙ 0x02–›√ﬂ 0x04 SIMø® 0x08 GSMÕ¯¬Á’˝≥£ 0x10GPRSÕ¯¬Á’˝≥£ 0x20 TCPIP’˝≥£
-    //GSM_SIM_Signal();//≤‚ ‘–≈∫≈«ø∂»
+    //0 Ê≠£Â∏∏ 0x01ÂÖ≥Êú∫ 0x02‰ºëÁú† 0x04 SIMÂç° 0x08 GSMÁΩëÁªúÊ≠£Â∏∏ 0x10GPRSÁΩëÁªúÊ≠£Â∏∏ 0x20 TCPIPÊ≠£Â∏∏
+    //GSM_SIM_Signal();//ÊµãËØï‰ø°Âè∑Âº∫Â∫¶
     //Delayms(1000);
     GSM_State();
-    CONNECT_FAIL_RESET();//¥¶¿ÌConect_Fail¡¥Ω”
-    GSM_Brust();//Õª∑¢ ˝æ›¥¶¿Ì
-    //GSM’˝≥£π§◊˜œ¬
+    CONNECT_FAIL_RESET();//Â§ÑÁêÜConect_FailÈìæÊé•
+    GSM_Brust();//Á™ÅÂèëÊï∞ÊçÆÂ§ÑÁêÜ
+    //GSMÊ≠£Â∏∏Â∑•‰Ωú‰∏ã
     if (GSM_STATUS == 0) 
-    {//≥ı ºªØÕÍ≥… «““ª«–◊¥Ã¨’˝≥£
+    {//ÂàùÂßãÂåñÂÆåÊàê ‰∏î‰∏ÄÂàáÁä∂ÊÄÅÊ≠£Â∏∏
             GSM_Heart_Beat();
             GSM_Send_MCU(); 
             RecData();
-            Send_Soft_Version();//∑¢ÀÕ»Ìº˛∞Ê±æ∫≈  
-            Call_MCU_Data()    ;//∫ÙΩ–GPS÷’∂À…œ±®∂®Œª ˝æ›√¸¡Ó
-            DO_ROOT_UP()       ;//¥¶¿Ì‘∂≥Ã…˝º∂≥Ã–Ú
-            Send_SIM_Card_NUM();//ø™ª˙∑¢ÀÕ ÷ª˙ø®∫≈
-            CHECK_MCU_WARN();//ºÏ≤‚MCU±®æØ
+            Send_Soft_Version();//ÂèëÈÄÅËΩØ‰ª∂ÁâàÊú¨Âè∑  
+            Call_MCU_Data()    ;//ÂëºÂè´GPSÁªàÁ´Ø‰∏äÊä•ÂÆö‰ΩçÊï∞ÊçÆÂëΩ‰ª§
+            DO_ROOT_UP()       ;//Â§ÑÁêÜËøúÁ®ãÂçáÁ∫ßÁ®ãÂ∫è
+            Send_SIM_Card_NUM();//ÂºÄÊú∫ÂèëÈÄÅÊâãÊú∫Âç°Âè∑
+            CHECK_MCU_WARN();//Ê£ÄÊµãMCUÊä•Ë≠¶
     } 
     else 
-    {//”≤º˛ºÏ≤‚
+    {//Á°¨‰ª∂Ê£ÄÊµã
         if ((GSM_STATUS & 0x03)) 
-        {//GPSπÿª˙ªÚ–›√ﬂ//÷ÿ–¬∆Ù∂ØGSM π ’œºÏ≤‚
+        {//GPSÂÖ≥Êú∫Êàñ‰ºëÁú†//ÈáçÊñ∞ÂêØÂä®GSM ÊïÖÈöúÊ£ÄÊµã
             GSM_NOM_POW_ON();
         } 
         else 
-        {//GSM π§◊˜◊¥Ã¨ºÏ≤‚//ªÿœ‘≈‰÷√ (ƒ£øÈø™ª˙≤≈ƒ‹≈‰÷√)
+        {//GSM Â∑•‰ΩúÁä∂ÊÄÅÊ£ÄÊµã//ÂõûÊòæÈÖçÁΩÆ (Ê®°ÂùóÂºÄÊú∫ÊâçËÉΩÈÖçÁΩÆ)
             GSM_State()                                         ;
             if(GSM_ECHO & 0x80)
             {
@@ -152,14 +152,14 @@ void GSM()
             else
             {
                 if (GSM_STATUS & SIM_ERRO) 
-                {//SIMø®ºÏ≤‚ ß∞‹
+                {//SIMÂç°Ê£ÄÊµãÂ§±Ë¥•
                     if (SIM_NUM_CHECK())
                     {
                         GSM_STATUS &= ~SIM_ERRO;
                     }
                 } 
                 else 
-                {//≥ı ºªØÕ¯¬Á
+                {//ÂàùÂßãÂåñÁΩëÁªú
                     if (GSM_STATUS & 0x08) 
                     {
                         if (GSM_CREG_Init())
@@ -176,34 +176,34 @@ void GSM()
                         else 
                         {//3.TCPIP
                             if (GSM_STATUS & 0x20) 
-                            {//TCPIP Œ¥¡¨Ω”ªÚ¡¨Ω” ß∞‹
+                            {//TCPIP Êú™ËøûÊé•ÊàñËøûÊé•Â§±Ë¥•
                                 if(GSM_TCPIP_Init())
                                 {
                                     UDP_Built_flag        =0x11;
                                     GSM_STATUS &= ~TCPIP_ERRO;
-                                    Module_Status[1]  &= ~ 0x30;//GPRSÕ¯¬Á“Ï≥£
+                                    Module_Status[1]  &= ~ 0x30;//GPRSÁΩëÁªúÂºÇÂ∏∏
                                     GPS_GSM_System_Stu[1] &= ~0x30;
                                     Heart_Beat_Count =   30720;
-                                    READ_UP_SPI_FLASH();//◊™“∆»Ìº˛∞Ê±æ∫≈º∞…˝º∂¿‡–Õ
+                                    READ_UP_SPI_FLASH();//ËΩ¨ÁßªËΩØ‰ª∂ÁâàÊú¨Âè∑ÂèäÂçáÁ∫ßÁ±ªÂûã
                                 }
                             }
                             else 
                             {
-                                //TCPIP ¡¨Ω”≥…π¶
+                                //TCPIP ËøûÊé•ÊàêÂäü
                                 GSM_STATUS = 0;
     
                             }                                        //TCPIP
                         }                                        //GPRS
                     }                                        //GSM
                 }                                        //SIM
-            }                                       //ª˘¥°≈‰÷√
+            }                                       //Âü∫Á°ÄÈÖçÁΩÆ
         }                                        //POWER
     }                                        //STATUS
 
 }                                        //end while
 
 //***************************************************************************//
-//  GSMΩ” ’÷–∂œ∑˛ŒÒ≥Ã–Ú                                                      //
+//  GSMÊé•Êî∂‰∏≠Êñ≠ÊúçÂä°Á®ãÂ∫è                                                      //
 //***************************************************************************//
 #pragma vector=USCI_A0_VECTOR
 __interrupt void USCI_A0_ISR(void)
@@ -211,7 +211,7 @@ __interrupt void USCI_A0_ISR(void)
 
     switch (packet_type) {
     case PACKET_BRUST:
-      {//Õª∑¢Ω” ’
+      {//Á™ÅÂèëÊé•Êî∂
           M72D_Brust_RX_Buf[M72D_RX_Buf_Cnt++] = UCA0RXBUF;
     
           if (M72D_Brust_RX_Buf[M72D_RX_Buf_Cnt - 1] == '+')
@@ -223,7 +223,7 @@ __interrupt void USCI_A0_ISR(void)
           if (M72D_RX_Buf_Cnt > M72D_Brust_RX_BUF_SIZE) 
           {
                 M72D_RX_Buf_Cnt = 0;
-                M72D_Brust_STATUS = 0xFF; //“Á≥ˆ
+                M72D_Brust_STATUS = 0xFF; //Ê∫¢Âá∫
                 break;
           } 
              
@@ -234,7 +234,7 @@ __interrupt void USCI_A0_ISR(void)
                      M72D_Brust_RX_Buf[M72D_RX_Buf_Cnt - 2] == 'D' && 
                      M72D_Brust_RX_Buf[M72D_RX_Buf_Cnt - 1] == 'I' )
                     {
-                          M72D_Brust_STATUS = Receive_Gprs_Data ; //+QIRDI: 0,1,0 [GPRS  ˝æ›µΩ¥Ô AT+QINDI=1 ]
+                          M72D_Brust_STATUS = Receive_Gprs_Data ; //+QIRDI: 0,1,0 [GPRS Êï∞ÊçÆÂà∞Ëææ AT+QINDI=1 ]
                           break;
                     }
                 if ( M72D_Brust_RX_Buf[M72D_RX_Buf_Cnt - 4] == 'C' && 
@@ -242,7 +242,7 @@ __interrupt void USCI_A0_ISR(void)
                      M72D_Brust_RX_Buf[M72D_RX_Buf_Cnt - 2] == 'T' && 
                      M72D_Brust_RX_Buf[M72D_RX_Buf_Cnt - 1] == 'I' )
                     {
-                          M72D_Brust_STATUS = 0x02; //+CMTI:<mem>,<index> [∂Ãœ˚œ¢µΩ¥Ô AT+CNMI=2,1]
+                          M72D_Brust_STATUS = 0x02; //+CMTI:<mem>,<index> [Áü≠Ê∂àÊÅØÂà∞Ëææ AT+CNMI=2,1]
                           break;
                     }
                 if ( M72D_Brust_RX_Buf[M72D_RX_Buf_Cnt -12] == 'N' && 
@@ -254,7 +254,7 @@ __interrupt void USCI_A0_ISR(void)
                      M72D_Brust_RX_Buf[M72D_RX_Buf_Cnt - 4] == 'R' && 
                      M72D_Brust_RX_Buf[M72D_RX_Buf_Cnt - 1] == 'D' )
                     {
-                      M72D_Brust_STATUS = 0x04; //+CPIN: READY [SIM ◊¥Ã¨ºÏ≤‚ AT+CPIN?]
+                      M72D_Brust_STATUS = 0x04; //+CPIN: READY [SIM Áä∂ÊÄÅÊ£ÄÊµã AT+CPIN?]
                       break;
                     }
                 
@@ -263,7 +263,7 @@ __interrupt void USCI_A0_ISR(void)
                      M72D_Brust_RX_Buf[M72D_RX_Buf_Cnt - 2] == 'E' && 
                      M72D_Brust_RX_Buf[M72D_RX_Buf_Cnt - 1] == 'G' )
                     {
-                      M72D_Brust_STATUS = 0x08; //+CREG: 1    [GSM Õ¯¬Á◊¥Ã¨ 0 ŒﬁÕ¯¬Á 1’˝≥£ 2’˝‘⁄À—À˜]
+                      M72D_Brust_STATUS = 0x08; //+CREG: 1    [GSM ÁΩëÁªúÁä∂ÊÄÅ 0 Êó†ÁΩëÁªú 1Ê≠£Â∏∏ 2Ê≠£Âú®ÊêúÁ¥¢]
                       break;
                     }
                 
@@ -272,7 +272,7 @@ __interrupt void USCI_A0_ISR(void)
                      M72D_Brust_RX_Buf[M72D_RX_Buf_Cnt - 2] == 'U' && 
                      M72D_Brust_RX_Buf[M72D_RX_Buf_Cnt - 1] == 'N' )
                     {    
-                      M72D_Brust_STATUS = 0x40; //+CFUN: 1 [»´π¶ƒ‹π§◊˜]
+                      M72D_Brust_STATUS = 0x40; //+CFUN: 1 [ÂÖ®ÂäüËÉΩÂ∑•‰Ωú]
                       break;
                     }    
           }
@@ -284,7 +284,7 @@ __interrupt void USCI_A0_ISR(void)
                 if(M72D_RX_Buf_Cnt>58)
                 {
                   M72D_Brust_STATUS = GSM_Get_GPS ; //
-                  for(M72D_Brust_Cnt=0;M72D_Brust_Cnt<40;M72D_Brust_Cnt++)                         //…Ë±∏ID◊™¥Ê
+                  for(M72D_Brust_Cnt=0;M72D_Brust_Cnt<40;M72D_Brust_Cnt++)                         //ËÆæÂ§áIDËΩ¨Â≠ò
                    {
                       GSM_GSP_BUF[M72D_Brust_Cnt]=M72D_Brust_RX_Buf[11+M72D_Brust_Cnt]        ;
                    }
@@ -300,13 +300,13 @@ __interrupt void USCI_A0_ISR(void)
              M72D_Brust_RX_Buf[M72D_RX_Buf_Cnt - 2] == 'C' &&
              M72D_Brust_RX_Buf[M72D_RX_Buf_Cnt - 1] == 'T' )
             {
-                 M72D_Brust_STATUS = 0x20; //+PDP DEACT [GPRS¡¥¬∑(TCPIP)∂œø™ ]
+                 M72D_Brust_STATUS = 0x20; //+PDP DEACT [GPRSÈìæË∑Ø(TCPIP)Êñ≠ÂºÄ ]
                  break;
             } 
         break;
       }
     case PACKET_Query:
-      {//≤È—ØΩ” ’
+      {//Êü•ËØ¢Êé•Êî∂
             M72D_Query_RX_Buf[M72D_RX_Buf_Cnt++] = UCA0RXBUF;
             
             if (M72D_Query_RX_Buf[M72D_RX_Buf_Cnt - 1] == 'K')
@@ -344,12 +344,12 @@ __interrupt void USCI_A0_ISR(void)
             
             if (M72D_RX_Buf_Cnt > M72D_Query_RX_BUF_SIZE) {
                 M72D_RX_Buf_Cnt = 0;
-                M72D_Query_STATUS = 0xFF; //“Á≥ˆ
+                M72D_Query_STATUS = 0xFF; //Ê∫¢Âá∫
             }
             break;
       }
     case PACKET_CONFIG:
-      {//≈‰÷√Ω” ’
+      {//ÈÖçÁΩÆÊé•Êî∂
             M72D_SetConfig_RX_Buf[M72D_RX_Buf_Cnt++] = UCA0RXBUF;
             if (M72D_SetConfig_RX_Buf[M72D_RX_Buf_Cnt - 1] == 'K')
                 if (M72D_SetConfig_RX_Buf[M72D_RX_Buf_Cnt - 2] == 'O')
@@ -362,13 +362,13 @@ __interrupt void USCI_A0_ISR(void)
             
             if (M72D_RX_Buf_Cnt > M72D_SetConfig_RX_BUF_SIZE) {
                 M72D_RX_Buf_Cnt = 0;
-                M72D_SetConfig_STATUS = 0xFF; //“Á≥ˆ
+                M72D_SetConfig_STATUS = 0xFF; //Ê∫¢Âá∫
             }
             break;
       }
         
     case PAKET_DATA:
-      {  // ˝æ›Ω” ’
+      {  //Êï∞ÊçÆÊé•Êî∂
             M72D_ServerData_RX_Buf[M72D_RX_Buf_Cnt++] = UCA0RXBUF;
             
             if(Sys_NOW_UP_Flag==0x11)
@@ -382,9 +382,9 @@ __interrupt void USCI_A0_ISR(void)
                     if (M72D_ServerData_RX_Buf[M72D_RX_Buf_Cnt - 4] == 0x0D)
                     {
                       if(M72D_RX_Buf_Cnt>30+UP_Data_Cnt)
-                        M72D_ServerData_STATUS = 0x01; //”– ˝æ›
+                        M72D_ServerData_STATUS = 0x01; //ÊúâÊï∞ÊçÆ
                       else
-                        M72D_ServerData_STATUS = 0x02; //ø’ ˝æ›
+                        M72D_ServerData_STATUS = 0x02; //Á©∫Êï∞ÊçÆ
                     }
             if (M72D_ServerData_RX_Buf[M72D_RX_Buf_Cnt - 1] == 'R')
                 if (M72D_ServerData_RX_Buf[M72D_RX_Buf_Cnt - 3] == 'R' &&
@@ -399,13 +399,13 @@ __interrupt void USCI_A0_ISR(void)
             if (M72D_RX_Buf_Cnt > M72D_ServerData_RX_BUF_SIZE) 
             {
                 M72D_RX_Buf_Cnt = 0;
-                M72D_ServerData_STATUS = 0xFF; //“Á≥ˆ
+                M72D_ServerData_STATUS = 0xFF; //Ê∫¢Âá∫
             }
             break;
       }
 
     case PACKET_NETCONFIG:
-      {  //Õ¯¬ÁΩ” ’
+      {  //ÁΩëÁªúÊé•Êî∂
             M72D_NetConfig_RX_Buf[M72D_RX_Buf_Cnt++] = UCA0RXBUF;
     
             if (M72D_NetConfig_RX_Buf[M72D_RX_Buf_Cnt - 1] == 'K')
@@ -422,7 +422,7 @@ __interrupt void USCI_A0_ISR(void)
                     M72D_NetConfig_STATUS = 0x03; //ALREADY CONNECT
             
             if (M72D_NetConfig_RX_Buf[M72D_RX_Buf_Cnt - 1] == '>')
-                    M72D_NetConfig_STATUS = '>'; //µ»¥˝ ˝æ›∑¢ÀÕ
+                    M72D_NetConfig_STATUS = '>'; //Á≠âÂæÖÊï∞ÊçÆÂèëÈÄÅ
     
             if (M72D_NetConfig_RX_Buf[M72D_RX_Buf_Cnt - 1] == 'R')
                 if (M72D_NetConfig_RX_Buf[M72D_RX_Buf_Cnt - 3] == 'E' && M72D_NetConfig_RX_Buf[M72D_RX_Buf_Cnt - 2] == 'R')
@@ -430,13 +430,13 @@ __interrupt void USCI_A0_ISR(void)
            
             if (M72D_RX_Buf_Cnt > M72D_NetConfig_RX_BUF_SIZE) {
                 M72D_RX_Buf_Cnt = 0;
-                M72D_NetConfig_STATUS = 0xFF; //“Á≥ˆ
+                M72D_NetConfig_STATUS = 0xFF; //Ê∫¢Âá∫
             }
     
             break;
       }
     case PCKET_OTHER:
-      { //Œ¥÷™∞¸Ω” ’
+      { //Êú™Áü•ÂåÖÊé•Êî∂
             M72D_Other_RX_Buf[M72D_RX_Buf_Cnt++] = UCA0RXBUF;
     
             if (M72D_Other_RX_Buf[M72D_RX_Buf_Cnt - 1] == 'K')
@@ -450,7 +450,7 @@ __interrupt void USCI_A0_ISR(void)
     
             if (M72D_RX_Buf_Cnt > M72D_Other_RX_BUF_SIZE) {
                 M72D_RX_Buf_Cnt = 0;
-                M72D_Other_STATUS = 0xFF; //“Á≥ˆ
+                M72D_Other_STATUS = 0xFF; //Ê∫¢Âá∫
             }
     
             break;

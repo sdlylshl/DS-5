@@ -1,9 +1,9 @@
 /****************************************************************
  NAME: u2440mon.c
  4.0
- 	Ôö¼ÓÆô¶¯Í¼Æ¬
- 	Ôö¼ÓNORÆô¶¯Ö§³Ö
- 	Ö§³ÖĞÂWINCEµÄÄÚºËÉÕĞ´
+ 	å¢åŠ å¯åŠ¨å›¾ç‰‡
+ 	å¢åŠ NORå¯åŠ¨æ”¯æŒ
+ 	æ”¯æŒæ–°WINCEçš„å†…æ ¸çƒ§å†™
 
  ****************************************************************/
 #define	GLOBAL_CLK		1
@@ -216,7 +216,7 @@ static void cal_cpu_bus_clk(void)
 	p = (val>>4)&0x3f;
 	s = val&3;
 
-	//(m+8)*FIN*2 ²»Òª³¬³ö32Î»Êı!
+	//(m+8)*FIN*2 ä¸è¦è¶…å‡º32ä½æ•°!
 	FCLK = ((m+8)*(FIN/100)*2)/((p+2)*(1<<s))*100;
 	
 	val = rCLKDIVN;
@@ -332,7 +332,7 @@ void Main(void)
 	consoleNum=boot_params.serial_sel.val&3;	// Uart 1 select for debug.
 	if(consoleNum>1)consoleNum=0;
 	Uart_Init(0,115200/*boot_params.serial_baud.val*/);
-	Uart_Select(consoleNum);//Uart_Select(consoleNum) Ä¬ÈÏÓÃ´®¿Ú0£¬Èç¹ûÓÃ»§ÒªÓÃ±ğµÄ´®¿ÚµÄ»°ÇëĞŞ¸ÄÕâÀï
+	Uart_Select(consoleNum);//Uart_Select(consoleNum) é»˜è®¤ç”¨ä¸²å£0ï¼Œå¦‚æœç”¨æˆ·è¦ç”¨åˆ«çš„ä¸²å£çš„è¯è¯·ä¿®æ”¹è¿™é‡Œ
 
 	MMU_Init();	
 
@@ -453,18 +453,18 @@ void Menu(void)
 	{
 #if 0
 		Uart_Printf("\n +------------------------------------------------------------+\n");
-		Uart_Printf(" |                    BOOTLOADER²Ëµ¥                          |\n");
+		Uart_Printf(" |                    BOOTLOADERèœå•                          |\n");
 		Uart_Printf(" +------------------------------------------------------------+\n");
-		Uart_Printf(" | [0] ÏÂÔØ²¢ÔËĞĞ                                             |\n");
-		Uart_Printf(" | [1] ÏÂÔØµ½FLASH                                            |\n");
+		Uart_Printf(" | [0] ä¸‹è½½å¹¶è¿è¡Œ                                             |\n");
+		Uart_Printf(" | [1] ä¸‹è½½åˆ°FLASH                                            |\n");
 
-		Uart_Printf(" | [2] ÓÃ´®¿ÚÏÂÔØ                                             |\n");
-		Uart_Printf(" | [3] Æô¶¯Ó¦ÓÃ³ÌĞò                                           |\n");
-		Uart_Printf(" | [4] Æô¶¯LINUX                                              |\n");
+		Uart_Printf(" | [2] ç”¨ä¸²å£ä¸‹è½½                                             |\n");
+		Uart_Printf(" | [3] å¯åŠ¨åº”ç”¨ç¨‹åº                                           |\n");
+		Uart_Printf(" | [4] å¯åŠ¨LINUX                                              |\n");
 
-		Uart_Printf(" | [5] Æô¶¯WINCE                                              |\n");	
-		Uart_Printf(" | [6] ²Á³ıFLASH                                              |\n");
-		Uart_Printf(" | [7] ÉèÖÃ²ÎÊı                                               |\n");
+		Uart_Printf(" | [5] å¯åŠ¨WINCE                                              |\n");	
+		Uart_Printf(" | [6] æ“¦é™¤FLASH                                              |\n");
+		Uart_Printf(" | [7] è®¾ç½®å‚æ•°                                               |\n");
 		Uart_Printf(" +------------------------------------------------------------+\n");
 #else		
 		Uart_Printf("\n +------------------------------------------------------------+\n");
@@ -622,10 +622,10 @@ void WaitDownload(void)
 	  	else
 	  	{
 	  		ConfigEp3DmaMode(downloadAddress+EP3_PKT_SIZE-8,0x80000-EP3_PKT_SIZE);
-	  		//2440±È2410µÄDIDSTCx¼Ä´æÆ÷¶àÁËÖĞ¶Ï²úÉúÌõ¼şµÄ¿ØÖÆÎ»,USBµÄDMA´«ÊäÎª×Ö½Ú¼ÆÊı
-	  		//·ÀÖ¹¸ßÆµ¿ªcacheÔËĞĞÊ±ÏÂÔØ´óÓÚ0x80000×Ö½ÚÎÄ¼şÊ±IsrDma2³ö´í!!!
+	  		//2440æ¯”2410çš„DIDSTCxå¯„å­˜å™¨å¤šäº†ä¸­æ–­äº§ç”Ÿæ¡ä»¶çš„æ§åˆ¶ä½,USBçš„DMAä¼ è¾“ä¸ºå­—èŠ‚è®¡æ•°
+	  		//é˜²æ­¢é«˜é¢‘å¼€cacheè¿è¡Œæ—¶ä¸‹è½½å¤§äº0x80000å­—èŠ‚æ–‡ä»¶æ—¶IsrDma2å‡ºé”™!!!
 	  		//while((rDSTAT2&0xfffff)==(0x80000-EP3_PKT_SIZE));
-	  		while(!(rDSTAT2&(1<<20)));	//·ÀÖ¹DMA´«ÊäÉĞÎ´¿ªÊ¼¾ÍĞ´ÈëÏÂÒ»´ÎÖØ×°Öµ!!!
+	  		while(!(rDSTAT2&(1<<20)));	//é˜²æ­¢DMAä¼ è¾“å°šæœªå¼€å§‹å°±å†™å…¥ä¸‹ä¸€æ¬¡é‡è£…å€¼!!!
 			if(downloadFileSize>(0x80000*2))//for 1st autoreload
 			{
 				rDIDST2=(downloadAddress+0x80000-8);  //for 1st autoreload.
@@ -745,16 +745,16 @@ void WaitDownload(void)
 
 	if(download_run==1)
 	{
-		register void(*run)(void);	//Ê¹ÓÃ¼Ä´æÆ÷±äÁ¿ÒÔ·ÀÖ¹½ûÖ¹DCACHEºóÊı¾İ²»Ò»ÖÂ!!!
+		register void(*run)(void);	//ä½¿ç”¨å¯„å­˜å™¨å˜é‡ä»¥é˜²æ­¢ç¦æ­¢DCACHEåæ•°æ®ä¸ä¸€è‡´!!!
 		rINTMSK=BIT_ALLMSK;
-		run=(void (*)(void))downloadAddress;	//Ê¹ÓÃDCACHEÇÒRWÇøÒ²ÔÚCACHEÇø¼ädownloadAddress»áÔÚcacheÖĞ
+		run=(void (*)(void))downloadAddress;	//ä½¿ç”¨DCACHEä¸”RWåŒºä¹Ÿåœ¨CACHEåŒºé—´downloadAddressä¼šåœ¨cacheä¸­
 		{	
 			MMU_DisableDCache();	//download program must be in 
     		MMU_DisableICache();	//non-cache area
-    		MMU_InvalidateDCache();	//Ê¹ËùÓĞDCACHEÊ§Ğ§,±¾³ÌĞòµÄMMU_InitÖĞ½«»áË¢ĞÂDCACHEµ½´æ´¢Æ÷,
-    								//ÎªÊ¹Ó¦ÓÃ´ËMMU_Init·½Ê½µÄ³ÌĞòÄÜ±»ÕıÈ·ÔËĞĞ±ØĞëÏÈÊ¹DCACHEÊ§Ğ§!!!
+    		MMU_InvalidateDCache();	//ä½¿æ‰€æœ‰DCACHEå¤±æ•ˆ,æœ¬ç¨‹åºçš„MMU_Initä¸­å°†ä¼šåˆ·æ–°DCACHEåˆ°å­˜å‚¨å™¨,
+    								//ä¸ºä½¿åº”ç”¨æ­¤MMU_Initæ–¹å¼çš„ç¨‹åºèƒ½è¢«æ­£ç¡®è¿è¡Œå¿…é¡»å…ˆä½¿DCACHEå¤±æ•ˆ!!!
     		MMU_DisableMMU();
-    		//call_linux(0, 193, downloadAddress);	//»ò²»ÓÃÉÏÃæ3¸öº¯Êı¶øÖ±½ÓÊ¹ÓÃcall_linux
+    		//call_linux(0, 193, downloadAddress);	//æˆ–ä¸ç”¨ä¸Šé¢3ä¸ªå‡½æ•°è€Œç›´æ¥ä½¿ç”¨call_linux
 		}
 	run();
 	}

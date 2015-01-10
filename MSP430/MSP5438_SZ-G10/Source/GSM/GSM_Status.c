@@ -2,7 +2,7 @@
 #include "msp430x54x.h"
 #include "GSM.h"
 
-//GSM ×´Ì¬
+//GSM çŠ¶æ€
 #define TCPIP_ERRO 0x20
 #define GPRS_ERRO 0x10
 #define GSM_ERRO 0x08
@@ -10,23 +10,23 @@
 #define SLEEP_ERRO 0x02
 #define POWER_ERRO 0x01
 
-//0 Õı³£ 0x01¹Ø»ú 0x02ĞİÃß 0x04 SIM¿¨ 0x08 GSMÍøÂçÕı³£ 0x10GPRSÍøÂçÕı³£ 0x20 TCPIPÕı³£
+//0 æ­£å¸¸ 0x01å…³æœº 0x02ä¼‘çœ  0x04 SIMå¡ 0x08 GSMç½‘ç»œæ­£å¸¸ 0x10GPRSç½‘ç»œæ­£å¸¸ 0x20 TCPIPæ­£å¸¸
 unsigned char GSM_STATUS=0x3D                                     ;
-unsigned char UDP_Built_flag                                      ;//11==ÍøÂç½¨Á¢£¬00==ÍøÂç¶Ï¿ª»òÕßÃ»ÓĞ½¨Á¢
-unsigned long int GSM_Start_Count=0                               ;//¿ª»úÑÓÊ±
+unsigned char UDP_Built_flag                                      ;//11==ç½‘ç»œå»ºç«‹ï¼Œ00==ç½‘ç»œæ–­å¼€æˆ–è€…æ²¡æœ‰å»ºç«‹
+unsigned long int GSM_Start_Count=0                               ;//å¼€æœºå»¶æ—¶
 
-char MSP430_POWER_ON_FLAG;//11=ÉÏµç£»55=¶Ïµç
+char MSP430_POWER_ON_FLAG;//11=ä¸Šç”µï¼›55=æ–­ç”µ
 #define RING BIT0
-unsigned char POWER_ON_FLAG                                        ;//11=¹Ø»ú£»55=¿ª»ú
+unsigned char POWER_ON_FLAG                                        ;//11=å…³æœºï¼›55=å¼€æœº
 /*******************************************************************\
-*	      º¯ÊıÃû£ºGSM_NOM_POW_ON          
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  Ó²¼ş¿ª»ú 
-*	      ²ÎÊı£º  V2
-          ¸ñÊ½£º 
-*	      ·µ»ØÖµ£º  
+*	      å‡½æ•°åï¼šGSM_NOM_POW_ON          
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  ç¡¬ä»¶å¼€æœº 
+*	      å‚æ•°ï¼š  V2
+          æ ¼å¼ï¼š 
+*	      è¿”å›å€¼ï¼š  
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©GSM_NORMAL_POWER_ON
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰GSM_NORMAL_POWER_ON
 \*******************************************************************/
 void GSM_NOM_POW_ON(void)
 {
@@ -35,36 +35,36 @@ void GSM_NOM_POW_ON(void)
 
     P4DIR   |=  BIT0                                                 ;//P4.1 outputs
     P4OUT   &=  ~  BIT0                                                 ;//GSMPWR L
-    Delayms(10)                                                      ;//XX*1MsÑÓÊ±
+    Delayms(10)                                                      ;//XX*1Mså»¶æ—¶
     
     //on  4.2
     P4DIR   |=  BIT2                                                 ;//P4.1 outputs
     P4OUT   &= ~BIT2                                                 ;//GSMPWR L
-    Delayms(200)                                                     ;//XX*1MsÑÓÊ±
+    Delayms(200)                                                     ;//XX*1Mså»¶æ—¶
     P4OUT   |=  BIT2                                                 ;//GSMPWR H
-    Delayms(200)                                                     ;//XX*1MsÑÓÊ±
-    GSM_Start_Count=0;//¿ª»úÑÓÊ±
+    Delayms(200)                                                     ;//XX*1Mså»¶æ—¶
+    GSM_Start_Count=0;//å¼€æœºå»¶æ—¶
     while((!(P4IN&BIT5))&&(GSM_Start_Count<SECD_10));
-    Delayms(50)                                                      ;//XX*1MsÑÓÊ±
+    Delayms(50)                                                      ;//XX*1Mså»¶æ—¶
     P4OUT   &= ~BIT2                                                 ;//  GSMPWR L     P4.1 reset
     
     GSM_STATUS = 0x3C                                                ;
     GSM_ECHO   = 0x87                                                ;
-    POWER_ON_FLAG   =   0x55                                         ;//55=¿ª»ú
-    SIM_CARD_TIME_OUT=500                                            ;//SIM¿¨³õÊ¼»¯¼ÆÊ±ÓÃ
-    Delayms(2000)                                                    ;//XX*1MsÑÓÊ±
+    POWER_ON_FLAG   =   0x55                                         ;//55=å¼€æœº
+    SIM_CARD_TIME_OUT=500                                            ;//SIMå¡åˆå§‹åŒ–è®¡æ—¶ç”¨
+    Delayms(2000)                                                    ;//XX*1Mså»¶æ—¶
 }
 
 
 /*******************************************************************\
-*	      º¯ÊıÃû£ºGSM_NOM_POW_ON          
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  Ó²¼ş¿ª»ú 
-*	      ²ÎÊı£º  V1
-          ¸ñÊ½£º 
-*	      ·µ»ØÖµ£º  
+*	      å‡½æ•°åï¼šGSM_NOM_POW_ON          
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  ç¡¬ä»¶å¼€æœº 
+*	      å‚æ•°ï¼š  V1
+          æ ¼å¼ï¼š 
+*	      è¿”å›å€¼ï¼š  
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©GSM_NORMAL_POWER_ON
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰GSM_NORMAL_POWER_ON
 \*******************************************************************/
 /*
 void GSM_NOM_POW_ON(void)
@@ -74,70 +74,70 @@ void GSM_NOM_POW_ON(void)
 
     P4DIR   |=  BIT0                                                 ;//P4.1 outputs
     P4OUT   |=  BIT0                                                 ;//GSMPWR L
-    Delayms(10)                                                      ;//XX*1MsÑÓÊ±
+    Delayms(10)                                                      ;//XX*1Mså»¶æ—¶
     
     //on  4.2
     P4DIR   |=  BIT2                                                 ;//P4.1 outputs
     P4OUT   &= ~BIT2                                                 ;//GSMPWR L
-    Delayms(200)                                                     ;//XX*1MsÑÓÊ±
+    Delayms(200)                                                     ;//XX*1Mså»¶æ—¶
     P4OUT   |=  BIT2                                                 ;//GSMPWR H
-    Delayms(200)                                                     ;//XX*1MsÑÓÊ±
-    GSM_Start_Count=0;//¿ª»úÑÓÊ±
+    Delayms(200)                                                     ;//XX*1Mså»¶æ—¶
+    GSM_Start_Count=0;//å¼€æœºå»¶æ—¶
     while((!(P4IN&BIT5))&&(GSM_Start_Count<SECD_30));
-    Delayms(50)                                                      ;//XX*1MsÑÓÊ±
+    Delayms(50)                                                      ;//XX*1Mså»¶æ—¶
     P4OUT   &= ~BIT2                                                 ;//  GSMPWR L     P4.1 reset
     
     GSM_STATUS = 0x3C                                                ;
     GSM_ECHO   = 0x87                                                ;
-    SIM_CARD_TIME_OUT=500                                            ;//SIM¿¨³õÊ¼»¯¼ÆÊ±ÓÃ
+    SIM_CARD_TIME_OUT=500                                            ;//SIMå¡åˆå§‹åŒ–è®¡æ—¶ç”¨
 }
 
 */
 
 
-char * POWER_DOWN = "AT+QPOWD=1"                                     ;//¹Ø»ú×Ö·û´®
+char * POWER_DOWN = "AT+QPOWD=1"                                     ;//å…³æœºå­—ç¬¦ä¸²
 /*******************************************************************\
-*	      º¯ÊıÃû£ºNORMAL_POWER_DOWN             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  Èí¼ş¹Ø»ú 
-*	      ²ÎÊı£º  ÑÓÊ±15S
-          ¸ñÊ½£º 
-*	      ·µ»ØÖµ£º  
+*	      å‡½æ•°åï¼šNORMAL_POWER_DOWN             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  è½¯ä»¶å…³æœº 
+*	      å‚æ•°ï¼š  å»¶æ—¶15S
+          æ ¼å¼ï¼š 
+*	      è¿”å›å€¼ï¼š  
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
 void GSM_NOM_POW_OFF(void)
 {
   
     if(UDP_Built_flag==0x11)
     {
-        UDP_Built_flag      =0x00                                   ;//00==ÍøÂç¶Ï¿ª»òÕßÃ»ÓĞ½¨Á¢
+        UDP_Built_flag      =0x00                                   ;//00==ç½‘ç»œæ–­å¼€æˆ–è€…æ²¡æœ‰å»ºç«‹
         GSM_SendCMD(PACKET_Query,"AT+QICLOSE",0, 1000)              ;   
         Delayms(200)                                                ;
         GSM_SendCMD(PACKET_Query,"AT+QIDEACT",0, 1000)              ;
     }
     
     if(GSM_SendCMD(PACKET_CONFIG,POWER_DOWN, 0,100) == 1) 
-        POWER_ON_FLAG   =   0x11                                     ;//11=¹Ø»ú
-    Delayms(15000)                                                    ;//XX*1MsÑÓÊ±
+        POWER_ON_FLAG   =   0x11                                     ;//11=å…³æœº
+    Delayms(15000)                                                    ;//XX*1Mså»¶æ—¶
     P4DIR   |=  BIT0                                                 ;//P4.1 outputs
     P4OUT   &= ~BIT0                                                 ;//GSMPWR L
     
 }
 /*******************************************************************\
-*	      º¯ÊıÃû£ºRE_START_GSM             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ÖØÆôÏµÍ³ 
-*	      ²ÎÊı£º  
-          ¸ñÊ½£º  
-*	      ·µ»ØÖµ£º  
+*	      å‡½æ•°åï¼šRE_START_GSM             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  é‡å¯ç³»ç»Ÿ 
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š  
+*	      è¿”å›å€¼ï¼š  
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
-void RE_START_GSM(void)                                              //ÖØÆôÏµÍ³ 
+void RE_START_GSM(void)                                              //é‡å¯ç³»ç»Ÿ 
 {
     GSM_NOM_POW_OFF()                                                ;
-    Delayms(15000)                                                    ;//XX*1MsÑÓÊ±
+    Delayms(15000)                                                    ;//XX*1Mså»¶æ—¶
     GSM_NOM_POW_ON()                                                 ;
 }
 
@@ -151,7 +151,7 @@ void GSM_Sleep()
 }
 
 
-//GSM ¹¤×÷×´Ì¬¼ì²â
+//GSM å·¥ä½œçŠ¶æ€æ£€æµ‹
 void GSM_Power_state()
 {
 if(P4IN&BIT5)
@@ -160,8 +160,8 @@ if(P4IN&BIT5)
     GSM_STATUS =0x3C;
 }
 
-unsigned long int GSM_STAT_TIME_CNT=60000            ;//¼ì²âÊÖ»ú¿¨ 5·ÖÖÓ¼ì²âÒ»´Î
-char * SIM_AT_CPIN = "AT+CPIN?"                       ;//AT+CPIN  ÊäÈë PIN
+unsigned long int GSM_STAT_TIME_CNT=60000            ;//æ£€æµ‹æ‰‹æœºå¡ 5åˆ†é’Ÿæ£€æµ‹ä¸€æ¬¡
+char * SIM_AT_CPIN = "AT+CPIN?"                       ;//AT+CPIN  è¾“å…¥ PIN
 void GSM_SIM_state()
 {
     static unsigned char SIM_CPIN                                       ;
@@ -169,14 +169,14 @@ void GSM_SIM_state()
     if (SIM_CPIN==0xAA) 
     {
         Module_Status[2] &= ~0xC0;
-        Write_No_Chg_Card_Flash();//Ğ´»»¿¨ÎŞ¿¨Flash 
+        Write_No_Chg_Card_Flash();//å†™æ¢å¡æ— å¡Flash 
     }
     else
     {
         if(SIM_CPIN==0xA0) 
         {
             Module_Status[2] |= 0xC0;
-            Write_No_Chg_Card_Flash();//Ğ´»»¿¨ÎŞ¿¨Flash 
+            Write_No_Chg_Card_Flash();//å†™æ¢å¡æ— å¡Flash 
         }
     }
 }
@@ -187,7 +187,7 @@ void GSM_GSM_state()
 }
 
 
-char * GSM_GPRS_AT_State = "AT+QISTAT"                       ;//AT+CPIN  ÊäÈë PIN
+char * GSM_GPRS_AT_State = "AT+QISTAT"                       ;//AT+CPIN  è¾“å…¥ PIN
 void GSM_GPRS_state()
 {
     if(GSM_SendCMD(PACKET_Query, GSM_GPRS_AT_State,0, 10))
@@ -198,9 +198,9 @@ void GSM_GPRS_state()
         
             if(((M72D_Brust_RX_Buf[11]=='P')&&(M72D_Brust_RX_Buf[12]=='D')&&(M72D_Brust_RX_Buf[13]=='P'))
                &&((M72D_Brust_RX_Buf[15]=='D')&&(M72D_Brust_RX_Buf[17]=='A')&&(M72D_Brust_RX_Buf[19]=='T')))
-            {   //+PDP DEACT [GPRSÁ´Â·(TCPIP)¶Ï¿ª ]&&(M72D_Brust_RX_Buf[16]=='E')&&(M72D_Brust_RX_Buf[18]=='C')
-                CONNECT_FAIL_Flag     =0x11                   ;//CONNECT FAILÔÊĞíÊ¹ÄÜ
-                CONNECT_FAIL_RESET()                          ;//´¦ÀíConect_FailÁ´½Ó
+            {   //+PDP DEACT [GPRSé“¾è·¯(TCPIP)æ–­å¼€ ]&&(M72D_Brust_RX_Buf[16]=='E')&&(M72D_Brust_RX_Buf[18]=='C')
+                CONNECT_FAIL_Flag     =0x11                   ;//CONNECT FAILå…è®¸ä½¿èƒ½
+                CONNECT_FAIL_RESET()                          ;//å¤„ç†Conect_Failé“¾æ¥
             }
         }
     }
@@ -215,7 +215,7 @@ void GSM_State()
 {
     if(GSM_STAT_TIME_CNT>SECD_30)
     {
-        GSM_STAT_TIME_CNT  =0                ;//¼ì²âÊÖ»ú¿¨ 1·ÖÖÓ¼ì²âÒ»´Î
+        GSM_STAT_TIME_CNT  =0                ;//æ£€æµ‹æ‰‹æœºå¡ 1åˆ†é’Ÿæ£€æµ‹ä¸€æ¬¡
         GSM_Power_state()                    ; 
         GSM_SIM_state()                      ;
         GSM_GSM_state()                      ;

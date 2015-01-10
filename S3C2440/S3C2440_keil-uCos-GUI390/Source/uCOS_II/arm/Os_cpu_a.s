@@ -344,7 +344,7 @@ OS_CPU_IRQ_ISR
 ;	R2--PC 
 ;   R3--SPSR
 ;------------------------------------------------------------------------
-	MOV     R1, SP                  ;Save¡¡ IRQ stack pointer
+	MOV     R1, SP                  ;Saveã€€ IRQ stack pointer
 	ADD     SP, SP, #12             ;Adjust IRQ stack pointer
 	SUB     R2, LR, #4              ;Adjust PC for return address to task
 

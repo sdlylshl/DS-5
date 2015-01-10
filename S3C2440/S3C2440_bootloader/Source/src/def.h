@@ -4,19 +4,19 @@
 #include <stdint.h>
 //#include <stddef.h>
 
-//½â¾öds-5 ±àÒë³ö´í
+//è§£å†³ds-5 ç¼–è¯‘å‡ºé”™
 #define __irq
 
 #define MC216 TRUE
-//GPSÒ»Ìå»ú
-//Ö÷ÒªÓ°Ïì°´¼üÉ¨Ãè
+//GPSä¸€ä½“æœº
+//ä¸»è¦å½±å“æŒ‰é”®æ‰«æ
 #define GPS TRUE
-//ARM¾§ÕñÑ¡Ôñ 12MHz
+//ARMæ™¶æŒ¯é€‰æ‹© 12MHz
 //#define XTAL_12M FALSE
 #define FIN 	(16000000)
 //#define FIN 	(12000000)
 //#define FIN		(16934400)
-//Èí¼ş°æ±¾
+//è½¯ä»¶ç‰ˆæœ¬
 #define version  52
 
 #ifndef U8
@@ -136,31 +136,31 @@
 #define END_KEY		0x4b
 #define	ESC_KEY		0x1b
 
-//1.µÃµ½Ö¸¶¨µØÖ·ÉÏµÄÒ»¸ö×Ö»ò×Ö½Ú
+//1.å¾—åˆ°æŒ‡å®šåœ°å€ä¸Šçš„ä¸€ä¸ªå­—æˆ–å­—èŠ‚
 #define MEM_B(x) (*((unsigned char *)(x)))
 #define MEM_W(x) (*((unsigned short *)(x)))
 
-//2.Çó×î´ó×îĞ¡Öµ
+//2.æ±‚æœ€å¤§æœ€å°å€¼
 #define MAX(x,y) (((x)>(y))?(x):(y))
 #define MIN(x,y) (((x)<(y))?(x):(y))
 
-//3.µÃµ½Ò»¸öfieldÔÚ½á¹¹ÌåÖĞµÄÆ«ÒÆ
-#define FPOS(type,field) ((unsigned int)&((type *)0)->field) //ÕâÀïµÄ&ÊÇÈ¡µØÖ·
+//3.å¾—åˆ°ä¸€ä¸ªfieldåœ¨ç»“æ„ä½“ä¸­çš„åç§»
+#define FPOS(type,field) ((unsigned int)&((type *)0)->field) //è¿™é‡Œçš„&æ˜¯å–åœ°å€
 
-//4.µÃµ½Ò»¸ö½á¹¹ÌåÖĞfieldËùÕ¼ÓÃµÄ×Ö½ÚÊı
+//4.å¾—åˆ°ä¸€ä¸ªç»“æ„ä½“ä¸­fieldæ‰€å ç”¨çš„å­—èŠ‚æ•°
 #define FSIZE(type,field) sizeof(((type *)0)->field)
 
-//5.°´ÕÕLSB¸ñÊ½°ÑÁ½¸ö×Ö½Úuint8_t×ª»¯ÎªÒ»¸öuint16_t
+//5.æŒ‰ç…§LSBæ ¼å¼æŠŠä¸¤ä¸ªå­—èŠ‚uint8_tè½¬åŒ–ä¸ºä¸€ä¸ªuint16_t
 #define FLIPW(ray)((((uint16_t)(ray)[0])*256)+(ray)[1])
 
-//6.°´ÕÕLSB¸ñÊ½ °ÑÒ»¸öuint16_t×ª»»ÎªÁ½¸ö×Ö½Úuint8_t
+//6.æŒ‰ç…§LSBæ ¼å¼ æŠŠä¸€ä¸ªuint16_tè½¬æ¢ä¸ºä¸¤ä¸ªå­—èŠ‚uint8_t
 #define FLOPW(ray,val) (ray)[0]=((val)/256);(ray)[1]=((val)&0xFF)
 
-//7.µÃµ½Ò»¸ö±äÁ¿µÄµØÖ·(¿í¶È)
+//7.å¾—åˆ°ä¸€ä¸ªå˜é‡çš„åœ°å€(å®½åº¦)
 #define B_PTR(var) ((uint8_t *)(void *)&(var))
 #define W_PTR(var) ((uint16_t *)(void *)&(var))
 
-//8.µÃµ½Ò»¸ö×ÖµÄ¸ßÎ»ºÍµÍÎ»×Ö½Ú
+//8.å¾—åˆ°ä¸€ä¸ªå­—çš„é«˜ä½å’Œä½ä½å­—èŠ‚
 #define WORD_LO(xxx) ((uint8_t)((uint16_t)(xxx)&0xFF))
 #define WORD_HI(xxx) ((uint8_t)((uint16_t)(xxx)>>8))
 /** The upper 8 bits of a 16 bit value */
@@ -168,31 +168,31 @@
 /** The lower 8 bits (of a 16 bit value) */
 #define LSB_16(a) (((a) & 0xFFU))
 
-//9.·µ»ØÒ»¸ö±ÈX´óµÄ×î½Ó½üµÄ8µÄ±¶Êı
+//9.è¿”å›ä¸€ä¸ªæ¯”Xå¤§çš„æœ€æ¥è¿‘çš„8çš„å€æ•°
 #define RND8(x) ((((x)+7)>>3)<<3)
 
-//10.½«Ò»¸ö×ÖÄ¸×ª»»Îª´óĞ´
+//10.å°†ä¸€ä¸ªå­—æ¯è½¬æ¢ä¸ºå¤§å†™
 #define UPCASE(c) (((c)>='a'&&(c)<='z')?((c)-0x20):(c))
 
-//11.½«Ò»¸ö×ÖÄ¸×ª»»ÎªĞ¡Ğ´
+//11.å°†ä¸€ä¸ªå­—æ¯è½¬æ¢ä¸ºå°å†™
 #define LOWCASE(c) (((c)>='A'&&(c)<='Z')?((c)+0x20):(c))
 
-//12.ÅĞ¶Ï×Ö·ûÊÇ²»ÊÇÊ®½øÖÆµÄÊı×Ö
+//12.åˆ¤æ–­å­—ç¬¦æ˜¯ä¸æ˜¯åè¿›åˆ¶çš„æ•°å­—
 #define DECCHK(c) ((c)>='0'&&(c)<='9')
 
-//13.ÅĞ¶Ï×Ö·ûÊÇ²»ÊÇÊ®Áù½øÖÆµÄÊı×Ö
+//13.åˆ¤æ–­å­—ç¬¦æ˜¯ä¸æ˜¯åå…­è¿›åˆ¶çš„æ•°å­—
 #define HEXCHK(c) (((c)>='0'&&(c)<='9')||((c)>='a'&&(c)<='f')||((c)>='A'&&(c)<='F'))
 
-//14.·ÀÖ¹Òç³ö
+//14.é˜²æ­¢æº¢å‡º
 #define INC_SAT(val) (val=((val)+1>(val))?(val)+1:(val))
 
-//15·µ»ØÊı×éÔªËØµÄ¸öÊı
+//15è¿”å›æ•°ç»„å…ƒç´ çš„ä¸ªæ•°
 #define ARR_NUM(a) (sizeof((a))/sizeof((a)[0]))
 
-//16.·µ»ØÒ»¸öÎŞ·ûºÅÊınÎ²µÄÖµ X%(2^n)
+//16.è¿”å›ä¸€ä¸ªæ— ç¬¦å·æ•°nå°¾çš„å€¼ X%(2^n)
 #define MOD_BY_POWER_OF_TWO(val,modby) ((uint32_t)(val)&(uint32_t)((modby)-1))
 
-//17.IO¿Õ¼äÓ³ÉäÔÚ´æ´¢¿Õ¼äµÄ½á¹¹
+//17.IOç©ºé—´æ˜ å°„åœ¨å­˜å‚¨ç©ºé—´çš„ç»“æ„
 #define INPUT(port) (*((volatile uint8_t *)(port)))
 #define INPUTW(port) (*((volatile uint16_t *)(port)))
 #define INPUTDW(port) (*((volatile uint32_t *)(port)))

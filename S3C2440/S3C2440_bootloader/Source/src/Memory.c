@@ -22,7 +22,7 @@ extern void Timer_InitEx(void);
 extern void Timer_StartEx(void);
 extern U32 Timer_StopEx(void);
 //********************************
-//定义跳过测试的内存地址
+//瀹氫箟璺宠繃娴嬭瘯鐨勫唴瀛樺湴鍧�
 #define JMPDATA 0x01000000
 
 void MemoryTest(void)

@@ -4,23 +4,23 @@
 #include "GPS.h"
 #define GPS_ANT_OK_NUM  100
 
-char GPS_ANT_STATUS_Flag;//AA==ÌìÏß±ÕºÏ£»55==ÌìÏß¶Ï¿ª
-unsigned long int GPS_ANT_OPEN_CNT; //GPSÌìÏß¿ªÂ·×´Ì¬¼ÇÂ¼´ÎÊý
-unsigned long int GPS_ANT_Close_CNT;//GPSÌìÏß±ÕºÏ×´Ì¬¼ÇÂ¼´ÎÊý
-unsigned long int GPS_ANT_IO_CNT;//GPSÌìÏß´ÎÊý
+char GPS_ANT_STATUS_Flag;//AA==å¤©çº¿é—­åˆï¼›55==å¤©çº¿æ–­å¼€
+unsigned long int GPS_ANT_OPEN_CNT; //GPSå¤©çº¿å¼€è·¯çŠ¶æ€è®°å½•æ¬¡æ•°
+unsigned long int GPS_ANT_Close_CNT;//GPSå¤©çº¿é—­åˆçŠ¶æ€è®°å½•æ¬¡æ•°
+unsigned long int GPS_ANT_IO_CNT;//GPSå¤©çº¿æ¬¡æ•°
 
 /*******************************************************************\
-*	      º¯ÊýÃû£ºGPS_ANT_STATUS             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  GPSÌìÏß¼ì²â  
-*	      ²ÎÊý£º  
-           1¡¢20Ms=¼ì²â1´Î£»
+*	      å‡½æ•°åï¼šGPS_ANT_STATUS             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  GPSå¤©çº¿æ£€æµ‹  
+*	      å‚æ•°ï¼š  
+           1ã€20Ms=æ£€æµ‹1æ¬¡ï¼›
 
-*	      ·µ»ØÖµ£ºÎÞ     
+*	      è¿”å›žå€¼ï¼šæ—      
 *
-*	      ÐÞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹åŽ†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
-void GPS_ANT_STATUS(void)//GPSÌìÏß¼ì²â
+void GPS_ANT_STATUS(void)//GPSå¤©çº¿æ£€æµ‹
 {
   if(GPS_ANT_IO_CNT>10)
   {
@@ -32,7 +32,7 @@ void GPS_ANT_STATUS(void)//GPSÌìÏß¼ì²â
              GPS_ANT_OPEN_CNT=0;
              GPS_ANT_Close_CNT=0;
              GPS_ANT_STATUS_Flag=0x55;
-             Module_Status[0] |=0x30;//GPSÌìÏß×´Ì¬¿ªÂ·
+             Module_Status[0] |=0x30;//GPSå¤©çº¿çŠ¶æ€å¼€è·¯
              GPS_GSM_System_Stu[0]|=0x30;
          }
       }
@@ -44,7 +44,7 @@ void GPS_ANT_STATUS(void)//GPSÌìÏß¼ì²â
              GPS_ANT_Close_CNT=0;
              GPS_ANT_OPEN_CNT=0;
              GPS_ANT_STATUS_Flag=0xAA;
-             Module_Status[0] &=~0x30;//GPSÌìÏß×´Ì¬±ÕºÏ
+             Module_Status[0] &=~0x30;//GPSå¤©çº¿çŠ¶æ€é—­åˆ
              GPS_GSM_System_Stu[0]&=~0x30;
         }
       }

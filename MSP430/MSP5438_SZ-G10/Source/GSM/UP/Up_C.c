@@ -3,43 +3,43 @@
 #include "msp430x54x.h"
 #include "Root_Up.h"
 
-char Sys_NOW_UP_Flag;//ÏµÍ³ÕýÔÚÉý¼¶±êÖ¾ 11==ÔÚÉý¼¶ 55 Î´Éý¼¶  Éý¼¶Íê³ÉÊ±ÐèÒªÖÃÎ» 88  µÍ¹¦ºÄÄ£Ê½Ê±Îª66
+char Sys_NOW_UP_Flag;//ç³»ç»Ÿæ­£åœ¨å‡çº§æ ‡å¿— 11==åœ¨å‡çº§ 55 æœªå‡çº§  å‡çº§å®Œæˆæ—¶éœ€è¦ç½®ä½ 88  ä½ŽåŠŸè€—æ¨¡å¼æ—¶ä¸º66
 #define UP_SYSTEM_C_SIZE 1200
-unsigned char UP_SYSTEM_C_LANG[UP_SYSTEM_C_SIZE]                         ;//Éý¼¶°üÊý¾Ý
+unsigned char UP_SYSTEM_C_LANG[UP_SYSTEM_C_SIZE]                         ;//å‡çº§åŒ…æ•°æ®
 extern unsigned char Data_Bag_TX_Finish;
-extern unsigned int      SPI_UP_BIT_SUM                                    ;//ÀÛ¼ÆÒÑ½ÓÊÕÎÄ¼þ×Ö½ÚÊý
+extern unsigned int      SPI_UP_BIT_SUM                                    ;//ç´¯è®¡å·²æŽ¥æ”¶æ–‡ä»¶å­—èŠ‚æ•°
 
 /*******************************************************************\
-*	      º¯ÊýÃû£ºDO_ROOT_UP             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ´¦ÀíÔ¶³ÌÉý¼¶³ÌÐò
-*	      ²ÎÊý£º  
-          ¸ñÊ½£º  ID(4)+Cmd(2)+Ö¸ÁîÁ÷Ë®ºÅ(2)+Êý¾Ý°ü³¤¶È(2)
-                  +Éý¼¶³ÌÐòÖÖÀà(1)+Éý¼¶³ÌÐòÎÄ¼þ×Ü×Ö½ÚÊý(2)
-                  +Éý¼¶ÎÄ¼þ°æ±¾ºÅ(8)+CRCÐ£Ñé(2))
-*	      ·µ»ØÖµ£º    
+*	      å‡½æ•°åï¼šDO_ROOT_UP             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å¤„ç†è¿œç¨‹å‡çº§ç¨‹åº
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š  ID(4)+Cmd(2)+æŒ‡ä»¤æµæ°´å·(2)+æ•°æ®åŒ…é•¿åº¦(2)
+                  +å‡çº§ç¨‹åºç§ç±»(1)+å‡çº§ç¨‹åºæ–‡ä»¶æ€»å­—èŠ‚æ•°(2)
+                  +å‡çº§æ–‡ä»¶ç‰ˆæœ¬å·(8)+CRCæ ¡éªŒ(2))
+*	      è¿”å›žå€¼ï¼š    
 *
-*	      ÐÞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹åŽ†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
-void DO_ROOT_UP(void)                                               //´¦ÀíÔ¶³ÌÉý¼¶³ÌÐò
+void DO_ROOT_UP(void)                                               //å¤„ç†è¿œç¨‹å‡çº§ç¨‹åº
 {
   
-    static unsigned long int ROOT_NUM                             ;//ÀÛ¼ÆÒÑ½ÓÊÕÎÄ¼þ×Ö½ÚÊý
+    static unsigned long int ROOT_NUM                             ;//ç´¯è®¡å·²æŽ¥æ”¶æ–‡ä»¶å­—èŠ‚æ•°
 
     if(Ask_index==1)
     {
         Ask_index=0;
         ROOT_NUM=Index;
         ROOT_NUM=ROOT_NUM<<10;
-        if(UP_SPI_Sum_Len!=ROOT_NUM)//ÒÑ½ÓÊÕµÄÊý¾Ý°üµÄË÷ÒýºÅ
+        if(UP_SPI_Sum_Len!=ROOT_NUM)//å·²æŽ¥æ”¶çš„æ•°æ®åŒ…çš„ç´¢å¼•å·
         {
              UP_SPI_Num_Flag=0x11;
              UP_SPI_Sum_Len=Index;
              UP_Send_Times=0;
              Sys_NOW_UP_Flag=0x11;
              
-            //ÏòÆ½Ì¨ÒªÊý¾Ý°ü;
-            //±êÖ¾ÖÃ1;		
+            //å‘å¹³å°è¦æ•°æ®åŒ…;
+            //æ ‡å¿—ç½®1;		
         }
         
         
@@ -47,9 +47,9 @@ void DO_ROOT_UP(void)                                               //´¦ÀíÔ¶³ÌÉý
         //else
         {
              //UP_SPI_Num_Flag=0x00;
-             //Module_Status[4]       = 0x00                                ;//ÎÞÉý¼¶ÒªÇó
-             //±êÖ¾ÖÃ1;
-             Module_Status[5]|=0x0c;//ÇåÃ¿°üÊý¾ÝÍê³ÉµÄ±êÖ¾  
+             //Module_Status[4]       = 0x00                                ;//æ— å‡çº§è¦æ±‚
+             //æ ‡å¿—ç½®1;
+             Module_Status[5]|=0x0c;//æ¸…æ¯åŒ…æ•°æ®å®Œæˆçš„æ ‡å¿—  
         }
         
         if((UP_SPI_Sum_Len==ROOT_NUM)&&(UP_SPI_NUM_CNT>SECD_5*2))//if((SPI_UP_BIT_SUM!=ROOT_NUM)&&(UP_SPI_NUM_CNT>SECD_5*2))
@@ -68,7 +68,7 @@ void DO_ROOT_UP(void)                                               //´¦ÀíÔ¶³ÌÉý
         }
     }
     
-    if(Sys_NOW_UP_Flag==0x11)//¼Ó¿ìÉý¼¶ËÙ¶È
+    if(Sys_NOW_UP_Flag==0x11)//åŠ å¿«å‡çº§é€Ÿåº¦
     {
         RD_Data_Time=128;
         RD_UCA0_Time=10240;
@@ -79,22 +79,22 @@ void DO_ROOT_UP(void)                                               //´¦ÀíÔ¶³ÌÉý
         RD_UCA0_Time=512;
     }
     
-    UP_SPI_Num_Net()                                               ;//SPI°üÊýË÷ÒýºÅ,·¢ËÍ¸øÆ½Ì¨Ë÷Òý°ü
-    //Ce_Shi_SPI_NUM()                                               ;//»Ø¸´Éý¼¶Æô¶¯Ö¸ÁîÆ½Ì¨Êý¾Ý
+    UP_SPI_Num_Net()                                               ;//SPIåŒ…æ•°ç´¢å¼•å·,å‘é€ç»™å¹³å°ç´¢å¼•åŒ…
+    //Ce_Shi_SPI_NUM()                                               ;//å›žå¤å‡çº§å¯åŠ¨æŒ‡ä»¤å¹³å°æ•°æ®
 }
 
 
 
 
 /**********************************************************************\
-*	      º¯ÊýÃû£ºUP_VAR_Init             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ´¦ÀíIPµØÖ·\PortºÅ  
-*	      ²ÎÊý£º  
-          ¸ñÊ½£º ID(4)+ÃüÁî±àÂë0x87(2)+IPµØÖ·(4)+PortºÅ(2)
-*	      ·µ»ØÖµ£º·µ»ØIPµØÖ·\PortºÅ   
+*	      å‡½æ•°åï¼šUP_VAR_Init             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å¤„ç†IPåœ°å€\Portå·  
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š ID(4)+å‘½ä»¤ç¼–ç 0x87(2)+IPåœ°å€(4)+Portå·(2)
+*	      è¿”å›žå€¼ï¼šè¿”å›žIPåœ°å€\Portå·   
 *
-*	      ÐÞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹åŽ†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \**********************************************************************/
 void UP_VAR_Init(void)
 {

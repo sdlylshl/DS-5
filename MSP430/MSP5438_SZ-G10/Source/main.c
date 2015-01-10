@@ -1,10 +1,10 @@
 //===========================================================================//
 //                                                                           //
-// ÎÄ¼ş£º  MAIN.C                                                            //
+// æ–‡ä»¶ï¼š  MAIN.C                                                            //
 //                                                                           //
 //===========================================================================//
 
-//ĞŞ¸ÄÊ±¼ä ½¯±¾Çì 2014.01.06 
+//ä¿®æ”¹æ—¶é—´ è’‹æœ¬åº† 2014.01.06 
 
 #include "msp430x54x.h"
 #include "PortIO.h"
@@ -12,7 +12,7 @@
 #include ".\GPS\GPS.h"
 #include ".\GSM\GSM.h"
 	 
-//Àî¿­ 2013.7.2 (ÔÚ 16MhzÏÂÕı³£ÔËĞĞ, 430¸ü¸ÄÖ÷Æµºó£¬ARMÒ²ÒªÏàÓ¦µÄ¸ü¸ÄSPIµÄÆµÂÊºÍÑÓÊ±£¬±£Ö¤Í¬²½£©
+//æå‡¯ 2013.7.2 (åœ¨ 16Mhzä¸‹æ­£å¸¸è¿è¡Œ, 430æ›´æ”¹ä¸»é¢‘åï¼ŒARMä¹Ÿè¦ç›¸åº”çš„æ›´æ”¹SPIçš„é¢‘ç‡å’Œå»¶æ—¶ï¼Œä¿è¯åŒæ­¥ï¼‰
 void SPI(void);																				
 #include".\SPI\CRC modbus.h"       															
 #include".\SPI\shuzu.h"			 														   
@@ -23,11 +23,11 @@ unsigned char ID_Write_Flag;
 unsigned long Write_Flag_time;
 unsigned long LOW_POW_TIME_CNT;
 
-unsigned long int MSP_430_Start_Time;//430¿ª»ú¼ÆÊ±
-unsigned long int SPI_Iint_Time_Cnt;//430¿ª»ú¼ÆÊ±
+unsigned long int MSP_430_Start_Time;//430å¼€æœºè®¡æ—¶
+unsigned long int SPI_Iint_Time_Cnt;//430å¼€æœºè®¡æ—¶
 extern void Read_Flash_Data(void);
 extern void GSM_NOM_POW_ON(void);
-unsigned char LPM_GPS_LOCATE_OK;//µÍ¹¦ºÄÄ£Ê½ÏÂ,GPS¶¨Î»³É¹¦
+unsigned char LPM_GPS_LOCATE_OK;//ä½åŠŸè€—æ¨¡å¼ä¸‹,GPSå®šä½æˆåŠŸ
 extern char LOW_POW_GPS_Flag;
 unsigned char GPS_Start_FLG;
 extern unsigned char LPM_GPS_Stop;
@@ -39,26 +39,26 @@ unsigned char Shake_Open_FLG=1;
 extern unsigned char WOSHOU_OK;
 extern unsigned char Power_down2on;
 //------------------------------------------------------------------------------
-//		Ö÷º¯Êı
+//		ä¸»å‡½æ•°
 //------------------------------------------------------------------------------
 void main(void) 
 {
 
-    WDTCTL= WDTPW + WDTHOLD; // ¹Ø¿´ÃÅ¹·
+    WDTCTL= WDTPW + WDTHOLD; // å…³çœ‹é—¨ç‹—
 	Init_CLK();
-	Init_NC_IO();//Î´Ê¹ÓÃµÄIO³õÊ¼»¯
-    Read_Flash_Data();//¶Áflash
+	Init_NC_IO();//æœªä½¿ç”¨çš„IOåˆå§‹åŒ–
+    Read_Flash_Data();//è¯»flash
     Init_TimerWDT();
     _EINT();
-    LPM = 2;//Ä¬ÈÏ½øÈëµÍ¹¦ºÄÄ£Ê½
+    LPM = 2;//é»˜è®¤è¿›å…¥ä½åŠŸè€—æ¨¡å¼
     
     while(1) 
     {     
-        Init_ADC();//ÖĞ¶Ï»½ĞÑ´ò¿ª
+        Init_ADC();//ä¸­æ–­å”¤é†’æ‰“å¼€
         Init_PWRON();
 		if(Shake_Open_FLG)
 		{
-			Shake_Open_FLG=0;//ÉÏµçºó±êÖ¾ÖÃ1
+			Shake_Open_FLG=0;//ä¸Šç”µåæ ‡å¿—ç½®1
 			Init_Shake();
 			LPM_SHAKE_CNT=0;
 		}
@@ -77,20 +77,20 @@ void main(void)
  		//if((LPM == 1)&&((P2IN&PWRON)==0)) 
 		if((P2IN&PWRON)==0) 
         {
-            //¶¨Ê±¸üĞÂµç³ØµçÑ¹ĞÅÏ¢
-            //µçÁ¿¼ì²â  & Ê¡µçÄ£Ê½ÇĞ»»
-            //µÍ¹¦ºÄÄ£Ê½ÏÂµÄ¿ØÖÆ²ßÂÔ
-            //ÓÃÀ´Éè¶¨LPM»½ĞÑÊ±¼ä
+            //å®šæ—¶æ›´æ–°ç”µæ± ç”µå‹ä¿¡æ¯
+            //ç”µé‡æ£€æµ‹  & çœç”µæ¨¡å¼åˆ‡æ¢
+            //ä½åŠŸè€—æ¨¡å¼ä¸‹çš„æ§åˆ¶ç­–ç•¥
+            //ç”¨æ¥è®¾å®šLPMå”¤é†’æ—¶é—´
 
              TIME_A0_Init()                                    ;
              GPS_Start()                                       ;
 			 GPS_Start_FLG=1;
 			 GPS_WDT_CNT=0;
 			 LPM_GPS_CNT=0;
-             GPS_LOCATE_Time     =10250                        ;//GPS½ÓÊÕÊ±¼ä10S
+             GPS_LOCATE_Time     =10250                        ;//GPSæ¥æ”¶æ—¶é—´10S
 			 Close_A0();
 			 WDTnum=0;
-			 LPM3                                              ;//½øÈëµÍ¹¦ºÄ
+			 LPM3                                              ;//è¿›å…¥ä½åŠŸè€—
             _NOP()                                             ;
         }
 		
@@ -102,11 +102,11 @@ void main(void)
 		}
         Open_Box_Check();
 		
-		if(LPM_GPS_LOCATE_OK&&((P2IN&PWRON)==0))//ÔÚµÍ¹¦ºÄÄ£Ê½ÏÂ£¬GPS¶¨Î»³É¹¦
+		if(LPM_GPS_LOCATE_OK&&((P2IN&PWRON)==0))//åœ¨ä½åŠŸè€—æ¨¡å¼ä¸‹ï¼ŒGPSå®šä½æˆåŠŸ
 		{
-            Read_Flash_Data();//¶Áflash
+            Read_Flash_Data();//è¯»flash
             Want_GPS_Data_Type=0x01;
-            GPS_UCA1_Init();//´ò¿ªGPS½ÓÊÕ³õÊ¼»¯
+            GPS_UCA1_Init();//æ‰“å¼€GPSæ¥æ”¶åˆå§‹åŒ–
 			GPS_Start_FLG=0;
 			LPM_GPS_LOCATE_OK=0;
             
@@ -125,7 +125,7 @@ void main(void)
             GPS_Stop()                                      ;
 			Close_UCA1();
             
-			Read_Flash_Data();//¶Áflash
+			Read_Flash_Data();//è¯»flash
             GSM_UCA0_Init();
             LPM_GSM_Globl_IN();
             GSM_NOM_POW_ON();
@@ -144,21 +144,21 @@ void main(void)
 		}
         
 
-        //ÉÏµç»½ĞÑ
+        //ä¸Šç”µå”¤é†’
         if((!LPM)||((P2IN&PWRON)==1)) 
         {
-            //ÍË³öµÍ¹¦ºÄÅäÖÃ
-            //¹Ø±Õ ÉÏµç¡¢Õğ¶¯¡¢¿ªºĞ ÖĞ¶Ï
+            //é€€å‡ºä½åŠŸè€—é…ç½®
+            //å…³é—­ ä¸Šç”µã€éœ‡åŠ¨ã€å¼€ç›’ ä¸­æ–­
             //Delayms(1000);
             TIME_A0_Init();
             Close_Open();
 			GPS_Data_OK_Flag=0x00;
             Change_SIM_Card_Flag=0xAA;
-            MSP430_POWER_ON_FLAG=0x11;//11=ÉÏµç£»55=¶Ïµç
+            MSP430_POWER_ON_FLAG=0x11;//11=ä¸Šç”µï¼›55=æ–­ç”µ
             SIM_Card_Work_Flag=0xAA;
-			Module_Status[0] &=~0xC0;//Ä£¿é×´Ì¬ĞÅÏ¢GPSĞÅÏ¢+GSMĞÅÏ¢+ÏµÍ³×´Ì¬1¡¢2+Éı¼¶×´Ì¬1¡¢2
-            GPS_GSM_System_Stu[0]&=~0xC0;//GPS×´Ì¬´æ´¢
-            GPS_Start();//GPSµçÔ´¿ªÆô
+			Module_Status[0] &=~0xC0;//æ¨¡å—çŠ¶æ€ä¿¡æ¯GPSä¿¡æ¯+GSMä¿¡æ¯+ç³»ç»ŸçŠ¶æ€1ã€2+å‡çº§çŠ¶æ€1ã€2
+            GPS_GSM_System_Stu[0]&=~0xC0;//GPSçŠ¶æ€å­˜å‚¨
+            GPS_Start();//GPSç”µæºå¼€å¯
             GSM_NOM_POW_ON();
             Want_GPS_Data_Type=0x01;
 			Init_ADC();
@@ -170,19 +170,19 @@ void main(void)
             Init_UCB2SPI(); 
             //Close_PWRON();
             Close_Shake();
-            //Close_Open();  Àî¿­8.22×¢ÊÍµôµÄ
+            //Close_Open();  æå‡¯8.22æ³¨é‡Šæ‰çš„
             Close_Ring();
-            //²ßÂÔ¿ØÖÆ¹Ø±Õ
+            //ç­–ç•¥æ§åˆ¶å…³é—­
             VmainMon();
             
            
-            //GPS ´ò¿ª
+            //GPS æ‰“å¼€
             //Init_UCA1UART();
             //GPS_Start();
 
-            //GSMÈç¹û¹Ø±Õ ´ò¿ª
-            //GSMÈç¹ûĞİÃß ÍË³öĞİÃß
-			Read_Flash_Data()                               ;//¶Áflash
+            //GSMå¦‚æœå…³é—­ æ‰“å¼€
+            //GSMå¦‚æœä¼‘çœ  é€€å‡ºä¼‘çœ 
+			Read_Flash_Data()                               ;//è¯»flash
 			
             /*
                     if(GSM_STATUS == 0){
@@ -191,15 +191,15 @@ void main(void)
                         GSM_Sleep_Exit();
                     }
              */
-            //µçÔ¿³×¹Ø¶Ï¼ì²â
-            //ÉÏµç¼ì²â p1.0  P2.0   IOÖĞ¶Ï
-            //ÍÚ»úÆô¶¯ºóÊÇ¸ßµçÆ½£¬µôµçÊÇµÍµçÆ½
+            //ç”µé’¥åŒ™å…³æ–­æ£€æµ‹
+            //ä¸Šç”µæ£€æµ‹ p1.0  P2.0   IOä¸­æ–­
+            //æŒ–æœºå¯åŠ¨åæ˜¯é«˜ç”µå¹³ï¼Œæ‰ç”µæ˜¯ä½ç”µå¹³
              //MSP_430_Start_Time=61441;
-             Time_Count_Value_Init();                          //Ê±¼ä¼ÆÊıÇåÁã
+             Time_Count_Value_Init();                          //æ—¶é—´è®¡æ•°æ¸…é›¶
 			 Init_PWRON();
              SPI_Iint_Time_Cnt=0;
              ExitLMP_Time_Cnt=0;
-             One_Degree_Alert_Time=0;//1¼¶±¨¾¯¼ÆÊı
+             One_Degree_Alert_Time=0;//1çº§æŠ¥è­¦è®¡æ•°
 			 LPM=0;
              
              while((P2IN&PWRON))
@@ -211,30 +211,30 @@ void main(void)
                  Power_down2on=0;
                  Init_UCB2SPI();               
                }
-               RD_Up_Speed_FLASH();//´¦ÀíÔÊĞí»»¿¨ ÎŞ¿¨ÉıËÙ
+               RD_Up_Speed_FLASH();//å¤„ç†å…è®¸æ¢å¡ æ— å¡å‡é€Ÿ
                Open_Box_Check();
-               if(ID_Write_Flag)//7.8Ìí¼Ó 
+               if(ID_Write_Flag)//7.8æ·»åŠ  
 				 {
                     unsigned char i,num;
                     ID_Write_Flag=0;
-                    Flash_WriteChar(0,1);//ID±êÖ¾Î»
+                    Flash_WriteChar(0,1);//IDæ ‡å¿—ä½
                     for(i=0,num=3;i<4;i++,num--)
                     {
-                        Flash_WriteChar(1+i,SHEBEI_ID_memory[num]);//½«IDĞ´ÈëInfoFlash
+                        Flash_WriteChar(1+i,SHEBEI_ID_memory[num]);//å°†IDå†™å…¥InfoFlash
                     }
 				 } 
-               Change_SIM_Card_NUM();//ÔÊĞí¸ü»»ÊÖ»ú¿¨ºÅ
+               Change_SIM_Card_NUM();//å…è®¸æ›´æ¢æ‰‹æœºå¡å·
 			   
 
                 if(RD_FLASH_OK_FLAG  == 0x11)
                 {
-                    GSM();//0 Õı³£ 0x01¹Ø»ú 0x02ĞİÃß 0x04 SIM¿¨ 0x08 GSMÍøÂçÕı³£ 0x10GPRSÍøÂçÕı³£ 0x20 TCPIPÕı³£
+                    GSM();//0 æ­£å¸¸ 0x01å…³æœº 0x02ä¼‘çœ  0x04 SIMå¡ 0x08 GSMç½‘ç»œæ­£å¸¸ 0x10GPRSç½‘ç»œæ­£å¸¸ 0x20 TCPIPæ­£å¸¸
                 }
                 else
                 {
                     Read_Flash_Data()                                   ;
                 }
-                Do_GPS_Data();//½ÓÊÕ¡¢´¦ÀíGPSÊı¾İ
+                Do_GPS_Data();//æ¥æ”¶ã€å¤„ç†GPSæ•°æ®
                 GSM_Brust();
             }
             LPM = 2;
@@ -244,16 +244,16 @@ void main(void)
 			Init_PWRON();
 			Init_Open_Up();
 			
-            //½øÈëµÍ¹¦ºÄÅäÖÃ
+            //è¿›å…¥ä½åŠŸè€—é…ç½®
 			LPM_SHAKE_CNT=0;
 			Shake_Open_FLG=1;
-            //ÅäÖÃÎªµÍ¹¦ºÄÄ£Ê½
-            //GPS ¹Ø±Õ
+            //é…ç½®ä¸ºä½åŠŸè€—æ¨¡å¼
+            //GPS å…³é—­
             //Close_UCA1UART();
             GPS_Stop();
 			Close_UCA1();
-            //SHUT_GPS_UCA1()                                 ;//¹Ø±ÕGPSÖĞ¶Ï
-            //GSM ĞİÃß
+            //SHUT_GPS_UCA1()                                 ;//å…³é—­GPSä¸­æ–­
+            //GSM ä¼‘çœ 
             //GSM_Sleep();
             LPM_GSM_Globl_OUT();
             GSM_NOM_POW_OFF();//GSM_NOM_POW_ON
@@ -261,7 +261,7 @@ void main(void)
 			MSP_430_Start_Time=0;
             SIM_Card_Work_Flag=0x55;
             Change_SIM_Card_Flag=0x55;
-        }//end if  ÉÏµç»½ĞÑ½áÊø
+        }//end if  ä¸Šç”µå”¤é†’ç»“æŸ
 		Close_A0();
 		Close_ADC();
 
@@ -271,18 +271,18 @@ void main(void)
 
 
 /******************************************************************************
-*Ãû    ³Æ£ºUSCI_B2_ISR()
+*å    ç§°ï¼šUSCI_B2_ISR()
 
-*¹¦    ÄÜ£º1.½ÓÊÕARM´«À´µÄÊı¾İ²¢½øĞĞ½âÎö´¦Àí
-		   2.ÔÚÖĞ¶ÏÖĞ¸øARM»ØÓ¦Êı¾İ
+*åŠŸ    èƒ½ï¼š1.æ¥æ”¶ARMä¼ æ¥çš„æ•°æ®å¹¶è¿›è¡Œè§£æå¤„ç†
+		   2.åœ¨ä¸­æ–­ä¸­ç»™ARMå›åº”æ•°æ®
 
-*Èë¿Ú²ÎÊı£ºÎŞ
+*å…¥å£å‚æ•°ï¼šæ— 
 
-*³ö¿Ú²ÎÊı£ºÎŞ
+*å‡ºå£å‚æ•°ï¼šæ— 
 
-*Ëµ    Ã÷£ºÎŞ
+*è¯´    æ˜ï¼šæ— 
 
-*ĞŞ¸ÄÀúÊ·:ÎŞ
+*ä¿®æ”¹å†å²:æ— 
 ******************************************************************************/
 #pragma vector=USCI_B2_VECTOR
 __interrupt void USCI_B2_ISR(void)
@@ -293,34 +293,34 @@ __interrupt void USCI_B2_ISR(void)
     	case 2:      // Vector 2 - RXIFG
 			SPIB2_DATA[cnt++]=UCB2RXBUF;
 			
-			if(SPIB2_DATA[cnt-1]==0x5a)//½ÓÊÕµ½0x5aËµÃ÷ARMÒª¶Á»ØÊı¾İ
+			if(SPIB2_DATA[cnt-1]==0x5a)//æ¥æ”¶åˆ°0x5aè¯´æ˜ARMè¦è¯»å›æ•°æ®
 			{
-				if(WOSHOU_CRC_OK) UCB2TXBUF=SPI_T_WOSHOU_OK[TX_Data_num++];//ÎÕÊÖ³É¹¦
-				if(WOSHOU_CRC_ERR) UCB2TXBUF=SPI_T_WOSHOU_ERR[TX_Data_num++];//ÎÕÊÖÊ§°Ü
+				if(WOSHOU_CRC_OK) UCB2TXBUF=SPI_T_WOSHOU_OK[TX_Data_num++];//æ¡æ‰‹æˆåŠŸ
+				if(WOSHOU_CRC_ERR) UCB2TXBUF=SPI_T_WOSHOU_ERR[TX_Data_num++];//æ¡æ‰‹å¤±è´¥
 				
-				if(SHEBEI_ID_CRC_OK) UCB2TXBUF=SPI_T_SHEBEI_ID_OK[TX_Data_num++];//Éè±¸IDÕıÈ·
-				if(SHEBEI_ID_CRC_ERR) UCB2TXBUF=SPI_T_SHEBEI_ID_ERR[TX_Data_num++];//Éè±¸ID´íÎó
+				if(SHEBEI_ID_CRC_OK) UCB2TXBUF=SPI_T_SHEBEI_ID_OK[TX_Data_num++];//è®¾å¤‡IDæ­£ç¡®
+				if(SHEBEI_ID_CRC_ERR) UCB2TXBUF=SPI_T_SHEBEI_ID_ERR[TX_Data_num++];//è®¾å¤‡IDé”™è¯¯
 				
-				if(SHEBEI_Soft_VER_CRC_OK) UCB2TXBUF=SPI_T_SHEBEI_Soft_VER_OK[TX_Data_num++];//Éè±¸Èí¼ş°æ±¾ºÅÕıÈ·
-				if(SHEBEI_Soft_VER_CRC_ERR) UCB2TXBUF=SPI_T_SHEBEI_Soft_VER_ERR[TX_Data_num++];//Éè±¸Èí¼ş°æ±¾ºÅ´íÎó
+				if(SHEBEI_Soft_VER_CRC_OK) UCB2TXBUF=SPI_T_SHEBEI_Soft_VER_OK[TX_Data_num++];//è®¾å¤‡è½¯ä»¶ç‰ˆæœ¬å·æ­£ç¡®
+				if(SHEBEI_Soft_VER_CRC_ERR) UCB2TXBUF=SPI_T_SHEBEI_Soft_VER_ERR[TX_Data_num++];//è®¾å¤‡è½¯ä»¶ç‰ˆæœ¬å·é”™è¯¯
 				
-				if(GPS_temp_OK) UCB2TXBUF=GPS_temp[GPS_Data_num++];//·¢ËÍGPSÊı¾İ
+				if(GPS_temp_OK) UCB2TXBUF=GPS_temp[GPS_Data_num++];//å‘é€GPSæ•°æ®
 				
-				if(GPS_VER_OK) UCB2TXBUF=GPS_mold_VER[GPS_VER_num++];//·¢ËÍGPSÈí¼ş°æ±¾ºÅ
+				if(GPS_VER_OK) UCB2TXBUF=GPS_mold_VER[GPS_VER_num++];//å‘é€GPSè½¯ä»¶ç‰ˆæœ¬å·
 				
-				if(Mode_Parameter_OK) UCB2TXBUF=Mode_Parameter[mode_num++];//·¢ËÍÄ£Ê½²ÎÊı
+				if(Mode_Parameter_OK) UCB2TXBUF=Mode_Parameter[mode_num++];//å‘é€æ¨¡å¼å‚æ•°
 				
-				if(Module_State_OK) UCB2TXBUF=Module_State[Module_State_num++];//·¢ËÍÄ£¿é×´Ì¬
+				if(Module_State_OK) UCB2TXBUF=Module_State[Module_State_num++];//å‘é€æ¨¡å—çŠ¶æ€
 				
-				if(Update_Command_Data_OK) UCB2TXBUF=Update_Command_Data[TX_Update_Command_Data_num++];//·¢ËÍÉı¼¶ÃüÁî
+				if(Update_Command_Data_OK) UCB2TXBUF=Update_Command_Data[TX_Update_Command_Data_num++];//å‘é€å‡çº§å‘½ä»¤
 				if(Update_Data_OK) 
                 {
-                  UCB2TXBUF=Update_Data[TX_Update_Data_num++];//·¢ËÍÉı¼¶°üÊı¾İ
+                  UCB2TXBUF=Update_Data[TX_Update_Data_num++];//å‘é€å‡çº§åŒ…æ•°æ®
                   Data_Bag_TX_Finish=0;
                 }
 			}
 			
-			switch(cnt)//½âÎö±¨Í·ºÍÊı¾İÀàĞÍ
+			switch(cnt)//è§£ææŠ¥å¤´å’Œæ•°æ®ç±»å‹
 			{
 				case 1:
 					if(SPIB2_DATA[0]==0x3e)
@@ -377,18 +377,18 @@ __interrupt void USCI_B2_ISR(void)
 			
 		if(cnt==6)
 		{               
-			lenth_data=(SPIB2_DATA[4]<<8)+SPIB2_DATA[5];//¼ÆËãÒ»×éÊı¾İµÄ³¤¶È
+			lenth_data=(SPIB2_DATA[4]<<8)+SPIB2_DATA[5];//è®¡ç®—ä¸€ç»„æ•°æ®çš„é•¿åº¦
 			flg=1;
 		}
 		if(flg)
 		{
-			if((lenth_data!=0)&&((lenth_data+10)==cnt))//Èç¹û½ÓÊÕÍêÒ»×éÊı¾İ
+			if((lenth_data!=0)&&((lenth_data+10)==cnt))//å¦‚æœæ¥æ”¶å®Œä¸€ç»„æ•°æ®
 			{
 				flg=0;
-				cnt=0;//¼ÆÊıÇåÁã£¬Îª½ÓÊÕÏÂÒ»×éÊı¾İ×ö×¼±¸
+				cnt=0;//è®¡æ•°æ¸…é›¶ï¼Œä¸ºæ¥æ”¶ä¸‹ä¸€ç»„æ•°æ®åšå‡†å¤‡
 				flag_do=1;
 				Do_SPI=1;
-                UCB2IE&=~UCRXIE;//¹Ø½ÓÊÕÖĞ¶Ï
+                UCB2IE&=~UCRXIE;//å…³æ¥æ”¶ä¸­æ–­
 			}
 		}
       		break;
@@ -401,10 +401,10 @@ __interrupt void USCI_B2_ISR(void)
 	if(Do_SPI)
 	{
 		Do_SPI=0;
-		SPI();//½ÓÊÕÍêÒ»°üÊı¾İºó£¬ÔÚÖĞ¶ÏÖĞ·ÖÎöÊÕµ½µÄÊı¾İÄÚÈİ£¬×¼±¸ºÃ»ØÓ¦¸øARMµÄÊı¾İ
+		SPI();//æ¥æ”¶å®Œä¸€åŒ…æ•°æ®åï¼Œåœ¨ä¸­æ–­ä¸­åˆ†ææ”¶åˆ°çš„æ•°æ®å†…å®¹ï¼Œå‡†å¤‡å¥½å›åº”ç»™ARMçš„æ•°æ®
 	}
 	
-	if(TX_Data_num==12)//»ØÓ¦¸øÖ÷»ú12¸ö×Ö½ÚÒÔºó
+	if(TX_Data_num==12)//å›åº”ç»™ä¸»æœº12ä¸ªå­—èŠ‚ä»¥å
 	{
 		TX_Data_num=0;
 		WOSHOU_OK=1;
@@ -416,37 +416,37 @@ __interrupt void USCI_B2_ISR(void)
           
 		SHEBEI_Soft_VER_CRC_ERR=0;
 	}
-	if(GPS_Data_num==38)//¸øÖ÷»ú·¢ÍêGPSÊı¾İÒÔºó
+	if(GPS_Data_num==38)//ç»™ä¸»æœºå‘å®ŒGPSæ•°æ®ä»¥å
 	{
 		GPS_Data_num=0;
 		GPS_temp_OK=0;
 	}
-	if(GPS_VER_num==18)//¸øÖ÷»ú·¢ÍêGPS°æ±¾ÒÔºó
+	if(GPS_VER_num==18)//ç»™ä¸»æœºå‘å®ŒGPSç‰ˆæœ¬ä»¥å
 	{
 		GPS_VER_num=0;
 		GPS_VER_OK=0;
         //ID_Write_Flag=1;
 	}
-	if(mode_num==30)//¸øÖ÷»ú·¢Íê¸÷µµÄ£Ê½¹¤×÷²ÎÊı
+	if(mode_num==30)//ç»™ä¸»æœºå‘å®Œå„æ¡£æ¨¡å¼å·¥ä½œå‚æ•°
 	{
 		mode_num=0;
 		Mode_Parameter_OK=0;
         Work_Mode_SPI_OK_Flag=0x00;
         Module_Status[5]&=~0x03;  
 	}				
-	if(TX_Update_Command_Data_num==28)//¸øÖ÷»ú·¢ÍêÉı¼¶ÃüÁî
+	if(TX_Update_Command_Data_num==28)//ç»™ä¸»æœºå‘å®Œå‡çº§å‘½ä»¤
 	{
 		TX_Update_Command_Data_num=0;
 		Update_Command_Data_OK=0;
 	}		
-	if(TX_Update_Data_num==1036)//¸øÖ÷»ú·¢ÍêÒ»°üÉı¼¶Êı¾İ
+	if(TX_Update_Data_num==1036)//ç»™ä¸»æœºå‘å®Œä¸€åŒ…å‡çº§æ•°æ®
 	{
 		TX_Update_Data_num=0;
 		Data_Bag_TX_Finish=1;
         Update_Data_OK=0;
 
 	}	
-	if(Module_State_num==16)//¸øÖ÷»ú·¢ÍêÄ£¿é×´Ì¬
+	if(Module_State_num==16)//ç»™ä¸»æœºå‘å®Œæ¨¡å—çŠ¶æ€
 	{
 		Module_State_num=0;
 		Module_State_OK=0;

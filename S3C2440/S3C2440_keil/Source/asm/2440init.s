@@ -94,7 +94,7 @@ $HandlerLabel
 	EXPORT	__ENTRY
 __ENTRY
 ;========
-;��λ
+;复位
 ;========
 ResetEntry
 	;1)The code, which converts to Big-endian, should be in little endian code.
@@ -190,8 +190,8 @@ ResetHandler
 	ldr	r1,=0x7fff		;all sub interrupt disable
 	str	r1,[r0]
 
-;led��ʾ
-	;IO������
+;led显示
+	;IO口配置
 	[ {TRUE}
 	ldr	r0,=GPBCON
 	ldr	r1,=0x01015415
@@ -373,12 +373,12 @@ ResetHandler
 	bl	InitStacks
 
 ;==========================================================
-  	; Setup IRQ handler//�����жϱ�
+  	; Setup IRQ handler//建立中断表
 	ldr	r0,=HandleIRQ       ;This routine is needed
 	ldr	r1,=IsrIRQ	  ;if there isn t 'subs pc,lr,#4' at 0x18, 0x1c
 	str	r1,[r0]
 ;===========================================================
-;// �ж��Ǵ�nor�������Ǵ�nand����
+;// 判断是从nor启动还是从nand启动
 ;===========================================================
 	;bl	Led_Test
 	
@@ -386,15 +386,15 @@ ResetHandler
 	ldr	r0, [r0]
 	ands	r0, r0, #6		;OM[1:0] != 0, NOR FLash boot
 	bne	NORRoCopy		;don t read nand flash
-	adr	r0, ResetEntry		;OM[1:0] == 0, NAND FLash boot // ADR װ�ز��յĵ�ַ=sub r0,pc,#0x268;
-	cmp	r0, #0				;if use Multi-ice,//JTAG����ʱ��ֱ�����ص��ڴ������У�����Ҫ�ٴ�nand���� 
+	adr	r0, ResetEntry		;OM[1:0] == 0, NAND FLash boot // ADR 装载参照的地址=sub r0,pc,#0x268;
+	cmp	r0, #0				;if use Multi-ice,//JTAG调试时是直接下载到内存中运行，不需要再从nand拷贝 
 	bne	InitRamZero		;don t read nand flash for boot
 	;nop
 	
 
 	
 ;===========================================================
-;//�������nandflash������sdram
+;//将程序从nandflash拷贝到sdram
 ;===========================================================
 nand_boot_beg
 	bl	ClearSdram
@@ -413,50 +413,50 @@ nand_boot_beg
 	beq	%F1
 ;	ldr	r0, =0xecda
 ;	cmp	r5, r0
-	mov	r6, #1			;Nandaddr(Ѱַ���� 0:4  1:5)
+	mov	r6, #1			;Nandaddr(寻址周期 0:4  1:5)
 1	
 	bl	ReadNandStatus
 	
 	mov	r8, #0
 	ldr	r9, =ResetEntry
 ;	mov r10,#32			;+081010 feiling
-	mov r10,#40			;80K boot��С����		
+	mov r10,#40			;80K boot大小限制		
 2	
-	ands	r0, r8, #0x3f	;����ǵ�һҳ�����⻵��
+	ands	r0, r8, #0x3f	;如果是第一页，则检测坏块
 	bne		%F3
 	mov		r0, r8
 	bl		CheckBadBlk
 	cmp		r0, #0
-	addne	r8, r8, #64	;ÿ���ҳ��  �˴���BUG r8ͬʱҲ�������á���
+	addne	r8, r8, #64	;每块的页数  此处有BUG r8同时也做计数用。。
 	addne	r10,r10,#64 ;+081010 feiling
 	bne		%F4
 3	
 	mov	r0, r8
 	mov	r1, r9
 	bl	ReadNandPage
-	add	r9, r9, #2048	;ÿҳ���ֽ���
-	add	r8, r8, #1		;ҳ����1
+	add	r9, r9, #2048	;每页的字节数
+	add	r8, r8, #1		;页数＋1
 4	
-	cmp	r8, r10   ;Ҫ������ҳ�� 081010 pht:#32->r10 
+	cmp	r8, r10   ;要拷贝的页数 081010 pht:#32->r10 
 	bcc	%B2
 	
 	mov	r5, #NFCONF			;DsNandFlash
 	ldr	r0, [r5, #4]
 	bic r0, r0, #1
 	str	r0, [r5, #4]
-	ldr	pc, =InitRamZero;�˴���ת���ڴ�ռ� LDR װ�����ݣ�Ѱַ�� �����ı�PSR
-						  ;Ҫװ��һ�����洢�ġ�״̬������ȷ�Ļָ��� ��������д��ldr r0, [base] ����  moves pc, r0
+	ldr	pc, =InitRamZero;此处跳转到内存空间 LDR 装载数据，寻址灵活。 但不改变PSR
+						  ;要装载一个被存储的‘状态’并正确的恢复它 可以这样写：ldr r0, [base] 换行  moves pc, r0
 ;=============================================================================================
-;���Ǵ�NAND�������򿽱������Ѿ���nand_boot_beg����ɣ�����ֱ����ת��main
-;���Ǵ�NOR��������RO��RW���ֶ��������ڴ棬Ȼ����ת���ڴ����У�Ҳ����NOR�����У�ֻ���ٶ�������
+;若是从NAND启动，则拷贝工作已经在nand_boot_beg中完成，所以直接跳转到main
+;若是从NOR启动，则将RO和RW部分都拷贝到内存，然后跳转到内存运行（也可在NOR中运行，只是速度稍慢）
 ;
-;ע������NOR��ֱ�����У����RO/BASE��Ϊ0������RW/BASE ������RO����
+;注：若在NOR中直接运行，需把RO/BASE改为0并定义RW/BASE 会跳过RO拷贝
 ;=============================================================================================
 NORRoCopy			;copy_proc_beg  by pht
 	bl	ClearSdram
 
-	adr	r0, ResetEntry		;�ж��Ƿ���ROM�����У�ROM��ROָ���ĵ�ַ ��NOR����ʱResetEntryΪ0
-	ldr	r2, BaseOfROM		;���������ת��RwCopy ����Ļ��������򿽱���ROM��ַ 
+	adr	r0, ResetEntry		;判断是否在ROM中运行，ROM即RO指定的地址 从NOR启动时ResetEntry为0
+	ldr	r2, BaseOfROM		;如果是则跳转到RwCopy 否则的话，将程序拷贝到ROM地址 
 	cmp	r0, r2
 	beq	NORRwCopy				
 	ldr r3, TopOfROM		;
@@ -470,8 +470,8 @@ NORRoCopy			;copy_proc_beg  by pht
 NORRwCopy	
 	ldr	r0, TopOfROM
 	ldr r1, BaseOfROM
-	sub r0, r0, r1			;TopOfROM-BaseOfROM�õ���0��ʼRW��ƫ�Ƶ�ַ
-	ldr	r2, BaseOfBSS		;��RW���ֵ����ݴ�ROM������RAM
+	sub r0, r0, r1			;TopOfROM-BaseOfROM得到从0开始RW的偏移地址
+	ldr	r2, BaseOfBSS		;将RW部分的数据从ROM拷贝到RAM
 	ldr	r3, BaseOfZero	
 0
 	cmp	r2, r3
@@ -484,7 +484,7 @@ InitRamZero
 	ldr r2, BaseOfZero
 	ldr	r3,	EndOfBSS
 1	
-	cmp	r2,	r3				;��ʼ��Zero���� ���ܴ������������ⲿ�ֶ���Ҫִ��
+	cmp	r2,	r3				;初始化Zero部分 不管从哪里启动，这部分都需要执行
 	strcc	r0, [r2], #4
 	bcc	%B1
 	

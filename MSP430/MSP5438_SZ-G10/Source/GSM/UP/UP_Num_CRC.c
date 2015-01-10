@@ -4,34 +4,34 @@
 
 #define UP_NET_Bit_Sum 1051
 
-unsigned long int NET_UP_BIT_SUM                                    ;//ÀÛ¼ÆÒÑ½ÓÊÕÎÄ¼þ×Ö½ÚÊý
-unsigned int      SPI_UP_BIT_SUM                                    ;//ÀÛ¼ÆÒÑ½ÓÊÕÎÄ¼þ×Ö½ÚÊý
+unsigned long int NET_UP_BIT_SUM                                    ;//ç´¯è®¡å·²æŽ¥æ”¶æ–‡ä»¶å­—èŠ‚æ•°
+unsigned int      SPI_UP_BIT_SUM                                    ;//ç´¯è®¡å·²æŽ¥æ”¶æ–‡ä»¶å­—èŠ‚æ•°
 unsigned char UP_Data_OK_Flag                               ;//
 /*******************************************************************\
-*	      º¯ÊýÃû£ºANS_UP_STAT_2_NET             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  »Ø¸´Éý¼¶Æô¶¯Ö¸ÁîÆ½Ì¨Êý¾Ý  
-*	      ²ÎÊý£º 0x01==Éý¼¶£»0x00==²»Éý¼¶ 
-          ¸ñÊ½£º ID(4)+ÃüÁî±àÂë0x69(2)+Ëø³µÖ¸Áî(2)
-*	      ·µ»ØÖµ£º·µ»ØÉý¼¶Æô¶¯Ö¸Áî×´Ì¬ 
+*	      å‡½æ•°åï¼šANS_UP_STAT_2_NET             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å›žå¤å‡çº§å¯åŠ¨æŒ‡ä»¤å¹³å°æ•°æ®  
+*	      å‚æ•°ï¼š 0x01==å‡çº§ï¼›0x00==ä¸å‡çº§ 
+          æ ¼å¼ï¼š ID(4)+å‘½ä»¤ç¼–ç 0x69(2)+é”è½¦æŒ‡ä»¤(2)
+*	      è¿”å›žå€¼ï¼šè¿”å›žå‡çº§å¯åŠ¨æŒ‡ä»¤çŠ¶æ€ 
 *
-*	      ÐÞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹åŽ†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
-char UP_A2_NUM_CRC(void)                                            //Éý¼¶³ÌÐòCRCÐ£Ñé
+char UP_A2_NUM_CRC(void)                                            //å‡çº§ç¨‹åºCRCæ ¡éªŒ
 {
-    unsigned int UP_A2_CRC,UP_ROOT_A2_CRC                           ;//¼ÆËãÉý¼¶¿ªÊ¼Ð£ÑéºÍ
+    unsigned int UP_A2_CRC,UP_ROOT_A2_CRC                           ;//è®¡ç®—å‡çº§å¼€å§‹æ ¡éªŒå’Œ
     unsigned int UP_A2_CNT                                          ;    
     static unsigned int UP_A2_CMD_LEN                               ;
     
-    UP_A2_CMD_LEN   =   UP_SYSTEM_C_LANG[UP_NET_Bit_Sum-2]                         ;//½âÎö±¾°üÊý¾Ý³¤¶È
+    UP_A2_CMD_LEN   =   UP_SYSTEM_C_LANG[UP_NET_Bit_Sum-2]                         ;//è§£æžæœ¬åŒ…æ•°æ®é•¿åº¦
     UP_A2_CMD_LEN   =   UP_A2_CMD_LEN  <<8                          ;
     UP_A2_CMD_LEN   =   UP_A2_CMD_LEN +UP_SYSTEM_C_LANG[UP_NET_Bit_Sum-1]       ;    
     
-    UP_A2_CRC=UP_SYSTEM_C_LANG[UP_NET_Bit_Sum-1]                     ;//½âÎö±¾°üÊý¾ÝCRCÐ£ÑéºÍ
+    UP_A2_CRC=UP_SYSTEM_C_LANG[UP_NET_Bit_Sum-1]                     ;//è§£æžæœ¬åŒ…æ•°æ®CRCæ ¡éªŒå’Œ
     UP_A2_CRC=UP_A2_CRC  <<8                                        ;
     UP_A2_CRC=UP_A2_CRC+UP_SYSTEM_C_LANG[UP_NET_Bit_Sum-2]           ;
     
-    UP_ROOT_A2_CRC=crc_modbus2(UP_SYSTEM_C_LANG,UP_NET_Bit_Sum-2)    ;//¼ÆËãÊý¾ÝCRCÐ£ÑéºÍ
+    UP_ROOT_A2_CRC=crc_modbus2(UP_SYSTEM_C_LANG,UP_NET_Bit_Sum-2)    ;//è®¡ç®—æ•°æ®CRCæ ¡éªŒå’Œ
     
     if((UP_ROOT_A2_CRC==UP_A2_CRC)
           &&(UP_SYSTEM_C_LANG[0]==GPS_GSM_ID_Memory[0])
@@ -58,7 +58,7 @@ char UP_A2_NUM_CRC(void)                                            //Éý¼¶³ÌÐòCR
            UP_SYSTEM_C_LANG[UP_NET_Bit_Sum+UP_A2_CNT]=0x00;
         }
         
-        Module_Status[5]|=0x0c;//ÇåÃ¿°üÊý¾ÝÍê³ÉµÄ±êÖ¾  
+        Module_Status[5]|=0x0c;//æ¸…æ¯åŒ…æ•°æ®å®Œæˆçš„æ ‡å¿—  
         UP_Data_OK_Flag=0xAA;
         Sys_NOW_UP_Flag=0x55;
         

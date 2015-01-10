@@ -1,28 +1,28 @@
 #include "msp430x54x.h"
 #include "GSM.h"
 
-char SD_SOFT_V_ER_Flag                                              ;//·¢ËÍÈí¼ş°æ±¾ºÅÊ§°Ü±êÖ¾ ÖØ·¢
+char SD_SOFT_V_ER_Flag                                              ;//å‘é€è½¯ä»¶ç‰ˆæœ¬å·å¤±è´¥æ ‡å¿— é‡å‘
 
 #define  SOFT_VER_BUF_SIZE 40
-char  SOFT_VER_BUF[SOFT_VER_BUF_SIZE];//·¢ËÍÈí¼ş°æ±¾ºÅ
-unsigned long int Soft_Vers_Cnt                                     ;//·¢ËÍÈí¼ş°æ±¾ºÅÊ±¼ä¼ÆÊ±
-extern unsigned char Soft_VER_OK                                    ;//Èí¼ş°æ±¾ºÅ(ÏÔÊ¾Æ÷£¬¿ØÖÆÆ÷£¬ÓÍÃÅµç»úÈí¼ş°æ±¾ºÅ)
-extern unsigned char Soft_VER_memory[32]                                     ;//´æ´¢Èí¼ş°æ±¾ºÅ
+char  SOFT_VER_BUF[SOFT_VER_BUF_SIZE];//å‘é€è½¯ä»¶ç‰ˆæœ¬å·
+unsigned long int Soft_Vers_Cnt                                     ;//å‘é€è½¯ä»¶ç‰ˆæœ¬å·æ—¶é—´è®¡æ—¶
+extern unsigned char Soft_VER_OK                                    ;//è½¯ä»¶ç‰ˆæœ¬å·(æ˜¾ç¤ºå™¨ï¼Œæ§åˆ¶å™¨ï¼Œæ²¹é—¨ç”µæœºè½¯ä»¶ç‰ˆæœ¬å·)
+extern unsigned char Soft_VER_memory[32]                                     ;//å­˜å‚¨è½¯ä»¶ç‰ˆæœ¬å·
 
 /*******************************************************************\
-*	      º¯ÊıÃû£ºSend_Soft_Version             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ·¢ËÍÈí¼ş°æ±¾ºÅ 
-*	      ²ÎÊı£º  ÏÔÊ¾Æ÷£¬¿ØÖÆÆ÷£¬ÓÍÃÅµç»ú£¬Ò»Ìå»úÈí¼ş°æ±¾ºÅ 
-          ¸ñÊ½£º  ¿ª»ú·¢ËÍĞÄÌø£¬5·ÖÖÓºó·¢ËÍÒ»´Î
-*	      ·µ»ØÖµ£º   
+*	      å‡½æ•°åï¼šSend_Soft_Version             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å‘é€è½¯ä»¶ç‰ˆæœ¬å· 
+*	      å‚æ•°ï¼š  æ˜¾ç¤ºå™¨ï¼Œæ§åˆ¶å™¨ï¼Œæ²¹é—¨ç”µæœºï¼Œä¸€ä½“æœºè½¯ä»¶ç‰ˆæœ¬å· 
+          æ ¼å¼ï¼š  å¼€æœºå‘é€å¿ƒè·³ï¼Œ5åˆ†é’Ÿåå‘é€ä¸€æ¬¡
+*	      è¿”å›å€¼ï¼š   
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*****************************************************************/
 char Send_Soft_Version()
 {
     unsigned char Vers_Num                                          ;
-    unsigned int CAL_SOFT_VER_CRC                                   ;//Ğ£ÑéºÍ
+    unsigned int CAL_SOFT_VER_CRC                                   ;//æ ¡éªŒå’Œ
     
     if((MSP430_POWER_ON_FLAG==0x11)&&((Soft_VER_OK==0x11)||(SD_SOFT_V_ER_Flag==1))
        &&(Soft_Vers_Cnt>MSP_A0_Min_5)&&(UDP_Built_flag==0x11))
@@ -30,9 +30,9 @@ char Send_Soft_Version()
        Soft_Vers_Cnt    =0                                          ;
        Soft_VER_OK      =0xAA                                       ;
 
-       Tran_ID_CmdNum(SOFT_VER_BUF,0x89)                            ;//×ª´æIDºÅºÍÃüÁî±àÂë
+       Tran_ID_CmdNum(SOFT_VER_BUF,0x89)                            ;//è½¬å­˜IDå·å’Œå‘½ä»¤ç¼–ç 
        
-       for(Vers_Num=0;Vers_Num<32;Vers_Num++)                        //°æ±¾ºÅ×ª´æ
+       for(Vers_Num=0;Vers_Num<32;Vers_Num++)                        //ç‰ˆæœ¬å·è½¬å­˜
        {
           SOFT_VER_BUF[Vers_Num+6]=Soft_VER_memory[Vers_Num]        ;
        }
@@ -45,7 +45,7 @@ char Send_Soft_Version()
        
        SD_SOFT_V_ER_Flag    =   1                                   ;
        if(GSM_SendData(SOFT_VER_BUF,SOFT_VER_BUF_SIZE))
-        {                                                            //·¢ËÍÈí¼ş°æ±¾ºÅ
+        {                                                            //å‘é€è½¯ä»¶ç‰ˆæœ¬å·
            SD_SOFT_V_ER_Flag   =0                                   ;
            return 1                                                 ;
         }

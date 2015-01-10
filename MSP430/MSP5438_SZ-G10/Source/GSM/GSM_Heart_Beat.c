@@ -2,41 +2,41 @@
 #include "msp430x54x.h"
 #include "GSM.h"
 
-unsigned long int Heart_Beat_Send_Cnt                          ;//ĞÄÌø·¢ËÍ´ÎÊı¼ÆÊı
-unsigned long int HeartBeat_TimeOut=MSP_A0_Min_1               ;//ÅäÖÃĞÄÌø°ü·¢ËÍÊ±¼ä  61425
-unsigned long int Heart_Beat_Count=0                           ;//·¢ËÍĞÄÌø1msÊ±¼ä¼ÆÊı
-unsigned long int Heart_Beat_Num=0                             ;//ĞÄÌø°ü¼ÆÊı  
-char Heart_Beat_SendERROR                                      ;//·¢ËÍÊ§°Ü±êÖ¾
-char Heart_Beat[10]                                            ;//ĞÄÌøÊı¾İ°ü
+unsigned long int Heart_Beat_Send_Cnt                          ;//å¿ƒè·³å‘é€æ¬¡æ•°è®¡æ•°
+unsigned long int HeartBeat_TimeOut=MSP_A0_Min_1               ;//é…ç½®å¿ƒè·³åŒ…å‘é€æ—¶é—´  61425
+unsigned long int Heart_Beat_Count=0                           ;//å‘é€å¿ƒè·³1msæ—¶é—´è®¡æ•°
+unsigned long int Heart_Beat_Num=0                             ;//å¿ƒè·³åŒ…è®¡æ•°  
+char Heart_Beat_SendERROR                                      ;//å‘é€å¤±è´¥æ ‡å¿—
+char Heart_Beat[10]                                            ;//å¿ƒè·³æ•°æ®åŒ…
 
 /*******************************************************************\
-*	      º¯ÊıÃû£ºGSM_Heart_Beat             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º   PINGÃüÁî£º
-*	      ²ÎÊı£º  ¸ÃÃüÁîµÄËµÃ÷£º GPSÖÕ¶ËµÇÂ¼ÍøÂçºó£¬ÒÆ¶¯ÍøÂç·ÖÅä¸ø
-          GPSÖÕ¶ËµÄIPµØÖ·ºÍ¶Ë¿ÚºÅÊÇ¶¯Ì¬µÄ£¬GPSÖÕ¶ËÓë·şÎñÆ÷Ö®¼ä²ÉÓÃ
-          UDP´«Êä·½Ê½£¬Èç¹ûGPS³¬¹ıÒ»·ÖÖÓ²»Ïò·şÎñÆ÷·¢ËÍÊı¾İ£¬ÒÆ¶¯Íø
-          Âç½«»áÊÕ»ØGPSÖÕ¶Ëµ±Ç°µÄIPºÍ¶Ë¿ÚºÅ£¬µÈGPSÖÕ¶ËÏÂÒ»´ÎÔÙ·¢ËÍ
-          Êı¾İÊ±£¬»á»ñÈ¡ĞÂµÄIPºÍ¶Ë¿ÚºÅ¡£ËùÒÔÎªÁËÎ¬³ÖÍøÂçÁ´Â·£¬GPSÖÕ
-          ¶ËµÇÂ¼ÍøÂçºó£¬Ã¿Ò»·ÖÖÓ·¢ËÍÒ»´ÎPINGÃüÁîÖÁ·şÎñÆ÷¡£
-          ¸ñÊ½£º 
-*	      ·µ»ØÖµ£º  ¸ÃÃüÁî²»ĞèÒª·şÎñÆ÷»Ø¸´
+*	      å‡½æ•°åï¼šGSM_Heart_Beat             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š   PINGå‘½ä»¤ï¼š
+*	      å‚æ•°ï¼š  è¯¥å‘½ä»¤çš„è¯´æ˜ï¼š GPSç»ˆç«¯ç™»å½•ç½‘ç»œåï¼Œç§»åŠ¨ç½‘ç»œåˆ†é…ç»™
+          GPSç»ˆç«¯çš„IPåœ°å€å’Œç«¯å£å·æ˜¯åŠ¨æ€çš„ï¼ŒGPSç»ˆç«¯ä¸æœåŠ¡å™¨ä¹‹é—´é‡‡ç”¨
+          UDPä¼ è¾“æ–¹å¼ï¼Œå¦‚æœGPSè¶…è¿‡ä¸€åˆ†é’Ÿä¸å‘æœåŠ¡å™¨å‘é€æ•°æ®ï¼Œç§»åŠ¨ç½‘
+          ç»œå°†ä¼šæ”¶å›GPSç»ˆç«¯å½“å‰çš„IPå’Œç«¯å£å·ï¼Œç­‰GPSç»ˆç«¯ä¸‹ä¸€æ¬¡å†å‘é€
+          æ•°æ®æ—¶ï¼Œä¼šè·å–æ–°çš„IPå’Œç«¯å£å·ã€‚æ‰€ä»¥ä¸ºäº†ç»´æŒç½‘ç»œé“¾è·¯ï¼ŒGPSç»ˆ
+          ç«¯ç™»å½•ç½‘ç»œåï¼Œæ¯ä¸€åˆ†é’Ÿå‘é€ä¸€æ¬¡PINGå‘½ä»¤è‡³æœåŠ¡å™¨ã€‚
+          æ ¼å¼ï¼š 
+*	      è¿”å›å€¼ï¼š  è¯¥å‘½ä»¤ä¸éœ€è¦æœåŠ¡å™¨å›å¤
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
 
 char GSM_Heart_Beat()
 {
-    unsigned long int Heart_Beat_Cnt                           ;//1msÊ±¼ä¼ÆÊı    
+    unsigned long int Heart_Beat_Cnt                           ;//1msæ—¶é—´è®¡æ•°    
     if((Heart_Beat_Count>HeartBeat_TimeOut)&&(UDP_Built_flag==0x11))
     {
-        Heart_Beat_Count=0                                     ;//·¢ËÍĞÄÌø1msÊ±¼ä¼ÆÊıÇåÁã
-        Heart_Beat_Num++                                       ;//ĞÄÌøÀÛ¼Ó¼ÆÊı
+        Heart_Beat_Count=0                                     ;//å‘é€å¿ƒè·³1msæ—¶é—´è®¡æ•°æ¸…é›¶
+        Heart_Beat_Num++                                       ;//å¿ƒè·³ç´¯åŠ è®¡æ•°
         Heart_Beat_Send_Cnt++;
-        Heart_Beat_SendERROR=1                                 ;//ÖÃÎ»·¢ËÍÊ§°Ü±êÖ¾
+        Heart_Beat_SendERROR=1                                 ;//ç½®ä½å‘é€å¤±è´¥æ ‡å¿—
        
         //UP_SPI_Num_Flag=0x11;
-        Heart_Beat_Cnt=Heart_Beat_Num                          ;//ĞÄÌø¼ÆÊı¸³Öµ
+        Heart_Beat_Cnt=Heart_Beat_Num                          ;//å¿ƒè·³è®¡æ•°èµ‹å€¼
         Heart_Beat[9]=Heart_Beat_Cnt                           ;
         Heart_Beat_Cnt= Heart_Beat_Cnt >>8                     ;
         Heart_Beat[8]=Heart_Beat_Cnt                           ;
@@ -45,21 +45,21 @@ char GSM_Heart_Beat()
         Heart_Beat_Cnt= Heart_Beat_Cnt >>8                     ;
         Heart_Beat[6]=Heart_Beat_Cnt                           ;
             
-        if(GSM_SendData(Heart_Beat,sizeof(Heart_Beat)))         //·¢ËÍĞÄÌøÊı¾İ
+        if(GSM_SendData(Heart_Beat,sizeof(Heart_Beat)))         //å‘é€å¿ƒè·³æ•°æ®
         {
-           THR_Mint_Time_Cnt    =0                             ;//3.5·ÖÖÓÊ±¼ä¼ÆÊı£¬ÓÃÓÚ²»ÉÏ´«Êı¾İ¼ì²â
+           THR_Mint_Time_Cnt    =0                             ;//3.5åˆ†é’Ÿæ—¶é—´è®¡æ•°ï¼Œç”¨äºä¸ä¸Šä¼ æ•°æ®æ£€æµ‹
            Heart_Beat_SendERROR=0                              ;
            return 1                                            ;
         }  
     }
     
     if((Heart_Beat_SendERROR)&&(UDP_Built_flag==0x11)
-       &&(Heart_Beat_Count<5119)&&(Heart_Beat_Count>1023))     //1-5SÊ§°ÜÖØ·¢
+       &&(Heart_Beat_Count<5119)&&(Heart_Beat_Count>1023))     //1-5Så¤±è´¥é‡å‘
     {
-        Delayms(200);//XX*1MsÑÓÊ±
+        Delayms(200);//XX*1Mså»¶æ—¶
         if(GSM_SendData(Heart_Beat,sizeof(Heart_Beat)))
         {
-            THR_Mint_Time_Cnt   =0                             ;//3.5·ÖÖÓÊ±¼ä¼ÆÊı£¬ÓÃÓÚ²»ÉÏ´«Êı¾İ¼ì²â
+            THR_Mint_Time_Cnt   =0                             ;//3.5åˆ†é’Ÿæ—¶é—´è®¡æ•°ï¼Œç”¨äºä¸ä¸Šä¼ æ•°æ®æ£€æµ‹
             Heart_Beat_SendERROR=0                             ;
             return 1                                           ;
         }

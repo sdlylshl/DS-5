@@ -1,115 +1,115 @@
 #include "msp430x54x.h"
 #include "PortIO.h"
 
-unsigned long int One_Mint_Warn_Cnt;//Ò»·ÖÖÓ¼ÆÊı
+unsigned long int One_Mint_Warn_Cnt;//ä¸€åˆ†é’Ÿè®¡æ•°
 
-extern unsigned int  OVER_TIMES_CNT;//3.5·ÖÖÓÒç³öÊ±¼ä¼ÆÊı
+extern unsigned int  OVER_TIMES_CNT;//3.5åˆ†é’Ÿæº¢å‡ºæ—¶é—´è®¡æ•°
 
-extern unsigned long int Two_JI_Warn_Cnt;//¶ş¼¶±¨¾¯¼ÆÊı
-extern unsigned long int One_JI_Warn_Cnt;//Ò»¼¶±¨¾¯¼ÆÊı
-extern unsigned long int ExitLMP_Time_Cnt;//ÍË³öµÍ¹¦ºÄÊ±¼ÆÊı
-extern unsigned long GSM_GPS_AT_Cmd_Cnt;//·¢ËÍGSM»ñÈ¡µØÀíĞÅÏ¢¼ÆÊı
-extern unsigned long int No_SIM_CARD_Cnt;//¼ì²â²»µ½SIM¿¨³õÊ¼»¯¼ÆÊı
-extern unsigned long int GPS_ANT_IO_CNT;//GPSÌìÏß´ÎÊı
-extern unsigned long int SPI_Iint_Time_Cnt;//430¿ª»ú¼ÆÊ±
-extern unsigned long int SIM_Card_Work_Cnt;//·¢·¢ËÍÊÖ»ú¿¨ºÅÊ±¼ä¼ÆÊ±
+extern unsigned long int Two_JI_Warn_Cnt;//äºŒçº§æŠ¥è­¦è®¡æ•°
+extern unsigned long int One_JI_Warn_Cnt;//ä¸€çº§æŠ¥è­¦è®¡æ•°
+extern unsigned long int ExitLMP_Time_Cnt;//é€€å‡ºä½åŠŸè€—æ—¶è®¡æ•°
+extern unsigned long GSM_GPS_AT_Cmd_Cnt;//å‘é€GSMè·å–åœ°ç†ä¿¡æ¯è®¡æ•°
+extern unsigned long int No_SIM_CARD_Cnt;//æ£€æµ‹ä¸åˆ°SIMå¡åˆå§‹åŒ–è®¡æ•°
+extern unsigned long int GPS_ANT_IO_CNT;//GPSå¤©çº¿æ¬¡æ•°
+extern unsigned long int SPI_Iint_Time_Cnt;//430å¼€æœºè®¡æ—¶
+extern unsigned long int SIM_Card_Work_Cnt;//å‘å‘é€æ‰‹æœºå¡å·æ—¶é—´è®¡æ—¶
 extern unsigned char Soft_VER_OK                                        ;
-extern unsigned long int MSP_430_Start_Time             ;//430¿ª»ú¼ÆÊ±
+extern unsigned long int MSP_430_Start_Time             ;//430å¼€æœºè®¡æ—¶
 extern unsigned long LOW_POW_TIME_CNT                                         ;
-extern unsigned long int GSM_INIT_TIME_CNT                                    ;//GSM³õÊ¼»¯¼ÆÊ±ÓÃ
-extern unsigned long int GSM_STAT_TIME_CNT                                    ;//¼ì²âÊÖ»ú¿¨ 5·ÖÖÓ¼ì²âÒ»´Î
-extern unsigned long int UP_SPI_NUM_CNT                                       ;//Ô¶³ÌÉı¼¶¼ÆÊı
-extern unsigned long int CALL_MCU_TIME_CNT                                    ;//Ê±¼ä¼ÆÊı
-extern unsigned long int RD_Data_1_Min_Cnt                                    ;//½âÎö MUC Ó¦´ğÊ±¼ä¼ÆÊı
+extern unsigned long int GSM_INIT_TIME_CNT                                    ;//GSMåˆå§‹åŒ–è®¡æ—¶ç”¨
+extern unsigned long int GSM_STAT_TIME_CNT                                    ;//æ£€æµ‹æ‰‹æœºå¡ 5åˆ†é’Ÿæ£€æµ‹ä¸€æ¬¡
+extern unsigned long int UP_SPI_NUM_CNT                                       ;//è¿œç¨‹å‡çº§è®¡æ•°
+extern unsigned long int CALL_MCU_TIME_CNT                                    ;//æ—¶é—´è®¡æ•°
+extern unsigned long int RD_Data_1_Min_Cnt                                    ;//è§£æ MUC åº”ç­”æ—¶é—´è®¡æ•°
 extern unsigned int GSM_TimeOut_1ms                                           ;
-extern unsigned long int Soft_Vers_Cnt                                        ;//·¢ËÍÈí¼ş°æ±¾ºÅÊ±¼ä¼ÆÊ±
-extern unsigned long int GSM_Start_Count                                      ;//¿ª»úÑÓÊ±
-extern unsigned long int GPS_LOCATE_Time                                      ;//GPS½ÓÊÕÊ±¼ä10S
+extern unsigned long int Soft_Vers_Cnt                                        ;//å‘é€è½¯ä»¶ç‰ˆæœ¬å·æ—¶é—´è®¡æ—¶
+extern unsigned long int GSM_Start_Count                                      ;//å¼€æœºå»¶æ—¶
+extern unsigned long int GPS_LOCATE_Time                                      ;//GPSæ¥æ”¶æ—¶é—´10S
 extern unsigned long Write_Flag_time                                          ;
-extern unsigned long int THR_Mint_Time_Cnt                                    ;//3.5·ÖÖÓÊ±¼ä¼ÆÊı£¬ÓÃÓÚ²»ÉÏ´«Êı¾İ¼ì²â
-extern unsigned char Want_GPS_Data_Type                                       ;//ĞèÒªGPSÊı¾İÀàĞÍ00==ÎŞÏìÓ¦£»0x11==GPRMC£»0x22==GPGGA£» 
+extern unsigned long int THR_Mint_Time_Cnt                                    ;//3.5åˆ†é’Ÿæ—¶é—´è®¡æ•°ï¼Œç”¨äºä¸ä¸Šä¼ æ•°æ®æ£€æµ‹
+extern unsigned char Want_GPS_Data_Type                                       ;//éœ€è¦GPSæ•°æ®ç±»å‹00==æ— å“åº”ï¼›0x11==GPRMCï¼›0x22==GPGGAï¼› 
 //Timer
 //***************************************************************************//
 //                                                                           //
-//  Init_TimerA0(void): ÉèÖÃTimerA0                                          //
+//  Init_TimerA0(void): è®¾ç½®TimerA0                                          //
 //                                                                           //
 //***************************************************************************//
 void TIME_A0_Init(void)
 {
-  //¶¨Ê±Æ÷ ¹¤×÷ÔÚ±È½ÏÄ£Ê½
+  //å®šæ—¶å™¨ å·¥ä½œåœ¨æ¯”è¾ƒæ¨¡å¼
   
-    //TA¿ØÖÆ¼Ä´æÆ÷
-    //Ê±ÖÓÑ¡ÔñTASSEL1:TASSEL0 00 TACLK 01 ACLK 10 SMCLK 11 INCLK
-    //Ê±ÖÓ·ÖÆµ ID1:ID0      00 1/1 01 1/2 10 1/4 11 1/8
-    //Ä£Ê½¿ØÖÆ MC1:MC0      00 Í£Ö¹ 01 Ôö¼ÆÊı 10Á¬Ğø¼ÆÊı 11 Ôö¼õ¼ÆÊı
-    //¶¨Ê±Æ÷ÇåÁã TACLR      1 ÇåÁã
-    //ÖĞ¶ÏÔÊĞíÎ» TAIE       1 ÖĞ¶ÏÔÊĞí
-    //ÖĞ¶Ï±êÖ¾Î» TAIFG      1 ÖĞ¶ÏÇëÇó
-    //TA0CTL   =TASSEL1+TACLR;//¼ÆÊıÊ±ÖÓÉèÎªSMCLK,·ÖÆµÏµÊıÉèÖÃÎª1,¼ÆÊıÆ÷Çå0,¸´Î»Timer0_A5
+    //TAæ§åˆ¶å¯„å­˜å™¨
+    //æ—¶é’Ÿé€‰æ‹©TASSEL1:TASSEL0 00 TACLK 01 ACLK 10 SMCLK 11 INCLK
+    //æ—¶é’Ÿåˆ†é¢‘ ID1:ID0      00 1/1 01 1/2 10 1/4 11 1/8
+    //æ¨¡å¼æ§åˆ¶ MC1:MC0      00 åœæ­¢ 01 å¢è®¡æ•° 10è¿ç»­è®¡æ•° 11 å¢å‡è®¡æ•°
+    //å®šæ—¶å™¨æ¸…é›¶ TACLR      1 æ¸…é›¶
+    //ä¸­æ–­å…è®¸ä½ TAIE       1 ä¸­æ–­å…è®¸
+    //ä¸­æ–­æ ‡å¿—ä½ TAIFG      1 ä¸­æ–­è¯·æ±‚
+    //TA0CTL   =TASSEL1+TACLR;//è®¡æ•°æ—¶é’Ÿè®¾ä¸ºSMCLK,åˆ†é¢‘ç³»æ•°è®¾ç½®ä¸º1,è®¡æ•°å™¨æ¸…0,å¤ä½Timer0_A5
     
-    TA0CTL   =TASSEL__ACLK+ID__8+TACLR;//¼ÆÊıÊ±ÖÓÉèÎªACLK,·ÖÆµÏµÊıÉèÖÃÎª8,¼ÆÊıÆ÷Çå0,¸´Î»Timer0_A5
+    TA0CTL   =TASSEL__ACLK+ID__8+TACLR;//è®¡æ•°æ—¶é’Ÿè®¾ä¸ºACLK,åˆ†é¢‘ç³»æ•°è®¾ç½®ä¸º8,è®¡æ•°å™¨æ¸…0,å¤ä½Timer0_A5
 
-    //Ôö¼ÆÊı   0~TA0CCR0-0-TA0CCR0.....
-    //Á¬Ğø¼ÆÊı 0~0xFFFF~0~0xFFFF......
-    //Ôö¼õ¼ÆÊı 0~TA0CCR0~0~TA0CCR0....
-    //TA0CCR0  =  16000  - 1                                   ; // SMCK=EX2=16MHz£¬ÉèÖÃ¼ÆÊıÆ÷Òç³öÊ±¼äÎª1ms
+    //å¢è®¡æ•°   0~TA0CCR0-0-TA0CCR0.....
+    //è¿ç»­è®¡æ•° 0~0xFFFF~0~0xFFFF......
+    //å¢å‡è®¡æ•° 0~TA0CCR0~0~TA0CCR0....
+    //TA0CCR0  =  16000  - 1                                   ; // SMCK=EX2=16MHzï¼Œè®¾ç½®è®¡æ•°å™¨æº¢å‡ºæ—¶é—´ä¸º1ms
     
-    TA0CCR0  =  4  - 1                                   ; // ACLK=EX1=32.768K/8=4096£¬ÉèÖÃ¼ÆÊıÆ÷Òç³öÊ±¼äÎª1ms
+    TA0CCR0  =  4  - 1                                   ; // ACLK=EX1=32.768K/8=4096ï¼Œè®¾ç½®è®¡æ•°å™¨æº¢å‡ºæ—¶é—´ä¸º1ms
 
-    //²¶»ñ/±È½Ï¿ØÖÆ¼Ä´æÆ÷
-    //²¶»ñ·½Ê½ CM1:CM0  00½ûÖ¹²¶»ñ 01 ÉÏÉıÑØ 10ÏÂ½µÑØ 11ÉÏÏÂ¶¼²¶»ñ
-    //²¶»ñÔ´Ñ¡Ôñ CCIS1:CCIS0  00 CCIxA 01 CCIxB 10 GND 11 VCC
-    //Í¬²½·½Ê½ SCS  0 Òì²½ 1 Í¬²½
-    //¹¤×÷Ä£Ê½Ñ¡Ôñ CAP  0±È½Ï 1²¶»ñ
-    //Êä³öÄ£Ê½ OUTMx 
-    //Êä³öĞÅºÅ  0 Êä³öµÍµçÆ½ 1 Êä³ö¸ßµçÆ½
-    //²¶»ñÒç³ö COV  1²¶»ñÒç³ö
-    //ÖĞ¶Ï±êÖ¾ CCIFG  1 ÖĞ¶ÏÇëÇó
-    TA0CCTL0 = CCIE;//½ûÓÃ²¶»ñ Ê¹ÄÜ±È½ÏÖĞ¶Ï
+    //æ•è·/æ¯”è¾ƒæ§åˆ¶å¯„å­˜å™¨
+    //æ•è·æ–¹å¼ CM1:CM0  00ç¦æ­¢æ•è· 01 ä¸Šå‡æ²¿ 10ä¸‹é™æ²¿ 11ä¸Šä¸‹éƒ½æ•è·
+    //æ•è·æºé€‰æ‹© CCIS1:CCIS0  00 CCIxA 01 CCIxB 10 GND 11 VCC
+    //åŒæ­¥æ–¹å¼ SCS  0 å¼‚æ­¥ 1 åŒæ­¥
+    //å·¥ä½œæ¨¡å¼é€‰æ‹© CAP  0æ¯”è¾ƒ 1æ•è·
+    //è¾“å‡ºæ¨¡å¼ OUTMx 
+    //è¾“å‡ºä¿¡å·  0 è¾“å‡ºä½ç”µå¹³ 1 è¾“å‡ºé«˜ç”µå¹³
+    //æ•è·æº¢å‡º COV  1æ•è·æº¢å‡º
+    //ä¸­æ–­æ ‡å¿— CCIFG  1 ä¸­æ–­è¯·æ±‚
+    TA0CCTL0 = CCIE;//ç¦ç”¨æ•è· ä½¿èƒ½æ¯”è¾ƒä¸­æ–­
 
-    TA0CTL  |= (1 << 4)                                      ; // ÉèÖÃ¼ÆÊıÆ÷Îª¼Ó¼ÆÊı£¬Æô¶¯
+    TA0CTL  |= (1 << 4)                                      ; // è®¾ç½®è®¡æ•°å™¨ä¸ºåŠ è®¡æ•°ï¼Œå¯åŠ¨
 }
 
 
 
 
 
-//ĞÄÌø°ü
-extern unsigned long int Heart_Beat_Count;                     //1msÊ±¼ä¼ÆÊı
-//Êı¾İ°ü
-extern unsigned long int MCU_Data_Count;                     //1msÊ±¼ä¼ÆÊı
-extern unsigned long int MCU_ACK_Count;                              //Ó¦´ğ°ü¼ÆÊı
+//å¿ƒè·³åŒ…
+extern unsigned long int Heart_Beat_Count;                     //1msæ—¶é—´è®¡æ•°
+//æ•°æ®åŒ…
+extern unsigned long int MCU_Data_Count;                     //1msæ—¶é—´è®¡æ•°
+extern unsigned long int MCU_ACK_Count;                              //åº”ç­”åŒ…è®¡æ•°
 #pragma vector=TIMER0_A0_VECTOR
 __interrupt void Timer0_A0 (void)
 {
-   GSM_Start_Count ++                                     ;//¿ª»úÑÓÊ±
-   GSM_TimeOut_1ms++                                      ;//Ö¸Áî³¬Ê±Ê±¼ä¼ÆÊı
-   Heart_Beat_Count++                                     ;//ĞÄÌø°ü·¢ËÍÊ±¼ä¼ÆÊı
-   MCU_Data_Count++                                       ;//Êı¾İ°ü·¢ËÍÊ±¼ä¼ÆÊı
-   MCU_ACK_Count++                                        ;//Êı¾İ°üÏìÓ¦³¬Ê±
-   GPS_LOCATE_Time++                                      ;//GPS½ÓÊÕÊ±¼ä10S
-   Soft_Vers_Cnt  ++                                      ;//·¢ËÍÈí¼ş°æ±¾ºÅÊ±¼ä¼ÆÊ±
-   THR_Mint_Time_Cnt    ++                                ;//3.5·ÖÖÓÊ±¼ä¼ÆÊı£¬ÓÃÓÚ²»ÉÏ´«Êı¾İ¼ì²â
-   Write_Flag_time++                                      ;//Ğ´flash¼ä¸ô
-   RD_Data_1_Min_Cnt    ++                                ;//½âÎö MUC Ó¦´ğÊ±¼ä¼ÆÊı
-   CALL_MCU_TIME_CNT    ++                                ;//Ê±¼ä¼ÆÊı
-   UP_SPI_NUM_CNT       ++                                ;//Ô¶³ÌÉı¼¶¼ÆÊı
-   GSM_STAT_TIME_CNT    ++                                ;//¼ì²âÊÖ»ú¿¨ 5·ÖÖÓ¼ì²âÒ»´Î
-   GSM_INIT_TIME_CNT    ++                                ;//GSM³õÊ¼»¯¼ÆÊ±ÓÃ
+   GSM_Start_Count ++                                     ;//å¼€æœºå»¶æ—¶
+   GSM_TimeOut_1ms++                                      ;//æŒ‡ä»¤è¶…æ—¶æ—¶é—´è®¡æ•°
+   Heart_Beat_Count++                                     ;//å¿ƒè·³åŒ…å‘é€æ—¶é—´è®¡æ•°
+   MCU_Data_Count++                                       ;//æ•°æ®åŒ…å‘é€æ—¶é—´è®¡æ•°
+   MCU_ACK_Count++                                        ;//æ•°æ®åŒ…å“åº”è¶…æ—¶
+   GPS_LOCATE_Time++                                      ;//GPSæ¥æ”¶æ—¶é—´10S
+   Soft_Vers_Cnt  ++                                      ;//å‘é€è½¯ä»¶ç‰ˆæœ¬å·æ—¶é—´è®¡æ—¶
+   THR_Mint_Time_Cnt    ++                                ;//3.5åˆ†é’Ÿæ—¶é—´è®¡æ•°ï¼Œç”¨äºä¸ä¸Šä¼ æ•°æ®æ£€æµ‹
+   Write_Flag_time++                                      ;//å†™flashé—´éš”
+   RD_Data_1_Min_Cnt    ++                                ;//è§£æ MUC åº”ç­”æ—¶é—´è®¡æ•°
+   CALL_MCU_TIME_CNT    ++                                ;//æ—¶é—´è®¡æ•°
+   UP_SPI_NUM_CNT       ++                                ;//è¿œç¨‹å‡çº§è®¡æ•°
+   GSM_STAT_TIME_CNT    ++                                ;//æ£€æµ‹æ‰‹æœºå¡ 5åˆ†é’Ÿæ£€æµ‹ä¸€æ¬¡
+   GSM_INIT_TIME_CNT    ++                                ;//GSMåˆå§‹åŒ–è®¡æ—¶ç”¨
    LOW_POW_TIME_CNT     ++                                ;
    SIM_Card_Work_Cnt++;
-   SPI_Iint_Time_Cnt++;//430¿ª»ú¼ÆÊ±
-   GPS_ANT_IO_CNT++;//GPSÌìÏß´ÎÊı
-   GSM_GPS_AT_Cmd_Cnt++;//·¢ËÍGSM»ñÈ¡µØÀíĞÅÏ¢¼ÆÊı
-   ExitLMP_Time_Cnt++;//ÍË³öµÍ¹¦ºÄÊ±¼ÆÊı
-   One_JI_Warn_Cnt++;//Ò»¼¶±¨¾¯¼ÆÊı
-   Two_JI_Warn_Cnt++;//¶ş¼¶±¨¾¯¼ÆÊı
-   One_Mint_Warn_Cnt++;//Ò»·ÖÖÓ¼ÆÊı
+   SPI_Iint_Time_Cnt++;//430å¼€æœºè®¡æ—¶
+   GPS_ANT_IO_CNT++;//GPSå¤©çº¿æ¬¡æ•°
+   GSM_GPS_AT_Cmd_Cnt++;//å‘é€GSMè·å–åœ°ç†ä¿¡æ¯è®¡æ•°
+   ExitLMP_Time_Cnt++;//é€€å‡ºä½åŠŸè€—æ—¶è®¡æ•°
+   One_JI_Warn_Cnt++;//ä¸€çº§æŠ¥è­¦è®¡æ•°
+   Two_JI_Warn_Cnt++;//äºŒçº§æŠ¥è­¦è®¡æ•°
+   One_Mint_Warn_Cnt++;//ä¸€åˆ†é’Ÿè®¡æ•°
    
    
    if(!(P2IN&PWRON))
    {
-	   MSP_430_Start_Time   ++          ;//430¿ª»ú¼ÆÊ±
+	   MSP_430_Start_Time   ++          ;//430å¼€æœºè®¡æ—¶
    }
    
 //    TA0CCR0  = (16000) - 1                                  ;
@@ -120,42 +120,42 @@ __interrupt void Timer0_A0 (void)
 
 
 /*******************************************************************\
-*	      º¯ÊıÃû£ºDo_GPS_Data             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ½ÓÊÕ¡¢´¦ÀíGPSÊı¾İ  
-*	      ²ÎÊı£º  
-           1¡¢Í¨¹ı¿ØÖÆGPSÊı¾İÀàĞÍ£¨00=ÎŞÏìÓ¦£»11=GPRMC£»22=GPGGA£©¿ØÖÆ²½Öè
-           2¡¢Do_GPS_Mesg_OK_Flag£ºGPSÊı¾İ´¦ÀíÍê³É±êÖ¾ 00==Î´Íê³É£»11==Íê³É
-           3¡¢Open_UCA1_UART_Init(void)==ÓÃ½ÓÊÕÍê³ÉÊı¾İ²»¿ÉÓÃÊ±´ò¿ªGPSÖĞ¶Ï
-*	      ·µ»ØÖµ£ºÎŞ     
+*	      å‡½æ•°åï¼šDo_GPS_Data             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  æ¥æ”¶ã€å¤„ç†GPSæ•°æ®  
+*	      å‚æ•°ï¼š  
+           1ã€é€šè¿‡æ§åˆ¶GPSæ•°æ®ç±»å‹ï¼ˆ00=æ— å“åº”ï¼›11=GPRMCï¼›22=GPGGAï¼‰æ§åˆ¶æ­¥éª¤
+           2ã€Do_GPS_Mesg_OK_Flagï¼šGPSæ•°æ®å¤„ç†å®Œæˆæ ‡å¿— 00==æœªå®Œæˆï¼›11==å®Œæˆ
+           3ã€Open_UCA1_UART_Init(void)==ç”¨æ¥æ”¶å®Œæˆæ•°æ®ä¸å¯ç”¨æ—¶æ‰“å¼€GPSä¸­æ–­
+*	      è¿”å›å€¼ï¼šæ—      
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
-void Time_Count_Value_Init(void)                          //Ê±¼ä¼ÆÊıÇåÁã
+void Time_Count_Value_Init(void)                          //æ—¶é—´è®¡æ•°æ¸…é›¶
 {
   
    OVER_TIMES_CNT        =0                               ;
-   GSM_TimeOut_1ms       =0                               ;//Ö¸Áî³¬Ê±Ê±¼ä¼ÆÊı
-   Heart_Beat_Count      =0                               ;//ĞÄÌø°ü·¢ËÍÊ±¼ä¼ÆÊı
-   MCU_Data_Count        =0                               ;//Êı¾İ°ü·¢ËÍÊ±¼ä¼ÆÊı
-   MCU_ACK_Count         =0                               ;//Êı¾İ°üÏìÓ¦³¬Ê±
-   GPS_LOCATE_Time       =10241                           ;//GPS½ÓÊÕÊ±¼ä10S
-   Soft_Vers_Cnt         =0                               ;//·¢ËÍÈí¼ş°æ±¾ºÅÊ±¼ä¼ÆÊ±
-   THR_Mint_Time_Cnt     =0                               ;//3.5·ÖÖÓÊ±¼ä¼ÆÊı£¬ÓÃÓÚ²»ÉÏ´«Êı¾İ¼ì²â
-   Write_Flag_time       =0                               ;//Ğ´flash¼ä¸ô
-   RD_Data_1_Min_Cnt     =0                               ;//½âÎö MUC Ó¦´ğÊ±¼ä¼ÆÊı
-   CALL_MCU_TIME_CNT     =0                               ;//Ê±¼ä¼ÆÊı
-   UP_SPI_NUM_CNT        =0                               ;//Ô¶³ÌÉı¼¶¼ÆÊı
-   GSM_STAT_TIME_CNT     =0                               ;//¼ì²âÊÖ»ú¿¨ 5·ÖÖÓ¼ì²âÒ»´Î
-   GSM_INIT_TIME_CNT     =0                               ;//GSM³õÊ¼»¯¼ÆÊ±ÓÃ
+   GSM_TimeOut_1ms       =0                               ;//æŒ‡ä»¤è¶…æ—¶æ—¶é—´è®¡æ•°
+   Heart_Beat_Count      =0                               ;//å¿ƒè·³åŒ…å‘é€æ—¶é—´è®¡æ•°
+   MCU_Data_Count        =0                               ;//æ•°æ®åŒ…å‘é€æ—¶é—´è®¡æ•°
+   MCU_ACK_Count         =0                               ;//æ•°æ®åŒ…å“åº”è¶…æ—¶
+   GPS_LOCATE_Time       =10241                           ;//GPSæ¥æ”¶æ—¶é—´10S
+   Soft_Vers_Cnt         =0                               ;//å‘é€è½¯ä»¶ç‰ˆæœ¬å·æ—¶é—´è®¡æ—¶
+   THR_Mint_Time_Cnt     =0                               ;//3.5åˆ†é’Ÿæ—¶é—´è®¡æ•°ï¼Œç”¨äºä¸ä¸Šä¼ æ•°æ®æ£€æµ‹
+   Write_Flag_time       =0                               ;//å†™flashé—´éš”
+   RD_Data_1_Min_Cnt     =0                               ;//è§£æ MUC åº”ç­”æ—¶é—´è®¡æ•°
+   CALL_MCU_TIME_CNT     =0                               ;//æ—¶é—´è®¡æ•°
+   UP_SPI_NUM_CNT        =0                               ;//è¿œç¨‹å‡çº§è®¡æ•°
+   GSM_STAT_TIME_CNT     =0                               ;//æ£€æµ‹æ‰‹æœºå¡ 5åˆ†é’Ÿæ£€æµ‹ä¸€æ¬¡
+   GSM_INIT_TIME_CNT     =0                               ;//GSMåˆå§‹åŒ–è®¡æ—¶ç”¨
    LOW_POW_TIME_CNT      =0                               ;
-   Want_GPS_Data_Type    =0x01                            ;//ĞèÒªGPSÊı¾İÀàĞÍ00==ÎŞÏìÓ¦£»0x11==GPRMC£»0x22==GPGGA£» 
+   Want_GPS_Data_Type    =0x01                            ;//éœ€è¦GPSæ•°æ®ç±»å‹00==æ— å“åº”ï¼›0x11==GPRMCï¼›0x22==GPGGAï¼› 
    Soft_VER_OK=0x11;
    SIM_Card_Work_Cnt=0;
-   GPS_ANT_IO_CNT=0;//GPSÌìÏß´ÎÊı
+   GPS_ANT_IO_CNT=0;//GPSå¤©çº¿æ¬¡æ•°
    No_SIM_CARD_Cnt=0;
-   GSM_GPS_AT_Cmd_Cnt=0;//·¢ËÍGSM»ñÈ¡µØÀíĞÅÏ¢¼ÆÊı
-   One_JI_Warn_Cnt=0;//Ò»¼¶±¨¾¯¼ÆÊı
-   Two_JI_Warn_Cnt=0;//¶ş¼¶±¨¾¯¼ÆÊı
-   One_Mint_Warn_Cnt=0;//Ò»·ÖÖÓ¼ÆÊı
+   GSM_GPS_AT_Cmd_Cnt=0;//å‘é€GSMè·å–åœ°ç†ä¿¡æ¯è®¡æ•°
+   One_JI_Warn_Cnt=0;//ä¸€çº§æŠ¥è­¦è®¡æ•°
+   Two_JI_Warn_Cnt=0;//äºŒçº§æŠ¥è­¦è®¡æ•°
+   One_Mint_Warn_Cnt=0;//ä¸€åˆ†é’Ÿè®¡æ•°
 }

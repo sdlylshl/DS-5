@@ -4,20 +4,20 @@
 #include ".\GSM\GSM.h"
 #include "PortIO.h"
 
-char* Open_Box_Flash=(char *)0x1844;//¿ªºĞ±¨¾¯Ê×µØÖ·001844
+char* Open_Box_Flash=(char *)0x1844;//å¼€ç›’æŠ¥è­¦é¦–åœ°å€001844
 #define Open_Box_Warn_Times 3
 unsigned char Open_Box_Num;
 
 #define Close_Box_Check_Times 5
 unsigned char Close_Box_Num;
 /*******************************************************************\
-*	      º¯ÊıÃû£ºRead_Open_Box_Flash             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ¿ªºĞ¼ì²â±¨¾¯
-*	      ²ÎÊı£º  
-*	      ·µ»ØÖµ£º  
+*	      å‡½æ•°åï¼šRead_Open_Box_Flash             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å¼€ç›’æ£€æµ‹æŠ¥è­¦
+*	      å‚æ•°ï¼š  
+*	      è¿”å›å€¼ï¼š  
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
 void Read_Open_Box_Flash(void)
 {
@@ -25,7 +25,7 @@ void Read_Open_Box_Flash(void)
     {
        Open_Box_Flag=0xAA;
        Module_Status[2] |=0x0C;
-       GPS_GSM_System_Stu[2]|=0x0C;//ÊÔÖÆ³µ¼ä908C
+       GPS_GSM_System_Stu[2]|=0x0C;//è¯•åˆ¶è½¦é—´908C
        LPM3_Open_Box_Gsm_Flag=0xAA;
     }
     
@@ -39,28 +39,28 @@ void Read_Open_Box_Flash(void)
 
 
 /*******************************************************************\
-*	      º¯ÊıÃû£ºOpen_Box_Check             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ¿ªºĞ¼ì²â±¨¾¯
-*	      ²ÎÊı£º  
-*	      ·µ»ØÖµ£º  
+*	      å‡½æ•°åï¼šOpen_Box_Check             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å¼€ç›’æ£€æµ‹æŠ¥è­¦
+*	      å‚æ•°ï¼š  
+*	      è¿”å›å€¼ï¼š  
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
 void Open_Box_Check(void)
 {
     //(MSP430_POWER_ON_FLAG==0x55)&&
     if((P2IN&OPEN)&&(Open_Box_Warn_Times<Open_Box_Num++)&&((*Open_Box_Flash!=0xAA)&&(*(Open_Box_Flash+1)!=0xAA)))
     {
-       Open_Box_Num=0;//¿ªºĞ¼ì²â
+       Open_Box_Num=0;//å¼€ç›’æ£€æµ‹
        Open_Box_Flag=0xAA;
        LPM3_Open_Box_Gsm_Flag=0xAA;
-       Write_Open_Box_Flash();//Ğ´¿ªºĞ±¨¾¯Flash
+       Write_Open_Box_Flash();//å†™å¼€ç›’æŠ¥è­¦Flash
     }
     
     if((!(P2IN&OPEN))&&(Close_Box_Check_Times<Close_Box_Num++)&&((*Open_Box_Flash!=0x55)&&(*(Open_Box_Flash+1)!=0x55)))
     {
-       Close_Box_Num=0;//±ÕºĞ¼ì²â
+       Close_Box_Num=0;//é—­ç›’æ£€æµ‹
        Open_Box_Flag=0x55;
        Write_Open_Box_Flash();
     }    
@@ -69,15 +69,15 @@ void Open_Box_Check(void)
 
 
 /*******************************************************************\
-*	      º¯ÊıÃû£ºOpen_Box_Check             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  
-*	      ²ÎÊı£º  
-*	      ·µ»ØÖµ£º  
+*	      å‡½æ•°åï¼šOpen_Box_Check             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  
+*	      å‚æ•°ï¼š  
+*	      è¿”å›å€¼ï¼š  
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
-void Write_Open_Box_Flash(void)//¿ªºĞ¼ì²â±¨¾¯Flash
+void Write_Open_Box_Flash(void)//å¼€ç›’æ£€æµ‹æŠ¥è­¦Flash
 {
    if(!((*Open_Box_Flash==0xAA)&&(*(Open_Box_Flash+1)==0xAA))&&(Open_Box_Flag==0xAA))
    {

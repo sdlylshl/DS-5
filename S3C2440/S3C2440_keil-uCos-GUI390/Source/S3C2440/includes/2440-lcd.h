@@ -1,5 +1,5 @@
 /**************************************************************
-The initial and control for 240¡Á320 16Bpp TFT LCD----LtS350Q1
+The initial and control for 240Ã—320 16Bpp TFT LCD----LtS350Q1
 **************************************************************/
 
 void Lcd_N35_Init(void);
@@ -19,7 +19,7 @@ void Glib_Line(int x1,int y1,int x2,int y2,int color);
 void Paint_Bmp(int x0,int y0,int h,int l,unsigned char bmp[]);
 
 //================================
-// ×ÖÌåÊä³ö
+// å­—ä½“è¾“å‡º
 //================================
 void Lcd_PutASCII(unsigned int x,unsigned int y,unsigned char ch,unsigned int c,unsigned int bk_c,unsigned int st); 
 void Lcd_PutHZ(unsigned int x,unsigned int y,unsigned short int QW,unsigned int c,unsigned int bk_c,unsigned int st);  

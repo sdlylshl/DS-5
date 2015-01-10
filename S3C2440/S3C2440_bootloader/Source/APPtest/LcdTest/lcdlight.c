@@ -1,5 +1,5 @@
 /**************************************************************
-The initial and control for 640¡Á480 16Bpp TFT LCD----VGA
+The initial and control for 640Ã—480 16Bpp TFT LCD----VGA
 **************************************************************/
 
 
@@ -20,7 +20,7 @@ extern void Delay(int time);
 extern void LcdBkLtSet(U32 Freq);
 void lcdLightTest(){
 		int i;
-		Lcd_ClearScr(0x0);   //ºÚÉ«
+		Lcd_ClearScr(0x0);   //é»‘è‰²
 		Versions();
 		print(0,2,"Starting LCD Test",0xFF);
 		print(0,20,"Press any key is continue !",0xFF);

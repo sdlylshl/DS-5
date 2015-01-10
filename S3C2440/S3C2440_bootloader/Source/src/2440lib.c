@@ -219,7 +219,7 @@ void Uart_Init(int pclk,int baud)
     int i;
     if(pclk == 0)
     pclk    = PCLK;
-    rGPHCON = (rGPHCON&0xFF0F)|0xA0;//ÐÂÔö
+    rGPHCON = (rGPHCON&0xFF0F)|0xA0;//æ–°å¢ž
     rUFCON0 = 0x0;   //UART channel 0 FIFO control register, FIFO disable
     rUFCON1 = 0x0;   //UART channel 1 FIFO control register, FIFO disable
     rUFCON2 = 0x0;   //UART channel 2 FIFO control register, FIFO disable
@@ -608,19 +608,19 @@ void LcdBkLtSet(U32 Freq)
 	HiRatio = 80-(U32)((3*Freq)/5);	
 	if(HiRatio<22)
 	{
-		rGPBCON  = rGPBCON & (~(3<<2)) | (1<<2) ;	//¹ØÆÁ
+		rGPBCON  = rGPBCON & (~(3<<2)) | (1<<2) ;	//å…³å±
 		rGPBDAT &= ~(1<<1);
 		return;
 	}
 	if( HiRatio > 79 ){
-		rGPBCON  = rGPBCON & (~(3<<2)) | (1<<2) ;	//¿ªÆÁ
+		rGPBCON  = rGPBCON & (~(3<<2)) | (1<<2) ;	//å¼€å±
 		rGPBDAT |= (1<<1);	
 		return;
 		}
 		
 
 	
-	rGPBCON = rGPBCON & (~(3<<2)) | (2<<2) ;		//GPB1ÉèÖÃÎªTOUT1
+	rGPBCON = rGPBCON & (~(3<<2)) | (2<<2) ;		//GPB1è®¾ç½®ä¸ºTOUT1
 		
 	rTCON = rTCON & (~(0xf<<8)) ;			// clear manual update bit, stop Timer1
 
@@ -634,6 +634,6 @@ void LcdBkLtSet(U32 Freq)
 	rTCMPB1  = ( rTCNTB1*(100-HiRatio))/100 ;	//if set inverter on,  when TCNT2<=TCMP2, TOUT is low,  TCNT2>TCMP2, TOUT is high
 
 	rTCON = rTCON & (~(0xf<<8)) | (0x0e<<8) ;
-	//×Ô¶¯ÖØ×°,Êä³öÈ¡·´¹Ø±Õ,¸üÐÂTCNTBn¡¢TCMPBn,ËÀÇø¿ØÖÆÆ÷¹Ø±Õ
-	rTCON = rTCON & (~(0xf<<8)) | (0x0d<<8) ;		//¿ªÆô±³¹â¿ØÖÆ
+	//è‡ªåŠ¨é‡è£…,è¾“å‡ºå–åå…³é—­,æ›´æ–°TCNTBnã€TCMPBn,æ­»åŒºæŽ§åˆ¶å™¨å…³é—­
+	rTCON = rTCON & (~(0xf<<8)) | (0x0d<<8) ;		//å¼€å¯èƒŒå…‰æŽ§åˆ¶
 }

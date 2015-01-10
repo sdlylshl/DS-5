@@ -1,34 +1,34 @@
 
 #include "Root_Up.h"
 
-char UP_OK_EROR_Flag                                                  ;//IP¶Ë¿ÚºÅ ÖØ·¢
+char UP_OK_EROR_Flag                                                  ;//IPç«¯å£å· é‡å‘
 #define UP_Result_Buf_SZ 20
-char ANS_UP_OK_BUF[UP_Result_Buf_SZ]                                  ;//ÉÏ±¨³ÌÐòÉý¼¶½á¹û»Ø¸´
-char REC_UP_OK_BUF[UP_Result_Buf_SZ]                                  ;//Æ½Ì¨ÏÂ·¢ÉÏ±¨³ÌÐòÉý¼¶½á¹û
-char ROOT_UP_OK_Flag                                                  ;//³ÌÐòÉý¼¶±êÖ¾Î»11==OK£»00==Fail
-//unsigned char UP_STR_Flag                                           ;//Éý¼¶±êÖ¾11==OK£»00==Fail
+char ANS_UP_OK_BUF[UP_Result_Buf_SZ]                                  ;//ä¸ŠæŠ¥ç¨‹åºå‡çº§ç»“æžœå›žå¤
+char REC_UP_OK_BUF[UP_Result_Buf_SZ]                                  ;//å¹³å°ä¸‹å‘ä¸ŠæŠ¥ç¨‹åºå‡çº§ç»“æžœ
+char ROOT_UP_OK_Flag                                                  ;//ç¨‹åºå‡çº§æ ‡å¿—ä½11==OKï¼›00==Fail
+//unsigned char UP_STR_Flag                                           ;//å‡çº§æ ‡å¿—11==OKï¼›00==Fail
 
 
 /*******************************************************************\
-*	      º¯ÊýÃû£ºANS_UP_Result             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  GPSÒ»Ìå»úÉÏ±¨³ÌÐòÉý¼¶½á¹û
-*	      ²ÎÊý£º  
-          ¸ñÊ½£º 
-                GPSÖÕ¶ËIDºÅ	    	4
-                ÃüÁî±àÂë	0xA3	2
-                Êý¾Ý°ü³¤¶È	    	2
-                Éý¼¶³ÌÐòÖÖÀà		1
-                Éý¼¶ºóÎÄ¼þ°æ±¾ºÅ	ASCIIÂë	5+ BCDÂë	3
-                ³ÌÐòÉý¼¶½á¹û	0x00£º³É¹¦£»0x01£ºÊ§°Ü	1
-                Ð£Ñé		        2
-*	      ·µ»ØÖµ£º    
+*	      å‡½æ•°åï¼šANS_UP_Result             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  GPSä¸€ä½“æœºä¸ŠæŠ¥ç¨‹åºå‡çº§ç»“æžœ
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š 
+                GPSç»ˆç«¯IDå·	    	4
+                å‘½ä»¤ç¼–ç 	0xA3	2
+                æ•°æ®åŒ…é•¿åº¦	    	2
+                å‡çº§ç¨‹åºç§ç±»		1
+                å‡çº§åŽæ–‡ä»¶ç‰ˆæœ¬å·	ASCIIç 	5+ BCDç 	3
+                ç¨‹åºå‡çº§ç»“æžœ	0x00ï¼šæˆåŠŸï¼›0x01ï¼šå¤±è´¥	1
+                æ ¡éªŒ		        2
+*	      è¿”å›žå€¼ï¼š    
 *
-*	      ÐÞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹åŽ†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
-char NET_ANS_UP_Result(void)                                        //Íø¹Ø·¢ËÍÉý¼¶Æô¶¯Ö¸Áî
+char NET_ANS_UP_Result(void)                                        //ç½‘å…³å‘é€å‡çº§å¯åŠ¨æŒ‡ä»¤
 {
-    unsigned int CAL_UP_OK_CRC,NET_UP_OK_CRC                            ;//Ð£ÑéºÍ
+    unsigned int CAL_UP_OK_CRC,NET_UP_OK_CRC                            ;//æ ¡éªŒå’Œ
       
     NET_UP_OK_CRC =   REC_UP_OK_BUF[19]                                 ;
     NET_UP_OK_CRC =   NET_UP_OK_CRC  <<8                                ;
@@ -39,7 +39,7 @@ char NET_ANS_UP_Result(void)                                        //Íø¹Ø·¢ËÍÉý
     {
         if(COMP_Peice_STR(REC_UP_OK_BUF,ANS_UP_OK_BUF,6,6,12)==1)
         {
-            ROOT_UP_OK_Flag  =0x11                                      ;//³ÌÐòÉý¼¶±êÖ¾Î»11==OK£»00==Fail
+            ROOT_UP_OK_Flag  =0x11                                      ;//ç¨‹åºå‡çº§æ ‡å¿—ä½11==OKï¼›00==Fail
             return 1                                                    ;
         }
     }
@@ -49,28 +49,28 @@ char NET_ANS_UP_Result(void)                                        //Íø¹Ø·¢ËÍÉý
 
 
 /*******************************************************************\
-*	      º¯ÊýÃû£ºANS_UP_Result             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  GPSÒ»Ìå»úÉÏ±¨³ÌÐòÉý¼¶½á¹û
-*	      ²ÎÊý£º  
-          ¸ñÊ½£º 
-                GPSÖÕ¶ËIDºÅ	    	4
-                ÃüÁî±àÂë	0xA3	2
-                Êý¾Ý°ü³¤¶È	    	2
-                Éý¼¶³ÌÐòÖÖÀà		1
-                Éý¼¶ºóÎÄ¼þ°æ±¾ºÅ	ASCIIÂë	5+ BCDÂë	3
-                ³ÌÐòÉý¼¶½á¹û	0x00£º³É¹¦£»0x01£ºÊ§°Ü	1
-                Ð£Ñé		        2
-*	      ·µ»ØÖµ£º    
+*	      å‡½æ•°åï¼šANS_UP_Result             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  GPSä¸€ä½“æœºä¸ŠæŠ¥ç¨‹åºå‡çº§ç»“æžœ
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š 
+                GPSç»ˆç«¯IDå·	    	4
+                å‘½ä»¤ç¼–ç 	0xA3	2
+                æ•°æ®åŒ…é•¿åº¦	    	2
+                å‡çº§ç¨‹åºç§ç±»		1
+                å‡çº§åŽæ–‡ä»¶ç‰ˆæœ¬å·	ASCIIç 	5+ BCDç 	3
+                ç¨‹åºå‡çº§ç»“æžœ	0x00ï¼šæˆåŠŸï¼›0x01ï¼šå¤±è´¥	1
+                æ ¡éªŒ		        2
+*	      è¿”å›žå€¼ï¼š    
 *
-*	      ÐÞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹åŽ†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
-char GPS_ASK_UP_Result(void)                                        //Íø¹Ø·¢ËÍÉý¼¶Æô¶¯Ö¸Áî
+char GPS_ASK_UP_Result(void)                                        //ç½‘å…³å‘é€å‡çº§å¯åŠ¨æŒ‡ä»¤
 {
 
-    unsigned char MV_Num                                                ;//¼ÆÊýÓÃ
-    unsigned int CAL_UP_OK_CRC,NET_UP_OK_CRC                            ;//Ð£ÑéºÍ
-    unsigned int UP_OK_BUF_Len                                          ;//±¾Ö¸Áî°ü×Ö½Ú×Ü³¤¶È 
+    unsigned char MV_Num                                                ;//è®¡æ•°ç”¨
+    unsigned int CAL_UP_OK_CRC,NET_UP_OK_CRC                            ;//æ ¡éªŒå’Œ
+    unsigned int UP_OK_BUF_Len                                          ;//æœ¬æŒ‡ä»¤åŒ…å­—èŠ‚æ€»é•¿åº¦ 
       
     NET_UP_OK_CRC =   REC_UP_OK_BUF[19]                                 ;
     NET_UP_OK_CRC =   NET_UP_OK_CRC  <<8                                ;
@@ -79,16 +79,16 @@ char GPS_ASK_UP_Result(void)                                        //Íø¹Ø·¢ËÍÉý
                                 UP_Result_Buf_SZ-2)                     ;//18
     if(CAL_UP_OK_CRC==NET_UP_OK_CRC)
     {
-        Tran_ID_CmdNum(ANS_UP_OK_BUF,0xA3)                   ;//×ª´æIDºÅºÍÃüÁî±àÂë   
+        Tran_ID_CmdNum(ANS_UP_OK_BUF,0xA3)                   ;//è½¬å­˜IDå·å’Œå‘½ä»¤ç¼–ç    
 
-        UP_OK_BUF_Len     =  UP_Result_Buf_SZ                           ;//±¾Ö¸Áî°ü×Ö½Ú×Ü³¤¶È
+        UP_OK_BUF_Len     =  UP_Result_Buf_SZ                           ;//æœ¬æŒ‡ä»¤åŒ…å­—èŠ‚æ€»é•¿åº¦
         ANS_UP_OK_BUF[7]  =  UP_OK_BUF_Len                              ;
         UP_OK_BUF_Len     =  UP_OK_BUF_Len   >>8                        ;
         ANS_UP_OK_BUF[6]  =  UP_OK_BUF_Len                              ;
         
-        READ_UP_SPI_FLASH()                                             ;//×ªÒÆÈí¼þ°æ±¾ºÅ¼°Éý¼¶ÀàÐÍ
-        ANS_UP_OK_BUF[8]  =  UP_STR_A10_Type                            ;//Éý¼¶¿ØÖÆÏµÍ³ÀàÐÍ 
-        for(MV_Num=0;MV_Num<8;MV_Num++)                                  //Éý¼¶ÎÄ¼þ°æ±¾ºÅ
+        READ_UP_SPI_FLASH()                                             ;//è½¬ç§»è½¯ä»¶ç‰ˆæœ¬å·åŠå‡çº§ç±»åž‹
+        ANS_UP_OK_BUF[8]  =  UP_STR_A10_Type                            ;//å‡çº§æŽ§åˆ¶ç³»ç»Ÿç±»åž‹ 
+        for(MV_Num=0;MV_Num<8;MV_Num++)                                  //å‡çº§æ–‡ä»¶ç‰ˆæœ¬å·
         {            
             ANS_UP_OK_BUF[9+MV_Num]=ANS_UP_SPI_Num_BuF[14+MV_Num]       ;
         }
@@ -100,12 +100,12 @@ char GPS_ASK_UP_Result(void)                                        //Íø¹Ø·¢ËÍÉý
         ANS_UP_OK_BUF[19]    =   (char)((CAL_UP_OK_CRC>>8)&0xFF)        ;
         
         UP_OK_EROR_Flag   =   1                                         ;
-        if(GSM_SendData(ANS_UP_OK_BUF,UP_Result_Buf_SZ))                 //Êý¾Ý·¢ËÍ   
+        if(GSM_SendData(ANS_UP_OK_BUF,UP_Result_Buf_SZ))                 //æ•°æ®å‘é€   
         {
            UP_OK_EROR_Flag  =  0                                        ;
            return 1                                                     ;
         }
-        if(UP_OK_EROR_Flag)                                              //Ê§°ÜÖØ·¢
+        if(UP_OK_EROR_Flag)                                              //å¤±è´¥é‡å‘
         {
            if(GSM_SendData(ANS_UP_OK_BUF,UP_Result_Buf_SZ))         
            {          

@@ -2,33 +2,33 @@
 #include "msp430x54x.h"
 #include "GSM.h"
 
-char Module_Status[6]={0X00,0X00,0X00,0x03}                       ;//Ä£¿é×´Ì¬ĞÅÏ¢GPSĞÅÏ¢+GSMĞÅÏ¢+ÏµÍ³×´Ì¬1¡¢2+Éı¼¶×´Ì¬1¡¢2
-char GPS_GSM_System_Stu[4]                                        ;//GSM\GPS×´Ì¬
-char GPS_GSM_ID_Memory[4]                                         ;//Ò»Ìå»úÉè±¸IDÖÕ¶ËºÅ  {0X38,0X1C,0X06,0X00}={0X02,0XB4,0XC4,0x04}  
+char Module_Status[6]={0X00,0X00,0X00,0x03}                       ;//æ¨¡å—çŠ¶æ€ä¿¡æ¯GPSä¿¡æ¯+GSMä¿¡æ¯+ç³»ç»ŸçŠ¶æ€1ã€2+å‡çº§çŠ¶æ€1ã€2
+char GPS_GSM_System_Stu[4]                                        ;//GSM\GPSçŠ¶æ€
+char GPS_GSM_ID_Memory[4]                                         ;//ä¸€ä½“æœºè®¾å¤‡IDç»ˆç«¯å·  {0X38,0X1C,0X06,0X00}={0X02,0XB4,0XC4,0x04}  
 
-unsigned long int MCU_TimeOut   =   MSP_A0_Min_30                 ;//Êı¾İ°ü·¢ËÍÊ±¼ä 1843000
-unsigned long int MCU_Data_TimeOut=   MSP_A0_Min_1                ;//ÅäÖÃÊı¾İ°ü·¢ËÍÊ±¼ä      
-unsigned long int MCU_Data_Count                                  ;//1ms Êı¾İ°ü¼ÆÊı
-unsigned long int MCU_ACK_TimeOut                                 ;//1min ²éÑ¯Ó¦´ğ°ü ÎŞÓ¦´ğÔòÖØ·¢
-unsigned long int MCU_ACK_Count=0                                 ;//Ó¦´ğ°ü¼ÆÊı
+unsigned long int MCU_TimeOut   =   MSP_A0_Min_30                 ;//æ•°æ®åŒ…å‘é€æ—¶é—´ 1843000
+unsigned long int MCU_Data_TimeOut=   MSP_A0_Min_1                ;//é…ç½®æ•°æ®åŒ…å‘é€æ—¶é—´      
+unsigned long int MCU_Data_Count                                  ;//1ms æ•°æ®åŒ…è®¡æ•°
+unsigned long int MCU_ACK_TimeOut                                 ;//1min æŸ¥è¯¢åº”ç­”åŒ… æ— åº”ç­”åˆ™é‡å‘
+unsigned long int MCU_ACK_Count=0                                 ;//åº”ç­”åŒ…è®¡æ•°
 
-unsigned char Pow3_Send_Times                                     ;//·¢ËÍ´ÎÊı
+unsigned char Pow3_Send_Times                                     ;//å‘é€æ¬¡æ•°
 
-char LOW_POW_GSM_Flag =0x55                                       ;//ÏÈÊ¹ÓÃGPSÊı¾İ´¦ÀíÍê³É±êÖ¾ 00==Î´Íê³É£»11==Íê³É
-char Send_MCU_ERR                                                 ;//·¢ËÍÊ§°Ü±êÖ¾ ÖØ·¢
-char MCU_Data_ACK                                                 ;//ÇëÇó·¢ËÍÊı¾İ±êÖ¾Î»
-char GSM_Send_MCU_Buf[106]                                        ;//ÉÏ±¨MCUÊı¾İÃüÁî(»Ø¸´)
+char LOW_POW_GSM_Flag =0x55                                       ;//å…ˆä½¿ç”¨GPSæ•°æ®å¤„ç†å®Œæˆæ ‡å¿— 00==æœªå®Œæˆï¼›11==å®Œæˆ
+char Send_MCU_ERR                                                 ;//å‘é€å¤±è´¥æ ‡å¿— é‡å‘
+char MCU_Data_ACK                                                 ;//è¯·æ±‚å‘é€æ•°æ®æ ‡å¿—ä½
+char GSM_Send_MCU_Buf[106]                                        ;//ä¸ŠæŠ¥MCUæ•°æ®å‘½ä»¤(å›å¤)
 
 /*******************************************************************\
-*	      º¯ÊıÃû£ºGSM_Send_MCU             GPS_ANT_STATUS
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ·¢ËÍMCUÊı¾İ 
-*	      ²ÎÊı£º  
-ID(4)+ÃüÁîÂë(2)+GPSĞÅÏ¢(4+28)+MCU±êÖ¾(1)+[MCUÊı¾İ(62)]+ModbusĞ£Ñé(2)+[½áÊø·û(2)]
-*	      ·µ»ØÖµ£ºÎŞ     
+*	      å‡½æ•°åï¼šGSM_Send_MCU             GPS_ANT_STATUS
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å‘é€MCUæ•°æ® 
+*	      å‚æ•°ï¼š  
+ID(4)+å‘½ä»¤ç (2)+GPSä¿¡æ¯(4+28)+MCUæ ‡å¿—(1)+[MCUæ•°æ®(62)]+Modbusæ ¡éªŒ(2)+[ç»“æŸç¬¦(2)]
+*	      è¿”å›å€¼ï¼šæ—      
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
-           1//GSM_MCU[MCU_CNT]=0;È¥µô´Ë´¦ 2013.12.13 ·ÀÖ¹³öÏÖ0Êı¾İ
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
+           1//GSM_MCU[MCU_CNT]=0;å»æ‰æ­¤å¤„ 2013.12.13 é˜²æ­¢å‡ºç°0æ•°æ®
 \*******************************************************************/
 char GSM_Send_MCU(void)
 {
@@ -44,10 +44,10 @@ char GSM_Send_MCU(void)
         
         if((MCU_Data_TimeOut<MSP_A0_Min_5)&&(P2IN&PWRON))
         {
-            MCU_Data_TimeOut    =   MCU_TimeOut;//ÅäÖÃÊı¾İ°ü·¢ËÍÊ±¼ä
+            MCU_Data_TimeOut    =   MCU_TimeOut;//é…ç½®æ•°æ®åŒ…å‘é€æ—¶é—´
             MCU_ACK_TimeOut     =   MSP_A0_Min_1;
         }
-        RD_MCU_TIME_FLASH();//¶ÁÈ¡Ê±¼äÉèÖÃFLASH     
+        RD_MCU_TIME_FLASH();//è¯»å–æ—¶é—´è®¾ç½®FLASH     
   
         if(LPM3_Open_Box_Gsm_Flag==0xAA)
         {
@@ -60,28 +60,28 @@ char GSM_Send_MCU(void)
             }
         }
         
-        for(MCU_CNT=0;MCU_CNT<4;MCU_CNT++)//GPS ×´Ì¬×ª´æ  
+        for(MCU_CNT=0;MCU_CNT<4;MCU_CNT++)//GPS çŠ¶æ€è½¬å­˜  
         {
            GSM_Send_MCU_Buf[6+MCU_CNT]=GPS_GSM_System_Stu[MCU_CNT] ; 
         }
     
-        /*ARM_DATA_STU &= ~0x04;//GPSÊı¾İÓĞĞ§  
-        for(MCU_CNT=0;MCU_CNT<28;MCU_CNT++)//GPSÊı¾İ×ª´æ
+        /*ARM_DATA_STU &= ~0x04;//GPSæ•°æ®æœ‰æ•ˆ  
+        for(MCU_CNT=0;MCU_CNT<28;MCU_CNT++)//GPSæ•°æ®è½¬å­˜
         {
            GSM_Send_MCU_Buf[6+4+MCU_CNT]=GPS_Inf[MCU_CNT];
-        }*///Ö±½Ó·¢ËÍGPSÊı¾İ
+        }*///ç›´æ¥å‘é€GPSæ•°æ®
         
         
         if((ARM_DATA_STU&0x04)==0x04)
-        {//GPSÊı¾İÓĞĞ§      
+        {//GPSæ•°æ®æœ‰æ•ˆ      
             ARM_DATA_STU &= ~0x04;
-            for(MCU_CNT=0;MCU_CNT<28;MCU_CNT++)//GPSÊı¾İ×ª´æ
+            for(MCU_CNT=0;MCU_CNT<28;MCU_CNT++)//GPSæ•°æ®è½¬å­˜
             {
                GSM_Send_MCU_Buf[6+4+MCU_CNT]=GPS_Inf[MCU_CNT];
             }
         } 
         else
-        {//Ã»ÓĞGPS¶¨Î»Êı¾İ
+        {//æ²¡æœ‰GPSå®šä½æ•°æ®
             for(MCU_CNT=0;MCU_CNT<28;MCU_CNT++)                     
             {
                GSM_Send_MCU_Buf[6+4+MCU_CNT]=0x00                  ;
@@ -90,7 +90,7 @@ char GSM_Send_MCU(void)
         
         
         if(((ARM_DATA_STU&0x01)==0x01)&&(LPM==0x00))  
-        {   //MCU Êı¾İÓĞĞ§
+        {   //MCU æ•°æ®æœ‰æ•ˆ
             ARM_DATA_STU &= ~0x01;
             GSM_Send_MCU_Buf[38]=0x13; 
             for(MCU_CNT=0;MCU_CNT<62;MCU_CNT++)
@@ -103,7 +103,7 @@ char GSM_Send_MCU(void)
             GSM_Send_MCU_Buf[104]=(char)((tmp>>8)&0xFF);
         }
         else
-        {//MCU Êı¾İÎŞĞ§ 
+        {//MCU æ•°æ®æ— æ•ˆ 
             GSM_Send_MCU_Buf[38]=0x00;
             len = 43;            
             tmp=crc_modbus2((unsigned char *)GSM_Send_MCU_Buf,(len-2));
@@ -114,8 +114,8 @@ char GSM_Send_MCU(void)
         Send_MCU_ERR=1;
         MCU_Data_ACK=1;
         if(GSM_SendData(GSM_Send_MCU_Buf,len))
-        {//Êı¾İ·¢ËÍ
-            MCU_ACK_Count  =  0;//ÖØÖÃÏìÓ¦³¬Ê±
+        {//æ•°æ®å‘é€
+            MCU_ACK_Count  =  0;//é‡ç½®å“åº”è¶…æ—¶
             Send_MCU_ERR   =  0; 
 			//LOW_POW_GSM_Flag=0x11;
             return 1;
@@ -125,7 +125,7 @@ char GSM_Send_MCU(void)
     if(MCU_Data_ACK && (MCU_ACK_Count>MCU_ACK_TimeOut)
        &&(Heart_Beat_Count<10199)&&(Heart_Beat_Count>7679)
        &&(UDP_Built_flag==0x11))                                   
-    { //7.5--10S³¬Ê±ÎŞÏìÓ¦ÖØ·¢
+    { //7.5--10Sè¶…æ—¶æ— å“åº”é‡å‘
         Send_MCU_ERR=1;
         MCU_ACK_Count  = 0;
         if(GSM_SendData(GSM_Send_MCU_Buf,len))
@@ -140,7 +140,7 @@ char GSM_Send_MCU(void)
     }
     if(Send_MCU_ERR&&(UDP_Built_flag==0x11)
        &&(Heart_Beat_Count<7678)&&(Heart_Beat_Count>5120))
-    { //5--7.5SÊ§°ÜÖØ·¢ 
+    { //5--7.5Så¤±è´¥é‡å‘ 
         if(GSM_SendData(GSM_Send_MCU_Buf,len))
         { 
             MCU_ACK_Count  =  0;
@@ -155,36 +155,36 @@ char GSM_Send_MCU(void)
 
 
 
-unsigned long int One_JI_Warn_Cnt=0;//Ò»¼¶±¨¾¯¼ÆÊı
-unsigned long int Two_JI_Warn_Cnt=0;//¶ş¼¶±¨¾¯¼ÆÊı
+unsigned long int One_JI_Warn_Cnt=0;//ä¸€çº§æŠ¥è­¦è®¡æ•°
+unsigned long int Two_JI_Warn_Cnt=0;//äºŒçº§æŠ¥è­¦è®¡æ•°
 
 
-unsigned long int One_Degree_Alert_Time=0;//1¼¶±¨¾¯¼ÆÊı
+unsigned long int One_Degree_Alert_Time=0;//1çº§æŠ¥è­¦è®¡æ•°
 /**********************************************************************\
-*	      º¯ÊıÃû£ºCHECK_MCU_WARN             
-*	      ×÷ÓÃÓò£ºÄÚ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ¼ì²âMCU±¨¾¯  
-*	      ²ÎÊı£º  GSM_MCU[1] Ë®ÎÂ101¶È
-          ¸ñÊ½£º 
-*	      ·µ»ØÖµ£ºAA==ÓĞ±¨¾¯£»00==ÎŞ±¨¾¯   
+*	      å‡½æ•°åï¼šCHECK_MCU_WARN             
+*	      ä½œç”¨åŸŸï¼šå†…éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  æ£€æµ‹MCUæŠ¥è­¦  
+*	      å‚æ•°ï¼š  GSM_MCU[1] æ°´æ¸©101åº¦
+          æ ¼å¼ï¼š 
+*	      è¿”å›å€¼ï¼šAA==æœ‰æŠ¥è­¦ï¼›00==æ— æŠ¥è­¦   
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©MSP430_POWER_ON_FLAG=0x11;//
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰MSP430_POWER_ON_FLAG=0x11;//
 \**********************************************************************/
-char CHECK_MCU_WARN(void)//¼ì²âMCU±¨¾¯ 
+char CHECK_MCU_WARN(void)//æ£€æµ‹MCUæŠ¥è­¦ 
 {
-    if((MSP430_POWER_ON_FLAG==0x11)//11=ÉÏµç£»55=¶Ïµç
+    if((MSP430_POWER_ON_FLAG==0x11)//11=ä¸Šç”µï¼›55=æ–­ç”µ
       &&(UDP_Built_flag==0x11)&&((ARM_DATA_STU&0x01)==0x01))
     {
         if((One_Degree_Alert_Time!=0)&&(GSM_MCU[10]==0x00)&&(GSM_MCU[11]==0x00)&&(GSM_MCU[12]==0x00)&&((GSM_MCU[13]&0x0F)==0x00)
            &&(One_JI_Warn_Cnt>MSP_A0_Min_1))
            One_Degree_Alert_Time=0;
       
-        if((((GSM_MCU[1]>142)||((GSM_MCU[10]&0x03)==0x03))      //Ë®ÎÂ¸ß±¨¾¯
-            ||(((GSM_MCU[10]&0x0C)==0x0C))                      //»úÓÍÑ¹Á¦µÍ
-            //||(((GSM_MCU[11]&0x0C)==0x0C))                    //·¢¶¯»ú»úÓÍÎÂ¶È¸ß±¨¾¯
-              ||((GSM_MCU[12]&0x30)==0x30)||((GSM_MCU[12]&0xC0)==0xC0))//Ö÷±ÃÑ¹Á¦P1 P2  2014.02.12 ĞŞ¸Ä
-              //&&(UDP_B||((GSM_MCU[6]>195)||(GSM_MCU[7]>195))) //Ö÷±ÃÑ¹Á¦P1 P2uilt_flag==0x11)&&((ARM_DATA_STU&0x01)==0x01)                      
-              &&(One_JI_Warn_Cnt>One_Degree_Alert_Time))                 //Ò»¼¶±¨¾¯¼ÆÊı
+        if((((GSM_MCU[1]>142)||((GSM_MCU[10]&0x03)==0x03))      //æ°´æ¸©é«˜æŠ¥è­¦
+            ||(((GSM_MCU[10]&0x0C)==0x0C))                      //æœºæ²¹å‹åŠ›ä½
+            //||(((GSM_MCU[11]&0x0C)==0x0C))                    //å‘åŠ¨æœºæœºæ²¹æ¸©åº¦é«˜æŠ¥è­¦
+              ||((GSM_MCU[12]&0x30)==0x30)||((GSM_MCU[12]&0xC0)==0xC0))//ä¸»æ³µå‹åŠ›P1 P2  2014.02.12 ä¿®æ”¹
+              //&&(UDP_B||((GSM_MCU[6]>195)||(GSM_MCU[7]>195))) //ä¸»æ³µå‹åŠ›P1 P2uilt_flag==0x11)&&((ARM_DATA_STU&0x01)==0x01)                      
+              &&(One_JI_Warn_Cnt>One_Degree_Alert_Time))                 //ä¸€çº§æŠ¥è­¦è®¡æ•°
         {
             One_JI_Warn_Cnt=0;
             
@@ -199,14 +199,14 @@ char CHECK_MCU_WARN(void)//¼ì²âMCU±¨¾¯
             GSM_Send_MCU(); 
         }
 
-          if((((GSM_MCU[11]&0x30)==0x30)            //ÀäÈ´ÒºÒºÎ»µÍ±¨¾¯
-                  ||((GSM_MCU[11]&0xC0)==0xC0)      //¿ÕÂË¶ÂÈû±¨¾¯
-                   ||((GSM_MCU[12]&0x03)==0x03)     //ÒºÑ¹ÓÍÓÍÂË¶ÂÈû±¨¾¯
+          if((((GSM_MCU[11]&0x30)==0x30)            //å†·å´æ¶²æ¶²ä½ä½æŠ¥è­¦
+                  ||((GSM_MCU[11]&0xC0)==0xC0)      //ç©ºæ»¤å µå¡æŠ¥è­¦
+                   ||((GSM_MCU[12]&0x03)==0x03)     //æ¶²å‹æ²¹æ²¹æ»¤å µå¡æŠ¥è­¦
                     ||((GSM_MCU[12]&0x0C)==0x0C))
                     &&(Two_JI_Warn_Cnt>MSP_A0_Min_10)
-             )  // ÓÍË®·ÖÀë±¨¾¯  
+             )  // æ²¹æ°´åˆ†ç¦»æŠ¥è­¦  
         {
-            Two_JI_Warn_Cnt=0; //¶ş¼¶±¨¾¯¼ÆÊı
+            Two_JI_Warn_Cnt=0; //äºŒçº§æŠ¥è­¦è®¡æ•°
             
             MCU_Data_Count=MCU_Data_TimeOut+1;
             Heart_Beat_Count=10200+1; 
@@ -220,23 +220,23 @@ char CHECK_MCU_WARN(void)//¼ì²âMCU±¨¾¯
     return 0;
 }
 
-unsigned long int ExitLMP_Time_Cnt=0;//ÍË³öµÍ¹¦ºÄÊ±¼ÆÊı
+unsigned long int ExitLMP_Time_Cnt=0;//é€€å‡ºä½åŠŸè€—æ—¶è®¡æ•°
 /**********************************************************************\
-*	      º¯ÊıÃû£ºExitLMP_SendMCU             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  µ±ÍË³öµÍ¹¦ºÄÊ±£¬·¢ËÍÒ»´ÎMCUÊı¾İ  
-*	      ²ÎÊı£º  1 P2IN&PWRON 
+*	      å‡½æ•°åï¼šExitLMP_SendMCU             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  å½“é€€å‡ºä½åŠŸè€—æ—¶ï¼Œå‘é€ä¸€æ¬¡MCUæ•°æ®  
+*	      å‚æ•°ï¼š  1 P2IN&PWRON 
                   2 UDP_Built_flag=0x11
-                  3 ExitLMP_Time_CntµÍ¹¦ºÄ¼ÆÊ±´óÓÚ3Min
-          ¸ñÊ½£º 
-*	      ·µ»ØÖµ£ºAA==ÓĞ±¨¾¯£»00==ÎŞ±¨¾¯   
+                  3 ExitLMP_Time_Cntä½åŠŸè€—è®¡æ—¶å¤§äº3Min
+          æ ¼å¼ï¼š 
+*	      è¿”å›å€¼ï¼šAA==æœ‰æŠ¥è­¦ï¼›00==æ— æŠ¥è­¦   
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \**********************************************************************/
 void ExitLMP_SendMCU(void)
 {
     if(((P2IN&PWRON)==0)&&(MSP430_POWER_ON_FLAG==0x55)&&(UDP_Built_flag==0x11)
-       &&((ARM_DATA_STU&0x01)==0x01)&&(ExitLMP_Time_Cnt>MSP_A0_Min_5))//µÍ¹¦ºÄ·¢ËÍMCUÊı¾İ  
+       &&((ARM_DATA_STU&0x01)==0x01)&&(ExitLMP_Time_Cnt>MSP_A0_Min_5))//ä½åŠŸè€—å‘é€MCUæ•°æ®  
     {
         ExitLMP_Time_Cnt=0;
         MCU_Data_Count=MCU_Data_TimeOut+1;

@@ -50,13 +50,13 @@ void comdownload(void)
 #ifdef	USE_UART_INT
 	up = Uart_Select(-1); 					//get the console port
 	if(!up) {
-		pISR_UART0 = (U32)Uart0RxInt;		//串口接收数据中断
+		pISR_UART0 = (U32)Uart0RxInt;		//涓插彛鎺ユ敹鏁版嵁涓柇
 		ClearSubPending(BIT_SUB_RXD0);
 		ClearPending(BIT_UART0);
 		EnableSubIrq(BIT_SUB_RXD0);
 		EnableIrq(BIT_UART0);
 	} else {
-		pISR_UART1 = (U32)Uart1RxInt;		//串口接收数据中断
+		pISR_UART1 = (U32)Uart1RxInt;		//涓插彛鎺ユ敹鏁版嵁涓柇
 		ClearSubPending(BIT_SUB_RXD1);
 		ClearPending(BIT_UART1);
 		EnableSubIrq(BIT_SUB_RXD1);
@@ -74,7 +74,7 @@ void comdownload(void)
 #else
 		*temp++ = Uart_Getch();
 #endif
-    }							//接收文件长度,4 bytes	
+    }							//鎺ユ敹鏂囦欢闀垮害,4 bytes	
 	
 	size  = *(U32 *)(buf-4);
 	downloadFileSize = size-6;

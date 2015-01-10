@@ -26,7 +26,7 @@ void ConfigEp3DmaMode(U32 bufAddr,U32 count);
 
 extern void Menu(void);
 /*************************************************************/
-//ÓëÏÂÔØÓĞ¹ØµÄÈ«¾Ö±äÁ¿
+//ä¸ä¸‹è½½æœ‰å…³çš„å…¨å±€å˜é‡
 /*************************************************************/
 extern volatile U8  *downPt;
 extern volatile U32 downloadAddress;
@@ -37,10 +37,10 @@ extern volatile U16 checkSum;
 
 extern volatile int isUsbdSetConfiguration;
 
-extern U8 download_run; // ÊÇ·ñÏÂÔØµ½NANDÖĞ 1:ÏÂÔØ 0:ÔËĞĞ
-extern U8 menuUsed;	//  Ê¹ÓÃ²Ëµ¥Ä£Ê½ £¬µ±½øÈëÏÂÔØ²Ëµ¥ºó²»»áÌø³öÀ´
-extern U8 consoleNum;	//  ´®¿ÚÊä³öÑ¡Ôñ
-extern U8 autorun_ds;	//  ×Ô¶¯ÔËĞĞÊ¹ÄÜ
+extern U8 download_run; // æ˜¯å¦ä¸‹è½½åˆ°NANDä¸­ 1:ä¸‹è½½ 0:è¿è¡Œ
+extern U8 menuUsed;	//  ä½¿ç”¨èœå•æ¨¡å¼ ï¼Œå½“è¿›å…¥ä¸‹è½½èœå•åä¸ä¼šè·³å‡ºæ¥
+extern U8 consoleNum;	//  ä¸²å£è¾“å‡ºé€‰æ‹©
+extern U8 autorun_ds;	//  è‡ªåŠ¨è¿è¡Œä½¿èƒ½
 extern U8 autorun_trig;
 /*************************************************************/
 
@@ -123,10 +123,10 @@ extern void USBDownload(void)
             */
         } else {
             ConfigEp3DmaMode(downloadAddress + EP3_PKT_SIZE - 8, 0x80000 - EP3_PKT_SIZE);
-            //2440±È2410µÄDIDSTCx¼Ä´æÆ÷¶àÁËÖĞ¶Ï²úÉúÌõ¼şµÄ¿ØÖÆÎ»,USBµÄDMA´«ÊäÎª×Ö½Ú¼ÆÊı
-            //·ÀÖ¹¸ßÆµ¿ªcacheÔËĞĞÊ±ÏÂÔØ´óÓÚ0x80000×Ö½ÚÎÄ¼şÊ±IsrDma2³ö´í!!!
+            //2440æ¯”2410çš„DIDSTCxå¯„å­˜å™¨å¤šäº†ä¸­æ–­äº§ç”Ÿæ¡ä»¶çš„æ§åˆ¶ä½,USBçš„DMAä¼ è¾“ä¸ºå­—èŠ‚è®¡æ•°
+            //é˜²æ­¢é«˜é¢‘å¼€cacheè¿è¡Œæ—¶ä¸‹è½½å¤§äº0x80000å­—èŠ‚æ–‡ä»¶æ—¶IsrDma2å‡ºé”™!!!
             //while((rDSTAT2&0xfffff)==(0x80000-EP3_PKT_SIZE));
-            while (!(rDSTAT2 & (1 << 20))); //·ÀÖ¹DMA´«ÊäÉĞÎ´¿ªÊ¼¾ÍĞ´ÈëÏÂÒ»´ÎÖØ×°Öµ!!!
+            while (!(rDSTAT2 & (1 << 20))); //é˜²æ­¢DMAä¼ è¾“å°šæœªå¼€å§‹å°±å†™å…¥ä¸‹ä¸€æ¬¡é‡è£…å€¼!!!
             if (downloadFileSize > (0x80000 * 2)) { //for 1st autoreload
                 rDIDST2 = (downloadAddress + 0x80000 - 8); //for 1st autoreload.
                 rDIDSTC2 = (1 << 2) | (0 << 1) | (0 << 0);
@@ -230,16 +230,16 @@ extern void USBDownload(void)
     Uart_TxEmpty(consoleNum);
 
     if (download_run == 1) {
-        register void(*run)(void);  //Ê¹ÓÃ¼Ä´æÆ÷±äÁ¿ÒÔ·ÀÖ¹½ûÖ¹DCACHEºóÊı¾İ²»Ò»ÖÂ!!!
+        register void(*run)(void);  //ä½¿ç”¨å¯„å­˜å™¨å˜é‡ä»¥é˜²æ­¢ç¦æ­¢DCACHEåæ•°æ®ä¸ä¸€è‡´!!!
         rINTMSK = BIT_ALLMSK;
-        run = (void ( *)(void))downloadAddress; //Ê¹ÓÃDCACHEÇÒRWÇøÒ²ÔÚCACHEÇø¼ädownloadAddress»áÔÚcacheÖĞ
+        run = (void ( *)(void))downloadAddress; //ä½¿ç”¨DCACHEä¸”RWåŒºä¹Ÿåœ¨CACHEåŒºé—´downloadAddressä¼šåœ¨cacheä¸­
         {
             MMU_DisableDCache();    //download program must be in
             MMU_DisableICache();    //non-cache area
-            MMU_InvalidateDCache(); //Ê¹ËùÓĞDCACHEÊ§Ğ§,±¾³ÌĞòµÄMMU_InitÖĞ½«»áË¢ĞÂDCACHEµ½´æ´¢Æ÷,
-            //ÎªÊ¹Ó¦ÓÃ´ËMMU_Init·½Ê½µÄ³ÌĞòÄÜ±»ÕıÈ·ÔËĞĞ±ØĞëÏÈÊ¹DCACHEÊ§Ğ§!!!
+            MMU_InvalidateDCache(); //ä½¿æ‰€æœ‰DCACHEå¤±æ•ˆ,æœ¬ç¨‹åºçš„MMU_Initä¸­å°†ä¼šåˆ·æ–°DCACHEåˆ°å­˜å‚¨å™¨,
+            //ä¸ºä½¿åº”ç”¨æ­¤MMU_Initæ–¹å¼çš„ç¨‹åºèƒ½è¢«æ­£ç¡®è¿è¡Œå¿…é¡»å…ˆä½¿DCACHEå¤±æ•ˆ!!!
             MMU_DisableMMU();
-            //call_linux(0, 193, downloadAddress);  //»ò²»ÓÃÉÏÃæ3¸öº¯Êı¶øÖ±½ÓÊ¹ÓÃcall_linux
+            //call_linux(0, 193, downloadAddress);  //æˆ–ä¸ç”¨ä¸Šé¢3ä¸ªå‡½æ•°è€Œç›´æ¥ä½¿ç”¨call_linux
         }
         run();
     }

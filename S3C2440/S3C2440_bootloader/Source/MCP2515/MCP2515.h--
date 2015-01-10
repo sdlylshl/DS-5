@@ -45,12 +45,12 @@ MCP2510_INT		GPG3		input		( EINT8 )
 //#define MCP2510_INT_IN		( rGPGCON = rGPGCON & (~(3<<6)) )		//GPG
 //#define MCP2510_INT_GET		( rGPGDAT & (0x01<<3 ))	
 /********************** MCP2510 Instruction *********************************/
-#define MCP2510INSTR_RESET		0xc0		//��λΪȱʡ״̬�����趨Ϊ����ģʽ
-#define MCP2510INSTR_READ		0x03		//�ӼĴ����ж�������
-#define MCP2510INSTR_WRITE		0x02		//��Ĵ���д������
-#define MCP2510INSTR_RTS		0x80		//����һ���������ͻ������ı��ķ���
-#define MCP2510INSTR_RDSTAT		0xa0		//��ȡ״̬
-#define MCP2510INSTR_BITMDFY	0x05		//λ�޸�
+#define MCP2510INSTR_RESET		0xc0		//复位为缺省状态，并设定为配置模式
+#define MCP2510INSTR_READ		0x03		//从寄存器中读出数据
+#define MCP2510INSTR_WRITE		0x02		//向寄存器写入数据
+#define MCP2510INSTR_RTS		0x80		//启动一个或多个发送缓冲器的报文发送
+#define MCP2510INSTR_RDSTAT		0xa0		//读取状态
+#define MCP2510INSTR_BITMDFY	0x05		//位修改
 //***************************************************************************
 
 
@@ -111,7 +111,7 @@ MCP2510_INT		GPG3		input		( EINT8 )
 
 #define RXB_IDE_M       0x08    // In RXBnSIDL
 #define RXB_RTR_M       0x40    // In RXBnDLC
-//BFPCTRL����RXnBF ���ſ��ƼĴ�����״̬�Ĵ�������ַ��0Ch��
+//BFPCTRL——RXnBF 引脚控制寄存器和状态寄存器（地址：0Ch）
 #define BFPCTRL         0x0C
 
 #define B2RTS           0x20
@@ -126,21 +126,21 @@ MCP2510_INT		GPG3		input		( EINT8 )
 #define CLKCTRL         MCP2510REG_CANCTRL
 
 
-//RXFnSIDH �����˲��Ĵ���n ��׼��ʶ����λ<10:3>
+//RXFnSIDH 验收滤波寄存器n 标准标识符高位<10:3>
 #define RXF0SIDH        0
 
-//RXFnSIDL���������˲��Ĵ��� n ��׼��ʶ����λ
-//RXFnSIDL[7..5]SID����׼��ʶ���˲�λ <2:0>
-//RXFnSIDL[3]EXIDE����չ��ʶ��ʹ��λ
-				//1 = �����˲���Ӧ������չ֡
-				//0 = �����˲���Ӧ���ڱ�׼֡
-//RXFnSIDL[1..0]EID����չ��ʶ���˲�λ <17:16>
-//��Щλװ���������Խ��ձ�������չ��ʶ��λ<17:16>�����˲��жϵ��˲�λ				
+//RXFnSIDL——验收滤波寄存器 n 标准标识符低位
+//RXFnSIDL[7..5]SID：标准标识符滤波位 <2:0>
+//RXFnSIDL[3]EXIDE：扩展标识符使能位
+				//1 = 报文滤波仅应用于扩展帧
+				//0 = 报文滤波仅应用于标准帧
+//RXFnSIDL[1..0]EID：扩展标识符滤波位 <17:16>
+//这些位装载了用来对接收报文中扩展标识符位<17:16>进行滤波判断的滤波位				
 #define RXF0SIDL        1
 
-//RXFnEID8 �����˲��Ĵ���n ��չ��ʶ����λ<15:8>
+//RXFnEID8 验收滤波寄存器n 扩展标识符高位<15:8>
 #define RXF0EID8        2
-//RXFnEID0 �����˲��Ĵ���n ��չ��ʶ����λ<7:0>
+//RXFnEID0 验收滤波寄存器n 扩展标识符低位<7:0>
 #define RXF0EID0        3
 #define RXF1SIDH        4
 #define RXF1SIDL        5
@@ -167,22 +167,22 @@ MCP2510_INT		GPG3		input		( EINT8 )
 #define RXF_EXIDE_M     0x08
 
 
-//RXMnSIDH �������μĴ��� n ��׼��ʶ����λ<10:3>
+//RXMnSIDH 验收屏蔽寄存器 n 标准标识符高位<10:3>
 #define RXM0SIDH        0x20
 #define RXM1SIDH        0x24
 
-//RXMnSIDL ���������˲��� n ��׼��ʶ����λ<2:0>
-//RXMnSIDL[7..5]=SID����׼��ʶ������λ <2:0>
-//RXMnSIDL[1.0] =EID����չ��ʶ������λ <17:16>
-//��Щλװ���������Խ��ձ�������չ��ʶ��λ<17:16>���������жϵ�����λ
+//RXMnSIDL 验收屏蔽滤波器 n 标准标识符低位<2:0>
+//RXMnSIDL[7..5]=SID：标准标识符屏蔽位 <2:0>
+//RXMnSIDL[1.0] =EID：扩展标识符屏蔽位 <17:16>
+//这些位装载了用来对接收报文中扩展标识符位<17:16>进行屏蔽判断的屏蔽位
 #define RXM0SIDL        0x21
 #define RXM1SIDL        0x25
 
-//RXMnEID8�����������μĴ��� n ��չ��ʶ����λ<15:8>
+//RXMnEID8——验收屏蔽寄存器 n 扩展标识符高位<15:8>
 #define RXM0EID8        0x22
 #define RXM1EID8        0x26
 
-//RXMnEID0�����������μĴ��� n ��չ��ʶ����λ<7:0>
+//RXMnEID0——验收屏蔽寄存器 n 扩展标识符低位<7:0>
 #define RXM0EID0        0x23
 #define RXM1EID0        0x27
 
@@ -195,7 +195,7 @@ MCP2510_INT		GPG3		input		( EINT8 )
 #define EFLG            0x2D
 #define TXRTSCTRL       0x0D
 
-//EFLG �����־�Ĵ�������ַ��2Dh��
+//EFLG 错误标志寄存器（地址：2Dh）
 	#define EFLG_RX1OVR     0x80
 	#define EFLG_RX0OVR     0x40
 	#define EFLG_TXBO       0x20
@@ -238,18 +238,18 @@ MCP2510_INT		GPG3		input		( EINT8 )
 
 
 
-//CANINTE �ж�ʹ�ܼĴ�������ַ��2Bh��
+//CANINTE 中断使能寄存器（地址：2Bh）
 
-	#define IVRIE           0x80	//���Ľ��ջ����ڼ䷢������ʱ�ж�
-	#define WAKIE           0x40	//CAN �������лʱ�ж�
-	#define ERRIE           0x20	//EFLG���������仯ʱ�ж�
-	#define TX2IE           0x10	//���ͻ�����2 ���ж�ʹ��λ
+	#define IVRIE           0x80	//报文接收或发送期间发生错误时中断
+	#define WAKIE           0x40	//CAN 总线上有活动时中断
+	#define ERRIE           0x20	//EFLG错误条件变化时中断
+	#define TX2IE           0x10	//发送缓冲器2 空中断使能位
 	#define TX1IE           0x08
 	#define TX0IE           0x04
-	#define RX1IE           0x02	//RXB1װ�ر���ʱ�ж�
+	#define RX1IE           0x02	//RXB1装载报文时中断
 	#define RX0IE           0x01
 	#define NO_IE           0x00
-//CANINTF �жϱ�־�Ĵ�������ַ��2Ch��
+//CANINTF 中断标志寄存器（地址：2Ch）
 	#define IVRINT          0x80
 	#define WAKINT          0x40
 	#define ERRINT          0x20
@@ -267,11 +267,11 @@ MCP2510_INT		GPG3		input		( EINT8 )
 	#define RXB_RXRDY       0x80
 	#define RXB_RXM1        0x40
 	#define RXB_RXM0        0x20
-	//RXB0CTRL[6.5]RXM�����ջ���������ģʽλ
-	//11 = �ر����Σ��˲����ܣ��������б���
-	//10 = ֻ���շ����˲��������Ĵ�����չ��ʶ������Ч����
-	//01 = ֻ���շ����˲��������Ĵ��б�׼��ʶ������Ч����
-	//00 = ���շ����˲������������д���չ��ʶ�����׼��ʶ������Ч����
+	//RXB0CTRL[6.5]RXM：接收缓冲器工作模式位
+	//11 = 关闭屏蔽／滤波功能；接收所有报文
+	//10 = 只接收符合滤波器条件的带有扩展标识符的有效报文
+	//01 = 只接收符合滤波器条件的带有标准标识符的有效报文
+	//00 = 接收符合滤波器条件的所有带扩展标识符或标准标识符的有效报文
 	#define RXB_RX_ANY      0x60
 	#define RXB_RX_EXT      0x40
 	#define RXB_RX_STD      0x20
@@ -280,20 +280,20 @@ MCP2510_INT		GPG3		input		( EINT8 )
 	#define RXB_RXMx_M      0x60
 	// #define RXB_RXIE_M      0x10
 
-	//RXB0CTRL[3]RXRTR�����յ�Զ�̴�������λ
-	//1 = ���յ�Զ�̴�������
-	//0 = û�н��յ�Զ�̴�������
+	//RXB0CTRL[3]RXRTR：接收到远程传送请求位
+	//1 = 接收到远程传送请求
+	//0 = 没有接收到远程传送请求
 	#define RXB_RXRTR       0x08    // In RXBnCTRL
 
-	//RXB0CTRL[2]BUKT������ʹ��λ
-	//1 = ���RXB0 ����RXB0 ���յ��ı��Ľ��������� RXB1
-	//0 = �����ֹ
+	//RXB0CTRL[2]BUKT：滚存使能位
+	//1 = 如果RXB0 满，RXB0 接收到的报文将被滚存至 RXB1
+	//0 = 滚存禁止
 	#define RXB_BUKT        0x04
 	#define RXB_BUKT_RO     0x02
 
-	//FILHIT[0]���˲�������λָ��ʹ�ܱ��Ľ��յ������˲��Ĵ������
-	//1 = �����˲��Ĵ���1 ��RXF1��
-	//0 = �����˲��Ĵ���0 ��RXF0��
+	//FILHIT[0]：滤波器命中位指明使能报文接收的验收滤波寄存器编号
+	//1 = 验收滤波寄存器1 （RXF1）
+	//0 = 验收滤波寄存器0 （RXF0）
 	#define RXB_FILHIT      0x01
 
 	#define RXB_FILHIT2     0x04
@@ -306,29 +306,29 @@ MCP2510_INT		GPG3		input		( EINT8 )
 	#define RXB_RXF1        0x01
 	#define RXB_RXF0        0x00
 
-//CANCTRL����CAN���ƼĴ�������ַ��XFh��
+//CANCTRL——CAN控制寄存器（地址：XFh）
 
-	//CLKEN[2]��CLKOUT����ʹ��λ
-	//1 =CLKOUT����ʹ��
-	//0 =CLKOUT���Ž�ֹ�����Ŵ��ڸ���̬��
+	//CLKEN[2]：CLKOUT引脚使能位
+	//1 =CLKOUT引脚使能
+	//0 =CLKOUT引脚禁止（引脚处于高阻态）
 	#define CLKEN           0x04
 
-	//CLKPRE<1:0>��CLKOUT����Ԥ��Ƶ��λ
-	//00 =FCLKOUT = ϵͳʱ��Ƶ��/1
-	//01 =FCLKOUT =ϵͳʱ��Ƶ��/2
-	//10 =FCLKOUT = ϵͳʱ��Ƶ��/4
-	//11 =FCLKOUT = ϵͳʱ��Ƶ��/8
+	//CLKPRE<1:0>：CLKOUT引脚预分频比位
+	//00 =FCLKOUT = 系统时钟频率/1
+	//01 =FCLKOUT =系统时钟频率/2
+	//10 =FCLKOUT = 系统时钟频率/4
+	//11 =FCLKOUT = 系统时钟频率/8
 	#define CLK1            0x00
 	#define CLK2            0x01
 	#define CLK4            0x02
 	#define CLK8            0x03
 
-	//REQOP<2:0>��������ģʽ��λ
-	//000 = �趨Ϊ��������ģʽ
-	//001 = �趨Ϊ����ģʽ
-	//010 = �趨Ϊ����ģʽ
-	//011 = �趨Ϊ������ģʽ
-	//100 = �趨Ϊ����ģʽ
+	//REQOP<2:0>：请求工作模式的位
+	//000 = 设定为正常工作模式
+	//001 = 设定为休眠模式
+	//010 = 设定为环回模式
+	//011 = 设定为仅监听模式
+	//100 = 设定为配置模式
 	#define MODE_NORMAL     0x00
 	#define MODE_SLEEP      0x20
 	#define MODE_LOOPBACK   0x40
@@ -348,25 +348,25 @@ typedef enum{
 // Start the transmission from one of the tx buffers.
 #define MCP2510_transmit(address)		do{MCP2510_WriteBits(address, TXB_TXREQ_M, TXB_TXREQ_M);}while(0)
 //****************************************************************************
-//ȫ�ֱ���
-extern U32 		CanId;		//can_idΪ���ص�IDֵ
-extern U8  		dlc; 		//dlc��ʾdata length code
-//extern U32 		rxRTR;		//rxRTR��ʾ�Ƿ���RXRTRԶ��֡
+//全局变量
+extern U32 		CanId;		//can_id为返回的ID值
+extern U8  		dlc; 		//dlc表示data length code
+//extern U32 		rxRTR;		//rxRTR表示是否是RXRTR远程帧
 //extern U32 		isExt;
 extern U8  		data_read[8] ;
 extern U8  		data_write[8];
 /****************************************************************************
-������˵����������λMCP2510
+【功能说明】软件复位MCP2510
 ****************************************************************************/
 void MCP2510_Reset(void);
 
 /****************************************************************************
-������˵������MCP2510ָ����ַ�ж���һ���ֽ�
+【功能说明】从MCP2510指定地址中读出一个字节
 ****************************************************************************/
 unsigned char MCP2510_Read(U8 address);
 
 /****************************************************************************
-������˵����              Read often used status
+【功能说明】              Read often used status
 //Status 	 7    	6    	5    	4    	3    	2  	1	0
 //		|	|	|	|	|	|	|	|									
 //		|	|	|	|	|	|	|	|___CANINTF.RX0IF
@@ -381,24 +381,24 @@ unsigned char MCP2510_Read(U8 address);
 unsigned char MCP2510_ReadStatus(void);
 
 /****************************************************************************
-������˵������MCP2510ָ����ַд��һ���ֽ�
+【功能说明】向MCP2510指定地址写入一个字节
 ****************************************************************************/
 void MCP2510_Write( U8 address, U8 value);
 
 /****************************************************************************
-������˵�����޸�ָ����ַ�Ĵ�����ĳЩλ Ҫ�޸ĵ�Ϊ��MASK��ָ��Ϊ1
+【功能说明】修改指定地址寄存器的某些位 要修改的为在MASK中指定为1
 ****************************************************************************/
 
-//// Mask 1�޸� 0 ����
+//// Mask 1修改 0 不变
 void MCP2510_WriteBits( U8 address, U8 data, U8 mask );
 
 /****************************************************************************
-������˵�������ж�ȡMCP2510����	���ݳ���Ϊ nlength
+【功能说明】序列读取MCP2510数据	数据长度为 nlength
 ****************************************************************************/
 void MCP2510_SRead( U8 address, unsigned char* pdata, U8 nlength );
 
 /****************************************************************************
-������˵��������д��MCP2510����	���ݳ���Ϊ nlength
+【功能说明】序列写入MCP2510数据	数据长度为 nlength
 ****************************************************************************/
 void MCP2510_Swrite(U8 address, unsigned char* pdata, U8 nlength);
 
@@ -406,45 +406,45 @@ void MCP2510_Swrite(U8 address, unsigned char* pdata, U8 nlength);
 void MCP2510_SetBandRate(CanBandRate bandrate, int IsBackNormal);
 
 /***********************************************************\
-*	��ȡMCP2510 ���յ�����							*
-*	����: nbufferΪ�ڼ�������������Ϊ3����4	*
-*			can_idΪ���ص�IDֵ							*
-*			rxRTR��ʾ�Ƿ���RXRTRԶ��֡						*
-*			data��ʾ��ȡ������						*
-*			dlc��ʾdata length code							*
-*	����ֵ												*
-*		TRUE����ʾ����չ����						*
-*		FALSE����ʾ����չ����						*
+*	读取MCP2510 接收的数据							*
+*	参数: nbuffer为第几个缓冲区可以为3或者4	*
+*			can_id为返回的ID值							*
+*			rxRTR表示是否是RXRTR远程帧						*
+*			data表示读取的数据						*
+*			dlc表示data length code							*
+*	返回值												*
+*		TRUE，表示是扩展总线						*
+*		FALSE，表示非扩展总线						*
 \***********************************************************/
 int MCP2510_Read_Can(U8 nbuffer, int* rxRTR, U32* can_id, U8* data , U8* dlc);
 
 /***********************************************************\
-*	д��MCP2510 ���͵�����							*
-*	����: nbufferΪ�ڼ�������������Ϊ0��1��2	*
-*			ext��ʾ�Ƿ�����չ����					*
-*			can_idΪ���ص�IDֵ							*
-*			rxRTR��ʾ�Ƿ���RXRTR						*
-*			data��ʾ��ȡ������						*
-*			dlc��ʾdata length code							*
-*		FALSE����ʾ����չ����						*
+*	写入MCP2510 发送的数据							*
+*	参数: nbuffer为第几个缓冲区可以为0、1、2	*
+*			ext表示是否是扩展总线					*
+*			can_id为返回的ID值							*
+*			rxRTR表示是否是RXRTR						*
+*			data表示读取的数据						*
+*			dlc表示data length code							*
+*		FALSE，表示非扩展总线						*
 \***********************************************************/
 void MCP2510_Write_Can( U8 nbuffer, int ext, U32 can_id, int rxRTR, U8* data,U8 dlc );
 
 /****************************************************************************
-������˵������ȡMCP2510 CAN����ID
-����: addressΪMCP2510�Ĵ�����ַ
-	can_idΪ���ص�IDֵ
-����ֵ
-TRUE����ʾ����չID(29λ)
-FALSE����ʾ����չID(11λ)
+【功能说明】读取MCP2510 CAN总线ID
+参数: address为MCP2510寄存器地址
+	can_id为返回的ID值
+返回值
+TRUE，表示是扩展ID(29位)
+FALSE，表示非扩展ID(11位)
 ****************************************************************************/
 int MCP2510_Read_Can_ID( U8 address, U32* can_id);
 
 /*******************************************\
-*	����MCP2510 CAN����ID				*
-*	����: addressΪMCP2510�Ĵ�����ַ*
-*			can_idΪ���õ�IDֵ			*
-*			IsExt��ʾ�Ƿ�Ϊ��չID	*
+*	设置MCP2510 CAN总线ID				*
+*	参数: address为MCP2510寄存器地址*
+*			can_id为设置的ID值			*
+*			IsExt表示是否为扩展ID	*
 \*******************************************/
 void MCP2510_Write_Can_ID(U8 address, U32 can_id, int IsExt);
 

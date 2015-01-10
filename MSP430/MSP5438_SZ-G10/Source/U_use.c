@@ -2,34 +2,34 @@
 #include "msp430x54x.h"
 
 
-unsigned char RD_FLASH_OK_FLAG                                      ;//¶ÁÈ¡flash±êÖ¾11==OK£»00==fail
+unsigned char RD_FLASH_OK_FLAG                                      ;//è¯»å–flashæ ‡å¿—11==OKï¼›00==fail
 
 
-extern char Module_Status[6]                                        ;//Ä£¿é×´Ì¬ĞÅÏ¢GPSĞÅÏ¢+GSMĞÅÏ¢+ÏµÍ³×´Ì¬1¡¢2+Éı¼¶×´Ì¬1¡¢2
-extern char GPS_GSM_System_Stu[4]                                   ;//GSM\GPS×´Ì¬
-extern char Heart_Beat[10]                                          ;//ĞÄÌøÊı¾İ°ü
-extern char GPS_GSM_ID_Memory[4]                                    ;//Ò»Ìå»úÉè±¸IDÖÕ¶ËºÅ
-extern char GSM_Send_MCU_Buf[106]                                        ;//ÉÏ±¨MCUÊı¾İÃüÁî(»Ø¸´)
+extern char Module_Status[6]                                        ;//æ¨¡å—çŠ¶æ€ä¿¡æ¯GPSä¿¡æ¯+GSMä¿¡æ¯+ç³»ç»ŸçŠ¶æ€1ã€2+å‡çº§çŠ¶æ€1ã€2
+extern char GPS_GSM_System_Stu[4]                                   ;//GSM\GPSçŠ¶æ€
+extern char Heart_Beat[10]                                          ;//å¿ƒè·³æ•°æ®åŒ…
+extern char GPS_GSM_ID_Memory[4]                                    ;//ä¸€ä½“æœºè®¾å¤‡IDç»ˆç«¯å·
+extern char GSM_Send_MCU_Buf[106]                                        ;//ä¸ŠæŠ¥MCUæ•°æ®å‘½ä»¤(å›å¤)
 
 
-extern void Delayms(unsigned long int ms)                           ;//XX*1MsÑÓÊ±
-extern void Tran_ID_CmdNum(char* ID_Addr,char CmdNum)                   ;//×ª´æIDºÅºÍÃüÁî±àÂë                              
+extern void Delayms(unsigned long int ms)                           ;//XX*1Mså»¶æ—¶
+extern void Tran_ID_CmdNum(char* ID_Addr,char CmdNum)                   ;//è½¬å­˜IDå·å’Œå‘½ä»¤ç¼–ç                               
 
 
-extern void Read_No_Chg_Card_Flash(void);//¶Á»»¿¨ÎŞ¿¨Flash 
-extern void READ_SIM_NUM_FH(void)                                   ;//´æ´¢ÊÖ»ú¿¨ºÅ 
-extern void ReaD_IP_PORT_FLASH(void)                                ;//¶ÁÈ¡IPµØÖ·\PortºÅ 
-extern char RD_OUT_EDGE_FH(void)                                    ;//¶ÁÈ¡Ô½½ç±¨¾¯ 
-extern void READ_UP_SPI_FLASH(void)                                 ;//×ªÒÆÈí¼ş°æ±¾ºÅ¼°Éı¼¶ÀàĞÍ
-extern void RD_LOCK_BUS_FLASH(void)                                 ;//¶ÁÈ¡Ëø³µ×´Ì¬
+extern void Read_No_Chg_Card_Flash(void);//è¯»æ¢å¡æ— å¡Flash 
+extern void READ_SIM_NUM_FH(void)                                   ;//å­˜å‚¨æ‰‹æœºå¡å· 
+extern void ReaD_IP_PORT_FLASH(void)                                ;//è¯»å–IPåœ°å€\Portå· 
+extern char RD_OUT_EDGE_FH(void)                                    ;//è¯»å–è¶Šç•ŒæŠ¥è­¦ 
+extern void READ_UP_SPI_FLASH(void)                                 ;//è½¬ç§»è½¯ä»¶ç‰ˆæœ¬å·åŠå‡çº§ç±»å‹
+extern void RD_LOCK_BUS_FLASH(void)                                 ;//è¯»å–é”è½¦çŠ¶æ€
 extern void Read_Open_Box_Flash(void);
 /********************************************************\
-*	 º¯ÊıÃû£ºDelayms
-     ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	 ¹¦ÄÜ£º  ÑÓÊ±1ms
-*	 ²ÎÊı£º  
-*    ·µ»ØÖµ£ºÎŞ
-*	 ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	 å‡½æ•°åï¼šDelayms
+     ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	 åŠŸèƒ½ï¼š  å»¶æ—¶1ms
+*	 å‚æ•°ï¼š  
+*    è¿”å›å€¼ï¼šæ— 
+*	 ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \********************************************************/
 void Delayms(unsigned long int ms)
 {
@@ -42,56 +42,56 @@ void Delayms(unsigned long int ms)
 
 //*******************************************************************//
 //                                                                   //
-//      º¯Êı£ºRead_Flash_Data                                        //
-//      ËµÃ÷£º¶ÁÈ¡FLASH´æÈ¡µÄÉèÖÃÊı¾İÊı¾İ                            //
-//      ²ÎÊı£ºÎŞ                                                     //
+//      å‡½æ•°ï¼šRead_Flash_Data                                        //
+//      è¯´æ˜ï¼šè¯»å–FLASHå­˜å–çš„è®¾ç½®æ•°æ®æ•°æ®                            //
+//      å‚æ•°ï¼šæ—                                                      //
 //                                                                   //
 //*******************************************************************//
 void Read_Flash_Data(void)
 {     
     unsigned char ID_NUM                                            ;
 
-    char* RD_FH_HD_AD   =  (char *)0x1800                           ;//flash¶ÁÈ¡Ê×µØÖ·
-    char* RD_ID_Addr    =  (char *)0x1801                           ;//IDÊ×µØÖ·
-    RD_FLASH_OK_FLAG     = 0x00                                     ;//ÖÃÎ»¶ÁÈ¡flash±êÖ¾
+    char* RD_FH_HD_AD   =  (char *)0x1800                           ;//flashè¯»å–é¦–åœ°å€
+    char* RD_ID_Addr    =  (char *)0x1801                           ;//IDé¦–åœ°å€
+    RD_FLASH_OK_FLAG     = 0x00                                     ;//ç½®ä½è¯»å–flashæ ‡å¿—
     
     if(*(RD_FH_HD_AD)==0x01)
     {
-        RD_FLASH_OK_FLAG     = 0x11                                 ;//¶ÁÈ¡flash OK£»
+        RD_FLASH_OK_FLAG     = 0x11                                 ;//è¯»å–flash OKï¼›
         for(ID_NUM=0;ID_NUM<4;ID_NUM++)                              //ID
         {   
             GPS_GSM_ID_Memory[ID_NUM]  = *(RD_ID_Addr)++            ; 
         }
         
-        ReaD_IP_PORT_FLASH()                                        ;//¶ÁÈ¡IPµØÖ·\PortºÅ
+        ReaD_IP_PORT_FLASH()                                        ;//è¯»å–IPåœ°å€\Portå·
         
-        Tran_ID_CmdNum(Heart_Beat,0xB2)                             ;//×ª´æIDºÅºÍÃüÁî±àÂë 
-        Tran_ID_CmdNum(GSM_Send_MCU_Buf,0x81)                        ;//×ª´æIDºÅºÍÃüÁî±àÂë
+        Tran_ID_CmdNum(Heart_Beat,0xB2)                             ;//è½¬å­˜IDå·å’Œå‘½ä»¤ç¼–ç  
+        Tran_ID_CmdNum(GSM_Send_MCU_Buf,0x81)                        ;//è½¬å­˜IDå·å’Œå‘½ä»¤ç¼–ç 
 
    }    
         
-        RD_LOCK_BUS_FLASH()                                         ;//¶ÁÈ¡Ëø³µ×´Ì¬
-        READ_SIM_NUM_FH()                                           ;//´æ´¢ÊÖ»ú¿¨ºÅ
-        RD_OUT_EDGE_FH()                                            ;//¶ÁÈ¡Ô½½ç±¨¾¯ 
-        READ_UP_SPI_FLASH()                                         ;//×ªÒÆÈí¼ş°æ±¾ºÅ¼°Éı¼¶ÀàĞÍ
+        RD_LOCK_BUS_FLASH()                                         ;//è¯»å–é”è½¦çŠ¶æ€
+        READ_SIM_NUM_FH()                                           ;//å­˜å‚¨æ‰‹æœºå¡å·
+        RD_OUT_EDGE_FH()                                            ;//è¯»å–è¶Šç•ŒæŠ¥è­¦ 
+        READ_UP_SPI_FLASH()                                         ;//è½¬ç§»è½¯ä»¶ç‰ˆæœ¬å·åŠå‡çº§ç±»å‹
         Read_Open_Box_Flash();
-        Read_No_Chg_Card_Flash();//¶Á»»¿¨ÎŞ¿¨Flash 
+        Read_No_Chg_Card_Flash();//è¯»æ¢å¡æ— å¡Flash 
 }
 
 
 /*******************************************************************\
-*	      º¯ÊıÃû£ºDo_GPS_Data             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ½ÓÊÕ¡¢´¦ÀíGPSÊı¾İ  
-*	      ²ÎÊı£º  
-           1¡¢Í¨¹ı¿ØÖÆGPSÊı¾İÀàĞÍ£¨00=ÎŞÏìÓ¦£»11=GPRMC£»22=GPGGA£©¿ØÖÆ²½Öè
-           2¡¢Do_GPS_Mesg_OK_Flag£ºGPSÊı¾İ´¦ÀíÍê³É±êÖ¾ 00==Î´Íê³É£»11==Íê³É
-           3¡¢Open_UCA1_UART_Init(void)==ÓÃ½ÓÊÕÍê³ÉÊı¾İ²»¿ÉÓÃÊ±´ò¿ªGPSÖĞ¶Ï
-*	      ·µ»ØÖµ£ºÎŞ     
+*	      å‡½æ•°åï¼šDo_GPS_Data             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  æ¥æ”¶ã€å¤„ç†GPSæ•°æ®  
+*	      å‚æ•°ï¼š  
+           1ã€é€šè¿‡æ§åˆ¶GPSæ•°æ®ç±»å‹ï¼ˆ00=æ— å“åº”ï¼›11=GPRMCï¼›22=GPGGAï¼‰æ§åˆ¶æ­¥éª¤
+           2ã€Do_GPS_Mesg_OK_Flagï¼šGPSæ•°æ®å¤„ç†å®Œæˆæ ‡å¿— 00==æœªå®Œæˆï¼›11==å®Œæˆ
+           3ã€Open_UCA1_UART_Init(void)==ç”¨æ¥æ”¶å®Œæˆæ•°æ®ä¸å¯ç”¨æ—¶æ‰“å¼€GPSä¸­æ–­
+*	      è¿”å›å€¼ï¼šæ—      
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
-void Tran_ID_CmdNum(char* ID_Addr,char CmdNum)                       //×ª´æIDºÅºÍÃüÁî±àÂë
+void Tran_ID_CmdNum(char* ID_Addr,char CmdNum)                       //è½¬å­˜IDå·å’Œå‘½ä»¤ç¼–ç 
 {
     char ID_Num                                                     ;//
     char* ID_CmdNum_Addr;
@@ -108,17 +108,17 @@ void Tran_ID_CmdNum(char* ID_Addr,char CmdNum)                       //×ª´æIDºÅº
 
 
 /********************************************************\
-*	º¯ÊıÃû£ºASCIITOHEX
-    ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	¹¦ÄÜ£º   ½«ASCII×Ö·û×ª»»Îª16½øÖÆµÄÊı
-             ±ÈÈç0x31,0x32×ª»»Íêºó·µ»ØµÄ½á¹ûÎª12
-*	²ÎÊı£º  Input_H==ASCII¸ßÎ»
-            Input_L==ASCIIµÍÎ»
-*	·µ»ØÖµ£ºInput_H*16+Input_L
+*	å‡½æ•°åï¼šASCIITOHEX
+    ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	åŠŸèƒ½ï¼š   å°†ASCIIå­—ç¬¦è½¬æ¢ä¸º16è¿›åˆ¶çš„æ•°
+             æ¯”å¦‚0x31,0x32è½¬æ¢å®Œåè¿”å›çš„ç»“æœä¸º12
+*	å‚æ•°ï¼š  Input_H==ASCIIé«˜ä½
+            Input_L==ASCIIä½ä½
+*	è¿”å›å€¼ï¼šInput_H*16+Input_L
             
-*	ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \********************************************************/
-unsigned char ASCIITOHEX( unsigned char Input_H,unsigned char Input_L )//½«ASCII×Ö·û×ª»»Îª16½øÖÆµÄÊı
+unsigned char ASCIITOHEX( unsigned char Input_H,unsigned char Input_L )//å°†ASCIIå­—ç¬¦è½¬æ¢ä¸º16è¿›åˆ¶çš„æ•°
 {
     if( Input_H>0x39 ) Input_H=Input_H-0x37;
     else Input_H=Input_H-0x30;
@@ -129,14 +129,14 @@ unsigned char ASCIITOHEX( unsigned char Input_H,unsigned char Input_L )//½«ASCII
 
 
 /********************************************************\
-*	 º¯ÊıÃû£ºHEX_TO_ASCII
-     ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	 ¹¦ÄÜ£º  °ÑÒ»¸ö16½øÖÆ×Ö·û×ª»»ÎªASCII
-*	 ²ÎÊı£º  Input_H£¬Input_L
-*        ·µ»ØÖµ£ºOne_Char Ò»¸öASCIIÊı
-*	 ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	 å‡½æ•°åï¼šHEX_TO_ASCII
+     ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	 åŠŸèƒ½ï¼š  æŠŠä¸€ä¸ª16è¿›åˆ¶å­—ç¬¦è½¬æ¢ä¸ºASCII
+*	 å‚æ•°ï¼š  Input_Hï¼ŒInput_L
+*        è¿”å›å€¼ï¼šOne_Char ä¸€ä¸ªASCIIæ•°
+*	 ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \********************************************************/
-unsigned char HEX_TO_ASCII(char One_Char)                //16½øÖÆ×Ö·û×ª»»ASCII
+unsigned char HEX_TO_ASCII(char One_Char)                //16è¿›åˆ¶å­—ç¬¦è½¬æ¢ASCII
 {
     if(((One_Char>0)&&(One_Char<=9))||(One_Char==0))
         One_Char += 0x30;
@@ -147,20 +147,20 @@ unsigned char HEX_TO_ASCII(char One_Char)                //16½øÖÆ×Ö·û×ª»»ASCII
 
 
 /********************************************************\
-*	º¯ÊıÃû£ºCompare_String
-   1    ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	¹¦ÄÜ£º  ±È½ÏÁ½¸ö×Ö·û´®ÊÇ·ñÏàÍ¬
-*	²ÎÊı£º  *Source ĞèÒª±È½ÏµÄ×Ö·û´®µÄµÄÍ·Ö¸Õë
-                *Target ÓÃÀ´×ö±È½Ï±ê×¼µÄ×Ö·û´®Í·Ö¸Õë
-                 Count  ĞèÒª±È½ÏµÄ³¤
+*	å‡½æ•°åï¼šCompare_String
+   1    ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	åŠŸèƒ½ï¼š  æ¯”è¾ƒä¸¤ä¸ªå­—ç¬¦ä¸²æ˜¯å¦ç›¸åŒ
+*	å‚æ•°ï¼š  *Source éœ€è¦æ¯”è¾ƒçš„å­—ç¬¦ä¸²çš„çš„å¤´æŒ‡é’ˆ
+                *Target ç”¨æ¥åšæ¯”è¾ƒæ ‡å‡†çš„å­—ç¬¦ä¸²å¤´æŒ‡é’ˆ
+                 Count  éœ€è¦æ¯”è¾ƒçš„é•¿
 
-*	·µ»ØÖµ£º0   ±íÊ¾±È½Ï½á¹û²»ÏàÍ¬
-                1   ±íÊ¾±È½Ï½á¹ûÏàÍ¬
-*	ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	è¿”å›å€¼ï¼š0   è¡¨ç¤ºæ¯”è¾ƒç»“æœä¸ç›¸åŒ
+                1   è¡¨ç¤ºæ¯”è¾ƒç»“æœç›¸åŒ
+*	ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \********************************************************/
 char Compare_String(char *Source,
                              char *Target,
-                             unsigned int Count )         // 1 ±È½ÏÁ½¸ö×Ö·û´®ÊÇ·ñÏàÍ¬
+                             unsigned int Count )         // 1 æ¯”è¾ƒä¸¤ä¸ªå­—ç¬¦ä¸²æ˜¯å¦ç›¸åŒ
 {
     while(Count>0)
     {
@@ -174,19 +174,19 @@ char Compare_String(char *Source,
 
 
 /********************************************************\
-*	º¯ÊıÃû£ºCompare_String
-   1    ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	¹¦ÄÜ£º  ±È½ÏÁ½¸ö×Ö·û´®ÊÇ·ñÏàÍ¬
-*	²ÎÊı£º  *Source ĞèÒª±È½ÏµÄ×Ö·û´®µÄµÄÍ·Ö¸Õë
-                *Target ÓÃÀ´×ö±È½Ï±ê×¼µÄ×Ö·û´®Í·Ö¸Õë
-                 Count  ĞèÒª±È½ÏµÄ³¤
+*	å‡½æ•°åï¼šCompare_String
+   1    ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	åŠŸèƒ½ï¼š  æ¯”è¾ƒä¸¤ä¸ªå­—ç¬¦ä¸²æ˜¯å¦ç›¸åŒ
+*	å‚æ•°ï¼š  *Source éœ€è¦æ¯”è¾ƒçš„å­—ç¬¦ä¸²çš„çš„å¤´æŒ‡é’ˆ
+                *Target ç”¨æ¥åšæ¯”è¾ƒæ ‡å‡†çš„å­—ç¬¦ä¸²å¤´æŒ‡é’ˆ
+                 Count  éœ€è¦æ¯”è¾ƒçš„é•¿
 
-*	·µ»ØÖµ£º0   ±íÊ¾±È½Ï½á¹û²»ÏàÍ¬
-                1   ±íÊ¾±È½Ï½á¹ûÏàÍ¬
-*	ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	è¿”å›å€¼ï¼š0   è¡¨ç¤ºæ¯”è¾ƒç»“æœä¸ç›¸åŒ
+                1   è¡¨ç¤ºæ¯”è¾ƒç»“æœç›¸åŒ
+*	ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \********************************************************/
 char COMP_Peice_STR(char *Source,char *Target,unsigned int T_Cnt,unsigned int S_Cnt,
-                             unsigned int Count )         // 1 ±È½ÏÁ½¸ö×Ö·û´®ÊÇ·ñÏàÍ¬
+                             unsigned int Count )         // 1 æ¯”è¾ƒä¸¤ä¸ªå­—ç¬¦ä¸²æ˜¯å¦ç›¸åŒ
 {
     Source=Source+S_Cnt;
     Target=Target+T_Cnt;

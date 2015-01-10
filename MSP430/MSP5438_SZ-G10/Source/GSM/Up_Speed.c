@@ -4,34 +4,34 @@
 #include "msp430x54x.h"
 #include "GSM.h"
 
-char Up_Speed_Send_ERR_Flag;//ÔÊĞí»»¿¨ ÎŞ¿¨ÉıËÙÖ¸Áî·¢ËÍÊ§°Ü±êÖ¾ ÖØ·¢
-char* Up_Speed_Addr    =  (char *)0x1848;//ÔÊĞí»»¿¨ÎŞ¿¨Ê×µØÖ·
+char Up_Speed_Send_ERR_Flag;//å…è®¸æ¢å¡ æ— å¡å‡é€ŸæŒ‡ä»¤å‘é€å¤±è´¥æ ‡å¿— é‡å‘
+char* Up_Speed_Addr    =  (char *)0x1848;//å…è®¸æ¢å¡æ— å¡é¦–åœ°å€
 
 #define  Allow_NO_Card  0xC0         //
 #define  Allow_Chg_Card 0x30         //
 
 #define  NET_Up_Speed_BUF_SIZE 10
-char REC_Up_Speed_BUF[NET_Up_Speed_BUF_SIZE];//½ÓÊÕÔÊĞí»»¿¨ ÎŞ¿¨ÉıËÙ
-char ANS_Up_Speed_BUF[NET_Up_Speed_BUF_SIZE];//»Ø¸´ÔÊĞí»»¿¨ ÎŞ¿¨ÉıËÙ 
+char REC_Up_Speed_BUF[NET_Up_Speed_BUF_SIZE];//æ¥æ”¶å…è®¸æ¢å¡ æ— å¡å‡é€Ÿ
+char ANS_Up_Speed_BUF[NET_Up_Speed_BUF_SIZE];//å›å¤å…è®¸æ¢å¡ æ— å¡å‡é€Ÿ 
 
-extern void Tran_ID_CmdNum(char* ID_Addr,char CmdNum)                   ;//×ª´æIDºÅºÍÃüÁî±àÂë                              
-extern void Delayms(unsigned long int ms);//ÑÓÊ±XX*1Ms
+extern void Tran_ID_CmdNum(char* ID_Addr,char CmdNum)                   ;//è½¬å­˜IDå·å’Œå‘½ä»¤ç¼–ç                               
+extern void Delayms(unsigned long int ms);//å»¶æ—¶XX*1Ms
 /*******************************************************************\
-*	      º¯ÊıÃû£ºGSM_Lock_Monitor             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ½ÓÊÕ¡¢´¦ÀíÆ½Ì¨Êı¾İ  
-*	      ²ÎÊı£º 0x03==ÔÊĞíÉıËÙ£»0x00==½âËø 
-          ¸ñÊ½£º ID(4)+ÃüÁî±àÂë0x69(2)+Ëø³µÖ¸Áî(2)
-*	      ·µ»ØÖµ£º·µ»ØËø³µ¡¢½âËøÃüÁî   
+*	      å‡½æ•°åï¼šGSM_Lock_Monitor             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  æ¥æ”¶ã€å¤„ç†å¹³å°æ•°æ®  
+*	      å‚æ•°ï¼š 0x03==å…è®¸å‡é€Ÿï¼›0x00==è§£é” 
+          æ ¼å¼ï¼š ID(4)+å‘½ä»¤ç¼–ç 0x69(2)+é”è½¦æŒ‡ä»¤(2)
+*	      è¿”å›å€¼ï¼šè¿”å›é”è½¦ã€è§£é”å‘½ä»¤   
 
-          001848~001849 ==72\73= ÎŞ¿¨ÔÊĞí==0xC0£» »»¿¨ÔÊĞí===0x30
+          001848~001849 ==72\73= æ— å¡å…è®¸==0xC0ï¼› æ¢å¡å…è®¸===0x30
 
 *
-*	      ĞŞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹å†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
-char Allow_Up_Speed(void)//´¦ÀíÔÊĞí»»¿¨ ÎŞ¿¨ÉıËÙ
+char Allow_Up_Speed(void)//å¤„ç†å…è®¸æ¢å¡ æ— å¡å‡é€Ÿ
 {
-    unsigned int CAL_Up_Speed_CRC,NET_Up_Speed_CRC;//Ğ£ÑéºÍ
+    unsigned int CAL_Up_Speed_CRC,NET_Up_Speed_CRC;//æ ¡éªŒå’Œ
       
     NET_Up_Speed_CRC =   REC_Up_Speed_BUF[9]                                ;
     NET_Up_Speed_CRC =   NET_Up_Speed_CRC  <<8                              ;
@@ -40,13 +40,13 @@ char Allow_Up_Speed(void)//´¦ÀíÔÊĞí»»¿¨ ÎŞ¿¨ÉıËÙ
                                 NET_Up_Speed_BUF_SIZE-2)                  ;//8
     if(CAL_Up_Speed_CRC==NET_Up_Speed_CRC)
     {
-        Tran_ID_CmdNum(ANS_Up_Speed_BUF,0x45)                            ;//×ª´æIDºÅºÍÃüÁî±àÂë
+        Tran_ID_CmdNum(ANS_Up_Speed_BUF,0x45)                            ;//è½¬å­˜IDå·å’Œå‘½ä»¤ç¼–ç 
 
         if((REC_Up_Speed_BUF[6]==Allow_NO_Card)&&(REC_Up_Speed_BUF[7]==Allow_Chg_Card))
         {
-            Module_Status[2]      &=~ Allow_NO_Card;//È¡¿¨±¨¾¯
+            Module_Status[2]      &=~ Allow_NO_Card;//å–å¡æŠ¥è­¦
             //GPS_GSM_System_Stu[2] &=~ Allow_NO_Card; 
-            Module_Status[2]      &=~Allow_Chg_Card;//ÎŞ¿¨±¨¾¯
+            Module_Status[2]      &=~Allow_Chg_Card;//æ— å¡æŠ¥è­¦
             //GPS_GSM_System_Stu[2] &=~Allow_Chg_Card;     
 
             ANS_Up_Speed_BUF[6]=Allow_NO_Card;
@@ -56,7 +56,7 @@ char Allow_Up_Speed(void)//´¦ÀíÔÊĞí»»¿¨ ÎŞ¿¨ÉıËÙ
             _NOP();_NOP();_NOP();_NOP();_NOP();
             Flash_WriteChar(73,Allow_NO_Card|Allow_Chg_Card);
             
-            Write_No_Chg_Card_Flash();//Ğ´»»¿¨ÎŞ¿¨Flash 
+            Write_No_Chg_Card_Flash();//å†™æ¢å¡æ— å¡Flash 
         }
         
         CAL_Up_Speed_CRC=crc_modbus2((unsigned char *)ANS_Up_Speed_BUF,
@@ -65,15 +65,15 @@ char Allow_Up_Speed(void)//´¦ÀíÔÊĞí»»¿¨ ÎŞ¿¨ÉıËÙ
         ANS_Up_Speed_BUF[9]    =   (char)((CAL_Up_Speed_CRC>>8)&0xFF)   ;
     
         Up_Speed_Send_ERR_Flag   =    1                                 ;
-        if(GSM_SendData(ANS_Up_Speed_BUF,NET_Up_Speed_BUF_SIZE))             //Êı¾İ·¢ËÍ
+        if(GSM_SendData(ANS_Up_Speed_BUF,NET_Up_Speed_BUF_SIZE))             //æ•°æ®å‘é€
         {
            Up_Speed_Send_ERR_Flag    =   0                              ;
            return 1                                                     ;
         }
     
-        if(Up_Speed_Send_ERR_Flag)                                           //Ê§°ÜÖØ·¢ 
+        if(Up_Speed_Send_ERR_Flag)                                           //å¤±è´¥é‡å‘ 
         {
-           Delayms(200);//XX*1MsÑÓÊ±
+           Delayms(200);//XX*1Mså»¶æ—¶
            Up_Speed_Send_ERR_Flag     =   0;
            if(GSM_SendData(ANS_Up_Speed_BUF,NET_Up_Speed_BUF_SIZE))
            {          
@@ -88,31 +88,31 @@ char Allow_Up_Speed(void)//´¦ÀíÔÊĞí»»¿¨ ÎŞ¿¨ÉıËÙ
 
 
 /**********************************************************************\
-*	      º¯ÊıÃû£ºRD_Up_Speed_FLASH             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ¶ÁÈ¡´¦ÀíÔÊĞí»»¿¨ ÎŞ¿¨ÉıËÙFLASH
-*	      ²ÎÊı£º  
-          ¸ñÊ½£º 
-*	      ·µ»ØÖµ£º
+*	      å‡½æ•°åï¼šRD_Up_Speed_FLASH             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  è¯»å–å¤„ç†å…è®¸æ¢å¡ æ— å¡å‡é€ŸFLASH
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š 
+*	      è¿”å›å€¼ï¼š
 *
-*	      ĞŞ¸ÄÀúÊ·£º
+*	      ä¿®æ”¹å†å²ï¼š
 \**********************************************************************/
-void RD_Up_Speed_FLASH(void)//´¦ÀíÔÊĞí»»¿¨ ÎŞ¿¨ÉıËÙ
+void RD_Up_Speed_FLASH(void)//å¤„ç†å…è®¸æ¢å¡ æ— å¡å‡é€Ÿ
 {
     if((((GPS_GSM_System_Stu[2]&Allow_NO_Card)==Allow_NO_Card)
          ||((GPS_GSM_System_Stu[2]&Allow_Chg_Card)==Allow_Chg_Card))&&
        (((*Up_Speed_Addr)==(Allow_NO_Card|Allow_Chg_Card))&&
          (*(Up_Speed_Addr+1)==(Allow_NO_Card|Allow_Chg_Card))))
     {
-        Module_Status[2]       &=~ Allow_NO_Card;//È¡¿¨±¨¾¯
+        Module_Status[2]       &=~ Allow_NO_Card;//å–å¡æŠ¥è­¦
         //GPS_GSM_System_Stu[2]  &=~ Allow_NO_Card; 
         
         Module_Status[2]       &=~Allow_Chg_Card;
-        //GPS_GSM_System_Stu[2]  &=~Allow_Chg_Card;//ÎŞ¿¨±¨¾¯ 
+        //GPS_GSM_System_Stu[2]  &=~Allow_Chg_Card;//æ— å¡æŠ¥è­¦ 
         
         //if(MSP430_POWER_ON_FLAG==0x11)
         //{
-            //Write_No_Chg_Card_Flash();//Ğ´»»¿¨ÎŞ¿¨Flash 
+            //Write_No_Chg_Card_Flash();//å†™æ¢å¡æ— å¡Flash 
             //Flash_WriteChar(72,Allow_NO_Card|Allow_Chg_Card);
             //_NOP();_NOP();_NOP();_NOP();_NOP();
             //Flash_WriteChar(73,Allow_NO_Card|Allow_Chg_Card);
@@ -123,22 +123,22 @@ void RD_Up_Speed_FLASH(void)//´¦ÀíÔÊĞí»»¿¨ ÎŞ¿¨ÉıËÙ
 
 
 /**********************************************************************\
-*	      º¯ÊıÃû£ºRD_Up_Speed_FLASH             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼şµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ¶ÁÈ¡´¦ÀíÔÊĞí»»¿¨ ÎŞ¿¨ÉıËÙFLASH
-*	      ²ÎÊı£º  
-          ¸ñÊ½£º 
-*	      ·µ»ØÖµ£º
+*	      å‡½æ•°åï¼šRD_Up_Speed_FLASH             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  è¯»å–å¤„ç†å…è®¸æ¢å¡ æ— å¡å‡é€ŸFLASH
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š 
+*	      è¿”å›å€¼ï¼š
 *
-*	      ĞŞ¸ÄÀúÊ·£º
+*	      ä¿®æ”¹å†å²ï¼š
 \**********************************************************************/
-void Ceshi_Allow_Up_Speed(void)//²âÊÔ´¦ÀíÔÊĞí»»¿¨ ÎŞ¿¨ÉıËÙ
+void Ceshi_Allow_Up_Speed(void)//æµ‹è¯•å¤„ç†å…è®¸æ¢å¡ æ— å¡å‡é€Ÿ
 {
     unsigned char   LK_CNT;
-    unsigned int CAL_Up_Speed_CRC;//Ğ£ÑéºÍ
+    unsigned int CAL_Up_Speed_CRC;//æ ¡éªŒå’Œ
     
     
-    for(LK_CNT=0;LK_CNT<4;LK_CNT++)                         //Éè±¸ID×ª´æ
+    for(LK_CNT=0;LK_CNT<4;LK_CNT++)                         //è®¾å¤‡IDè½¬å­˜
     {
        REC_Up_Speed_BUF[LK_CNT]=GPS_GSM_ID_Memory[LK_CNT]        ;
     }

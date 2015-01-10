@@ -41,7 +41,7 @@ extern void DelayMS(U32 ms)
 
 //***************************[ SYSTEM ]***************************************************
 static int delayLoopCount = 400;
-//²ÉÓÃ¿´ÃÅ¹·×÷Îª¼ÆÊ±Æ÷
+//é‡‡ç”¨çœ‹é—¨ç‹—ä½œä¸ºè®¡æ—¶å™¨
 void Delay(int time)
 {
       // time=0: adjust the Delay function by WatchDog timer.
@@ -69,20 +69,20 @@ void Delay(int time)
     }
 }
 /*
-¶¨Ê±Æ÷Êä³öÊ±ÖÓÆµÂÊ=PCLK/ (prescaler+1)/ divider
+å®šæ—¶å™¨è¾“å‡ºæ—¶é’Ÿé¢‘çŽ‡=PCLK/ (prescaler+1)/ divider
 T=n*t=n*(1/f)
 =val/(PCLK/(prescaler+1)/ divider)
 
-ÆäÖÐprescalerÖµÓÉTCFG0¾ö¶¨£¬dividerÖµÓÉTCFG1¾ö¶¨£¬¶øprescalerÖ»ÄÜÈ¡0~255Ö®¼äµÄÕûÊý£¬dividerÖ»ÄÜÈ¡2¡¢4¡¢8ºÍ16¡£
-±ÈÈçÒÑÖªPCLKÎª50MHz£¬¶øÎÒÃÇÏëµÃµ½Ä³Ò»¶¨Ê±Æ÷µÄÊä³öÊ±ÖÓÆµÂÊÎª25kHz£¬ÔòÒÀ¾Ý¹«Ê½¿ÉÒÔÊ¹prescalerµÈÓÚ249£¬dividerµÈÓÚ8¡£
-ÓÐÁËÕâ¸öÊä³öÊ±ÖÓÆµÂÊ£¬ÀíÂÛÉÏÎÒÃÇÍ¨¹ýÉèÖÃ¼Ä´æÆ÷TCNTBn¾Í¿ÉÒÔµÃµ½ÈÎÒâÓë0.04ºÁÃë£¨1¡Â25000¡Á1000£©³ÉÕûÊý±¶¹ØÏµµÄÊ±¼ä¼ä¸ôÁË¡£
-ÀýÈçÎÒÃÇÏëÒªµÃµ½1ÃëÖÓµÄÑÓÊ±£¬ÔòÊ¹TCNTBnÎª25000£¨1000¡Â0.04£©¼´¿É¡£
+å…¶ä¸­prescalerå€¼ç”±TCFG0å†³å®šï¼Œdividerå€¼ç”±TCFG1å†³å®šï¼Œè€Œprescaleråªèƒ½å–0~255ä¹‹é—´çš„æ•´æ•°ï¼Œdivideråªèƒ½å–2ã€4ã€8å’Œ16ã€‚
+æ¯”å¦‚å·²çŸ¥PCLKä¸º50MHzï¼Œè€Œæˆ‘ä»¬æƒ³å¾—åˆ°æŸä¸€å®šæ—¶å™¨çš„è¾“å‡ºæ—¶é’Ÿé¢‘çŽ‡ä¸º25kHzï¼Œåˆ™ä¾æ®å…¬å¼å¯ä»¥ä½¿prescalerç­‰äºŽ249ï¼Œdividerç­‰äºŽ8ã€‚
+æœ‰äº†è¿™ä¸ªè¾“å‡ºæ—¶é’Ÿé¢‘çŽ‡ï¼Œç†è®ºä¸Šæˆ‘ä»¬é€šè¿‡è®¾ç½®å¯„å­˜å™¨TCNTBnå°±å¯ä»¥å¾—åˆ°ä»»æ„ä¸Ž0.04æ¯«ç§’ï¼ˆ1Ã·25000Ã—1000ï¼‰æˆæ•´æ•°å€å…³ç³»çš„æ—¶é—´é—´éš”äº†ã€‚
+ä¾‹å¦‚æˆ‘ä»¬æƒ³è¦å¾—åˆ°1ç§’é’Ÿçš„å»¶æ—¶ï¼Œåˆ™ä½¿TCNTBnä¸º25000ï¼ˆ1000Ã·0.04ï¼‰å³å¯ã€‚
 
 
-//²ÉÓÃ¶¨Ê±Æ÷0×÷Îª¼ÆÊ±Æ÷
+//é‡‡ç”¨å®šæ—¶å™¨0ä½œä¸ºè®¡æ—¶å™¨
 void DelayT3_ms(int time)
 {
-	//ÖµÔ½Ð¡Ê±¼äÔ½³¤ 1000 1ms
+	//å€¼è¶Šå°æ—¶é—´è¶Šé•¿ 1000 1ms
 	U32 TICKPERSEC= 1000;
 	U32 val = (PCLK>>3)/TICKPERSEC-1;
 	
@@ -92,14 +92,14 @@ void DelayT3_ms(int time)
 	rTCFG1 &= ~(0xf<<12);
 	rTCFG1 |= 0<<12;		//divider  = 1/2
 
-	rTCNTB3 = val; 			//×Ô¶¯ÖØÔØÖµ
+	rTCNTB3 = val; 			//è‡ªåŠ¨é‡è½½å€¼
 	rTCMPB3 = val>>1;		// 50%
 	
 	rTCON &= ~(0xf<<16);
 	rTCON |= 0xb<<16;		//interval, inv-off, update TCNTB3&TCMPB3, start timer 3
 	rTCON &= ~(2<<16);		//clear manual update bit
 	while(time--) {
-		while(rTCNTO3>=val>>1);//¶ÁÈ¡µ±Ç°TCNT¼Ä´æÆ÷µÄÖµ µ±Îª0Ê±×Ô¶¯´ÓrTCNTB3ÖÐÖØÔØ
-		while(rTCNTO3<val>>1);//Á½¸öwhileÎªÒ»¸öÂö³åÖÜÆÚ
+		while(rTCNTO3>=val>>1);//è¯»å–å½“å‰TCNTå¯„å­˜å™¨çš„å€¼ å½“ä¸º0æ—¶è‡ªåŠ¨ä»ŽrTCNTB3ä¸­é‡è½½
+		while(rTCNTO3<val>>1);//ä¸¤ä¸ªwhileä¸ºä¸€ä¸ªè„‰å†²å‘¨æœŸ
 	};
 }*/

@@ -31,13 +31,13 @@ BOOL rtc_settime (const RTC *rtc)
 
 	rRTCCON = 1 ;		//RTC read and write enable
 
-	rBCDYEAR = (unsigned char)TO_BCD(rtc->year%100);	//ƒÍ
-    rBCDMON  = (unsigned char)TO_BCD(rtc->month);		//‘¬
-    rBCDDAY	 = (unsigned char)TO_BCD(rtc->mday);			//»’	
-	//rBCDDATE = wDayOfWeek+1;						//–«∆⁄
-	rBCDHOUR = (unsigned char)TO_BCD(rtc->hour);		//–° ±
-	rBCDMIN  = (unsigned char)TO_BCD(rtc->min);		//∑÷
-	rBCDSEC  = (unsigned char)TO_BCD(rtc->sec);		//√Î
+	rBCDYEAR = (unsigned char)TO_BCD(rtc->year%100);	//Âπ¥
+    rBCDMON  = (unsigned char)TO_BCD(rtc->month);		//Êúà
+    rBCDDAY	 = (unsigned char)TO_BCD(rtc->mday);			//Êó•	
+	//rBCDDATE = wDayOfWeek+1;						//ÊòüÊúü
+	rBCDHOUR = (unsigned char)TO_BCD(rtc->hour);		//Â∞èÊó∂
+	rBCDMIN  = (unsigned char)TO_BCD(rtc->min);		//ÂàÜ
+	rBCDSEC  = (unsigned char)TO_BCD(rtc->sec);		//Áßí
 	
 	rRTCCON &= ~1 ;		//RTC read and write disable
 
@@ -62,13 +62,13 @@ BOOL rtc_init (void)
 	
 	rRTCCON = 1 ;		//RTC read and write enable
 
-	rBCDYEAR = (unsigned char)TO_BCD(wYear%100);	//ƒÍ
-    rBCDMON  = (unsigned char)TO_BCD(wMonth);		//‘¬
-    rBCDDAY	 = (unsigned char)TO_BCD(wDay);			//»’	
-	rBCDDATE = wDayOfWeek+1;						//–«∆⁄
-	rBCDHOUR = (unsigned char)TO_BCD(wHour);		//–° ±
-	rBCDMIN  = (unsigned char)TO_BCD(wMinute);		//∑÷
-	rBCDSEC  = (unsigned char)TO_BCD(wSecond);		//√Î
+	rBCDYEAR = (unsigned char)TO_BCD(wYear%100);	//Âπ¥
+    rBCDMON  = (unsigned char)TO_BCD(wMonth);		//Êúà
+    rBCDDAY	 = (unsigned char)TO_BCD(wDay);			//Êó•	
+	rBCDDATE = wDayOfWeek+1;						//ÊòüÊúü
+	rBCDHOUR = (unsigned char)TO_BCD(wHour);		//Â∞èÊó∂
+	rBCDMIN  = (unsigned char)TO_BCD(wMinute);		//ÂàÜ
+	rBCDSEC  = (unsigned char)TO_BCD(wSecond);		//Áßí
 	
 	rRTCCON &= ~1 ;		//RTC read and write disable
 	

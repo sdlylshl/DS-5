@@ -3,45 +3,45 @@
 
 #define ANS_Up_Stat_Buf_Size 20
 
-char ANS_Up_Stat_EROR_Flag                                          ;//À¯≥µ÷∏¡Ó∑¢ÀÕ ß∞‹±Í÷æ ÷ÿ∑¢
-char ANS_Up_Stat_Buf[20]  ;//ªÿ∏¥∆ΩÃ®…˝º∂∆Ù∂Ø÷∏¡Ó ˝◊È
+char ANS_Up_Stat_EROR_Flag                                          ;//ÈîÅËΩ¶Êåá‰ª§ÂèëÈÄÅÂ§±Ë¥•Ê†áÂøó ÈáçÂèë
+char ANS_Up_Stat_Buf[20]  ;//ÂõûÂ§çÂπ≥Âè∞ÂçáÁ∫ßÂêØÂä®Êåá‰ª§Êï∞ÁªÑ
 
 /*******************************************************************\
-*	      ∫Ø ˝√˚£∫ANS_UP_STAT_2_NET             
-*	      ◊˜”√”Ú£∫Õ‚≤øŒƒº˛µ˜”√
-*	      π¶ƒ‹£∫  ªÿ∏¥…˝º∂∆Ù∂Ø÷∏¡Ó∆ΩÃ® ˝æ›  
-*	      ≤Œ ˝£∫ 0x01==…˝º∂£ª0x00==≤ª…˝º∂ 
-          ∏Ò Ω£∫ ID(4)+√¸¡Ó±‡¬Î0x69(2)+À¯≥µ÷∏¡Ó(2)
-*	      ∑µªÿ÷µ£∫∑µªÿ…˝º∂∆Ù∂Ø÷∏¡Ó◊¥Ã¨ 
+*	      ÂáΩÊï∞ÂêçÔºöANS_UP_STAT_2_NET             
+*	      ‰ΩúÁî®ÂüüÔºöÂ§ñÈÉ®Êñá‰ª∂Ë∞ÉÁî®
+*	      ÂäüËÉΩÔºö  ÂõûÂ§çÂçáÁ∫ßÂêØÂä®Êåá‰ª§Âπ≥Âè∞Êï∞ÊçÆ  
+*	      ÂèÇÊï∞Ôºö 0x01==ÂçáÁ∫ßÔºõ0x00==‰∏çÂçáÁ∫ß 
+          Ê†ºÂºèÔºö ID(4)+ÂëΩ‰ª§ÁºñÁ†Å0x69(2)+ÈîÅËΩ¶Êåá‰ª§(2)
+*	      ËøîÂõûÂÄºÔºöËøîÂõûÂçáÁ∫ßÂêØÂä®Êåá‰ª§Áä∂ÊÄÅ 
 *
-*	      –ﬁ∏ƒ¿˙ ∑£∫£®√øÃıœÍ ˆ£©
+*	      ‰øÆÊîπÂéÜÂè≤ÔºöÔºàÊØèÊù°ËØ¶Ëø∞Ôºâ
 \*******************************************************************/
-char ANS_UP_STAT_2_NET(void)                                         //ªÿ∏¥…˝º∂∆Ù∂Ø÷∏¡Ó∆ΩÃ® ˝æ›
+char ANS_UP_STAT_2_NET(void)                                         //ÂõûÂ§çÂçáÁ∫ßÂêØÂä®Êåá‰ª§Âπ≥Âè∞Êï∞ÊçÆ
 {
     unsigned int ANS_UP_CRC                                         ;
       
     ANS_Up_Stat_EROR_Flag    =1                                     ;
  
-    Tran_ID_CmdNum(ANS_Up_Stat_Buf,0x1A)                   ;//◊™¥ÊID∫≈∫Õ√¸¡Ó±‡¬Î  
+    Tran_ID_CmdNum(ANS_Up_Stat_Buf,0x1A)                   ;//ËΩ¨Â≠òIDÂè∑ÂíåÂëΩ‰ª§ÁºñÁ†Å  
     
     ANS_Up_Stat_Buf[6]= 0x00  ;
     ANS_Up_Stat_Buf[7]= 0x14  ;
     
-    ANS_Up_Stat_Buf[9]  =   0x01                                    ;//…˝º∂±Í÷æ00==≤ª…˝º∂,01==…˝º∂
+    ANS_Up_Stat_Buf[9]  =   0x01                                    ;//ÂçáÁ∫ßÊ†áÂøó00==‰∏çÂçáÁ∫ß,01==ÂçáÁ∫ß
     
     ANS_UP_CRC=crc_modbus2((unsigned char *)ANS_Up_Stat_Buf,(18))   ;
     ANS_Up_Stat_Buf[18]    =   (char)(ANS_UP_CRC&0xFF)              ;
     ANS_Up_Stat_Buf[19]    =   (char)((ANS_UP_CRC>>8)&0xFF)         ;
    
-    if(GSM_SendData(ANS_Up_Stat_Buf,ANS_Up_Stat_Buf_Size))           // ˝æ›∑¢ÀÕ
+    if(GSM_SendData(ANS_Up_Stat_Buf,ANS_Up_Stat_Buf_Size))           //Êï∞ÊçÆÂèëÈÄÅ
     {
-       ANS_Up_Stat_EROR_Flag    =0                                  ;//–ﬁ∏ƒ±Í÷æŒª
+       ANS_Up_Stat_EROR_Flag    =0                                  ;//‰øÆÊîπÊ†áÂøó‰Ωç
        return 1                                                     ;
     }
     
-    if(ANS_Up_Stat_EROR_Flag)                                        // ß∞‹÷ÿ∑¢
+    if(ANS_Up_Stat_EROR_Flag)                                        //Â§±Ë¥•ÈáçÂèë
     {
-       Delayms(50)                                                  ;//XX*1Ms—” ±
+       Delayms(50)                                                  ;//XX*1MsÂª∂Êó∂
        if(GSM_SendData(ANS_Up_Stat_Buf,ANS_Up_Stat_Buf_Size))
        {          
           ANS_Up_Stat_EROR_Flag    =    0                           ;

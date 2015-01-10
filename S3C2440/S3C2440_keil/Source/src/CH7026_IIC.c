@@ -312,7 +312,7 @@ int VGA_init(void)
 	}
 	CH7026_sccb_sendbyte(0x09, CH7026_sccb_receivebyte(0x09)|0x09);
 	// Start running:
-	CH7026_sccb_sendbyte(0x06, CH7026_sccb_receivebyte(0x06) & 0xFE); // set bit 0 to ¡®0¡¯.
+	CH7026_sccb_sendbyte(0x06, CH7026_sccb_receivebyte(0x06) & 0xFE); // set bit 0 to â€˜0â€™.
 */	
 	//printk("{ 0x%02x, 0x%02x },\n", 0x06, CH7026_sccb_receivebyte(0x06));
 	return 0;

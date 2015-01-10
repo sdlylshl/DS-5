@@ -12,7 +12,7 @@ extern void Versions(void);
 extern void KeyLight(void)
 {
 		
-		Lcd_ClearScr(0x0);   //ºÚÉ«
+		Lcd_ClearScr(0x0);   //é»‘è‰²
 		Versions();
 		print(0,2,"Starting key Light Test",0xFF);
 		
@@ -28,7 +28,7 @@ extern void KeyLight(void)
 	
 		}
 	rGPBDAT = 0x00001001;
-	Lcd_ClearScr(0x0);   //ºÚÉ«
+	Lcd_ClearScr(0x0);   //é»‘è‰²
 	Versions();
 	
 }		

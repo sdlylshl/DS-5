@@ -1,15 +1,15 @@
 #include "def.h"
 #include "2440addr.h"
-//Íâ²¿ÒýÓÃº¯Êý
+//å¤–éƒ¨å¼•ç”¨å‡½æ•°
 //extern void Delay(int x) ;
 extern void Uart_Printf(char *fmt, ...);
 
 
-//²ÉÓÃÓ²¼þ·½Ê½ ÊµÏÖIIC
+//é‡‡ç”¨ç¡¬ä»¶æ–¹å¼ å®žçŽ°IIC
 
 //**********************************************************************/
-//È«¾Ö±äÁ¿  
-U8 addr16=1; //¶ÔÓÚ24C32ÒÔÉÏµÄEEPROM µØÖ·Îª16×Ö½Ú
+//å…¨å±€å˜é‡  
+U8 addr16=1; //å¯¹äºŽ24C32ä»¥ä¸Šçš„EEPROM åœ°å€ä¸º16å­—èŠ‚
 U8 DevAddr=0xa0; //Device Address [1 0 1 0 A2 A1 A0]
 
 extern void IIC_init(void);
@@ -25,7 +25,7 @@ extern void IIC_Write(U32 addr, U8 data);
 //#define PCLK 50000000
 #define IICBUFSIZE 0x20
 //**********************************************************************/
-//±¾µØ¾²Ì¬±äÁ¿
+//æœ¬åœ°é™æ€å˜é‡
 static U8 iicData[IICBUFSIZE];
 static volatile int iicDataCount;
 static volatile int iicStatus;
@@ -37,8 +37,8 @@ static void Run_IicPoll(void);
 
 extern void IIC_init(void)
 {
-    //ÉèÖÃGPE15->IICSDA ºÍ GPE14->IICSCL
-    rGPEUP  |= (1 << 14) | (1 << 15);   //Pull-up disable GPE14 GPE15Îª¿ªÂ©Êä³öÃ»ÓÐÉÏÀ­Ñ¡Ïî
+    //è®¾ç½®GPE15->IICSDA å’Œ GPE14->IICSCL
+    rGPEUP  |= (1 << 14) | (1 << 15);   //Pull-up disable GPE14 GPE15ä¸ºå¼€æ¼è¾“å‡ºæ²¡æœ‰ä¸Šæ‹‰é€‰é¡¹
     rGPECON &= ~0xf0000000;
     rGPECON |= 0xa0000000;              //GPE15:IICSDA , GPE14:IICSCL
 
@@ -148,7 +148,7 @@ static void IicPoll(void)
 {
     U32 iicSt, i;
     iicSt = rIICSTAT;
-    if (iicSt & 0x8) {};                 //When bus arbitration is failed. ×ÜÏßÖÙ²ÃÊ§°Ü
+    if (iicSt & 0x8) {};                 //When bus arbitration is failed. æ€»çº¿ä»²è£å¤±è´¥
     if (iicSt & 0x4) {};                  //When a slave address is matched with IICADD
     if (iicSt & 0x2) {};                 //When a slave address is 0000000b
     if (iicSt & 0x1) {} ;                //When ACK isn't received

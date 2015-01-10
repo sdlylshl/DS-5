@@ -2,32 +2,32 @@
 #include "msp430x54x.h"
 #include "GSM.h"
 
-char  Low_Pow_Time_Send_ERR_Flag;//µÍ¹¦ºÄÊ±¼ä¼ä¸ôÉèÖÃÖ¸Áî·¢ËÍÊ§°Ü±êÖ¾ ÖØ·¢
-char* Low_Pow_Time_Addr    =  (char *)0x184A;//µÍ¹¦ºÄÊ±¼ä¼ä¸ôÉèÖÃ±êÖ¾µØÖ·
+char  Low_Pow_Time_Send_ERR_Flag;//ä½ŽåŠŸè€—æ—¶é—´é—´éš”è®¾ç½®æŒ‡ä»¤å‘é€å¤±è´¥æ ‡å¿— é‡å‘
+char* Low_Pow_Time_Addr    =  (char *)0x184A;//ä½ŽåŠŸè€—æ—¶é—´é—´éš”è®¾ç½®æ ‡å¿—åœ°å€
 
 #define  Low_Pow_Time_BUF_SIZE 20
-char REC_Low_Pow_Time_BUF[Low_Pow_Time_BUF_SIZE];//½ÓÊÕµÍ¹¦ºÄÊ±¼ä¼ä¸ôÉèÖÃ
-char ANS_Low_Pow_Time_BUF[Low_Pow_Time_BUF_SIZE];//»Ø¸´µÍ¹¦ºÄÊ±¼ä¼ä¸ôÉèÖÃ
+char REC_Low_Pow_Time_BUF[Low_Pow_Time_BUF_SIZE];//æŽ¥æ”¶ä½ŽåŠŸè€—æ—¶é—´é—´éš”è®¾ç½®
+char ANS_Low_Pow_Time_BUF[Low_Pow_Time_BUF_SIZE];//å›žå¤ä½ŽåŠŸè€—æ—¶é—´é—´éš”è®¾ç½®
 
-extern void Tran_ID_CmdNum(char* ID_Addr,char CmdNum)                   ;//×ª´æIDºÅºÍÃüÁî±àÂë                              
-extern void Delayms(unsigned long int ms);//ÑÓÊ±XX*1Ms
+extern void Tran_ID_CmdNum(char* ID_Addr,char CmdNum)                   ;//è½¬å­˜IDå·å’Œå‘½ä»¤ç¼–ç                               
+extern void Delayms(unsigned long int ms);//å»¶æ—¶XX*1Ms
 /*******************************************************************\
-*	      º¯ÊýÃû£ºSet_LowPower_ModeTime             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  µÍ¹¦ºÄÊ±¼ä¼ä¸ôÉèÖÃ
-*	      ²ÎÊý£º 
-          ¸ñÊ½£º ID(4)+ÃüÁî±àÂë0x69(2)+Ëø³µÖ¸Áî(2)
-*	      ·µ»ØÖµ£º·µ»ØËø³µ¡¢½âËøÃüÁî   
+*	      å‡½æ•°åï¼šSet_LowPower_ModeTime             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  ä½ŽåŠŸè€—æ—¶é—´é—´éš”è®¾ç½®
+*	      å‚æ•°ï¼š 
+          æ ¼å¼ï¼š ID(4)+å‘½ä»¤ç¼–ç 0x69(2)+é”è½¦æŒ‡ä»¤(2)
+*	      è¿”å›žå€¼ï¼šè¿”å›žé”è½¦ã€è§£é”å‘½ä»¤   
 
-          00184A        74      µÍ¹¦ºÄÊ±¼ä¼ä¸ôÉèÖÃ±êÖ¾
-          00184B~001856 ==75\86  µÍ¹¦ºÄÊ±¼ä¼ä¸ôÉèÖÃ
+          00184A        74      ä½ŽåŠŸè€—æ—¶é—´é—´éš”è®¾ç½®æ ‡å¿—
+          00184B~001856 ==75\86  ä½ŽåŠŸè€—æ—¶é—´é—´éš”è®¾ç½®
 *
-*	      ÐÞ¸ÄÀúÊ·£º£¨Ã¿ÌõÏêÊö£©
+*	      ä¿®æ”¹åŽ†å²ï¼šï¼ˆæ¯æ¡è¯¦è¿°ï¼‰
 \*******************************************************************/
-char Low_Power_Mode_Time(void)//µÍ¹¦ºÄÊ±¼ä¼ä¸ôÉèÖÃ
+char Low_Power_Mode_Time(void)//ä½ŽåŠŸè€—æ—¶é—´é—´éš”è®¾ç½®
 {
     unsigned char   LP_CNT;
-    unsigned int CAL_Low_Pow_Time_CRC,NET_Low_Pow_Time_CRC;//Ð£ÑéºÍ
+    unsigned int CAL_Low_Pow_Time_CRC,NET_Low_Pow_Time_CRC;//æ ¡éªŒå’Œ
       
     NET_Low_Pow_Time_CRC =   REC_Low_Pow_Time_BUF[9]                                ;
     NET_Low_Pow_Time_CRC =   NET_Low_Pow_Time_CRC  <<8                              ;
@@ -36,10 +36,10 @@ char Low_Power_Mode_Time(void)//µÍ¹¦ºÄÊ±¼ä¼ä¸ôÉèÖÃ
                                 Low_Pow_Time_BUF_SIZE-2)                  ;//8
     if(CAL_Low_Pow_Time_CRC==NET_Low_Pow_Time_CRC)
     {
-        Tran_ID_CmdNum(ANS_Low_Pow_Time_BUF,0x64)                            ;//×ª´æIDºÅºÍÃüÁî±àÂë
+        Tran_ID_CmdNum(ANS_Low_Pow_Time_BUF,0x64)                            ;//è½¬å­˜IDå·å’Œå‘½ä»¤ç¼–ç 
 
-        Flash_WriteChar(74,0xAA)                                        ;//Ð´±êÖ¾Î»
-        for(LP_CNT=0;LP_CNT<12;LP_CNT++)                                 //Ð´IP¼°¶Ë¿ÚºÅ
+        Flash_WriteChar(74,0xAA)                                        ;//å†™æ ‡å¿—ä½
+        for(LP_CNT=0;LP_CNT<12;LP_CNT++)                                 //å†™IPåŠç«¯å£å·
         {  
            _NOP();_NOP();_NOP();_NOP();_NOP();          
            Flash_WriteChar(75+LP_CNT,REC_Low_Pow_Time_BUF[6+LP_CNT])    ;      
@@ -47,7 +47,7 @@ char Low_Power_Mode_Time(void)//µÍ¹¦ºÄÊ±¼ä¼ä¸ôÉèÖÃ
         _NOP();_NOP();_NOP();_NOP();_NOP();
         
         
-        for(LP_CNT=0;LP_CNT<12;LP_CNT++)                                 //Ð´IP¼°¶Ë¿ÚºÅ
+        for(LP_CNT=0;LP_CNT<12;LP_CNT++)                                 //å†™IPåŠç«¯å£å·
         {  
            ANS_Low_Pow_Time_BUF[6+LP_CNT] = * (Low_Pow_Time_Addr+1+LP_CNT);//6-17  
            _NOP();_NOP();
@@ -59,15 +59,15 @@ char Low_Power_Mode_Time(void)//µÍ¹¦ºÄÊ±¼ä¼ä¸ôÉèÖÃ
         ANS_Low_Pow_Time_BUF[Low_Pow_Time_BUF_SIZE-1]=(char)((CAL_Low_Pow_Time_CRC>>8)&0xFF);//19
     
         Low_Pow_Time_Send_ERR_Flag   =    1                                 ;
-        if(GSM_SendData(ANS_Low_Pow_Time_BUF,Low_Pow_Time_BUF_SIZE))             //Êý¾Ý·¢ËÍ
+        if(GSM_SendData(ANS_Low_Pow_Time_BUF,Low_Pow_Time_BUF_SIZE))             //æ•°æ®å‘é€
         {
            Low_Pow_Time_Send_ERR_Flag    =   0                              ;
            return 1                                                     ;
         }
     
-        if(Low_Pow_Time_Send_ERR_Flag)                                           //Ê§°ÜÖØ·¢ 
+        if(Low_Pow_Time_Send_ERR_Flag)                                           //å¤±è´¥é‡å‘ 
         {
-           Delayms(200);//XX*1MsÑÓÊ±
+           Delayms(200);//XX*1Mså»¶æ—¶
            Low_Pow_Time_Send_ERR_Flag     =   0;
            if(GSM_SendData(ANS_Low_Pow_Time_BUF,Low_Pow_Time_BUF_SIZE))
            {          
@@ -84,16 +84,16 @@ char Low_Power_Mode_Time(void)//µÍ¹¦ºÄÊ±¼ä¼ä¸ôÉèÖÃ
 
 
 /**********************************************************************\
-*	      º¯ÊýÃû£ºRD_Up_Speed_FLASH             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ¶ÁÈ¡´¦ÀíÔÊÐí»»¿¨ ÎÞ¿¨ÉýËÙFLASH
-*	      ²ÎÊý£º  
-          ¸ñÊ½£º 
-*	      ·µ»ØÖµ£º
+*	      å‡½æ•°åï¼šRD_Up_Speed_FLASH             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  è¯»å–å¤„ç†å…è®¸æ¢å¡ æ— å¡å‡é€ŸFLASH
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š 
+*	      è¿”å›žå€¼ï¼š
 *
-*	      ÐÞ¸ÄÀúÊ·£º
+*	      ä¿®æ”¹åŽ†å²ï¼š
 \**********************************************************************/
-void RD_Low_Pow_Time_FLASH(void)//´¦ÀíÔÊÐí»»¿¨ ÎÞ¿¨ÉýËÙ
+void RD_Low_Pow_Time_FLASH(void)//å¤„ç†å…è®¸æ¢å¡ æ— å¡å‡é€Ÿ
 {
     if((* Low_Pow_Time_Addr==0xAA))
     {
@@ -103,22 +103,22 @@ void RD_Low_Pow_Time_FLASH(void)//´¦ÀíÔÊÐí»»¿¨ ÎÞ¿¨ÉýËÙ
 
 
 /**********************************************************************\
-*	      º¯ÊýÃû£ºRD_Up_Speed_FLASH             
-*	      ×÷ÓÃÓò£ºÍâ²¿ÎÄ¼þµ÷ÓÃ
-*	      ¹¦ÄÜ£º  ¶ÁÈ¡´¦µÍ¹¦ºÄÊ±¼ä¼ä¸ôÉèÖÃFLASH
-*	      ²ÎÊý£º  
-          ¸ñÊ½£º 
-*	      ·µ»ØÖµ£º
+*	      å‡½æ•°åï¼šRD_Up_Speed_FLASH             
+*	      ä½œç”¨åŸŸï¼šå¤–éƒ¨æ–‡ä»¶è°ƒç”¨
+*	      åŠŸèƒ½ï¼š  è¯»å–å¤„ä½ŽåŠŸè€—æ—¶é—´é—´éš”è®¾ç½®FLASH
+*	      å‚æ•°ï¼š  
+          æ ¼å¼ï¼š 
+*	      è¿”å›žå€¼ï¼š
 *
-*	      ÐÞ¸ÄÀúÊ·£º
+*	      ä¿®æ”¹åŽ†å²ï¼š
 \**********************************************************************/
-void Ceshi_Low_Pow_Time(void)//²âÊÔµÍ¹¦ºÄÊ±¼ä¼ä¸ôÉèÖÃ
+void Ceshi_Low_Pow_Time(void)//æµ‹è¯•ä½ŽåŠŸè€—æ—¶é—´é—´éš”è®¾ç½®
 {
     unsigned char   LK_CNT;
-    unsigned int CAL_Up_Speed_CRC;//Ð£ÑéºÍ
+    unsigned int CAL_Up_Speed_CRC;//æ ¡éªŒå’Œ
     
     
-    for(LK_CNT=0;LK_CNT<4;LK_CNT++)                         //Éè±¸ID×ª´æ
+    for(LK_CNT=0;LK_CNT<4;LK_CNT++)                         //è®¾å¤‡IDè½¬å­˜
     {
        REC_Low_Pow_Time_BUF[LK_CNT]=GPS_GSM_ID_Memory[LK_CNT]        ;
     }

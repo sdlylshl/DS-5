@@ -3,155 +3,155 @@
 
 #define EEAddr_CSystemEEpromstart							0x0000	//
 
-#define EEAddr_CSystemFirstStart_Flag						0x0010	//ÏµÍ³µÚÒ»´ÎÆô¶¯±êÖ¾£¨55AA=ÒÑÆô¶¯¹ı£»ÆäËüÊÓÎªÊ×´ÎÆô¶¯
+#define EEAddr_CSystemFirstStart_Flag						0x0010	//ç³»ç»Ÿç¬¬ä¸€æ¬¡å¯åŠ¨æ ‡å¿—ï¼ˆ55AA=å·²å¯åŠ¨è¿‡ï¼›å…¶å®ƒè§†ä¸ºé¦–æ¬¡å¯åŠ¨
 
-#define EEAddr_CUserPassword								0x0020	//ÓÃ»§ÃÜÂë£¨6×Ö½Ú£©
-#define EEAddr_CSystemPassword								0x0027	//ÏµÍ³ÃÜÂë£¨8×Ö½Ú£©
+#define EEAddr_CUserPassword								0x0020	//ç”¨æˆ·å¯†ç ï¼ˆ6å­—èŠ‚ï¼‰
+#define EEAddr_CSystemPassword								0x0027	//ç³»ç»Ÿå¯†ç ï¼ˆ8å­—èŠ‚ï¼‰
 
-#define EEAddr_CLanguage									0x0030	//ÓïÑÔÑ¡Ôñ£¨ÖĞÓ¢ÎÄ£©(1×Ö½Ú)
-																	//¹¦ÄÜ¿ªÆôÉèÖÃ
-#define EEAddr_CUserChangeSpeed_OnOff						0x0038	//ÓÃ»§µ÷ËÙÉèÖÃ
-#define EEAddr_CGPS_OnOff									0x0039	//GPS¹¦ÄÜ¿ªÆô	
-#define EEAddr_CWorkTime_OnOff								0x003a	//¹¤×÷Ê±¼äÏÔÊ¾£¨Ä¬ÈÏÎªÏÔÊ¾ÀÛ¼Æ¹¤×÷Ê±¼ä£©
-#define EEAddr_CAutoWarm_OnOff								0x003b	//×Ô¶¯Å¯»ú¿ªÆô
-#define EEAddr_CPreserveNotice_OnOff						0x003c	//±£ÑøÌáÊ¾¿ªÆô
-#define EEAddr_CBrokenHammer_OnOff							0x003d	//ÆÆËé´¸¹¦ÄÜ¿ªÆô
-#define EEAddr_CDayNight_OnOff  							0x003e	//¼üÅÌ±³¹âÖçÒ¹Ä£Ê½¹¦ÄÜ¿ªÆô
+#define EEAddr_CLanguage									0x0030	//è¯­è¨€é€‰æ‹©ï¼ˆä¸­è‹±æ–‡ï¼‰(1å­—èŠ‚)
+																	//åŠŸèƒ½å¼€å¯è®¾ç½®
+#define EEAddr_CUserChangeSpeed_OnOff						0x0038	//ç”¨æˆ·è°ƒé€Ÿè®¾ç½®
+#define EEAddr_CGPS_OnOff									0x0039	//GPSåŠŸèƒ½å¼€å¯	
+#define EEAddr_CWorkTime_OnOff								0x003a	//å·¥ä½œæ—¶é—´æ˜¾ç¤ºï¼ˆé»˜è®¤ä¸ºæ˜¾ç¤ºç´¯è®¡å·¥ä½œæ—¶é—´ï¼‰
+#define EEAddr_CAutoWarm_OnOff								0x003b	//è‡ªåŠ¨æš–æœºå¼€å¯
+#define EEAddr_CPreserveNotice_OnOff						0x003c	//ä¿å…»æç¤ºå¼€å¯
+#define EEAddr_CBrokenHammer_OnOff							0x003d	//ç ´ç¢é”¤åŠŸèƒ½å¼€å¯
+#define EEAddr_CDayNight_OnOff  							0x003e	//é”®ç›˜èƒŒå…‰æ˜¼å¤œæ¨¡å¼åŠŸèƒ½å¼€å¯
 
-#define EEAddr_CDayNight_DayHour							0x0040							//¼üÅÌ±³¹â°×Öç¿ªÊ¼Ê±¼ä£¨Ê±£©
-#define EEAddr_CDayNight_DayMinute							EEAddr_CDayNight_DayHour+1		//¼üÅÌ±³¹â°×Öç¿ªÊ¼Ê±¼ä£¨·Ö£©
-#define EEAddr_CDayNight_NightHour							EEAddr_CDayNight_DayHour+1+1	//¼üÅÌ±³¹âÒ¹Íí¿ªÊ¼Ê±¼ä£¨Ê±£©
-#define EEAddr_CDayNight_NightMinute						EEAddr_CDayNight_DayHour+1+1+1	//¼üÅÌ±³¹âÒ¹Íí¿ªÊ¼Ê±¼ä£¨·Ö£©
+#define EEAddr_CDayNight_DayHour							0x0040							//é”®ç›˜èƒŒå…‰ç™½æ˜¼å¼€å§‹æ—¶é—´ï¼ˆæ—¶ï¼‰
+#define EEAddr_CDayNight_DayMinute							EEAddr_CDayNight_DayHour+1		//é”®ç›˜èƒŒå…‰ç™½æ˜¼å¼€å§‹æ—¶é—´ï¼ˆåˆ†ï¼‰
+#define EEAddr_CDayNight_NightHour							EEAddr_CDayNight_DayHour+1+1	//é”®ç›˜èƒŒå…‰å¤œæ™šå¼€å§‹æ—¶é—´ï¼ˆæ—¶ï¼‰
+#define EEAddr_CDayNight_NightMinute						EEAddr_CDayNight_DayHour+1+1+1	//é”®ç›˜èƒŒå…‰å¤œæ™šå¼€å§‹æ—¶é—´ï¼ˆåˆ†ï¼‰
 
-#define EEAddr_SWorkMode_H_SpeedStepH						0x0050		//HÄ£Ê½ ×ªËÙÎ¢µ÷ÉÏÏŞ
-#define EEAddr_SWorkMode_H_SpeedStepL						0x0052		//HÄ£Ê½ ×ªËÙÎ¢µ÷ÏÂÏŞ
-#define EEAddr_SWorkMode_M_SpeedStepH						0x0054		//MÄ£Ê½ ×ªËÙÎ¢µ÷ÉÏÏŞ
-#define EEAddr_SWorkMode_M_SpeedStepL						0x0056		//MÄ£Ê½ ×ªËÙÎ¢µ÷ÏÂÏŞ
-#define EEAddr_SWorkMode_L_SpeedStepH						0x0058		//LÄ£Ê½ ×ªËÙÎ¢µ÷ÉÏÏŞ
-#define EEAddr_SWorkMode_L_SpeedStepL						0x005a		//LÄ£Ê½ ×ªËÙÎ¢µ÷ÏÂÏŞ
-#define EEAddr_SWorkMode_F_SpeedStepH						0x005c		//FÄ£Ê½ ×ªËÙÎ¢µ÷ÉÏÏŞ
-#define EEAddr_SWorkMode_F_SpeedStepL						0x005e		//FÄ£Ê½ ×ªËÙÎ¢µ÷ÏÂÏŞ
-#define EEAddr_SWorkMode_B_SpeedStepH						0x0060		//BÄ£Ê½ ×ªËÙÎ¢µ÷ÉÏÏŞ
-#define EEAddr_SWorkMode_B_SpeedStepL						0x0062		//BÄ£Ê½ ×ªËÙÎ¢µ÷ÏÂÏŞ
+#define EEAddr_SWorkMode_H_SpeedStepH						0x0050		//Hæ¨¡å¼ è½¬é€Ÿå¾®è°ƒä¸Šé™
+#define EEAddr_SWorkMode_H_SpeedStepL						0x0052		//Hæ¨¡å¼ è½¬é€Ÿå¾®è°ƒä¸‹é™
+#define EEAddr_SWorkMode_M_SpeedStepH						0x0054		//Mæ¨¡å¼ è½¬é€Ÿå¾®è°ƒä¸Šé™
+#define EEAddr_SWorkMode_M_SpeedStepL						0x0056		//Mæ¨¡å¼ è½¬é€Ÿå¾®è°ƒä¸‹é™
+#define EEAddr_SWorkMode_L_SpeedStepH						0x0058		//Læ¨¡å¼ è½¬é€Ÿå¾®è°ƒä¸Šé™
+#define EEAddr_SWorkMode_L_SpeedStepL						0x005a		//Læ¨¡å¼ è½¬é€Ÿå¾®è°ƒä¸‹é™
+#define EEAddr_SWorkMode_F_SpeedStepH						0x005c		//Fæ¨¡å¼ è½¬é€Ÿå¾®è°ƒä¸Šé™
+#define EEAddr_SWorkMode_F_SpeedStepL						0x005e		//Fæ¨¡å¼ è½¬é€Ÿå¾®è°ƒä¸‹é™
+#define EEAddr_SWorkMode_B_SpeedStepH						0x0060		//Bæ¨¡å¼ è½¬é€Ÿå¾®è°ƒä¸Šé™
+#define EEAddr_SWorkMode_B_SpeedStepL						0x0062		//Bæ¨¡å¼ è½¬é€Ÿå¾®è°ƒä¸‹é™
 
-#define EEAddr_SWorkMode_H_Speed							0x0064   						//×ªËÙ
-#define EEAddr_CWorkMode_H_Ratio							EEAddr_SWorkMode_H_Speed+2		//Ğ§ÂÊ   66
-#define EEAddr_CWorkMode_H_SpeedRatio						EEAddr_SWorkMode_H_Speed+1+1	//µ÷ËÙÂÊ 67
-#define EEAddr_SWorkMode_M_Speed							0x0068 							//×ªËÙ
-#define EEAddr_CWorkMode_M_Ratio							EEAddr_SWorkMode_M_Speed+2		//Ğ§ÂÊ   6a
-#define EEAddr_CWorkMode_M_SpeedRatio						EEAddr_SWorkMode_M_Speed+1+1 	//µ÷ËÙÂÊ 6b
-#define EEAddr_SWorkMode_L_Speed							0x006c   						//×ªËÙ
-#define EEAddr_CWorkMode_L_Ratio							EEAddr_SWorkMode_L_Speed+2		//Ğ§ÂÊ   6e
-#define EEAddr_CWorkMode_L_SpeedRatio						EEAddr_SWorkMode_L_Speed+1+1	//µ÷ËÙÂÊ 6f
+#define EEAddr_SWorkMode_H_Speed							0x0064   						//è½¬é€Ÿ
+#define EEAddr_CWorkMode_H_Ratio							EEAddr_SWorkMode_H_Speed+2		//æ•ˆç‡   66
+#define EEAddr_CWorkMode_H_SpeedRatio						EEAddr_SWorkMode_H_Speed+1+1	//è°ƒé€Ÿç‡ 67
+#define EEAddr_SWorkMode_M_Speed							0x0068 							//è½¬é€Ÿ
+#define EEAddr_CWorkMode_M_Ratio							EEAddr_SWorkMode_M_Speed+2		//æ•ˆç‡   6a
+#define EEAddr_CWorkMode_M_SpeedRatio						EEAddr_SWorkMode_M_Speed+1+1 	//è°ƒé€Ÿç‡ 6b
+#define EEAddr_SWorkMode_L_Speed							0x006c   						//è½¬é€Ÿ
+#define EEAddr_CWorkMode_L_Ratio							EEAddr_SWorkMode_L_Speed+2		//æ•ˆç‡   6e
+#define EEAddr_CWorkMode_L_SpeedRatio						EEAddr_SWorkMode_L_Speed+1+1	//è°ƒé€Ÿç‡ 6f
 
-#define EEAddr_SWorkMode_F_Speed							0x0070							//×ªËÙ
-#define EEAddr_CWorkMode_F_Ratio							EEAddr_SWorkMode_F_Speed+2		//Ğ§ÂÊ	72
-#define EEAddr_CWorkMode_F_SpeedRatio						EEAddr_SWorkMode_F_Speed+1+1	//µ÷ËÙÂÊ73
-#define EEAddr_SWorkMode_B_Speed							0x0074   						//×ªËÙ
-#define EEAddr_CWorkMode_B_Ratio							EEAddr_SWorkMode_B_Speed+2 		//Ğ§ÂÊ  75
-#define EEAddr_CWorkMode_B_SpeedRatio						EEAddr_SWorkMode_B_Speed+1+1 	//µ÷ËÙÂÊ76
+#define EEAddr_SWorkMode_F_Speed							0x0070							//è½¬é€Ÿ
+#define EEAddr_CWorkMode_F_Ratio							EEAddr_SWorkMode_F_Speed+2		//æ•ˆç‡	72
+#define EEAddr_CWorkMode_F_SpeedRatio						EEAddr_SWorkMode_F_Speed+1+1	//è°ƒé€Ÿç‡73
+#define EEAddr_SWorkMode_B_Speed							0x0074   						//è½¬é€Ÿ
+#define EEAddr_CWorkMode_B_Ratio							EEAddr_SWorkMode_B_Speed+2 		//æ•ˆç‡  75
+#define EEAddr_CWorkMode_B_SpeedRatio						EEAddr_SWorkMode_B_Speed+1+1 	//è°ƒé€Ÿç‡76
 
-#define EEAddr_SWorkMode_MotorGear_Value					0x0080								//·¢¶¯»ú³İÊı
-#define EEAddr_CWorkMode_SpeedStep							EEAddr_SWorkMode_MotorGear_Value+2	//×ªËÙÎ¢µ÷²½½ø 
-#define EEAddr_CWorkMode_IdleSpeed_OneTime 					EEAddr_SWorkMode_MotorGear_Value+2+2 //Ò»½×¶Îµ¡ËÙÊ±¼ä S	 
-#define EEAddr_CWorkMode_IdleSpeed_TwoTime					EEAddr_SWorkMode_MotorGear_Value+2+2+2	//¶ş½×¶Îµ¡ËÙÊ±¼ä M 
-#define EEAddr_SWorkMode_IdleSpeed_OneValue					EEAddr_SWorkMode_MotorGear_Value+2+2+2+2 //Ò»½×¶Îµ¡ËÙÖµ  
-#define EEAddr_SWorkMode_IdleSpeed_TwoValue					EEAddr_SWorkMode_MotorGear_Value+2+2+2+2+2	//¶ş½×¶Îµ¡ËÙÖµ 
+#define EEAddr_SWorkMode_MotorGear_Value					0x0080								//å‘åŠ¨æœºé½¿æ•°
+#define EEAddr_CWorkMode_SpeedStep							EEAddr_SWorkMode_MotorGear_Value+2	//è½¬é€Ÿå¾®è°ƒæ­¥è¿› 
+#define EEAddr_CWorkMode_IdleSpeed_OneTime 					EEAddr_SWorkMode_MotorGear_Value+2+2 //ä¸€é˜¶æ®µæ€ é€Ÿæ—¶é—´ S	 
+#define EEAddr_CWorkMode_IdleSpeed_TwoTime					EEAddr_SWorkMode_MotorGear_Value+2+2+2	//äºŒé˜¶æ®µæ€ é€Ÿæ—¶é—´ M 
+#define EEAddr_SWorkMode_IdleSpeed_OneValue					EEAddr_SWorkMode_MotorGear_Value+2+2+2+2 //ä¸€é˜¶æ®µæ€ é€Ÿå€¼  
+#define EEAddr_SWorkMode_IdleSpeed_TwoValue					EEAddr_SWorkMode_MotorGear_Value+2+2+2+2+2	//äºŒé˜¶æ®µæ€ é€Ÿå€¼ 
 
-#define EEAddr_CAlarmSet_ColdWater_Temperature				0x0090				//ÀäÈ´ÒºÎÂ¶È(H)	
-#define EEAddr_CAlarmSet_ColdWater_Temperature_Rank			EEAddr_CAlarmSet_ColdWater_Temperature+1//ÀäÈ´ÒºÎÂ¶È(H)±¨¾¯¼¶±ğ
-#define EEAddr_CAlarmSet_OilLevel							EEAddr_CAlarmSet_ColdWater_Temperature+1+1	//È¼ÓÍÓÍÎ»(L)	
-#define EEAddr_CAlarmSet_OilLevel_Rank						EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1//È¼ÓÍÓÍÎ»(L)±¨¾¯¼¶±ğ		
-#define EEAddr_CAlarmSet_HydraumaticOil_TemperatureH		EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1	//ÒºÑ¹ÓÍÎÂ¶È(H)
-#define EEAddr_CAlarmSet_HydraumaticOil_TemperatureH_Rank	EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1	//ÒºÑ¹ÓÍÎÂ¶È(H)±¨¾¯¼¶±ğ	
-#define EEAddr_CAlarmSet_HydraumaticOil_TemperatureL		EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1	//ÒºÑ¹ÓÍÎÂ¶È(L)
-#define EEAddr_CAlarmSet_HydraumaticOil_TemperatureL_Rank	EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1	//ÒºÑ¹ÓÍÎÂ¶È(L)±¨¾¯¼¶±ğ	 	 
-#define EEAddr_SAlarmSet_System_PressureH					EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1					//ÏµÍ³Ñ¹Á¦(H)	
-#define EEAddr_CAlarmSet_System_PressureH_Rank				EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2				//ÏµÍ³Ñ¹Á¦(H)±¨¾¯¼¶±ğ				
-#define EEAddr_SAlarmSet_System_PressureL					EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1					//ÏµÍ³Ñ¹Á¦(L)	
-#define EEAddr_SAlarmSet_System_PressureL_Rank				EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2				//ÏµÍ³Ñ¹Á¦(L)±¨¾¯¼¶±ğ				            			            
-#define EEAddr_CAlarmSet_System_PowerH						EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1						//ÏµÍ³µçÑ¹(H)	
-#define EEAddr_CAlarmSet_System_PowerH_Rank					EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1					//ÏµÍ³µçÑ¹(H)±¨¾¯¼¶±ğ			
-#define EEAddr_CAlarmSet_System_PowerL						EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1+1						//ÏµÍ³µçÑ¹(L)	
-#define EEAddr_CAlarmSet_System_PowerL_Rank					EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1+1+1 //a1					//ÏµÍ³µçÑ¹(L)±¨¾¯¼¶±ğ		
+#define EEAddr_CAlarmSet_ColdWater_Temperature				0x0090				//å†·å´æ¶²æ¸©åº¦(H)	
+#define EEAddr_CAlarmSet_ColdWater_Temperature_Rank			EEAddr_CAlarmSet_ColdWater_Temperature+1//å†·å´æ¶²æ¸©åº¦(H)æŠ¥è­¦çº§åˆ«
+#define EEAddr_CAlarmSet_OilLevel							EEAddr_CAlarmSet_ColdWater_Temperature+1+1	//ç‡ƒæ²¹æ²¹ä½(L)	
+#define EEAddr_CAlarmSet_OilLevel_Rank						EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1//ç‡ƒæ²¹æ²¹ä½(L)æŠ¥è­¦çº§åˆ«		
+#define EEAddr_CAlarmSet_HydraumaticOil_TemperatureH		EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1	//æ¶²å‹æ²¹æ¸©åº¦(H)
+#define EEAddr_CAlarmSet_HydraumaticOil_TemperatureH_Rank	EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1	//æ¶²å‹æ²¹æ¸©åº¦(H)æŠ¥è­¦çº§åˆ«	
+#define EEAddr_CAlarmSet_HydraumaticOil_TemperatureL		EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1	//æ¶²å‹æ²¹æ¸©åº¦(L)
+#define EEAddr_CAlarmSet_HydraumaticOil_TemperatureL_Rank	EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1	//æ¶²å‹æ²¹æ¸©åº¦(L)æŠ¥è­¦çº§åˆ«	 	 
+#define EEAddr_SAlarmSet_System_PressureH					EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1					//ç³»ç»Ÿå‹åŠ›(H)	
+#define EEAddr_CAlarmSet_System_PressureH_Rank				EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2				//ç³»ç»Ÿå‹åŠ›(H)æŠ¥è­¦çº§åˆ«				
+#define EEAddr_SAlarmSet_System_PressureL					EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1					//ç³»ç»Ÿå‹åŠ›(L)	
+#define EEAddr_SAlarmSet_System_PressureL_Rank				EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2				//ç³»ç»Ÿå‹åŠ›(L)æŠ¥è­¦çº§åˆ«				            			            
+#define EEAddr_CAlarmSet_System_PowerH						EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1						//ç³»ç»Ÿç”µå‹(H)	
+#define EEAddr_CAlarmSet_System_PowerH_Rank					EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1					//ç³»ç»Ÿç”µå‹(H)æŠ¥è­¦çº§åˆ«			
+#define EEAddr_CAlarmSet_System_PowerL						EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1+1						//ç³»ç»Ÿç”µå‹(L)	
+#define EEAddr_CAlarmSet_System_PowerL_Rank					EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1+1+1 //a1					//ç³»ç»Ÿç”µå‹(L)æŠ¥è­¦çº§åˆ«		
 
-#define EEAddr_CAlarmSet_Forerunner_PressureH				EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1+1+1+1				//ÏÈµ¼Ñ¹Á¦(H)
-#define EEAddr_CAlarmSet_Forerunner_PressureH_Rank			EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1+1+1+1+1			//ÏÈµ¼Ñ¹Á¦(H)±¨¾¯¼¶±ğ 	 	
-#define EEAddr_CAlarmSet_Forerunner_PressureL				EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1+1+1+1+1+1				//ÏÈµ¼Ñ¹Á¦(L):
-#define EEAddr_CAlarmSet_Forerunner_PressureL_Rank			EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1+1+1+1+1+1+1			//ÏÈµ¼Ñ¹Á¦(L)±¨¾¯¼¶±ğ
+#define EEAddr_CAlarmSet_Forerunner_PressureH				EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1+1+1+1				//å…ˆå¯¼å‹åŠ›(H)
+#define EEAddr_CAlarmSet_Forerunner_PressureH_Rank			EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1+1+1+1+1			//å…ˆå¯¼å‹åŠ›(H)æŠ¥è­¦çº§åˆ« 	 	
+#define EEAddr_CAlarmSet_Forerunner_PressureL				EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1+1+1+1+1+1				//å…ˆå¯¼å‹åŠ›(L):
+#define EEAddr_CAlarmSet_Forerunner_PressureL_Rank			EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1+1+1+1+1+1+1			//å…ˆå¯¼å‹åŠ›(L)æŠ¥è­¦çº§åˆ«
  	
-#define EEAddr_CAlarmSet_MachineOil_Rank					EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1+1+1+1+1+1+1+1						//»úÓÍÑ¹Á¦±¨¾¯¼¶±ğ 	£º¿ª¹ØÁ¿
-#define EEAddr_CAlarmSet_AirFilter_Rank						EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1+1+1+1+1+1+1+1+1						//¿ÕÆøÂËÇåÆ÷±¨¾¯¼¶±ğ 	£º¿ª¹ØÁ¿
-#define EEAddr_CAlarmSet_ColdWaterLevelL_Rank				EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1+1+1+1+1+1+1+1+1+1//a8				//ÀäÈ´ÒºÒºÎ»(L)±¨¾¯¼¶±ğ 	£º¿ª¹ØÁ¿
+#define EEAddr_CAlarmSet_MachineOil_Rank					EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1+1+1+1+1+1+1+1						//æœºæ²¹å‹åŠ›æŠ¥è­¦çº§åˆ« 	ï¼šå¼€å…³é‡
+#define EEAddr_CAlarmSet_AirFilter_Rank						EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1+1+1+1+1+1+1+1+1						//ç©ºæ°”æ»¤æ¸…å™¨æŠ¥è­¦çº§åˆ« 	ï¼šå¼€å…³é‡
+#define EEAddr_CAlarmSet_ColdWaterLevelL_Rank				EEAddr_CAlarmSet_ColdWater_Temperature+1+1+1+1+1+1+1+1+2+1+2+1+1+1+1+1+1+1+1+1+1+1//a8				//å†·å´æ¶²æ¶²ä½(L)æŠ¥è­¦çº§åˆ« 	ï¼šå¼€å…³é‡
 
 
-														//Óê¹ÎÔËĞĞ²ÎÊıÉèÖÃ:
-#define EEAddr_CRain_Clean_RunTime1							0x00b0								//Ä£Ê½1//ÔË¶¯Ê±¼ä
-#define EEAddr_CRain_Clean_StopTime1						EEAddr_CRain_Clean_RunTime1+1								//Í£Ö¹Ê±¼ä
-#define EEAddr_CRain_Clean_RunTime2							EEAddr_CRain_Clean_RunTime1+1+1								////Ä£Ê½2ÔË¶¯Ê±¼ä
-#define EEAddr_CRain_Clean_StopTime2						EEAddr_CRain_Clean_RunTime1+1+1+1								//Í£Ö¹Ê±¼ä
+														//é›¨åˆ®è¿è¡Œå‚æ•°è®¾ç½®:
+#define EEAddr_CRain_Clean_RunTime1							0x00b0								//æ¨¡å¼1//è¿åŠ¨æ—¶é—´
+#define EEAddr_CRain_Clean_StopTime1						EEAddr_CRain_Clean_RunTime1+1								//åœæ­¢æ—¶é—´
+#define EEAddr_CRain_Clean_RunTime2							EEAddr_CRain_Clean_RunTime1+1+1								////æ¨¡å¼2è¿åŠ¨æ—¶é—´
+#define EEAddr_CRain_Clean_StopTime2						EEAddr_CRain_Clean_RunTime1+1+1+1								//åœæ­¢æ—¶é—´
 
 
-														//Ï´µÓÆ÷ÔËĞĞ²ÎÊıÉèÖÃ
-#define EEAddr_CSpurtWater_WashTime							0x00b4								//³åÏ´Ê±¼ä
-#define EEAddr_CSpurtWater_CleanTimes						EEAddr_CSpurtWater_WashTime+1	//Óê¹Î´ÎÊı
+														//æ´—æ¶¤å™¨è¿è¡Œå‚æ•°è®¾ç½®
+#define EEAddr_CSpurtWater_WashTime							0x00b4								//å†²æ´—æ—¶é—´
+#define EEAddr_CSpurtWater_CleanTimes						EEAddr_CSpurtWater_WashTime+1	//é›¨åˆ®æ¬¡æ•°
 
-														//×Ô¶¯Å¯»ú²ÎÊıÉèÖÃ
-#define EEAddr_SAutoWarm_ColdWater_Temperature				0x00b6	//ÀäÈ´ÒºÎÂ¶È¡Ü  
-#define EEAddr_SAutoWarm_Speed								EEAddr_SAutoWarm_ColdWater_Temperature+2					//×ªËÙ  
+														//è‡ªåŠ¨æš–æœºå‚æ•°è®¾ç½®
+#define EEAddr_SAutoWarm_ColdWater_Temperature				0x00b6	//å†·å´æ¶²æ¸©åº¦â‰¤  
+#define EEAddr_SAutoWarm_Speed								EEAddr_SAutoWarm_ColdWater_Temperature+2					//è½¬é€Ÿ  
 
-														//ÖØÔØÔËĞĞ²ÎÊıÉèÖÃ
-//#define EEAddr_SHighWorkMode_System_Pressure				0x00bb		//ÏµÍ³Ñ¹Á¦¡İ   
+														//é‡è½½è¿è¡Œå‚æ•°è®¾ç½®
+//#define EEAddr_SHighWorkMode_System_Pressure				0x00bb		//ç³»ç»Ÿå‹åŠ›â‰¥   
 
-														//ÍÚ¾òÔöÁ¦²ÎÊıÉèÖÃ
-#define EEAddr_SIncreasePower_AllowSpeed					0x00c0			//×ªËÙ¡İ
-#define EEAddr_SIncreasePower_RunTime						EEAddr_SIncreasePower_AllowSpeed+2			//Ö´ĞĞÊ±¼ä S	
-#define EEAddr_SCIncreasePower_NextRunTime					EEAddr_SIncreasePower_AllowSpeed+2+2		//¼ä¸ôÊ±¼ä S	
-
-
-#define EEAddr_CPreserveAlarmTime							0x00d0			//±£ÑøÌáÊ¾Ê±¼ä H
-#define EEAddr_CGPSCommMistake_JudgeTime					EEAddr_CPreserveAlarmTime+1		//GPSÍ¨Ñ¶Òì³£ÅĞ¶¨Ê±¼ä M
-#define EEAddr_CGPSCommMistake_ExecuteTime					EEAddr_CPreserveAlarmTime+1+1	//GPSÍ¨Ñ¶Òì³£´¦ÀíÊ±¼ä M
-#define EEAddr_CMenutoMainPicture_Time						EEAddr_CPreserveAlarmTime+1+1+1		//²Ëµ¥·µ»ØÖ÷½çÃæÊ±¼ä S	
-#define EEAddr_CLCDDefault_BackLight						EEAddr_CPreserveAlarmTime+1+1+1+1			//LCDÄ¬ÈÏ±³¹âÁÁ¶È
-#define EEAddr_COilUsedData_SendTime						EEAddr_CPreserveAlarmTime+1+1+1+1+1			//ÓÍºÄÊı¾İ´«µİÊ±¼ä	
-#define EEAddr_COilUsed_CheckTime							EEAddr_CPreserveAlarmTime+1+1+1+1+1+1			//ÓÍºÄ¼ì²âÊ±¼ä		
-#define EEAddr_CSystemData_SaveTime							EEAddr_CPreserveAlarmTime+1+1+1+1+1+1+1			//Êı¾İ±£´æÊ±¼ä	
+														//æŒ–æ˜å¢åŠ›å‚æ•°è®¾ç½®
+#define EEAddr_SIncreasePower_AllowSpeed					0x00c0			//è½¬é€Ÿâ‰¥
+#define EEAddr_SIncreasePower_RunTime						EEAddr_SIncreasePower_AllowSpeed+2			//æ‰§è¡Œæ—¶é—´ S	
+#define EEAddr_SCIncreasePower_NextRunTime					EEAddr_SIncreasePower_AllowSpeed+2+2		//é—´éš”æ—¶é—´ S	
 
 
-#define EEAddr_CAlarmTimeDone_ColdWater						0x00da									//´¦ÀíÀäÈ´ÒºÎÂ¶È¸ß±¨¾¯Ê±¼ä
-#define EEAddr_CAlarmTimeDone_ColdWaterLevel				EEAddr_CAlarmTimeDone_ColdWater+1		//´¦ÀíÀäÈ´ÒºÒºÎ»µÍ±¨¾¯Ê±¼ä
-#define EEAddr_CAlarmTimeDone_MachinelOilPressure			EEAddr_CAlarmTimeDone_ColdWater+1+1		//´¦Àí»úÓÍÑ¹Á¦µÍ±¨¾¯Ê±¼ä
-#define EEAddr_CAlarmTimeDone_SystemPressure				EEAddr_CAlarmTimeDone_ColdWater+1+1+1	//´¦ÀíÏµÍ³Ñ¹Á¦¸ß±¨¾¯Ê±¼ä
+#define EEAddr_CPreserveAlarmTime							0x00d0			//ä¿å…»æç¤ºæ—¶é—´ H
+#define EEAddr_CGPSCommMistake_JudgeTime					EEAddr_CPreserveAlarmTime+1		//GPSé€šè®¯å¼‚å¸¸åˆ¤å®šæ—¶é—´ M
+#define EEAddr_CGPSCommMistake_ExecuteTime					EEAddr_CPreserveAlarmTime+1+1	//GPSé€šè®¯å¼‚å¸¸å¤„ç†æ—¶é—´ M
+#define EEAddr_CMenutoMainPicture_Time						EEAddr_CPreserveAlarmTime+1+1+1		//èœå•è¿”å›ä¸»ç•Œé¢æ—¶é—´ S	
+#define EEAddr_CLCDDefault_BackLight						EEAddr_CPreserveAlarmTime+1+1+1+1			//LCDé»˜è®¤èƒŒå…‰äº®åº¦
+#define EEAddr_COilUsedData_SendTime						EEAddr_CPreserveAlarmTime+1+1+1+1+1			//æ²¹è€—æ•°æ®ä¼ é€’æ—¶é—´	
+#define EEAddr_COilUsed_CheckTime							EEAddr_CPreserveAlarmTime+1+1+1+1+1+1			//æ²¹è€—æ£€æµ‹æ—¶é—´		
+#define EEAddr_CSystemData_SaveTime							EEAddr_CPreserveAlarmTime+1+1+1+1+1+1+1			//æ•°æ®ä¿å­˜æ—¶é—´	
 
 
-#define EEAddr_CBucketValue									0x00e0						//²ù¶·ÈİÁ¿(1×Ö½Ú)
-#define EEAddr_COilBoxLength								EEAddr_CBucketValue+1		//ÓÍÏä³¤¶È
-#define EEAddr_COilBoxWidth									EEAddr_CBucketValue+1+1		//ÓÍÏä¿í¶È
-#define EEAddr_COilBoxHeigth								EEAddr_CBucketValue+1+1+1	//ÓÍÏä¸ß¶È
+#define EEAddr_CAlarmTimeDone_ColdWater						0x00da									//å¤„ç†å†·å´æ¶²æ¸©åº¦é«˜æŠ¥è­¦æ—¶é—´
+#define EEAddr_CAlarmTimeDone_ColdWaterLevel				EEAddr_CAlarmTimeDone_ColdWater+1		//å¤„ç†å†·å´æ¶²æ¶²ä½ä½æŠ¥è­¦æ—¶é—´
+#define EEAddr_CAlarmTimeDone_MachinelOilPressure			EEAddr_CAlarmTimeDone_ColdWater+1+1		//å¤„ç†æœºæ²¹å‹åŠ›ä½æŠ¥è­¦æ—¶é—´
+#define EEAddr_CAlarmTimeDone_SystemPressure				EEAddr_CAlarmTimeDone_ColdWater+1+1+1	//å¤„ç†ç³»ç»Ÿå‹åŠ›é«˜æŠ¥è­¦æ—¶é—´
 
-#define EEAddr_CServerTel									0x00f0						//·şÎñµç»°
+
+#define EEAddr_CBucketValue									0x00e0						//é“²æ–—å®¹é‡(1å­—èŠ‚)
+#define EEAddr_COilBoxLength								EEAddr_CBucketValue+1		//æ²¹ç®±é•¿åº¦
+#define EEAddr_COilBoxWidth									EEAddr_CBucketValue+1+1		//æ²¹ç®±å®½åº¦
+#define EEAddr_COilBoxHeigth								EEAddr_CBucketValue+1+1+1	//æ²¹ç®±é«˜åº¦
+
+#define EEAddr_CServerTel									0x00f0						//æœåŠ¡ç”µè¯
 
 #define EEAddr_CServerTel400								0x0100						//400
 
-#define EEAddr_CSensorAdjust								0x0110						//´«¸ĞÆ÷Ğ£Õı
+#define EEAddr_CSensorAdjust								0x0110						//ä¼ æ„Ÿå™¨æ ¡æ­£
 
 								
 
-//±£´æµÄÊı¾İ£º
-//±£ÑøÉèÖÃ
-#define EEAddr_CPreserveSet_0H_1							0x0200			//½»»ú¼ì²é
+//ä¿å­˜çš„æ•°æ®ï¼š
+//ä¿å…»è®¾ç½®
+#define EEAddr_CPreserveSet_0H_1							0x0200			//äº¤æœºæ£€æŸ¥
 #define EEAddr_CPreserveSet_0H_2							EEAddr_CPreserveSet_0H_1+1
 #define EEAddr_CPreserveSet_0H_3							EEAddr_CPreserveSet_0H_1+1+1
 #define EEAddr_CPreserveSet_0H_4							EEAddr_CPreserveSet_0H_1+1+1+1
 #define EEAddr_CPreserveSet_0H_5							EEAddr_CPreserveSet_0H_1+1+1+1+1
 #define EEAddr_CPreserveSet_0H_6							EEAddr_CPreserveSet_0H_1+1+1+1+1+1
 
-#define EEAddr_CPreserveInfo_DoneState_0H					EEAddr_CPreserveSet_0H_1+1+1+1+1+1+1		//Íê³É×´Ì¬
-#define EEAddr_SPreserveInfo_LeftTime_0H					EEAddr_CPreserveSet_0H_1+1+1+1+1+1+1+1			//Ê£ÓàÊ±¼ä
-#define EEAddr_CPreserveInfo_DoneTime_0H_Year				EEAddr_CPreserveSet_0H_1+1+1+1+1+1+1+1+2			//Íê³ÉÈÕÆÚ Äê
-#define EEAddr_CPreserveInfo_DoneTime_0H_Month				EEAddr_CPreserveSet_0H_1+1+1+1+1+1+1+1+2+1			//Íê³ÉÈÕÆÚ ÔÂ
-#define EEAddr_CPreserveInfo_DoneTime_0H_Date				EEAddr_CPreserveSet_0H_1+1+1+1+1+1+1+1+2+1+1			//Íê³ÉÈÕÆÚ ÈÕ
+#define EEAddr_CPreserveInfo_DoneState_0H					EEAddr_CPreserveSet_0H_1+1+1+1+1+1+1		//å®ŒæˆçŠ¶æ€
+#define EEAddr_SPreserveInfo_LeftTime_0H					EEAddr_CPreserveSet_0H_1+1+1+1+1+1+1+1			//å‰©ä½™æ—¶é—´
+#define EEAddr_CPreserveInfo_DoneTime_0H_Year				EEAddr_CPreserveSet_0H_1+1+1+1+1+1+1+1+2			//å®Œæˆæ—¥æœŸ å¹´
+#define EEAddr_CPreserveInfo_DoneTime_0H_Month				EEAddr_CPreserveSet_0H_1+1+1+1+1+1+1+1+2+1			//å®Œæˆæ—¥æœŸ æœˆ
+#define EEAddr_CPreserveInfo_DoneTime_0H_Date				EEAddr_CPreserveSet_0H_1+1+1+1+1+1+1+1+2+1+1			//å®Œæˆæ—¥æœŸ æ—¥
 
 #define EEAddr_CPreserveSet_250H_1							0x0210			//250H
 #define EEAddr_CPreserveSet_250H_2							EEAddr_CPreserveSet_250H_1+1
@@ -162,11 +162,11 @@
 #define EEAddr_CPreserveSet_250H_7							EEAddr_CPreserveSet_250H_1+1+1+1+1+1+1
 #define EEAddr_CPreserveSet_250H_8							EEAddr_CPreserveSet_250H_1+1+1+1+1+1+1+1
 
-#define EEAddr_CPreserveInfo_DoneState_250H					EEAddr_CPreserveSet_250H_1+1+1+1+1+1+1+1+1		//Íê³É×´Ì¬
-#define EEAddr_SPreserveInfo_LeftTime_250H					EEAddr_CPreserveSet_250H_1+1+1+1+1+1+1+1+1+1			//Ê£ÓàÊ±¼ä
-#define EEAddr_CPreserveInfo_DoneTime_250H_Year				EEAddr_CPreserveSet_250H_1+1+1+1+1+1+1+1+1+1+2			//Íê³ÉÈÕÆÚ Äê
-#define EEAddr_CPreserveInfo_DoneTime_250H_Month			EEAddr_CPreserveSet_250H_1+1+1+1+1+1+1+1+1+1+2+1			//Íê³ÉÈÕÆÚ ÔÂ
-#define EEAddr_CPreserveInfo_DoneTime_250H_Date				EEAddr_CPreserveSet_250H_1+1+1+1+1+1+1+1+1+1+2+1+1			//Íê³ÉÈÕÆÚ ÈÕ
+#define EEAddr_CPreserveInfo_DoneState_250H					EEAddr_CPreserveSet_250H_1+1+1+1+1+1+1+1+1		//å®ŒæˆçŠ¶æ€
+#define EEAddr_SPreserveInfo_LeftTime_250H					EEAddr_CPreserveSet_250H_1+1+1+1+1+1+1+1+1+1			//å‰©ä½™æ—¶é—´
+#define EEAddr_CPreserveInfo_DoneTime_250H_Year				EEAddr_CPreserveSet_250H_1+1+1+1+1+1+1+1+1+1+2			//å®Œæˆæ—¥æœŸ å¹´
+#define EEAddr_CPreserveInfo_DoneTime_250H_Month			EEAddr_CPreserveSet_250H_1+1+1+1+1+1+1+1+1+1+2+1			//å®Œæˆæ—¥æœŸ æœˆ
+#define EEAddr_CPreserveInfo_DoneTime_250H_Date				EEAddr_CPreserveSet_250H_1+1+1+1+1+1+1+1+1+1+2+1+1			//å®Œæˆæ—¥æœŸ æ—¥
 
 #define EEAddr_CPreserveSet_500H_1							0x0220			//500H
 #define EEAddr_CPreserveSet_500H_2							EEAddr_CPreserveSet_500H_1+1
@@ -177,11 +177,11 @@
 #define EEAddr_CPreserveSet_500H_7							EEAddr_CPreserveSet_500H_1+1+1+1+1+1+1
 #define EEAddr_CPreserveSet_500H_8							EEAddr_CPreserveSet_500H_1+1+1+1+1+1+1+1
 
-#define EEAddr_CPreserveInfo_DoneState_500H					EEAddr_CPreserveSet_500H_1+1+1+1+1+1+1+1+1		//Íê³É×´Ì¬
-#define EEAddr_SPreserveInfo_LeftTime_500H					EEAddr_CPreserveSet_500H_1+1+1+1+1+1+1+1+1+1			//Ê£ÓàÊ±¼ä
-#define EEAddr_CPreserveInfo_DoneTime_500H_Year				EEAddr_CPreserveSet_500H_1+1+1+1+1+1+1+1+1+1+2			//Íê³ÉÈÕÆÚ Äê
-#define EEAddr_CPreserveInfo_DoneTime_500H_Month			EEAddr_CPreserveSet_500H_1+1+1+1+1+1+1+1+1+1+2+1			//Íê³ÉÈÕÆÚ ÔÂ
-#define EEAddr_CPreserveInfo_DoneTime_500H_Date				EEAddr_CPreserveSet_500H_1+1+1+1+1+1+1+1+1+1+2+1+1			//Íê³ÉÈÕÆÚ ÈÕ
+#define EEAddr_CPreserveInfo_DoneState_500H					EEAddr_CPreserveSet_500H_1+1+1+1+1+1+1+1+1		//å®ŒæˆçŠ¶æ€
+#define EEAddr_SPreserveInfo_LeftTime_500H					EEAddr_CPreserveSet_500H_1+1+1+1+1+1+1+1+1+1			//å‰©ä½™æ—¶é—´
+#define EEAddr_CPreserveInfo_DoneTime_500H_Year				EEAddr_CPreserveSet_500H_1+1+1+1+1+1+1+1+1+1+2			//å®Œæˆæ—¥æœŸ å¹´
+#define EEAddr_CPreserveInfo_DoneTime_500H_Month			EEAddr_CPreserveSet_500H_1+1+1+1+1+1+1+1+1+1+2+1			//å®Œæˆæ—¥æœŸ æœˆ
+#define EEAddr_CPreserveInfo_DoneTime_500H_Date				EEAddr_CPreserveSet_500H_1+1+1+1+1+1+1+1+1+1+2+1+1			//å®Œæˆæ—¥æœŸ æ—¥
 
 #define EEAddr_CPreserveSet_750H_1							0x0230			//750H
 #define EEAddr_CPreserveSet_750H_2							EEAddr_CPreserveSet_750H_1+1
@@ -190,11 +190,11 @@
 #define EEAddr_CPreserveSet_750H_5							EEAddr_CPreserveSet_750H_1+1+1+1+1
 #define EEAddr_CPreserveSet_750H_6							EEAddr_CPreserveSet_750H_1+1+1+1+1+1
 
-#define EEAddr_CPreserveInfo_DoneState_750H					EEAddr_CPreserveSet_750H_1+1+1+1+1+1+1		//Íê³É×´Ì¬
-#define EEAddr_SPreserveInfo_LeftTime_750H					EEAddr_CPreserveSet_750H_1+1+1+1+1+1+1+1			//Ê£ÓàÊ±¼ä
-#define EEAddr_CPreserveInfo_DoneTime_750H_Year				EEAddr_CPreserveSet_750H_1+1+1+1+1+1+1+1+2			//Íê³ÉÈÕÆÚ Äê
-#define EEAddr_CPreserveInfo_DoneTime_750H_Month			EEAddr_CPreserveSet_750H_1+1+1+1+1+1+1+1+2+1			//Íê³ÉÈÕÆÚ ÔÂ
-#define EEAddr_CPreserveInfo_DoneTime_750H_Date				EEAddr_CPreserveSet_750H_1+1+1+1+1+1+1+1+2+1+1			//Íê³ÉÈÕÆÚ ÈÕ
+#define EEAddr_CPreserveInfo_DoneState_750H					EEAddr_CPreserveSet_750H_1+1+1+1+1+1+1		//å®ŒæˆçŠ¶æ€
+#define EEAddr_SPreserveInfo_LeftTime_750H					EEAddr_CPreserveSet_750H_1+1+1+1+1+1+1+1			//å‰©ä½™æ—¶é—´
+#define EEAddr_CPreserveInfo_DoneTime_750H_Year				EEAddr_CPreserveSet_750H_1+1+1+1+1+1+1+1+2			//å®Œæˆæ—¥æœŸ å¹´
+#define EEAddr_CPreserveInfo_DoneTime_750H_Month			EEAddr_CPreserveSet_750H_1+1+1+1+1+1+1+1+2+1			//å®Œæˆæ—¥æœŸ æœˆ
+#define EEAddr_CPreserveInfo_DoneTime_750H_Date				EEAddr_CPreserveSet_750H_1+1+1+1+1+1+1+1+2+1+1			//å®Œæˆæ—¥æœŸ æ—¥
 
 #define EEAddr_CPreserveSet_1000H_1							0x0240			//1000H
 #define EEAddr_CPreserveSet_1000H_2							EEAddr_CPreserveSet_1000H_1+1
@@ -205,11 +205,11 @@
 #define EEAddr_CPreserveSet_1000H_7							EEAddr_CPreserveSet_1000H_1+1+1+1+1+1+1
 #define EEAddr_CPreserveSet_1000H_8							EEAddr_CPreserveSet_1000H_1+1+1+1+1+1+1+1
 
-#define EEAddr_CPreserveInfo_DoneState_1000H				EEAddr_CPreserveSet_1000H_1+1+1+1+1+1+1+1+1		//Íê³É×´Ì¬
-#define EEAddr_SPreserveInfo_LeftTime_1000H					EEAddr_CPreserveSet_1000H_1+1+1+1+1+1+1+1+1+1			//Ê£ÓàÊ±¼ä
-#define EEAddr_CPreserveInfo_DoneTime_1000H_Year			EEAddr_CPreserveSet_1000H_1+1+1+1+1+1+1+1+1+1+2			//Íê³ÉÈÕÆÚ Äê
-#define EEAddr_CPreserveInfo_DoneTime_1000H_Month			EEAddr_CPreserveSet_1000H_1+1+1+1+1+1+1+1+1+1+2+1			//Íê³ÉÈÕÆÚ ÔÂ
-#define EEAddr_CPreserveInfo_DoneTime_1000H_Date			EEAddr_CPreserveSet_1000H_1+1+1+1+1+1+1+1+1+1+2+1+1			//Íê³ÉÈÕÆÚ ÈÕ
+#define EEAddr_CPreserveInfo_DoneState_1000H				EEAddr_CPreserveSet_1000H_1+1+1+1+1+1+1+1+1		//å®ŒæˆçŠ¶æ€
+#define EEAddr_SPreserveInfo_LeftTime_1000H					EEAddr_CPreserveSet_1000H_1+1+1+1+1+1+1+1+1+1			//å‰©ä½™æ—¶é—´
+#define EEAddr_CPreserveInfo_DoneTime_1000H_Year			EEAddr_CPreserveSet_1000H_1+1+1+1+1+1+1+1+1+1+2			//å®Œæˆæ—¥æœŸ å¹´
+#define EEAddr_CPreserveInfo_DoneTime_1000H_Month			EEAddr_CPreserveSet_1000H_1+1+1+1+1+1+1+1+1+1+2+1			//å®Œæˆæ—¥æœŸ æœˆ
+#define EEAddr_CPreserveInfo_DoneTime_1000H_Date			EEAddr_CPreserveSet_1000H_1+1+1+1+1+1+1+1+1+1+2+1+1			//å®Œæˆæ—¥æœŸ æ—¥
 
 #define EEAddr_CPreserveSet_1250H_1							0x0250			//1250H
 #define EEAddr_CPreserveSet_1250H_2							EEAddr_CPreserveSet_1250H_1+1
@@ -220,11 +220,11 @@
 #define EEAddr_CPreserveSet_1250H_7							EEAddr_CPreserveSet_1250H_1+1+1+1+1+1+1
 #define EEAddr_CPreserveSet_1250H_8							EEAddr_CPreserveSet_1250H_1+1+1+1+1+1+1+1
 
-#define EEAddr_CPreserveInfo_DoneState_1250H				EEAddr_CPreserveSet_1250H_1+1+1+1+1+1+1+1+1		//Íê³É×´Ì¬
-#define EEAddr_SPreserveInfo_LeftTime_1250H					EEAddr_CPreserveSet_1250H_1+1+1+1+1+1+1+1+1+1			//Ê£ÓàÊ±¼ä
-#define EEAddr_CPreserveInfo_DoneTime_1250H_Year			EEAddr_CPreserveSet_1250H_1+1+1+1+1+1+1+1+1+1+2			//Íê³ÉÈÕÆÚ Äê
-#define EEAddr_CPreserveInfo_DoneTime_1250H_Month			EEAddr_CPreserveSet_1250H_1+1+1+1+1+1+1+1+1+1+2+1			//Íê³ÉÈÕÆÚ ÔÂ
-#define EEAddr_CPreserveInfo_DoneTime_1250H_Date			EEAddr_CPreserveSet_1250H_1+1+1+1+1+1+1+1+1+1+2+1+1			//Íê³ÉÈÕÆÚ ÈÕ
+#define EEAddr_CPreserveInfo_DoneState_1250H				EEAddr_CPreserveSet_1250H_1+1+1+1+1+1+1+1+1		//å®ŒæˆçŠ¶æ€
+#define EEAddr_SPreserveInfo_LeftTime_1250H					EEAddr_CPreserveSet_1250H_1+1+1+1+1+1+1+1+1+1			//å‰©ä½™æ—¶é—´
+#define EEAddr_CPreserveInfo_DoneTime_1250H_Year			EEAddr_CPreserveSet_1250H_1+1+1+1+1+1+1+1+1+1+2			//å®Œæˆæ—¥æœŸ å¹´
+#define EEAddr_CPreserveInfo_DoneTime_1250H_Month			EEAddr_CPreserveSet_1250H_1+1+1+1+1+1+1+1+1+1+2+1			//å®Œæˆæ—¥æœŸ æœˆ
+#define EEAddr_CPreserveInfo_DoneTime_1250H_Date			EEAddr_CPreserveSet_1250H_1+1+1+1+1+1+1+1+1+1+2+1+1			//å®Œæˆæ—¥æœŸ æ—¥
 
 
 #define EEAddr_CPreserveSet_1500H_1							0x0260			//1500H
@@ -236,11 +236,11 @@
 #define EEAddr_CPreserveSet_1500H_7							EEAddr_CPreserveSet_1500H_1+1+1+1+1+1+1
 #define EEAddr_CPreserveSet_1500H_8							EEAddr_CPreserveSet_1500H_1+1+1+1+1+1+1+1
 
-#define EEAddr_CPreserveInfo_DoneState_1500H				EEAddr_CPreserveSet_1500H_1+1+1+1+1+1+1+1+1		//Íê³É×´Ì¬
-#define EEAddr_SPreserveInfo_LeftTime_1500H					EEAddr_CPreserveSet_1500H_1+1+1+1+1+1+1+1+1+1			//Ê£ÓàÊ±¼ä
-#define EEAddr_CPreserveInfo_DoneTime_1500H_Year			EEAddr_CPreserveSet_1500H_1+1+1+1+1+1+1+1+1+1+2			//Íê³ÉÈÕÆÚ Äê
-#define EEAddr_CPreserveInfo_DoneTime_1500H_Month			EEAddr_CPreserveSet_1500H_1+1+1+1+1+1+1+1+1+1+2+1			//Íê³ÉÈÕÆÚ ÔÂ
-#define EEAddr_CPreserveInfo_DoneTime_1500H_Date			EEAddr_CPreserveSet_1500H_1+1+1+1+1+1+1+1+1+1+2+1+1			//Íê³ÉÈÕÆÚ ÈÕ
+#define EEAddr_CPreserveInfo_DoneState_1500H				EEAddr_CPreserveSet_1500H_1+1+1+1+1+1+1+1+1		//å®ŒæˆçŠ¶æ€
+#define EEAddr_SPreserveInfo_LeftTime_1500H					EEAddr_CPreserveSet_1500H_1+1+1+1+1+1+1+1+1+1			//å‰©ä½™æ—¶é—´
+#define EEAddr_CPreserveInfo_DoneTime_1500H_Year			EEAddr_CPreserveSet_1500H_1+1+1+1+1+1+1+1+1+1+2			//å®Œæˆæ—¥æœŸ å¹´
+#define EEAddr_CPreserveInfo_DoneTime_1500H_Month			EEAddr_CPreserveSet_1500H_1+1+1+1+1+1+1+1+1+1+2+1			//å®Œæˆæ—¥æœŸ æœˆ
+#define EEAddr_CPreserveInfo_DoneTime_1500H_Date			EEAddr_CPreserveSet_1500H_1+1+1+1+1+1+1+1+1+1+2+1+1			//å®Œæˆæ—¥æœŸ æ—¥
 
 #define EEAddr_CPreserveSet_1750H_1							0x0270			//1750H
 #define EEAddr_CPreserveSet_1750H_2							EEAddr_CPreserveSet_1750H_1+1
@@ -250,11 +250,11 @@
 #define EEAddr_CPreserveSet_1750H_6							EEAddr_CPreserveSet_1750H_1+1+1+1+1+1
 #define EEAddr_CPreserveSet_1750H_7							EEAddr_CPreserveSet_1750H_1+1+1+1+1+1+1
 
-#define EEAddr_CPreserveInfo_DoneState_1750H				EEAddr_CPreserveSet_1750H_1+1+1+1+1+1+1+1		//Íê³É×´Ì¬
-#define EEAddr_SPreserveInfo_LeftTime_1750H					EEAddr_CPreserveSet_1750H_1+1+1+1+1+1+1+1+1			//Ê£ÓàÊ±¼ä
-#define EEAddr_CPreserveInfo_DoneTime_1750H_Year			EEAddr_CPreserveSet_1750H_1+1+1+1+1+1+1+1+1+2			//Íê³ÉÈÕÆÚ Äê
-#define EEAddr_CPreserveInfo_DoneTime_1750H_Month			EEAddr_CPreserveSet_1750H_1+1+1+1+1+1+1+1+1+2+1			//Íê³ÉÈÕÆÚ ÔÂ
-#define EEAddr_CPreserveInfo_DoneTime_1750H_Date			EEAddr_CPreserveSet_1750H_1+1+1+1+1+1+1+1+1+2+1+1			//Íê³ÉÈÕÆÚ ÈÕ
+#define EEAddr_CPreserveInfo_DoneState_1750H				EEAddr_CPreserveSet_1750H_1+1+1+1+1+1+1+1		//å®ŒæˆçŠ¶æ€
+#define EEAddr_SPreserveInfo_LeftTime_1750H					EEAddr_CPreserveSet_1750H_1+1+1+1+1+1+1+1+1			//å‰©ä½™æ—¶é—´
+#define EEAddr_CPreserveInfo_DoneTime_1750H_Year			EEAddr_CPreserveSet_1750H_1+1+1+1+1+1+1+1+1+2			//å®Œæˆæ—¥æœŸ å¹´
+#define EEAddr_CPreserveInfo_DoneTime_1750H_Month			EEAddr_CPreserveSet_1750H_1+1+1+1+1+1+1+1+1+2+1			//å®Œæˆæ—¥æœŸ æœˆ
+#define EEAddr_CPreserveInfo_DoneTime_1750H_Date			EEAddr_CPreserveSet_1750H_1+1+1+1+1+1+1+1+1+2+1+1			//å®Œæˆæ—¥æœŸ æ—¥
 
 #define EEAddr_CPreserveSet_2000H_1							0x0280			//2000H
 #define EEAddr_CPreserveSet_2000H_2							EEAddr_CPreserveSet_2000H_1+1
@@ -273,41 +273,41 @@
 #define EEAddr_CPreserveSet_2000H_14						EEAddr_CPreserveSet_2000H_1+1+1+1+1+1+1+1+1+1+1+1+1+1
 
 
-#define EEAddr_CPreserveInfo_DoneState_2000H				EEAddr_CPreserveSet_2000H_1+1+1+1+1+1+1+1+1+1+1+1+1+1+1		//Íê³É×´Ì¬
-#define EEAddr_SPreserveInfo_LeftTime_2000H					EEAddr_CPreserveSet_2000H_1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1			//Ê£ÓàÊ±¼ä
-#define EEAddr_CPreserveInfo_DoneTime_2000H_Year			EEAddr_CPreserveSet_2000H_1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2			//Íê³ÉÈÕÆÚ Äê
-#define EEAddr_CPreserveInfo_DoneTime_21000H_Month			EEAddr_CPreserveSet_2000H_1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+1			//Íê³ÉÈÕÆÚ ÔÂ
-#define EEAddr_CPreserveInfo_DoneTime_21000H_Date			EEAddr_CPreserveSet_2000H_1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+1+1			//Íê³ÉÈÕÆÚ ÈÕ
+#define EEAddr_CPreserveInfo_DoneState_2000H				EEAddr_CPreserveSet_2000H_1+1+1+1+1+1+1+1+1+1+1+1+1+1+1		//å®ŒæˆçŠ¶æ€
+#define EEAddr_SPreserveInfo_LeftTime_2000H					EEAddr_CPreserveSet_2000H_1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1			//å‰©ä½™æ—¶é—´
+#define EEAddr_CPreserveInfo_DoneTime_2000H_Year			EEAddr_CPreserveSet_2000H_1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2			//å®Œæˆæ—¥æœŸ å¹´
+#define EEAddr_CPreserveInfo_DoneTime_21000H_Month			EEAddr_CPreserveSet_2000H_1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+1			//å®Œæˆæ—¥æœŸ æœˆ
+#define EEAddr_CPreserveInfo_DoneTime_21000H_Date			EEAddr_CPreserveSet_2000H_1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+1+2+1+1			//å®Œæˆæ—¥æœŸ æ—¥
 
 
 
-#define EEAddr_WWorkTime_H_Total							0x02b0	//H¹¤×÷Ä£Ê½Ê±¼äÍ³¼Æ  µ¥Î»·ÖÖÓ£¬ÏÔÊ¾ÎªĞ¡Ê±
-#define EEAddr_WWorkTime_M_Total							EEAddr_WWorkTime_H_Total+4		//M¹¤×÷Ä£Ê½Ê±¼äÍ³¼Æ
-#define EEAddr_WWorkTime_L_Total							EEAddr_WWorkTime_H_Total+4+4		//L¹¤×÷Ä£Ê½Ê±¼äÍ³¼Æ
-#define EEAddr_WWorkTime_F_Total							EEAddr_WWorkTime_H_Total+4+4+4		//F¹¤×÷Ä£Ê½Ê±¼äÍ³¼Æ
-#define EEAddr_WWorkTime_B_Total							EEAddr_WWorkTime_H_Total+4+4+4+4		//B¹¤×÷Ä£Ê½Ê±¼äÍ³¼Æ
+#define EEAddr_WWorkTime_H_Total							0x02b0	//Hå·¥ä½œæ¨¡å¼æ—¶é—´ç»Ÿè®¡  å•ä½åˆ†é’Ÿï¼Œæ˜¾ç¤ºä¸ºå°æ—¶
+#define EEAddr_WWorkTime_M_Total							EEAddr_WWorkTime_H_Total+4		//Må·¥ä½œæ¨¡å¼æ—¶é—´ç»Ÿè®¡
+#define EEAddr_WWorkTime_L_Total							EEAddr_WWorkTime_H_Total+4+4		//Lå·¥ä½œæ¨¡å¼æ—¶é—´ç»Ÿè®¡
+#define EEAddr_WWorkTime_F_Total							EEAddr_WWorkTime_H_Total+4+4+4		//Få·¥ä½œæ¨¡å¼æ—¶é—´ç»Ÿè®¡
+#define EEAddr_WWorkTime_B_Total							EEAddr_WWorkTime_H_Total+4+4+4+4		//Bå·¥ä½œæ¨¡å¼æ—¶é—´ç»Ÿè®¡
 
 
-#define EEAddr_CEngine_Model								0x02d0//»úĞÍ»úºÅ (10×Ö½Ú£©8×Ö½ÚÎªÕæÕıµÄ»úºÅ£¬ºóÁ½Î»¿ÉÓÃ×÷±Ã£¬·¢¶¯»úµÄ±àºÅ
+#define EEAddr_CEngine_Model								0x02d0//æœºå‹æœºå· (10å­—èŠ‚ï¼‰8å­—èŠ‚ä¸ºçœŸæ­£çš„æœºå·ï¼Œåä¸¤ä½å¯ç”¨ä½œæ³µï¼Œå‘åŠ¨æœºçš„ç¼–å·
 
-//#define EEAddr_CGPS_ID										0x02e0						//GPS»úºÅ
-//#define EEAddr_CGPS_SIM										EEAddr_CGPS_ID+12			//GPS SIMºÅ
+//#define EEAddr_CGPS_ID										0x02e0						//GPSæœºå·
+//#define EEAddr_CGPS_SIM										EEAddr_CGPS_ID+12			//GPS SIMå·
 
-#define EEAddr_SCounter										0x02f0	//¼ÆÊıÆ÷´æ´¢  2×Ö½Ú
+#define EEAddr_SCounter										0x02f0	//è®¡æ•°å™¨å­˜å‚¨  2å­—èŠ‚
 
 
-#define EEAddr_SAlarmTimes_OilWaterFilter					0x0300													//ÓÍË®·ÖÀë±¨¾¯´ÎÊı
-#define EEAddr_SAlarmTimes_OilLevel							EEAddr_SAlarmTimes_OilWaterFilter+2						//È¼ÓÍÓÍÎ»µÍ±¨¾¯´ÎÊı302
-#define EEAddr_SAlarmTimes_ColdWaterTemperature				EEAddr_SAlarmTimes_OilWaterFilter+2+2					//ÀäÈ´ÒºÎÂ¶È¸ß±¨¾¯´ÎÊı304
-#define EEAddr_SAlarmTimes_ColdWaterLevel					EEAddr_SAlarmTimes_OilWaterFilter+2+2+2					//ÀäÈ´ÒºÒºÎ»±¨¾¯´ÎÊı306
-#define EEAddr_SAlarmTimes_AirFilter						EEAddr_SAlarmTimes_OilWaterFilter+2+2+2+2				//¿ÕÆø¹ıÂËÆ÷±¨¾¯´ÎÊı308
-#define EEAddr_SAlarmTimes_MachinelOilPressure				EEAddr_SAlarmTimes_OilWaterFilter+2+2+2+2+2				//»úÓÍÑ¹Á¦±¨¾¯´ÎÊı310
-#define EEAddr_SAlarmTimes_SystemVoltage					EEAddr_SAlarmTimes_OilWaterFilter+2+2+2+2+2+2			//ÏµÍ³µçÑ¹Òì³£±¨¾¯´ÎÊı312
-#define EEAddr_SAlarmTimes_MotorSpeed						EEAddr_SAlarmTimes_OilWaterFilter+2+2+2+2+2+2+2			//·¢¶¯»ú×ªËÙÒì³£±¨¾¯´ÎÊı314
-#define EEAddr_SAlarmTimes_GPSCommState						EEAddr_SAlarmTimes_OilWaterFilter+2+2+2+2+2+2+2+2		//GPSÍ¨Ñ¶×´Ì¬±¨¾¯´ÎÊı316
-#define EEAddr_SAlarmTimes_SystemPressure					EEAddr_SAlarmTimes_OilWaterFilter+2+2+2+2+2+2+2+2+2		//ÏµÍ³Ñ¹Á¦¸ß±¨¾¯´ÎÊı318
-#define EEAddr_SAlarmTimes_FirstPressure					EEAddr_SAlarmTimes_OilWaterFilter+2+2+2+2+2+2+2+2+2+2	//ÏÈµ¼Ñ¹Á¦¸ß±¨¾¯´ÎÊı320
+#define EEAddr_SAlarmTimes_OilWaterFilter					0x0300													//æ²¹æ°´åˆ†ç¦»æŠ¥è­¦æ¬¡æ•°
+#define EEAddr_SAlarmTimes_OilLevel							EEAddr_SAlarmTimes_OilWaterFilter+2						//ç‡ƒæ²¹æ²¹ä½ä½æŠ¥è­¦æ¬¡æ•°302
+#define EEAddr_SAlarmTimes_ColdWaterTemperature				EEAddr_SAlarmTimes_OilWaterFilter+2+2					//å†·å´æ¶²æ¸©åº¦é«˜æŠ¥è­¦æ¬¡æ•°304
+#define EEAddr_SAlarmTimes_ColdWaterLevel					EEAddr_SAlarmTimes_OilWaterFilter+2+2+2					//å†·å´æ¶²æ¶²ä½æŠ¥è­¦æ¬¡æ•°306
+#define EEAddr_SAlarmTimes_AirFilter						EEAddr_SAlarmTimes_OilWaterFilter+2+2+2+2				//ç©ºæ°”è¿‡æ»¤å™¨æŠ¥è­¦æ¬¡æ•°308
+#define EEAddr_SAlarmTimes_MachinelOilPressure				EEAddr_SAlarmTimes_OilWaterFilter+2+2+2+2+2				//æœºæ²¹å‹åŠ›æŠ¥è­¦æ¬¡æ•°310
+#define EEAddr_SAlarmTimes_SystemVoltage					EEAddr_SAlarmTimes_OilWaterFilter+2+2+2+2+2+2			//ç³»ç»Ÿç”µå‹å¼‚å¸¸æŠ¥è­¦æ¬¡æ•°312
+#define EEAddr_SAlarmTimes_MotorSpeed						EEAddr_SAlarmTimes_OilWaterFilter+2+2+2+2+2+2+2			//å‘åŠ¨æœºè½¬é€Ÿå¼‚å¸¸æŠ¥è­¦æ¬¡æ•°314
+#define EEAddr_SAlarmTimes_GPSCommState						EEAddr_SAlarmTimes_OilWaterFilter+2+2+2+2+2+2+2+2		//GPSé€šè®¯çŠ¶æ€æŠ¥è­¦æ¬¡æ•°316
+#define EEAddr_SAlarmTimes_SystemPressure					EEAddr_SAlarmTimes_OilWaterFilter+2+2+2+2+2+2+2+2+2		//ç³»ç»Ÿå‹åŠ›é«˜æŠ¥è­¦æ¬¡æ•°318
+#define EEAddr_SAlarmTimes_FirstPressure					EEAddr_SAlarmTimes_OilWaterFilter+2+2+2+2+2+2+2+2+2+2	//å…ˆå¯¼å‹åŠ›é«˜æŠ¥è­¦æ¬¡æ•°320
 
-#define EEAddr_CAuthorizationCode							0x0320				//ÊÚÈ¨Âë£¨8×Ö½Ú£©£¨³µºÅ+»ñÈ¡Ê±¼ä£©
-#define EEAddr_CAuthorizationTime							0x0328				//ÊÚÈ¨Âë»ñÈ¡Ê±¼ä£¨ÈÕÊ±·ÖÃë£©
+#define EEAddr_CAuthorizationCode							0x0320				//æˆæƒç ï¼ˆ8å­—èŠ‚ï¼‰ï¼ˆè½¦å·+è·å–æ—¶é—´ï¼‰
+#define EEAddr_CAuthorizationTime							0x0328				//æˆæƒç è·å–æ—¶é—´ï¼ˆæ—¥æ—¶åˆ†ç§’ï¼‰
 #endif

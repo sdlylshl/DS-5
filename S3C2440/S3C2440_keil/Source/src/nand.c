@@ -11,7 +11,7 @@
 //#define	GLOBAL_PARAMS
 #include "bootpara.h"
 
-//¿É¸ü¸ÄÉ¾³ı·ÖÇø£¬·ÖÇøÃû×Ö²»¿É¸Ä
+//å¯æ›´æ”¹åˆ é™¤åˆ†åŒºï¼Œåˆ†åŒºåå­—ä¸å¯æ”¹
 static struct Partition NandPart[] = {
 	{0, 		 0x00020000, "boot"},		//128K one block
 	{0x00020000, 0x00060000, "bootParam"},	//384K three blocks

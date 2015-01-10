@@ -23,7 +23,7 @@ U8 Read_Status(void);
 //static U32 StartPage, BlockCnt;
 
 struct Partition{
-	U32 offset;//起始地址，即偏移地址
+	U32 offset;//璧峰鍦板潃锛屽嵆鍋忕Щ鍦板潃
 	U32 size;
 	char *name;
 };

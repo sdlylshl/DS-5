@@ -29,12 +29,12 @@ extern void Keytest(void)
 	 	
 	 	}
 	  if(key2 == KEY_BACK){
-	  //按键松开
+	  //鎸夐敭鏉惧紑
 	  while(KeyScan());
 	  Printf("Press Back Key again return\n");
 	  Lcd_Update();
 	  //DelayMS(500);
-	  //按键按下
+	  //鎸夐敭鎸変笅
 	  while(!(key1=KeyScan()));
 	  if(key1==KEY_BACK)
 	 	  	keybk=0;
@@ -525,7 +525,7 @@ extern void Keytest(void)
 		Lcd_Update();
 		}
 	}
-	//Lcd_ClearScr(0x0);   //黑色
+	//Lcd_ClearScr(0x0);   //榛戣壊
 	//Versions();
 	while(!(KEY_BACK==KeyScan()));
 }		

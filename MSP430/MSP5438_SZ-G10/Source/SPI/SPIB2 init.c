@@ -1,13 +1,13 @@
 #include"SPIB2 init.h"
 
 /***************************************************************************
-                    Init_SPI(void): ÉèÖÃSPIB¶Ë¿Ú                                             
+                    Init_SPI(void): è®¾ç½®SPIBç«¯å£                                             
 ***************************************************************************/
 void Init_UCB2SPI(void)
 {
-	P9SEL|=0x0E;//P9.1£¬2£¬3,¹¦ÄÜÑ¡ÔñÎªSPI
-	UCB2CTL1|=UCSWRST;//¸´Î»SPI×´Ì¬»ú
-	UCB2CTL0|=UCSYNC+UCMSB;//3-pin, 8-bit SPI slave£¬ MSB                                      
+	P9SEL|=0x0E;//P9.1ï¼Œ2ï¼Œ3,åŠŸèƒ½é€‰æ‹©ä¸ºSPI
+	UCB2CTL1|=UCSWRST;//å¤ä½SPIçŠ¶æ€æœº
+	UCB2CTL0|=UCSYNC+UCMSB;//3-pin, 8-bit SPI slaveï¼Œ MSB                                      
 	UCB2CTL1&=~UCSWRST;//**Initialize USCI state machine**
 	UCB2IE|=UCRXIE ;//Enable USCI_A0 RX interrupt  
 }

@@ -1,9 +1,9 @@
 /****************************************************************
  NAME: u2440mon.c
  4.0
-    Ôö¼ÓÆô¶¯Í¼Æ¬
-    Ôö¼ÓNORÆô¶¯Ö§³Ö
-    Ö§³ÖĞÂWINCEµÄÄÚºËÉÕĞ´
+    å¢åŠ å¯åŠ¨å›¾ç‰‡
+    å¢åŠ NORå¯åŠ¨æ”¯æŒ
+    æ”¯æŒæ–°WINCEçš„å†…æ ¸çƒ§å†™
 
  ****************************************************************/
 #define GLOBAL_CLK      1
@@ -74,7 +74,7 @@ extern void NandLoadRun_App(void);
 extern void AutoNandLoadRun(void);
 extern void Keytest(void);
 //#include "Timer0.h"
-//LCD ÆÁÄ»Ë¢ĞÂ
+//LCD å±å¹•åˆ·æ–°
 extern void Timer0Init(void);
 /*************************************************************/
 
@@ -84,12 +84,12 @@ extern U32 tempDownloadAddress;
 extern volatile unsigned char *downPt;
 extern volatile U32 totalDmaCount;
 extern volatile U16 checkSum;
-//ÏÂÔØ·½Ê½Éè¶¨
-extern U8  com_usb;       //ÏÂÔØ·½Ê½          0.USB 1.´®¿ÚÏÂÔØ  ;ÆäËû USB
-extern U8 download_run;   // ÊÇ·ñÏÂÔØµ½NANDÖĞ 0:run 1:DownLoad 
+//ä¸‹è½½æ–¹å¼è®¾å®š
+extern U8  com_usb;       //ä¸‹è½½æ–¹å¼          0.USB 1.ä¸²å£ä¸‹è½½  ;å…¶ä»– USB
+extern U8 download_run;   // æ˜¯å¦ä¸‹è½½åˆ°NANDä¸­ 0:run 1:DownLoad 
 
 /*************************************************************/
-//ÓëÏÂÔØÓĞ¹ØµÄÈ«¾Ö±äÁ¿
+//ä¸ä¸‹è½½æœ‰å…³çš„å…¨å±€å˜é‡
 /*************************************************************/
 volatile U8  *downPt;
 volatile U32 downloadAddress;
@@ -101,39 +101,39 @@ volatile U16 checkSum;
 volatile int isUsbdSetConfiguration = 0;
 
 
-U8 menuUsed   = 0;	//  Ê¹ÓÃ²Ëµ¥Ä£Ê½ £¬µ±½øÈëÏÂÔØ²Ëµ¥ºó²»»áÌø³öÀ´
-U8 consoleNum = 0;	//  ´®¿ÚÊä³öÑ¡Ôñ
-U8 autorun_ds = 0;	//  ×Ô¶¯ÔËĞĞÊ¹ÄÜ
+U8 menuUsed   = 0;	//  ä½¿ç”¨èœå•æ¨¡å¼ ï¼Œå½“è¿›å…¥ä¸‹è½½èœå•åä¸ä¼šè·³å‡ºæ¥
+U8 consoleNum = 0;	//  ä¸²å£è¾“å‡ºé€‰æ‹©
+U8 autorun_ds = 0;	//  è‡ªåŠ¨è¿è¡Œä½¿èƒ½
 
-//ÏÂÔØ·½Ê½Éè¶¨
-U8  com_usb = 0;       //ÏÂÔØ·½Ê½          0.USB 1.´®¿ÚÏÂÔØ  ;ÆäËû USB
-U8 download_run = 0;   // ÊÇ·ñÏÂÔØµ½NANDÖĞ 0:run 1:DownLoad 
+//ä¸‹è½½æ–¹å¼è®¾å®š
+U8  com_usb = 0;       //ä¸‹è½½æ–¹å¼          0.USB 1.ä¸²å£ä¸‹è½½  ;å…¶ä»– USB
+U8 download_run = 0;   // æ˜¯å¦ä¸‹è½½åˆ°NANDä¸­ 0:run 1:DownLoad 
 
 /*************************************************************/
 //
 /*************************************************************/
-#define RUNMODE     0       //ÔËĞĞÄ£Ê½
-#define DIAGMODE    1       //Õï¶ÏÄ£Ê½
-#define DOWNMODE    2       //ÏÂÔØÄ£Ê½
-#define HIDEMODE    4       //²Ëµ¥Ä£Ê½
+#define RUNMODE     0       //è¿è¡Œæ¨¡å¼
+#define DIAGMODE    1       //è¯Šæ–­æ¨¡å¼
+#define DOWNMODE    2       //ä¸‹è½½æ¨¡å¼
+#define HIDEMODE    4       //èœå•æ¨¡å¼
 
 /*************************************************************/
-//Æô¶¯Ä£Ê½Éè¶¨
-U8  BOOTMODE = 0;       //0.ÔËĞĞ 1.Õï¶Ï 2.ÏÂÔØ 3.²Ëµ¥ ÆäËû ÔËĞĞ
+//å¯åŠ¨æ¨¡å¼è®¾å®š
+U8  BOOTMODE = 0;       //0.è¿è¡Œ 1.è¯Šæ–­ 2.ä¸‹è½½ 3.èœå• å…¶ä»– è¿è¡Œ
 
 
 
 /*************************************************************/
-//Æô¶¯Ä£Ê½±êÖ¾
-U8  NOAPP = 0;  //Ó¦ÓÃ³ÌĞòÊÇ·ñÏÂÔØ Ã»ÓĞÏÂÔØ
-U8  BOOTISCONNECT   = 0; //Boot¶ËÊÇ·ñÁ¬½Ó
-U8  HIDEMENU = 0;  //2°´¼üÊÇ·ñÍ¬Ê±°´ÏÂ
-//Ó²¼ş¼ì²â±êÖ¾
-U8  DIAGFLAG = 0;       //Ó²¼şÕï¶Ï ±êÖ¾
+//å¯åŠ¨æ¨¡å¼æ ‡å¿—
+U8  NOAPP = 0;  //åº”ç”¨ç¨‹åºæ˜¯å¦ä¸‹è½½ æ²¡æœ‰ä¸‹è½½
+U8  BOOTISCONNECT   = 0; //Bootç«¯æ˜¯å¦è¿æ¥
+U8  HIDEMENU = 0;  //2æŒ‰é”®æ˜¯å¦åŒæ—¶æŒ‰ä¸‹
+//ç¡¬ä»¶æ£€æµ‹æ ‡å¿—
+U8  DIAGFLAG = 0;       //ç¡¬ä»¶è¯Šæ–­ æ ‡å¿—
 
 
-U8 EEPROMISOK = 1;      //EEPROM ÎŞ´íÎó Ó²¼ş¼ì²â
-U8 KEYISOK = 0;         //¼üÅÌ²âÊÔ
+U8 EEPROMISOK = 1;      //EEPROM æ— é”™è¯¯ ç¡¬ä»¶æ£€æµ‹
+U8 KEYISOK = 0;         //é”®ç›˜æµ‹è¯•
 /*************************************************************/
 
 void Led_Test(void);
@@ -210,7 +210,7 @@ static void cal_cpu_bus_clk(void)
     p = (val >> 4) & 0x3f;
     s = val & 3;
 
-    //(m+8)*FIN*2 ²»Òª³¬³ö32Î»Êı!
+    //(m+8)*FIN*2 ä¸è¦è¶…å‡º32ä½æ•°!
     FCLK = ((m + 8) * (FIN / 100) * 2) / ((p + 2) * (1 << s)) * 100;
 
     val = rCLKDIVN;
@@ -267,21 +267,21 @@ static void set_cpu_bus_clk(void)
     U8 key;
     U32 mpll_val;
    
-    //  ¶ÁÈ¡Ó¦ÓÃ³ÌĞòÍ·ÎÄ¼ş,ÅĞ¶ÏÊÇÓ¦ÓÃ³ÌĞòÊÇ·ñÒÑÏÂÔØ
+    //  è¯»å–åº”ç”¨ç¨‹åºå¤´æ–‡ä»¶,åˆ¤æ–­æ˜¯åº”ç”¨ç¨‹åºæ˜¯å¦å·²ä¸‹è½½
 
-// Mpll = ( 2 ¡Á (M+8) ¡Á Fin ) / ( (P+2) ¡Á 2^S ) 
-// xPLLCON  Î»  ÃèÊö  ³õÊ¼×´Ì¬ MPLLCON/UPLLCON
-// MDIV  [19:12]  Ö÷·ÖÆµÆ÷¿ØÖÆ  0x96 / 0x4d 
-// PDIV  [9:4]  Ô¤·ÖÆµÆ÷¿ØÖÆ  0x03 / 0x03 
-// SDIV  [1:0]  ºó·ÖÆµÆ÷¿ØÖÆ  0x0 / 0x0 
+// Mpll = ( 2 Ã— (M+8) Ã— Fin ) / ( (P+2) Ã— 2^S ) 
+// xPLLCON  ä½  æè¿°  åˆå§‹çŠ¶æ€ MPLLCON/UPLLCON
+// MDIV  [19:12]  ä¸»åˆ†é¢‘å™¨æ§åˆ¶  0x96 / 0x4d 
+// PDIV  [9:4]  é¢„åˆ†é¢‘å™¨æ§åˆ¶  0x03 / 0x03 
+// SDIV  [1:0]  ååˆ†é¢‘å™¨æ§åˆ¶  0x0 / 0x0 
 
-// Ê±ÖÓ·ÖÆµ¿ØÖÆ£¨CLKDIVN£©¼Ä´æÆ÷
+// æ—¶é’Ÿåˆ†é¢‘æ§åˆ¶ï¼ˆCLKDIVNï¼‰å¯„å­˜å™¨
 // CLKDIVN  0x4C000014 
 // DIVN_UPLL  [3]  HDIVN  [2:1]    PDIVN  [0] 
 // 
-// H  P    FCLK  HCLK      PCLK        ·ÖÆµ±ÈÀı 
+// H  P    FCLK  HCLK      PCLK        åˆ†é¢‘æ¯”ä¾‹ 
 // 
-// 0  0    FCLK  FCLK      FCLK        1 : 1 : 1 £¨Ä¬ÈÏ£© 
+// 0  0    FCLK  FCLK      FCLK        1 : 1 : 1 ï¼ˆé»˜è®¤ï¼‰ 
 // 0  1    FCLK  FCLK      FCLK / 2    1 : 1 : 2 
 // 1  0    FCLK  FCLK / 2  FCLK / 2    1 : 2 : 2 
 // 1  1    FCLK  FCLK / 2  FCLK / 4    1 : 2 : 4 
@@ -290,10 +290,10 @@ static void set_cpu_bus_clk(void)
 // 3  0    FCLK  FCLK / 6  FCLK / 6    1 : 6 : 6 
 // 3  1    FCLK  FCLK / 6  FCLK / 12   1 : 6 : 12 
 // 2  0    FCLK  FCLK / 4  FCLK / 4    1 : 4 : 4 
-// 2  1    FCLK  FCLK / 4  FCLK / 8    1 : 4 : 8  (Éè¶¨)
+// 2  1    FCLK  FCLK / 4  FCLK / 8    1 : 4 : 8  (è®¾å®š)
 // 2  0    FCLK  FCLK / 8  FCLK / 8    1 : 8 : 8 
 // 2  1    FCLK  FCLK / 8  FCLK / 16   1 : 8 : 16 
-    //ÆµÂÊÉè¶¨
+    //é¢‘ç‡è®¾å®š
     j = 2;
     //if(boot_params.display_mode.val==2)j=3;//TV mod
 
@@ -352,7 +352,7 @@ void AppDownLoad(void)
     print(0, 2, "Use DNW DownLoad MyApp By USB", 0xFF);
     Uart_Printf( "Please Use DNW DownLoad MyApp By USB\n\n");
 
-    download_run = 0; //ÏÂÔØÄ£Ê½
+    download_run = 0; //ä¸‹è½½æ¨¡å¼
     NandWrite();
 }
 extern void CanTest2(void);
@@ -366,7 +366,7 @@ void Main(void)
 {
 
 
-    //Î£ÏÕ Èôblock2´æÔÚ»µ¿éÔõÃ´°ì£¿£¿£¿
+    //å±é™© è‹¥block2å­˜åœ¨åå—æ€ä¹ˆåŠï¼Ÿï¼Ÿï¼Ÿ
     
     int i;
     U8 AppText[2048];
@@ -382,7 +382,7 @@ void Main(void)
    }
 
 #if ADS10
-    // __rt_lib_init(); //for ADS 1.0Ê¹±àÒëÆ÷Ö§³Ö³ı·¨¡¢½á¹¹¿½±´¡¢FPÔËËã
+    // __rt_lib_init(); //for ADS 1.0ä½¿ç¼–è¯‘å™¨æ”¯æŒé™¤æ³•ã€ç»“æ„æ‹·è´ã€FPè¿ç®—
 #endif
 
 
@@ -393,31 +393,31 @@ void Main(void)
     //  Port_Init();
     Clk0_Disable();
     Clk1_Disable();
-    //ÖĞ¶Ïº¯Êı×¢²á
+    //ä¸­æ–­å‡½æ•°æ³¨å†Œ
     Isr_Init();
     
     pISR_SWI = (_ISR_STARTADDRESS + 0xf0); //for pSOS
 
     //Led_Test();
-    //¶ÁÈ¡Ä¬ÈÏÅäÖÃ
+    //è¯»å–é»˜è®¤é…ç½®
     rDSC0 = 0x2aa;
     rDSC1 = 0x2aaaaaaa;
 
-    //¶ÁÈ¡NANDFLASH
+    //è¯»å–NANDFLASH
     i = search_params();
 
 // while(1);
     //autorun_trig=0;
-    //Ä¬ÈÏ´®¿Ú0
+    //é»˜è®¤ä¸²å£0
     //consoleNum = 0;
-	//ÅäÖÃ´®¿Ú
+	//é…ç½®ä¸²å£
     consoleNum = boot_params.serial_sel.val & 3; // Uart 1 select for debug.
     if (consoleNum > 1)consoleNum = 0;
 
     Uart_Init(0, 115200/*boot_params.serial_baud.val*/);
-    Uart_Select(consoleNum);//Uart_Select(consoleNum) Ä¬ÈÏÓÃ´®¿Ú0£¬Èç¹ûÓÃ»§ÒªÓÃ±ğµÄ´®¿ÚµÄ»°ÇëĞŞ¸ÄÕâÀï
+    Uart_Select(consoleNum);//Uart_Select(consoleNum) é»˜è®¤ç”¨ä¸²å£0ï¼Œå¦‚æœç”¨æˆ·è¦ç”¨åˆ«çš„ä¸²å£çš„è¯è¯·ä¿®æ”¹è¿™é‡Œ
   
-	// ÅäÖÃUSB
+	// é…ç½®USB
     rMISCCR = rMISCCR&~(1 << 3); // USBD is selected instead of USBH1
     rMISCCR = rMISCCR&~(1 << 13); // USB port 1 is enabled.
 	//        isUsbdSetConfiguration = 0;
@@ -434,7 +434,7 @@ void Main(void)
         NOAPP = 0;
     else
         NOAPP = 1;
-    //BootÎ´Á¬½Ó
+    //Bootæœªè¿æ¥
     /*
     if (rGPGDAT & (1 << 8))
         BOOTISCONNECT = 0;
@@ -455,21 +455,21 @@ void Main(void)
 		DownLoad_USB();
         download_run = 0;
         NandWrite();
-        //ÇåÉı¼¶±êÖ¾
+        //æ¸…å‡çº§æ ‡å¿—
         IIC_Write(0x18, 0);
         Settime();
     }
-    //Ç¿ÖÆÒıµ¼Ô­Ê¼APP
+    //å¼ºåˆ¶å¼•å¯¼åŸå§‹APP
     if (KEY_KernalAPP == KeyNum){
     	IIC_Write(0x18,0);
     	BOOTISCONNECT = 0;
     	}
-    //µ¥´ÎÇ¿ÖÆÒıµ¼Ô­Ê¼APP	
+    //å•æ¬¡å¼ºåˆ¶å¼•å¯¼åŸå§‹APP	
     if (KEY_BACK == KeyNum){
     	
     	BOOTISCONNECT = 0;
     	}
-    //²Ëµ¥Ä£Ê½
+    //èœå•æ¨¡å¼
     if (KEY_MENU == KeyNum)
         HIDEMENU = 1;
     else
@@ -487,7 +487,7 @@ Uart_Printf("HIDEMENU %d\n",HIDEMENU);
 Uart_Printf("BOOTISCONNECT %d\n",BOOTISCONNECT);	    	
 Uart_Printf("NOAPP %d\n",NOAPP);
 Uart_Printf("DIAGFLAG %d\n",DIAGFLAG);	
-    	/*ÑÓ³Ù²âÊÔ*/
+    	/*å»¶è¿Ÿæµ‹è¯•*/
     	Timer_InitEx();
     	Timer_StartEx();
 //    	Init_Timer0();
@@ -510,11 +510,11 @@ Uart_Printf("DIAGFLAG %d\n",DIAGFLAG);
         lcdMenu();
 
 
-    //      Î´ÏÂÔØ³ÌĞòÇÒ´ÓÏÂÔØÄ£Ê½½øÈë ½øÈëUSBÏÂÔØ
+    //      æœªä¸‹è½½ç¨‹åºä¸”ä»ä¸‹è½½æ¨¡å¼è¿›å…¥ è¿›å…¥USBä¸‹è½½
 
     if ((!NOAPP) && (!rGPGDAT & (1 << 8))) {
 
-        IIC_Read(0, &com_usb); //´®¿Ú1 ÆäËûUSB·½Ê½
+        IIC_Read(0, &com_usb); //ä¸²å£1 å…¶ä»–USBæ–¹å¼
         AppDownLoad();
     }
  
@@ -524,13 +524,13 @@ Uart_Printf("DIAGFLAG %d\n",DIAGFLAG);
  //LcdMenu2();
  // Settime();
  		//lcdMenu();
-    // Æô¶¯²ßÂÔ8¼¶ÊµÏÖ
-    // Òş²Ø°´¼ü¾ßÓĞ×î¸ßµÄÓÅÏÈ¼¶
+    // å¯åŠ¨ç­–ç•¥8çº§å®ç°
+    // éšè—æŒ‰é”®å…·æœ‰æœ€é«˜çš„ä¼˜å…ˆçº§
     //LED1_On();
 	rGPBDAT = rGPBDAT & (~(1<<8));
 	
     if(HIDEMENU) {
-        // Òş²Ø°´¼ü°´ÏÂ½øÈë²Ëµ¥Ä£Ê½
+        // éšè—æŒ‰é”®æŒ‰ä¸‹è¿›å…¥èœå•æ¨¡å¼
        // Printf("MENU MODE");
        
         LcdMenu2();
@@ -538,16 +538,16 @@ Uart_Printf("DIAGFLAG %d\n",DIAGFLAG);
         //Boot
         if(BOOTISCONNECT) {
             if(NOAPP) {
-                //USBÏÂÔØÄ£Ê½
+                //USBä¸‹è½½æ¨¡å¼
                 Printf("USB DOWNLOAD MODE");
  				DownLoad_USB();
                 download_run = 0;
                 NandWrite();
-                //ÇåÉı¼¶±êÖ¾
+                //æ¸…å‡çº§æ ‡å¿—
                 IIC_Write(0x18, 0);
                 Settime();
             } else {
-                //Õï¶Ï
+                //è¯Šæ–­
                 if(DIAGFLAG) {
                     //LCDMENU   
                     Printf("MENU MODE");
@@ -564,17 +564,17 @@ Uart_Printf("DIAGFLAG %d\n",DIAGFLAG);
         } else {
 
             if(NOAPP) {
-                //USBÏÂÔØÄ£Ê½
+                //USBä¸‹è½½æ¨¡å¼
                 Printf("USB DOWNLOAD MODE");
                 DownLoad_USB();
                 download_run = 0;
                 NandWrite();
-                //ÇåÉı¼¶±êÖ¾
+                //æ¸…å‡çº§æ ‡å¿—
                 IIC_Write(0x18, 0);
                 Settime();
 
             } else {
-                //Õï¶Ï
+                //è¯Šæ–­
                 if(DIAGFLAG) {
                	
                 	//LED2_On
@@ -598,11 +598,11 @@ Uart_Printf("DIAGFLAG %d\n",DIAGFLAG);
 
 
 //DiagNose();
-//rGPBDAT |=1; //0x00001003; //¼üÅÌµÆ¹Ø ·äÃùÆ÷Ãğ ±³¹âµÆÃğ Ö¸Ê¾µÆÈ«ÁÁ
+//rGPBDAT |=1; //0x00001003; //é”®ç›˜ç¯å…³ èœ‚é¸£å™¨ç­ èƒŒå…‰ç¯ç­ æŒ‡ç¤ºç¯å…¨äº®
 
-//Î´¼ì²âµ½Ó¦ÓÃ³ÌĞò
-//GPG8 Ó²¼ş¿ØÖÆ
-//Èı°´¼üÍ¬Ê±°´ÏÂ
+//æœªæ£€æµ‹åˆ°åº”ç”¨ç¨‹åº
+//GPG8 ç¡¬ä»¶æ§åˆ¶
+//ä¸‰æŒ‰é”®åŒæ—¶æŒ‰ä¸‹
 /*
 if (NOAPP && (rGPGDAT & (1 << 8)) && (!(5 == rGPFDAT & 0xf)))
 {
@@ -613,17 +613,17 @@ if (NOAPP && (rGPGDAT & (1 << 8)) && (!(5 == rGPFDAT & 0xf)))
 }*/
 
     //***********************************************************************************
-    // ÅäÖÃÍê³Éºó£¬È¡Ïû·äÃùÆ÷Ïì£¬±³¹âÁÁ
+    // é…ç½®å®Œæˆåï¼Œå–æ¶ˆèœ‚é¸£å™¨å“ï¼ŒèƒŒå…‰äº®
 
     /*  {
         if(boot_params.version.val==2)  //PCB6V2
             {
-                rGPBDAT = 0x00001007; //¼üÅÌµÆ¹Ø ·äÃùÆ÷Ãğ ±³¹âµÆÃğ Ö¸Ê¾µÆÈ«ÁÁ
+                rGPBDAT = 0x00001007; //é”®ç›˜ç¯å…³ èœ‚é¸£å™¨ç­ èƒŒå…‰ç¯ç­ æŒ‡ç¤ºç¯å…¨äº®
             }
 
         if(boot_params.version.val==3) //PCB6V3
             {
-                    rGPBDAT = 0x00001003; //¼üÅÌµÆ¹Ø ·äÃùÆ÷Ãğ ±³¹âµÆÃğ Ö¸Ê¾µÆÈ«ÁÁ
+                    rGPBDAT = 0x00001003; //é”®ç›˜ç¯å…³ èœ‚é¸£å™¨ç­ èƒŒå…‰ç¯ç­ æŒ‡ç¤ºç¯å…¨äº®
 
             }
 
@@ -656,10 +656,10 @@ if (NOAPP && (rGPGDAT & (1 << 8)) && (!(5 == rGPFDAT & 0xf)))
     //  lcdLightTest();
     //      DiagNose();
     //      while(1);
-    //²åÈë´®¿Ú Ê×´ÎÆô¶¯ Ö´ĞĞ²âÊÔÄ£Ê½
+    //æ’å…¥ä¸²å£ é¦–æ¬¡å¯åŠ¨ æ‰§è¡Œæµ‹è¯•æ¨¡å¼
 
 
-    //Ê×´ÎÆô¶¯Ö´ĞĞ Ó²¼ş²âÊÔ  EEPROM µÚÒ»¸ö×Ö½Ú
+    //é¦–æ¬¡å¯åŠ¨æ‰§è¡Œ ç¡¬ä»¶æµ‹è¯•  EEPROM ç¬¬ä¸€ä¸ªå­—èŠ‚
 
 
 
@@ -670,23 +670,23 @@ if (NOAPP && (rGPGDAT & (1 << 8)) && (!(5 == rGPFDAT & 0xf)))
     //      Uart_Printf("The First Start will Run TestMode");
 
 /*
-//1.²åÈë´®¿Ú 2.comdownÅäÖÃÎª0 3.Boot Òı½ÅÎ´¶Ì½Ó ½øÈëÏÂÔØÄ£Ê½
+//1.æ’å…¥ä¸²å£ 2.comdowné…ç½®ä¸º0 3.Boot å¼•è„šæœªçŸ­æ¥ è¿›å…¥ä¸‹è½½æ¨¡å¼
 if((rGPHDAT&(1<<3))&&(!(boot_params.comdown.val==0x5A)) &&(rGPGDAT&(1<<8)) )
     {
-    //  boot_params.comdown.val=0x5A;save_params();  //Èç¹û²»Ïë²åÈë´®¿Ú¾ÍÏÂÔØ£¬°ÑÆÁ±ÎÈ¡Ïû
+    //  boot_params.comdown.val=0x5A;save_params();  //å¦‚æœä¸æƒ³æ’å…¥ä¸²å£å°±ä¸‹è½½ï¼ŒæŠŠå±è”½å–æ¶ˆ
 
         WrFileToNF_COM();
         Uart_Printf("Enter Com Download Mode\n\n");
 
     }
 
-//Î´²åÈë´®¿Ú£¬ÔËĞĞÓ¦ÓÃ³ÌĞò
+//æœªæ’å…¥ä¸²å£ï¼Œè¿è¡Œåº”ç”¨ç¨‹åº
 if(!(rGPHDAT&(1<<3))||(rGPGDAT&(1<<8)))
     {
     Uart_Printf("Loader User App\n\n");
     NandLoadRun_App();
     }
-//BootÒı½Å¶Ì½Óµ½µØ ½øÈëUSBÏÂÔØÄ£Ê½
+//Bootå¼•è„šçŸ­æ¥åˆ°åœ° è¿›å…¥USBä¸‹è½½æ¨¡å¼
 */
 //*****************************************************************************************
 
@@ -793,18 +793,18 @@ void Menu(void)
     while (1) {
 #if 0
         Uart_Printf("\n +------------------------------------------------------------+\n");
-        Uart_Printf(" |                    BOOTLOADER²Ëµ¥                          |\n");
+        Uart_Printf(" |                    BOOTLOADERèœå•                          |\n");
         Uart_Printf(" +------------------------------------------------------------+\n");
-        Uart_Printf(" | [0] ÏÂÔØ²¢ÔËĞĞ                                             |\n");
-        Uart_Printf(" | [1] ÏÂÔØµ½FLASH                                            |\n");
+        Uart_Printf(" | [0] ä¸‹è½½å¹¶è¿è¡Œ                                             |\n");
+        Uart_Printf(" | [1] ä¸‹è½½åˆ°FLASH                                            |\n");
 
-        Uart_Printf(" | [2] ÓÃ´®¿ÚÏÂÔØ                                             |\n");
-        Uart_Printf(" | [3] Æô¶¯Ó¦ÓÃ³ÌĞò                                           |\n");
-        Uart_Printf(" | [4] Æô¶¯LINUX                                              |\n");
+        Uart_Printf(" | [2] ç”¨ä¸²å£ä¸‹è½½                                             |\n");
+        Uart_Printf(" | [3] å¯åŠ¨åº”ç”¨ç¨‹åº                                           |\n");
+        Uart_Printf(" | [4] å¯åŠ¨LINUX                                              |\n");
 
-        Uart_Printf(" | [5] Æô¶¯WINCE                                              |\n");
-        Uart_Printf(" | [6] ²Á³ıFLASH                                              |\n");
-        Uart_Printf(" | [7] ÉèÖÃ²ÎÊı                                               |\n");
+        Uart_Printf(" | [5] å¯åŠ¨WINCE                                              |\n");
+        Uart_Printf(" | [6] æ“¦é™¤FLASH                                              |\n");
+        Uart_Printf(" | [7] è®¾ç½®å‚æ•°                                               |\n");
         Uart_Printf(" +------------------------------------------------------------+\n");
 #else
         Uart_Printf("\n +------------------------------------------------------------+\n");

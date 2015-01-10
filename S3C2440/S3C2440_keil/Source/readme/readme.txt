@@ -3,8 +3,8 @@
                 PRESERVE8
 
 	AREA    RESET,CODE,READONLY
-修改入口函数
+淇敼鍏ュ彛鍑芥暟
 2. mov pc,rn --> BX rn
 
 2012.7.16
-3.OK2440 ads1.2移植到Keil
+3.OK2440 ads1.2绉绘鍒癒eil

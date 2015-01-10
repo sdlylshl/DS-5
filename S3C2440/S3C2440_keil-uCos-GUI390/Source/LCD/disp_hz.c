@@ -10,7 +10,7 @@ void HzDisp_tst(void)
     
     GUI_SetColor2(GREEN, BLACK); 
     
-     // ╣з1ппотй╬"од╥╗Ёи"
+     // Г╛╛1Х║▄Ф≤╬Г╓╨"Е╓▐ФЁ∙Ф┬░"
     x=60; y=20;
     GUI_PutHZ(x, y, (U8 *)TST_HZ1, 40, 40);
     x += 40;
@@ -21,7 +21,7 @@ void HzDisp_tst(void)
     
     GUI_SetColor2(RED, BLACK); 
    
-    // ╣з2ппотй╬"уЩтз╫Ьпп"
+    // Г╛╛2Х║▄Ф≤╬Г╓╨"Ф╜ёЕ°╗Х©⌡Х║▄"
     x=40; y += 50;
     GUI_PutHZ(x, y, (U8 *)TST_HZ4, 40, 40);
     x += 40;
@@ -33,7 +33,7 @@ void HzDisp_tst(void)
     
     GUI_SetColor2(BLUE, BLACK); 
     
-    // ╣з3ппотй╬"╣╔ф╛╩З"
+    // Г╛╛3Х║▄Ф≤╬Г╓╨"Е█∙Г┴┤Ф°╨"
     x=60; y += 50;
     GUI_PutHZ(x, y, (U8 *)TST_HZ8, 40, 40);
     x += 40;
@@ -43,7 +43,7 @@ void HzDisp_tst(void)
     
     
      GUI_SetColor2(YELLOW, BLACK);
-     // ╣з4ппотй╬"╪Р╣╔╡Бйт"
+     // Г╛╛4Х║▄Ф≤╬Г╓╨"Г╝─Е█∙Ф╣▀Х╞∙"
      x=40; y += 50;
     GUI_PutHZ(x, y, (U8 *)TST_HZ11, 40, 40);
     x += 40;

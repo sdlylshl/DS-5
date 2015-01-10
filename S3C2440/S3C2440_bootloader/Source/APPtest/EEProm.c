@@ -7,7 +7,7 @@
 #include "Delay.h"
 
 //u2440mon.h
-extern U8 EEPROMISOK;       //EEPROM ´íÎó±êÖ¾
+extern U8 EEPROMISOK;       //EEPROM é”™è¯¯æ ‡å¿—
 //2440lib.h
 extern void Uart_Printf(char *fmt, ...);
 //IIC_24C64.h
@@ -19,7 +19,7 @@ extern void IIC_Write(U32 addr, U8 data);
 
 extern void Versions(void);
 
-// Êı¾İÑéÖ¤
+// æ•°æ®éªŒè¯
 extern void EepromCheck(void)
 {
 
@@ -34,7 +34,7 @@ extern void EepromCheck(void)
     //print(0, 2, "EEPROM RANDOM TEST !", 0xFF);
     //Lcd_TextAlignMid();
     Printf("EEPROM random Check !\n");
-    //  Uart_Printf("IIC Test(Polling)???¡¥ using AT24C64\n");
+    //  Uart_Printf("IIC Test(Polling)???Ë‰ using AT24C64\n");
 
     IIC_init();
     for (i = 0; i < 16; ++i) {
@@ -91,7 +91,7 @@ extern U8 EepromErase(void)
         if (KeyScan())
 
         {
-            //ÕâÀï¼ÓÈëÕâÃ´¶àµÄKeyScan Ö÷ÒªÊÇ·ÀÖ¹ÔÚ°¸¼ş°´ÏÂºÍÌ§ÆğµÄÊ±ºò»á²úÉúÎóÂë
+            //è¿™é‡ŒåŠ å…¥è¿™ä¹ˆå¤šçš„KeyScan ä¸»è¦æ˜¯é˜²æ­¢åœ¨æ¡ˆä»¶æŒ‰ä¸‹å’ŒæŠ¬èµ·çš„æ—¶å€™ä¼šäº§ç”Ÿè¯¯ç 
             if (i>19||KeyScan() == KEY_ENTER) {
                 break;
             }
@@ -137,9 +137,9 @@ extern U8 EepromErase(void)
         Printf("\nPassword ok!\n");
         Printf("\nNow is Erasing EEPROM");
         Printf("\nPlease Wait a minite ......\n\n");
-        //  Êı¾İÇå³ı
+        //  æ•°æ®æ¸…é™¤
             /*
-        //ÇåÀí¹¤×÷Ê±¼ä ÉèÖÃÎª3Ğ¡Ê±
+        //æ¸…ç†å·¥ä½œæ—¶é—´ è®¾ç½®ä¸º3å°æ—¶
             IIC_Write(0x2b0,0x10);//H
             IIC_Write(0x2b1,0x00);//H
             IIC_Write(0x2b2,0x00);//H
@@ -183,9 +183,9 @@ extern U8 EepromClearAll(void)
         Printf("\nNow is Erasing EEPROM");
         Printf("\nPlease Wait a minite ......\n\n");
         Lcd_Update();
-        //  Êı¾İÇå³ı
+        //  æ•°æ®æ¸…é™¤
            /*
-        //ÇåÀí¹¤×÷Ê±¼ä ÉèÖÃÎª3Ğ¡Ê±
+        //æ¸…ç†å·¥ä½œæ—¶é—´ è®¾ç½®ä¸º3å°æ—¶
             IIC_Write(0x2b0,0x10);//H
             IIC_Write(0x2b1,0x00);//H
             IIC_Write(0x2b2,0x00);//H

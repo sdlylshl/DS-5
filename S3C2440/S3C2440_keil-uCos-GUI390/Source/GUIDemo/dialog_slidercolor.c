@@ -324,7 +324,7 @@ void GUIDEMO_SliderColor(void) {
   
   GUIDEMO_Wait();   
 	
-  WM_SetCallback(WM_HBKWIN, 0); //É¾³ý»Øµ÷º¯Êý
+  WM_SetCallback(WM_HBKWIN, 0); //åˆ é™¤å›žè°ƒå‡½æ•°
   
   GUI_Clear();   
   

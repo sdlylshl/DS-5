@@ -1,16 +1,16 @@
 #include "msp430x54x.h"
 #include "GSM.h"
 
-//atoi ×Ö·û´®×ª int
-//itoa int ×ª×Ö·û´®
+//atoi å­—ç¬¦ä¸²è½¬ int
+//itoa int è½¬å­—ç¬¦ä¸²
 //GSM_String
 unsigned int GSM_BUF_SIZE;
 unsigned int GSM_TimeOut_1ms                                               ;
-extern int GSM_strstr (const char * Main_str,const char * search_str)      ;//×Ö·û´®²éÕÒ
-extern int GSM_strlen (const char * str)                                   ;//×Ö·û´®³¤¶È
-extern int GSM_strcmp (const char * src,const char * dst)                  ;//×Ö·û´®±È½Ï
-extern char * GSM_strsep (char **stringp, const char *delim)               ;//×Ö·û´®·Ö¸î
-extern void Delayms(unsigned long int ms)                                  ;//XX*1MsÑÓÊ±
+extern int GSM_strstr (const char * Main_str,const char * search_str)      ;//å­—ç¬¦ä¸²æŸ¥æ‰¾
+extern int GSM_strlen (const char * str)                                   ;//å­—ç¬¦ä¸²é•¿åº¦
+extern int GSM_strcmp (const char * src,const char * dst)                  ;//å­—ç¬¦ä¸²æ¯”è¾ƒ
+extern char * GSM_strsep (char **stringp, const char *delim)               ;//å­—ç¬¦ä¸²åˆ†å‰²
+extern void Delayms(unsigned long int ms)                                  ;//XX*1Mså»¶æ—¶
 extern unsigned char GSM_SendCMD(char paktype, const char * s,
                                  unsigned int Len,int ms)                  ;//GSM_CMD
 extern char GSM_SendData(const char * Data,int num);
@@ -20,14 +20,14 @@ unsigned char GSM_SendCMD(char paktype, const char * s,unsigned int Len,int ms)
     int i;
     unsigned char * GSM_RX_Buf;
     unsigned char * REV_OK;
-    //°üÀàĞÍ 0Í»·¢°ü 1 ²éÑ¯°ü 2 ÅäÖÃ°ü 4 Êı¾İ°ü 8 ÍøÂç°ü 0x10 Î´Öª°ü
+    //åŒ…ç±»å‹ 0çªå‘åŒ… 1 æŸ¥è¯¢åŒ… 2 é…ç½®åŒ… 4 æ•°æ®åŒ… 8 ç½‘ç»œåŒ… 0x10 æœªçŸ¥åŒ…
     packet_type = paktype;
 
     switch (packet_type) {
     case PACKET_BRUST:
         REV_OK = &M72D_Brust_STATUS;
-        GSM_BUF_SIZE = M72D_Brust_RX_BUF_SIZE; //ÅäÖÃÊı×é´óĞ¡
-        GSM_RX_Buf = M72D_Brust_RX_Buf; //ÅäÖÃ½ÓÊÕÊı×é
+        GSM_BUF_SIZE = M72D_Brust_RX_BUF_SIZE; //é…ç½®æ•°ç»„å¤§å°
+        GSM_RX_Buf = M72D_Brust_RX_Buf; //é…ç½®æ¥æ”¶æ•°ç»„
         break;
 
     case PACKET_Query:
@@ -66,13 +66,13 @@ unsigned char GSM_SendCMD(char paktype, const char * s,unsigned int Len,int ms)
 
     *REV_OK = 0                                       ;
     M72D_RX_Buf_Cnt = 0;
-    GSM_TimeOut_1ms = 0                               ;//ms¶¨Ê±¼ÆÊıÆ÷ÇåÁã
-    for (i = 0; i < GSM_BUF_SIZE; i++)                 //ÇåÖ¸Áî½ÓÊÕ»º³åÆ÷
+    GSM_TimeOut_1ms = 0                               ;//mså®šæ—¶è®¡æ•°å™¨æ¸…é›¶
+    for (i = 0; i < GSM_BUF_SIZE; i++)                 //æ¸…æŒ‡ä»¤æ¥æ”¶ç¼“å†²å™¨
     {
         GSM_RX_Buf[i] = 0                             ;
     }
     if(Len) 
-    {                                                  //·¢ËÍÖ¸Áî
+    {                                                  //å‘é€æŒ‡ä»¤
         while (Len--) 
         {
             UCA0TXBUF = *s++                          ;
@@ -86,41 +86,41 @@ unsigned char GSM_SendCMD(char paktype, const char * s,unsigned int Len,int ms)
             while ((UCA0IFG & UCTXIFG) == 0)          ;
         }
     }
-    UCA0TXBUF = 0x0D                                  ;//·¢ËÍ½áÊø·û
+    UCA0TXBUF = 0x0D                                  ;//å‘é€ç»“æŸç¬¦
     while ((UCA0IFG & UCTXIFG) == 0)                  ;
-    while ((!(*REV_OK)) && (GSM_TimeOut_1ms < ms))    ;//µÈ´ı ERRO »ò OKµÄ·µ»Ø ³¬Ê±ÍË³ö
+    while ((!(*REV_OK)) && (GSM_TimeOut_1ms < ms))    ;//ç­‰å¾… ERRO æˆ– OKçš„è¿”å› è¶…æ—¶é€€å‡º
     packet_type = 0                                   ;
     M72D_RX_Buf_Cnt = 0                               ;
     return *REV_OK                                    ;
 }
 
-//Êı¾İ·¢ËÍ
+//æ•°æ®å‘é€
 
-//Êı¾İ·¢ËÍÖ¸Áî
+//æ•°æ®å‘é€æŒ‡ä»¤
 //char * TCPIP_AT_QISEND = "AT+QISEND=0000000001";
 
 char SendCMD[10+10]= {'A','T','+','Q','I','S','E','N','D','='};
 
 char GSM_SendData(const char * Data,int num)
 {
-    int nums                                                              ;//´ı·¢ËÍÊı¾İ³¤¶È 0×Ô¶¯¼ÆËã
+    int nums                                                              ;//å¾…å‘é€æ•°æ®é•¿åº¦ 0è‡ªåŠ¨è®¡ç®—
     if(num)
         nums = num                                                        ;
     else
         nums=GSM_strlen(Data)                                             ;
 
-    //Êı×Ö×ª×Ö·û void DecToANS(char offset, char*ps,unsigned long src)
+    //æ•°å­—è½¬å­—ç¬¦ void DecToANS(char offset, char*ps,unsigned long src)
     GSM_ltoa(10,SendCMD,nums)                                             ;
     if(GSM_SendCMD(PACKET_NETCONFIG,SendCMD,0,10)=='>') 
     {   
-        Delayms(200)                                                      ;//XX*1MsÑÓÊ±
+        Delayms(200)                                                      ;//XX*1Mså»¶æ—¶
         if(GSM_SendCMD(PACKET_Query,Data,nums,50)==1)
             return 1;
     } else
-        //ÖØ·¢
+        //é‡å‘
         if(GSM_SendCMD(PACKET_NETCONFIG,SendCMD,0,10)=='>') 
         {
-            Delayms(200)                                                  ;//XX*1MsÑÓÊ±
+            Delayms(200)                                                  ;//XX*1Mså»¶æ—¶
             if(GSM_SendCMD(PACKET_Query,Data,nums,50)==1)
                 return 1;
         }
@@ -142,14 +142,14 @@ unsigned char GSM_Send_CMD(char paktype, const char * s,unsigned int Len,int ms)
     int i;
     unsigned char * GSM_RX_Buf;
     unsigned char * REV_OK;
-    //°üÀàĞÍ 0Í»·¢°ü 1 ²éÑ¯°ü 2 ÅäÖÃ°ü 4 Êı¾İ°ü 8 ÍøÂç°ü 0x10 Î´Öª°ü
+    //åŒ…ç±»å‹ 0çªå‘åŒ… 1 æŸ¥è¯¢åŒ… 2 é…ç½®åŒ… 4 æ•°æ®åŒ… 8 ç½‘ç»œåŒ… 0x10 æœªçŸ¥åŒ…
     packet_type = paktype;
 
     switch (packet_type) {
     case PACKET_BRUST:
         REV_OK = &M72D_Brust_STATUS;
-        GSM_BUF_SIZE = M72D_Brust_RX_BUF_SIZE; //ÅäÖÃÊı×é´óĞ¡
-        GSM_RX_Buf = M72D_Brust_RX_Buf; //ÅäÖÃ½ÓÊÕÊı×é
+        GSM_BUF_SIZE = M72D_Brust_RX_BUF_SIZE; //é…ç½®æ•°ç»„å¤§å°
+        GSM_RX_Buf = M72D_Brust_RX_Buf; //é…ç½®æ¥æ”¶æ•°ç»„
         break;
 
     case PACKET_Query:
@@ -188,13 +188,13 @@ unsigned char GSM_Send_CMD(char paktype, const char * s,unsigned int Len,int ms)
 
     *REV_OK = 0                                       ;
     M72D_RX_Buf_Cnt = 0;
-    GSM_TimeOut_1ms = 0                               ;//ms¶¨Ê±¼ÆÊıÆ÷ÇåÁã
-    for (i = 0; i < GSM_BUF_SIZE; i++)                 //ÇåÖ¸Áî½ÓÊÕ»º³åÆ÷
+    GSM_TimeOut_1ms = 0                               ;//mså®šæ—¶è®¡æ•°å™¨æ¸…é›¶
+    for (i = 0; i < GSM_BUF_SIZE; i++)                 //æ¸…æŒ‡ä»¤æ¥æ”¶ç¼“å†²å™¨
     {
         GSM_RX_Buf[i] = 0                             ;
     }
     if(Len) 
-    {                                                  //·¢ËÍÖ¸Áî
+    {                                                  //å‘é€æŒ‡ä»¤
         while (Len--) 
         {
             UCA0TXBUF = *s++                          ;
@@ -208,11 +208,11 @@ unsigned char GSM_Send_CMD(char paktype, const char * s,unsigned int Len,int ms)
             while ((UCA0IFG & UCTXIFG) == 0)          ;
         }
     }
-    UCA0TXBUF = 0x0D                                  ;//·¢ËÍ½áÊø·û
+    UCA0TXBUF = 0x0D                                  ;//å‘é€ç»“æŸç¬¦
     while ((UCA0IFG & UCTXIFG) == 0)                  ;
-    //Delayms(2)                                        ;//XX*1MsÑÓÊ±
-    while ((!(*REV_OK)) && (GSM_TimeOut_1ms < ms))    ;//µÈ´ı ERRO »ò OKµÄ·µ»Ø ³¬Ê±ÍË³ö
-    //Delayms(1)                                        ;//XX*1MsÑÓÊ±
+    //Delayms(2)                                        ;//XX*1Mså»¶æ—¶
+    while ((!(*REV_OK)) && (GSM_TimeOut_1ms < ms))    ;//ç­‰å¾… ERRO æˆ– OKçš„è¿”å› è¶…æ—¶é€€å‡º
+    //Delayms(1)                                        ;//XX*1Mså»¶æ—¶
     packet_type = 0                                   ;
     M72D_RX_Buf_Cnt = 0                               ;
     return *REV_OK                                    ;
@@ -222,24 +222,24 @@ unsigned char GSM_Send_CMD(char paktype, const char * s,unsigned int Len,int ms)
 
 char GSM_Send_Data(const char * Data,int num)
 {
-    int nums                                                              ;//´ı·¢ËÍÊı¾İ³¤¶È 0×Ô¶¯¼ÆËã
+    int nums                                                              ;//å¾…å‘é€æ•°æ®é•¿åº¦ 0è‡ªåŠ¨è®¡ç®—
     if(num)
         nums = num                                                        ;
     else
         nums=GSM_strlen(Data)                                             ;
 
-    //Êı×Ö×ª×Ö·û void DecToANS(char offset, char*ps,unsigned long src)
+    //æ•°å­—è½¬å­—ç¬¦ void DecToANS(char offset, char*ps,unsigned long src)
     GSM_ltoa(10,SendCMD,nums)                                             ;
     if(GSM_Send_CMD(PACKET_NETCONFIG,SendCMD,0,10)=='>') 
     {   
-        Delayms(200)                                                      ;//XX*1MsÑÓÊ±
+        Delayms(200)                                                      ;//XX*1Mså»¶æ—¶
         if(GSM_Send_CMD(PACKET_Query,Data,nums,50)==1)
             return 1;
     } else
-        //ÖØ·¢
+        //é‡å‘
         if(GSM_Send_CMD(PACKET_NETCONFIG,SendCMD,0,10)=='>') 
         {
-            Delayms(200)                                                  ;//XX*1MsÑÓÊ±
+            Delayms(200)                                                  ;//XX*1Mså»¶æ—¶
             if(GSM_Send_CMD(PACKET_Query,Data,nums,50)==1)
                 return 1;
         }

@@ -43,47 +43,47 @@
                            P9DIR &=  ~GPS_ANT;\
                            P9REN &=  ~GPS_ANT;
 
-extern unsigned long int GPS_LOCATE_Time                            ;//GPS½ÓÊÕÊ±¼ä10S
+extern unsigned long int GPS_LOCATE_Time                            ;//GPSæ¥æ”¶æ—¶é—´10S
 
 
 extern void GPS_Start()                                             ;
 extern void GPS_Stop()                                              ;
 extern void Close_UCA1UART(void)                                    ;
-extern void Delayms(unsigned long int ms)                           ;//XX*1MsÑÓÊ±
+extern void Delayms(unsigned long int ms)                           ;//XX*1Mså»¶æ—¶
 
 #define GPS_RX_Buffer_Size 100
 
-void Do_GPS_Data(void)                                        ;//·Ö×éGPS´¦ÀíÊı¾İ
-void Do_GPS_RMC_Data(void)                                    ;//´¦ÀíGPRMCÊı¾İ°üUTCÊ±¼äÊı¾İ´¦Àí
-void Do_GPS_GGA_Data(void)                                    ;//´¦ÀíGPGGAÊı¾İ°üÊı¾İ´¦Àí
-void Open_UCA0_UART_Init(void)                                ;//´ò¿ªGPSÖĞ¶Ï
-void GPS_Post_GGA_Mesg(void)                                  ;//´¦ÀíGPGGAÊı¾İ°ü¶¨Î»ĞÅÏ¢Êı¾İ´¦Àí
-void GPS_Post_RMC_Mesg(void)                                  ;//´¦ÀíGPRMCÊı¾İ°ü¶¨Î»ĞÅÏ¢Êı¾İ´¦Àí
-void Save_GPS_Inf_Buffer(void)                                ;//½«GPSÊı¾İ´æÈë»º´æ
+void Do_GPS_Data(void)                                        ;//åˆ†ç»„GPSå¤„ç†æ•°æ®
+void Do_GPS_RMC_Data(void)                                    ;//å¤„ç†GPRMCæ•°æ®åŒ…UTCæ—¶é—´æ•°æ®å¤„ç†
+void Do_GPS_GGA_Data(void)                                    ;//å¤„ç†GPGGAæ•°æ®åŒ…æ•°æ®å¤„ç†
+void Open_UCA0_UART_Init(void)                                ;//æ‰“å¼€GPSä¸­æ–­
+void GPS_Post_GGA_Mesg(void)                                  ;//å¤„ç†GPGGAæ•°æ®åŒ…å®šä½ä¿¡æ¯æ•°æ®å¤„ç†
+void GPS_Post_RMC_Mesg(void)                                  ;//å¤„ç†GPRMCæ•°æ®åŒ…å®šä½ä¿¡æ¯æ•°æ®å¤„ç†
+void Save_GPS_Inf_Buffer(void)                                ;//å°†GPSæ•°æ®å­˜å…¥ç¼“å­˜
 unsigned char ASCIITOHEX( unsigned char Input_H,
-                         unsigned char Input_L )              ;//½«ASCII×Ö·û×ª»»Îª16½øÖÆµÄÊı
-extern void SHUT_GPS_UCA1(void)                              ;//¹Ø±ÕGPSÖĞ¶Ï
+                         unsigned char Input_L )              ;//å°†ASCIIå­—ç¬¦è½¬æ¢ä¸º16è¿›åˆ¶çš„æ•°
+extern void SHUT_GPS_UCA1(void)                              ;//å…³é—­GPSä¸­æ–­
 
 
 extern char GSM_SIM_Iint_Sig_Num;
-extern unsigned char GSM_SIM_Signal_Num                       ;//ĞÅºÅÖÊÁ¿Ç¿¶È
-extern unsigned int  BAT_V_main                               ;//Ğîµç³ØµçÑ¹ µç³Ø
-extern unsigned int  LI_BAT_VOL                               ;//ï®µç³ØµçÑ¹ µç³Ø
-extern unsigned long GSM_GPS_AT_Cmd_Cnt;//·¢ËÍGSM»ñÈ¡µØÀíĞÅÏ¢¼ÆÊı
+extern unsigned char GSM_SIM_Signal_Num                       ;//ä¿¡å·è´¨é‡å¼ºåº¦
+extern unsigned int  BAT_V_main                               ;//è“„ç”µæ± ç”µå‹ ç”µæ± 
+extern unsigned int  LI_BAT_VOL                               ;//é”‚ç”µæ± ç”µå‹ ç”µæ± 
+extern unsigned long GSM_GPS_AT_Cmd_Cnt;//å‘é€GSMè·å–åœ°ç†ä¿¡æ¯è®¡æ•°
 
-extern void VmainMon(void)                                    ;//¼ì²âÖ÷µçÔ´µçÑ¹¼°ï®µç³ØµçÑ¹
-extern char GPS_GSM_System_Stu[4]                             ;//Ò»Ìå»ú×´Ì¬´æ´¢
-extern char Module_Status[6]                                  ;//Ä£¿é×´Ì¬ĞÅÏ¢GPSĞÅÏ¢+GSMĞÅÏ¢+ÏµÍ³×´Ì¬1¡¢2+Éı¼¶×´Ì¬1¡¢2
-extern char * GSM_strsep (char **stringp, const char *delim)  ;//×Ö·û´®·Ö¸î
-extern char  GPS_RX_Buffer[GPS_RX_Buffer_Size]                ;//GPSÊı¾İ»º´æ100
-extern unsigned int GPS_RX_Buffer_Cnt                         ;//GPSÊı¾İ»º´æ¼ÆÊı
-extern void GPS_UCA1_Init(void)                               ;//GPSÖĞ¶Ï³õÊ¼»¯
-extern unsigned char Want_GPS_Data_Type                       ;//ĞèÒªGPSÊı¾İÀàĞÍ00==ÎŞÏìÓ¦£»0x11==GPRMC£»0x22==GPGGA£» 
-extern unsigned char GPS_R_OK_End_Flag                        ;//GPSÖĞ¶Ï½ÓÊÕ³É¹¦±êÖ¾ 00==Î´½ÓÊÕ£»0x11==GPRMC£»0x22==GPGGA£»
-extern unsigned char GSM_SIM_Signal()                                  ;//ĞÅºÅÖÊÁ¿Ç¿¶È
-extern void JG_OUT_EDGE(void)                                 ;//ÅĞ¶ÏÔ½½ç±¨¾¯ 
-extern void VmainMon(void)                                    ;//¼ì²âÖ÷µçÔ´µçÑ¹¼°ï®µç³ØµçÑ¹   
-extern void GPS_ANT_STATUS(void)                              ;//GPSÌìÏß¼ì²â
+extern void VmainMon(void)                                    ;//æ£€æµ‹ä¸»ç”µæºç”µå‹åŠé”‚ç”µæ± ç”µå‹
+extern char GPS_GSM_System_Stu[4]                             ;//ä¸€ä½“æœºçŠ¶æ€å­˜å‚¨
+extern char Module_Status[6]                                  ;//æ¨¡å—çŠ¶æ€ä¿¡æ¯GPSä¿¡æ¯+GSMä¿¡æ¯+ç³»ç»ŸçŠ¶æ€1ã€2+å‡çº§çŠ¶æ€1ã€2
+extern char * GSM_strsep (char **stringp, const char *delim)  ;//å­—ç¬¦ä¸²åˆ†å‰²
+extern char  GPS_RX_Buffer[GPS_RX_Buffer_Size]                ;//GPSæ•°æ®ç¼“å­˜100
+extern unsigned int GPS_RX_Buffer_Cnt                         ;//GPSæ•°æ®ç¼“å­˜è®¡æ•°
+extern void GPS_UCA1_Init(void)                               ;//GPSä¸­æ–­åˆå§‹åŒ–
+extern unsigned char Want_GPS_Data_Type                       ;//éœ€è¦GPSæ•°æ®ç±»å‹00==æ— å“åº”ï¼›0x11==GPRMCï¼›0x22==GPGGAï¼› 
+extern unsigned char GPS_R_OK_End_Flag                        ;//GPSä¸­æ–­æ¥æ”¶æˆåŠŸæ ‡å¿— 00==æœªæ¥æ”¶ï¼›0x11==GPRMCï¼›0x22==GPGGAï¼›
+extern unsigned char GSM_SIM_Signal()                                  ;//ä¿¡å·è´¨é‡å¼ºåº¦
+extern void JG_OUT_EDGE(void)                                 ;//åˆ¤æ–­è¶Šç•ŒæŠ¥è­¦ 
+extern void VmainMon(void)                                    ;//æ£€æµ‹ä¸»ç”µæºç”µå‹åŠé”‚ç”µæ± ç”µå‹   
+extern void GPS_ANT_STATUS(void)                              ;//GPSå¤©çº¿æ£€æµ‹
 extern void Send_GSM_GPS_AT_Cmd(void);
 
 

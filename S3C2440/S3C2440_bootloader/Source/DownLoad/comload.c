@@ -54,13 +54,13 @@ void comdownload(void)
 #ifdef	USE_UART_INT
     up = Uart_Select(-1); 					//get the console port
     if(!up) {
-        pISR_UART0 = (U32)Uart0RxInt;		//´®¿Ú½ÓÊÕÊı¾İÖĞ¶Ï
+        pISR_UART0 = (U32)Uart0RxInt;		//ä¸²å£æ¥æ”¶æ•°æ®ä¸­æ–­
         ClearSubPending(BIT_SUB_RXD0);
         ClearPending(BIT_UART0);
         EnableSubIrq(BIT_SUB_RXD0);
         EnableIrq(BIT_UART0);
     } else {
-        pISR_UART1 = (U32)Uart1RxInt;		//´®¿Ú½ÓÊÕÊı¾İÖĞ¶Ï
+        pISR_UART1 = (U32)Uart1RxInt;		//ä¸²å£æ¥æ”¶æ•°æ®ä¸­æ–­
         ClearSubPending(BIT_SUB_RXD1);
         ClearPending(BIT_UART1);
         EnableSubIrq(BIT_SUB_RXD1);
@@ -77,7 +77,7 @@ void comdownload(void)
 #else
         *temp++ = Uart_Getch();
 #endif
-    }							//½ÓÊÕÎÄ¼ş³¤¶È,4 bytes
+    }							//æ¥æ”¶æ–‡ä»¶é•¿åº¦,4 bytes
 
     size  = *(U32 *)(buf-4);
     downloadFileSize = size-6;
@@ -123,16 +123,16 @@ void comdownload(void)
 
 
     if(download_run==1) {
-        register void(*run)(void);	//Ê¹ÓÃ¼Ä´æÆ÷±äÁ¿ÒÔ·ÀÖ¹½ûÖ¹DCACHEºóÊı¾İ²»Ò»ÖÂ!!!
+        register void(*run)(void);	//ä½¿ç”¨å¯„å­˜å™¨å˜é‡ä»¥é˜²æ­¢ç¦æ­¢DCACHEåæ•°æ®ä¸ä¸€è‡´!!!
         rINTMSK=BIT_ALLMSK;
-        run=(void (*)(void))downloadAddress;	//Ê¹ÓÃDCACHEÇÒRWÇøÒ²ÔÚCACHEÇø¼ädownloadAddress»áÔÚcacheÖĞ
+        run=(void (*)(void))downloadAddress;	//ä½¿ç”¨DCACHEä¸”RWåŒºä¹Ÿåœ¨CACHEåŒºé—´downloadAddressä¼šåœ¨cacheä¸­
         {
             MMU_DisableDCache();	//download program must be in
             MMU_DisableICache();	//non-cache area
-            MMU_InvalidateDCache();	//Ê¹ËùÓĞDCACHEÊ§Ğ§,±¾³ÌĞòµÄMMU_InitÖĞ½«»áË¢ĞÂDCACHEµ½´æ´¢Æ÷,
-            //ÎªÊ¹Ó¦ÓÃ´ËMMU_Init·½Ê½µÄ³ÌĞòÄÜ±»ÕıÈ·ÔËĞĞ±ØĞëÏÈÊ¹DCACHEÊ§Ğ§!!!
+            MMU_InvalidateDCache();	//ä½¿æ‰€æœ‰DCACHEå¤±æ•ˆ,æœ¬ç¨‹åºçš„MMU_Initä¸­å°†ä¼šåˆ·æ–°DCACHEåˆ°å­˜å‚¨å™¨,
+            //ä¸ºä½¿åº”ç”¨æ­¤MMU_Initæ–¹å¼çš„ç¨‹åºèƒ½è¢«æ­£ç¡®è¿è¡Œå¿…é¡»å…ˆä½¿DCACHEå¤±æ•ˆ!!!
             MMU_DisableMMU();
-            //call_linux(0, 193, downloadAddress);	//»ò²»ÓÃÉÏÃæ3¸öº¯Êı¶øÖ±½ÓÊ¹ÓÃcall_linux
+            //call_linux(0, 193, downloadAddress);	//æˆ–ä¸ç”¨ä¸Šé¢3ä¸ªå‡½æ•°è€Œç›´æ¥ä½¿ç”¨call_linux
         }
         run();
     }

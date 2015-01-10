@@ -6,7 +6,7 @@
 *                       (c) Copyright 2002, Micrium Inc., Weston, FL
 *                       (c) Copyright 2002, SEGGER Microcontroller Systeme GmbH
 *
-*              µC/GUI is protected by international copyright laws. Knowledge of the
+*              ç¤/GUI is protected by international copyright laws. Knowledge of the
 *              source code may not be used to write a similar product. This file may
 *              only be used in accordance with a license and should not be redistributed
 *              in any way. We appreciate your understanding and fairness.
@@ -94,13 +94,13 @@ extern U32 GetPixelVal(U32 x,U32 y);
 extern void Glib_Line(U32 x1,U32 y1,U32 x2,U32 y2,U16 color);
 
 
-// ¶Ô Video RAM ÇøµÄ¶ÁĞ´²Ù×÷.
+// å¯¹ Video RAM åŒºçš„è¯»å†™æ“ä½œ.
 
 
 #define LCD_READ_MEM(Off)          ReadLcdMems(Off)      
 #define LCD_WRITE_MEM(Off,data)    WriteLcdMems( Off, data )   
-#define LCD_READ_REG(Off)   0      //Õâ¸öº¯Êı¿ÉÒÔ²»ÓÃ¶¨Òå ·´ÕıÎÒÃÇÃ»ÓĞÓÃµ½ 
-#define LCD_WRITE_REG(Off,data)    //ÓĞĞ©µØ·½ÓÃµ½ÁË ¶¨ÒåÎª¿Õ ±ÜÃâ×ö´ó¸Ä¶¯ 
+#define LCD_READ_REG(Off)   0      //è¿™ä¸ªå‡½æ•°å¯ä»¥ä¸ç”¨å®šä¹‰ åæ­£æˆ‘ä»¬æ²¡æœ‰ç”¨åˆ° 
+#define LCD_WRITE_REG(Off,data)    //æœ‰äº›åœ°æ–¹ç”¨åˆ°äº† å®šä¹‰ä¸ºç©º é¿å…åšå¤§æ”¹åŠ¨ 
 
 
 #if (LCD_CONTROLLER/100 == 13) && (LCD_CONTROLLER/10 != 133) \

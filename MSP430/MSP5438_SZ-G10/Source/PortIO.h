@@ -2,52 +2,52 @@
 
 extern char Open_Box_Flag;
 
-//ÉÏµç¼ì²â p1.0  P2.0   IOÖÐ¶Ï
+//ä¸Šç”µæ£€æµ‹ p1.0  P2.0   IOä¸­æ–­
 #define PWRON BIT0
-//ÖÐ¶Ï¹¦ÄÜ
-//Àî¿­£ºÉÏÉýÑØ´¥·¢       £¨ÀîÊØÀÚ£ºÑ¡ÔñÏÂ½µÑØ´¥·¢£©
-//´ò¿ªÖÐ¶ÏÔÊÐí
-//PxIESµÄÇÐ»»¿ÉÄÜÊ¹P1IFGÖÃÎ»£¬ÐèÇå³ý
+//ä¸­æ–­åŠŸèƒ½
+//æŽå‡¯ï¼šä¸Šå‡æ²¿è§¦å‘       ï¼ˆæŽå®ˆç£Šï¼šé€‰æ‹©ä¸‹é™æ²¿è§¦å‘ï¼‰
+//æ‰“å¼€ä¸­æ–­å…è®¸
+//PxIESçš„åˆ‡æ¢å¯èƒ½ä½¿P1IFGç½®ä½ï¼Œéœ€æ¸…é™¤
 #define Init_PWRON()    P2DIR &=  ~PWRON;\
                         P2SEL &=  ~PWRON;\
                         P2IES &=  ~PWRON;\
                         P2IE  |=  PWRON;\
                         P2IFG=0
 
-//×÷ÎªÆÕÍ¨IO ÊäÈë ÎÞÉÏÀ­
+//ä½œä¸ºæ™®é€šIO è¾“å…¥ æ— ä¸Šæ‹‰
 #define Close_PWRON()   P2SEL &=  ~PWRON;\
                         P2IE  &=  ~PWRON
 
 
-//Õð¶¯»½ÐÑ      P2.1        IOÖÐ¶Ï
+//éœ‡åŠ¨å”¤é†’      P2.1        IOä¸­æ–­
 #define SHAKE BIT1
-//ÖÐ¶Ï¹¦ÄÜ
-//Ñ¡ÔñÏÂ½µÑØ´¥·¢
-//´ò¿ªÖÐ¶ÏÔÊÐí
-//PxIESµÄÇÐ»»¿ÉÄÜÊ¹P1IFGÖÃÎ»£¬ÐèÇå³ý
+//ä¸­æ–­åŠŸèƒ½
+//é€‰æ‹©ä¸‹é™æ²¿è§¦å‘
+//æ‰“å¼€ä¸­æ–­å…è®¸
+//PxIESçš„åˆ‡æ¢å¯èƒ½ä½¿P1IFGç½®ä½ï¼Œéœ€æ¸…é™¤
 #define Init_Shake()    P2DIR &=  ~SHAKE;\
                         P2SEL &=  ~SHAKE;\
                         P2IES |=  SHAKE;\
                         P2IE  |=  SHAKE;\
                         P2IFG=0
 
-//×÷ÎªÆÕÍ¨IO ÊäÈë ÎÞÉÏÀ­
+//ä½œä¸ºæ™®é€šIO è¾“å…¥ æ— ä¸Šæ‹‰
 #define Close_Shake()   P2SEL &=  ~SHAKE;\
                         P2IE  &=  ~SHAKE
 
 
-//¿ªºÐ»½ÐÑ      P2.3        IOÖÐ¶Ï
+//å¼€ç›’å”¤é†’      P2.3        IOä¸­æ–­
 #define OPEN BIT3
-//ÖÐ¶Ï¹¦ÄÜ
-//Ñ¡ÔñÏÂ½µÑØ´¥·¢
-//´ò¿ªÖÐ¶ÏÔÊÐí
-//PxIESµÄÇÐ»»¿ÉÄÜÊ¹P1IFGÖÃÎ»£¬ÐèÇå³ý
+//ä¸­æ–­åŠŸèƒ½
+//é€‰æ‹©ä¸‹é™æ²¿è§¦å‘
+//æ‰“å¼€ä¸­æ–­å…è®¸
+//PxIESçš„åˆ‡æ¢å¯èƒ½ä½¿P1IFGç½®ä½ï¼Œéœ€æ¸…é™¤
 #define Init_Open_Up()  P2DIR &=  ~OPEN;\
                         P2SEL &=  ~OPEN;\
                         P2IES &=  ~OPEN;\
                         P2IE  |=   OPEN;\
                         P2IFG=0
-/* ±ÕºÐ±¨¾¯ÆÁ±Î
+/* é—­ç›’æŠ¥è­¦å±è”½
 #define Init_Open_Down()P2DIR &=  ~OPEN;\
                         P2SEL &=  ~OPEN;\
                         P2IES |=   OPEN;\
@@ -55,39 +55,39 @@ extern char Open_Box_Flag;
                         P2IFG=0
 */
 
-//×÷ÎªÆÕÍ¨IO ÊäÈë ÎÞÉÏÀ­
+//ä½œä¸ºæ™®é€šIO è¾“å…¥ æ— ä¸Šæ‹‰
 #define Close_Open()    P2SEL &=  ~OPEN;\
                         P2IE  &=  ~OPEN
 
-//À´µç»½ÐÑ p2.0  P2.6       IOÖÐ¶Ï
+//æ¥ç”µå”¤é†’ p2.0  P2.6       IOä¸­æ–­
 #define RING BIT6
-//ÖÐ¶Ï¹¦ÄÜ
-//Ñ¡ÔñÏÂ½µÑØ´¥·¢
-//´ò¿ªÖÐ¶ÏÔÊÐí
-//PxIESµÄÇÐ»»¿ÉÄÜÊ¹P1IFGÖÃÎ»£¬ÐèÇå³ý
+//ä¸­æ–­åŠŸèƒ½
+//é€‰æ‹©ä¸‹é™æ²¿è§¦å‘
+//æ‰“å¼€ä¸­æ–­å…è®¸
+//PxIESçš„åˆ‡æ¢å¯èƒ½ä½¿P1IFGç½®ä½ï¼Œéœ€æ¸…é™¤
 #define Init_Ring()     P2DIR &=  ~RING;\
                         P2SEL &=  ~RING;\
                         P2IES |=  RING;\
                         P2IE  |=  RING;\
                         P2IFG=0
 
-//×÷ÎªÆÕÍ¨IO ÊäÈë ÎÞÉÏÀ­
+//ä½œä¸ºæ™®é€šIO è¾“å…¥ æ— ä¸Šæ‹‰
 #define Close_Ring()    P2SEL &=  ~RING;\
                         P2IE  &=  ~RING
 
-//GPS¶¨Î»»½ÐÑ   P2.7      IOÖÐ¶Ï
+//GPSå®šä½å”¤é†’   P2.7      IOä¸­æ–­
 #define LOCATE BIT7
-//ÖÐ¶Ï¹¦ÄÜ
-//Ñ¡ÔñÏÂ½µÑØ´¥·¢
-//´ò¿ªÖÐ¶ÏÔÊÐí
-//PxIESµÄÇÐ»»¿ÉÄÜÊ¹P1IFGÖÃÎ»£¬ÐèÇå³ý
+//ä¸­æ–­åŠŸèƒ½
+//é€‰æ‹©ä¸‹é™æ²¿è§¦å‘
+//æ‰“å¼€ä¸­æ–­å…è®¸
+//PxIESçš„åˆ‡æ¢å¯èƒ½ä½¿P1IFGç½®ä½ï¼Œéœ€æ¸…é™¤
 #define Init_Locate()   P2DIR &=  ~LOCATE;\
                         P2SEL &=  ~LOCATE;\
                         P2IES |=  LOCATE;\
                         P2IE  |=  LOCATE;\
                         P2IFG=0
 
-//×÷ÎªÆÕÍ¨IO ÊäÈë ÎÞÉÏÀ­
+//ä½œä¸ºæ™®é€šIO è¾“å…¥ æ— ä¸Šæ‹‰
 #define Close_Locate()  P2SEL &=  ~LOCATE;\
                         P2IE  &=  ~LOCATE
 
@@ -95,9 +95,9 @@ extern char Open_Box_Flag;
 
 
 
-//2013.9.4 Ìí¼Ó  
-//³õÊ¼»¯Î´Ê¹ÓÃµÄIO
-//Î´Ê¹ÓÃµÄIOÉèÖÃÎªÆÕÍ¨IO,Êä³ö£¬ÔÚPCBÉÏ²»Á¬½Ó
+//2013.9.4 æ·»åŠ   
+//åˆå§‹åŒ–æœªä½¿ç”¨çš„IO
+//æœªä½¿ç”¨çš„IOè®¾ç½®ä¸ºæ™®é€šIO,è¾“å‡ºï¼Œåœ¨PCBä¸Šä¸è¿žæŽ¥
 //P1.1, P1.2, P1.3, P1.4, P1.5, P1.6, P1.7
 //P2.2, P2.4, P2.5
 //P3.0, P3.1, P3.2, P3.3, P3.6, P3.7
