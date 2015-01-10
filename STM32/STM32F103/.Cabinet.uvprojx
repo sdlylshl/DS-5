@@ -47,7 +47,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Debug\</OutputDirectory>
-          <OutputName>Cabinet</OutputName>
+          <OutputName>STM32F103</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -677,6 +677,11 @@
               <FileName>hal_nrf.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\Nordic\nrf24l01p\hal_nrf.c</FilePath>
+            </File>
+            <File>
+              <FileName>hal_nrf_hw.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Nordic\hal_nrf_hw.c</FilePath>
             </File>
           </Files>
         </Group>
