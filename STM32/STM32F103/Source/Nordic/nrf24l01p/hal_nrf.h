@@ -61,28 +61,28 @@
  * @param int_source Radio interrupt Source.
  * @param irq_state Enable or Disable.
 */
-void hal_nrf_set_irq_mode(hal_nrf_irq_source_t int_source, bool irq_state);
+void hal_nrf_set_irq_mode(_nrf_chip_t *nrf_chip, hal_nrf_irq_source_t int_source, bool irq_state);
 
 /* For the obsolete nRF24L01 it is necessary to issue an activate command before the
  * features enabled by the FEATURE register can be used. For nRF24L01+ these features
  * are by default enabled.
 */
-void hal_nrf_activate_features(void);
+void hal_nrf_activate_features(_nrf_chip_t *nrf_chip);
 
 /** Enables the dynamic packet length
  * @param enable Whether enable or disable dynamic packet length
  */
-void hal_nrf_enable_dynamic_payload(bool enable);
+void hal_nrf_enable_dynamic_payload(_nrf_chip_t *nrf_chip, bool enable);
 
 /** Enables the ACK payload feature
  * @param enable Whether to enable or disable ACK payload
  */
-void hal_nrf_enable_ack_payload(bool enable);
+void hal_nrf_enable_ack_payload(_nrf_chip_t *nrf_chip, bool enable);
 
 /** Enables the dynamic ack feature
  * @param enable Whether to enable or disable Dynamic ACK
  */
-void hal_nrf_enable_dynamic_ack(bool enable);
+void hal_nrf_enable_dynamic_ack(_nrf_chip_t *nrf_chip, bool enable);
 
 /** Function for enabling dynmic payload size.
  * The input parameter contains is a byte where the bit values tells weather the
@@ -90,12 +90,12 @@ void hal_nrf_enable_dynamic_ack(bool enable);
  * pipe 0 will accept dynamic payload size.
  * @param setup Byte value telling for which pips(s) to enable dynamic payload size
  */
-void hal_nrf_setup_dynamic_payload(uint8_t setup);
+void hal_nrf_setup_dynamic_payload(_nrf_chip_t *nrf_chip, uint8_t setup);
 
 /** Reads the payload width of the received ack payload
  * @return Payload width of the received ack payload
  */
-uint8_t hal_nrf_read_rx_payload_width(void);
+uint8_t hal_nrf_read_rx_payload_width(_nrf_chip_t *nrf_chip);
 
 /** Write ack payload
  * Writes the payload that will be transmitted with the ack on the given pipe.
@@ -103,7 +103,7 @@ uint8_t hal_nrf_read_rx_payload_width(void);
  * @param tx_pload Pointer to the payload data
  * @param length Size of the data to transmit
  */
-void hal_nrf_write_ack_payload(uint8_t pipe, const uint8_t *tx_pload, uint8_t length);
+void hal_nrf_write_ack_payload(_nrf_chip_t *nrf_chip, uint8_t pipe, const uint8_t *tx_pload, uint8_t length);
 
 /** Read then clears all interrupt flags.
  * Use this function to get the interrupt flags and clear them in the same operation.
@@ -114,9 +114,9 @@ void hal_nrf_write_ack_payload(uint8_t pipe, const uint8_t *tx_pload, uint8_t le
  * @retval 0x20 TX Data sent interrupt
  * @retval 0x40 RX Data received interrupt
 */
-uint8_t hal_nrf_get_clear_irq_flags(void);
+uint8_t hal_nrf_get_clear_irq_flags(_nrf_chip_t *nrf_chip);
 
-uint8_t hal_nrf_clear_irq_flags_get_status(void);
+uint8_t hal_nrf_clear_irq_flags_get_status(_nrf_chip_t *nrf_chip);
 
 /** Clear one selected interrupt flag.
  * Use this function to clear one @a spesific interrupt flag.
@@ -124,14 +124,14 @@ uint8_t hal_nrf_clear_irq_flags_get_status(void);
  *
  * @param int_source Interrupt source of which flag to clear
 */
-void hal_nrf_clear_irq_flag(hal_nrf_irq_source_t int_source);
+void hal_nrf_clear_irq_flag(_nrf_chip_t *nrf_chip, hal_nrf_irq_source_t int_source);
 
 /** Set the CRC mode used by the radio.
  * Use this function to set the CRC mode; CRC disabled, 1 or 2 bytes.
  *
  * @param crc_mode CRC mode to use
 */
-void hal_nrf_set_crc_mode(hal_nrf_crc_mode_t crc_mode);
+void hal_nrf_set_crc_mode(_nrf_chip_t *nrf_chip, hal_nrf_crc_mode_t crc_mode);
 
 /** Open radio pipe(s) and enable/ disable auto acknowledge.
  * Use this function to open one or all pipes,
@@ -141,14 +141,14 @@ void hal_nrf_set_crc_mode(hal_nrf_crc_mode_t crc_mode);
  * @param auto_ack Auto_Ack ON/OFF
  * @see hal_nrf_address
 */
-void hal_nrf_open_pipe(hal_nrf_address_t pipe_num, bool auto_ack);
+void hal_nrf_open_pipe(_nrf_chip_t *nrf_chip, hal_nrf_address_t pipe_num, bool auto_ack);
 
 /** Close radio pipe(s).
  * Use this function to close one pipe or all pipes.
  *
  * @param pipe_num Pipe# number to close
 */
-void hal_nrf_close_pipe(hal_nrf_address_t pipe_num);
+void hal_nrf_close_pipe(_nrf_chip_t *nrf_chip, hal_nrf_address_t pipe_num);
 
 /** Set radio's RX address and TX address.
  * Use this function to set a RX address, or to set the TX address.
@@ -157,7 +157,7 @@ void hal_nrf_close_pipe(hal_nrf_address_t pipe_num);
  * @param address Which address to set
  * @param *addr Buffer from which the address is stored in
 */
-void hal_nrf_set_address(const hal_nrf_address_t address, const uint8_t *addr);
+void hal_nrf_set_address(_nrf_chip_t *nrf_chip, const hal_nrf_address_t address, const uint8_t *addr);
 
 /** Get address for selected pipe.
  * Use this function to get address for selected pipe.
@@ -170,7 +170,7 @@ void hal_nrf_set_address(const hal_nrf_address_t address, const uint8_t *addr);
  *
  * @return Numbers of bytes copied to addr
 */
-uint8_t hal_nrf_get_address (const hal_nrf_address_t address, uint8_t *addr);
+uint8_t hal_nrf_get_address (_nrf_chip_t *nrf_chip, const hal_nrf_address_t address, uint8_t *addr);
 
 /** Set auto acknowledge parameters.
  * Use this function to set retransmit and retransmit delay
@@ -179,7 +179,7 @@ uint8_t hal_nrf_get_address (const hal_nrf_address_t address, uint8_t *addr);
  * @param retr Number of retransmit, 0 equ retransmit OFF
  * @param delay Retransmit delay in 祍. Must be a
 */
-void hal_nrf_set_auto_retr(uint8_t retr, uint16_t delay);
+void hal_nrf_set_auto_retr(_nrf_chip_t *nrf_chip, uint8_t retr, uint16_t delay);
 
 /** Set radio's address width.
  * Use this function to define the radio's address width,
@@ -187,13 +187,13 @@ void hal_nrf_set_auto_retr(uint8_t retr, uint16_t delay);
  *
  * @param address_width Address with in bytes
 */
-void hal_nrf_set_address_width(hal_nrf_address_width_t address_width);
+void hal_nrf_set_address_width(_nrf_chip_t *nrf_chip, hal_nrf_address_width_t address_width);
 
 /** Gets the radio's address width.
  *
  * @return Address width
  */
-uint8_t hal_nrf_get_address_width (void);
+uint8_t hal_nrf_get_address_width (_nrf_chip_t *nrf_chip);
 
 /** Set payload width for selected pipe.
  * Use this function to set the number of bytes expected
@@ -202,7 +202,7 @@ uint8_t hal_nrf_get_address_width (void);
  * @param pipe_num Pipe number to set payload width for
  * @param pload_width number of bytes expected
 */
-void hal_nrf_set_rx_payload_width(hal_nrf_address_t pipe_num, uint8_t pload_width);
+void hal_nrf_set_rx_payload_width(_nrf_chip_t *nrf_chip, hal_nrf_address_t pipe_num, uint8_t pload_width);
 
 /** Read current interrupt mode for selected interrupt source.
  * Use this function to get the interrupt source's mode,
@@ -214,7 +214,7 @@ void hal_nrf_set_rx_payload_width(hal_nrf_address_t pipe_num, uint8_t pload_widt
  * @retval FALSE Interrupt disabled
  * @retval TRUE Interrupt enabled
 */
-bool hal_nrf_get_irq_mode(uint8_t int_source);
+bool hal_nrf_get_irq_mode(_nrf_chip_t *nrf_chip, uint8_t int_source);
 
 /** Read all interrupt flags.
  * Use this function to get the interrupt flags. This function is similar
@@ -226,7 +226,7 @@ bool hal_nrf_get_irq_mode(uint8_t int_source);
  * @retval 0x20 TX Data sent interrupt
  * @retval 0x40 RX Data received interrupt
 */
-uint8_t hal_nrf_get_irq_flags(void);
+uint8_t hal_nrf_get_irq_flags(_nrf_chip_t *nrf_chip);
 
 /** Get pipe status.
  * Use this function to check status for a selected pipe.
@@ -238,7 +238,7 @@ uint8_t hal_nrf_get_irq_flags(void);
  * @retval 0x01 Pipe is open, autoack disabled
  * @retval 0x03 Pipe is open, autoack enabled
 */
-uint8_t hal_nrf_get_pipe_status(hal_nrf_address_t pipe_num);
+uint8_t hal_nrf_get_pipe_status(_nrf_chip_t *nrf_chip, hal_nrf_address_t pipe_num);
 
 /** Get auto retransmit parameters.
  * Use this function to get the auto retransmit parameters,
@@ -249,14 +249,14 @@ uint8_t hal_nrf_get_pipe_status(hal_nrf_address_t pipe_num);
  * @retval UpperNibble Retransmit Delay
  * @retval LowerNibble Retransmit Count
 */
-uint8_t hal_nrf_get_auto_retr_status(void);
+uint8_t hal_nrf_get_auto_retr_status(_nrf_chip_t *nrf_chip);
 
 /** Get packet lost counter
  * Use this function to get the packet(s) counter.
  *
  * @return packet lost counter
 */
-uint8_t hal_nrf_get_packet_lost_ctr(void);
+uint8_t hal_nrf_get_packet_lost_ctr(_nrf_chip_t *nrf_chip);
 
 /** Get RX payload width for selected pipe.
  * Use this function to get the expected payload
@@ -266,7 +266,7 @@ uint8_t hal_nrf_get_packet_lost_ctr(void);
  *
  * @return Payload_Width in bytes
 */
-uint8_t hal_nrf_get_rx_payload_width(hal_nrf_address_t pipe_num);
+uint8_t hal_nrf_get_rx_payload_width(_nrf_chip_t *nrf_chip, hal_nrf_address_t pipe_num);
 //@}
 
 /** @name Operation */
@@ -279,28 +279,28 @@ uint8_t hal_nrf_get_rx_payload_width(hal_nrf_address_t pipe_num);
  *
  * @param op_mode Operation mode
 */
-void hal_nrf_set_operation_mode(hal_nrf_operation_mode_t op_mode);
+void hal_nrf_set_operation_mode(_nrf_chip_t *nrf_chip, hal_nrf_operation_mode_t op_mode);
 
 /** Set radio's power mode.
  * Use this function to power_up or power_down radio.
  *
  * @param pwr_mode POWER_UP or POWER_DOWN
 */
-void hal_nrf_set_power_mode(hal_nrf_pwr_mode_t pwr_mode);
+void hal_nrf_set_power_mode(_nrf_chip_t *nrf_chip, hal_nrf_pwr_mode_t pwr_mode);
 
 /** Set radio's RF channel.
  * Use this function to select which RF channel to use.
  *
  * @param channel RF channel
 */
-void hal_nrf_set_rf_channel(uint8_t channel);
+void hal_nrf_set_rf_channel(_nrf_chip_t *nrf_chip, uint8_t channel);
 
 /** Set radio's TX output power.
  * Use this function set the radio's TX output power.
  *
  * @param power Radio's TX output power
 */
-void hal_nrf_set_output_power(hal_nrf_output_power_t power);
+void hal_nrf_set_output_power(_nrf_chip_t *nrf_chip, hal_nrf_output_power_t power);
 
 /** Set radio's on-air datarate.
  * Use this function to select radio's on-air
@@ -308,7 +308,7 @@ void hal_nrf_set_output_power(hal_nrf_output_power_t power);
  *
  * @param datarate On-air datarate
 */
-void hal_nrf_set_datarate(hal_nrf_datarate_t datarate);
+void hal_nrf_set_datarate(_nrf_chip_t *nrf_chip, hal_nrf_datarate_t datarate);
 
 
 /* Status functions prototypes */
@@ -323,7 +323,7 @@ void hal_nrf_set_datarate(hal_nrf_datarate_t datarate);
  * @retval 0x02 FIFO full
  *
 */
-uint8_t hal_nrf_get_tx_fifo_status(void);
+uint8_t hal_nrf_get_tx_fifo_status(_nrf_chip_t *nrf_chip);
 
 /** Check for TX FIFO empty.
  * Use this function to check if TX FIFO
@@ -334,7 +334,7 @@ uint8_t hal_nrf_get_tx_fifo_status(void);
  * @retval TRUE TX FIFO empty
  *
 */
-bool hal_nrf_tx_fifo_empty(void);
+bool hal_nrf_tx_fifo_empty(_nrf_chip_t *nrf_chip);
 
 /** Check for TX FIFO full.
  * Use this function to check if TX FIFO
@@ -345,7 +345,7 @@ bool hal_nrf_tx_fifo_empty(void);
  * @retval TRUE TX FIFO full
  *
 */
-bool hal_nrf_tx_fifo_full(void);
+bool hal_nrf_tx_fifo_full(_nrf_chip_t *nrf_chip);
 
 /** Get radio's RX FIFO status.
  * Use this function to get the radio's TX
@@ -357,9 +357,9 @@ bool hal_nrf_tx_fifo_full(void);
  * @retval 0x02 RX FIFO full
  *
 */
-uint8_t hal_nrf_get_rx_fifo_status(void);
+uint8_t hal_nrf_get_rx_fifo_status(_nrf_chip_t *nrf_chip);
 
-uint8_t hal_nrf_get_fifo_status(void);
+uint8_t hal_nrf_get_fifo_status(_nrf_chip_t *nrf_chip);
 
 /** Check for RX FIFO empty.
  * Use this function to check if RX FIFO
@@ -372,7 +372,7 @@ uint8_t hal_nrf_get_fifo_status(void);
  * @retval TRUE RX FIFO empty
  *
 */
-bool hal_nrf_rx_fifo_empty(void);
+bool hal_nrf_rx_fifo_empty(_nrf_chip_t *nrf_chip);
 
 /** Check for RX FIFO full.
  * Use this function to check if RX FIFO
@@ -383,7 +383,7 @@ bool hal_nrf_rx_fifo_empty(void);
  * @retval TRUE RX FIFO full
  *
 */
-bool hal_nrf_rx_fifo_full(void);
+bool hal_nrf_rx_fifo_full(_nrf_chip_t *nrf_chip);
 
 /** Get radio's transmit attempts status.
  * Use this function to get number of retransmit
@@ -391,7 +391,7 @@ bool hal_nrf_rx_fifo_full(void);
  *
  * @return Retransmit attempts counters
 */
-uint8_t hal_nrf_get_transmit_attempts(void);
+uint8_t hal_nrf_get_transmit_attempts(_nrf_chip_t *nrf_chip);
 
 /** Get the carrier detect flag.
  * Use this function to get the carrier detect flag,
@@ -402,7 +402,7 @@ uint8_t hal_nrf_get_transmit_attempts(void);
  * @retval FALSE Carrier NOT Detected
  * @retval TRUE Carrier Detected
 */
-bool hal_nrf_get_carrier_detect(void);
+bool hal_nrf_get_carrier_detect(_nrf_chip_t *nrf_chip);
 
 /* Data operation prototypes */
 
@@ -412,7 +412,7 @@ bool hal_nrf_get_carrier_detect(void);
  *
  * @return pipe number of current packet present
 */
-uint8_t hal_nrf_get_rx_data_source(void);
+uint8_t hal_nrf_get_rx_data_source(_nrf_chip_t *nrf_chip);
 
 /** Read RX payload.
  * Use this function to read top level payload
@@ -421,7 +421,7 @@ uint8_t hal_nrf_get_rx_data_source(void);
  * @param  *rx_pload pointer to buffer in which RX payload are stored
  * @return pipe number (MSB byte) and packet length (LSB byte)
 */
-uint16_t hal_nrf_read_rx_payload(uint8_t *rx_pload);
+uint16_t hal_nrf_read_rx_payload(_nrf_chip_t *nrf_chip, uint8_t *rx_pload);
 
 /** Write TX payload to radio.
  * Use this function to write a packet of
@@ -431,7 +431,7 @@ uint16_t hal_nrf_read_rx_payload(uint8_t *rx_pload);
  * @param *tx_pload pointer to buffer in which TX payload are present
  * @param length number of bytes to write
 */
-void hal_nrf_write_tx_payload(const uint8_t *tx_pload, uint8_t length);
+void hal_nrf_write_tx_payload(_nrf_chip_t *nrf_chip, const uint8_t *tx_pload, uint8_t length);
 
 /** Write TX payload which do not require ACK. When transmitting
  * a ACK is not required nor sent from the receiver. The payload will
@@ -444,14 +444,14 @@ void hal_nrf_write_tx_payload(const uint8_t *tx_pload, uint8_t length);
  * @param *tx_pload pointer to buffer in which TX payload are present
  * @param length number of bytes to write
 */
-void hal_nrf_write_tx_payload_noack(const uint8_t *tx_pload, uint8_t length);
+void hal_nrf_write_tx_payload_noack(_nrf_chip_t *nrf_chip, const uint8_t *tx_pload, uint8_t length);
 
 /** Reuse TX payload.
  * Use this function to set that the radio is using
  * the last transmitted payload for the next packet as well.
  *
 */
-void hal_nrf_reuse_tx(void);
+void hal_nrf_reuse_tx(_nrf_chip_t *nrf_chip);
 
 /** Get status of reuse TX function.
  * Use this function to check if reuse TX payload is
@@ -461,21 +461,21 @@ void hal_nrf_reuse_tx(void);
  * @retval FALSE Not activated
  * @retval TRUE Activated
 */
-bool hal_nrf_get_reuse_tx_status(void);
+bool hal_nrf_get_reuse_tx_status(_nrf_chip_t *nrf_chip);
 
 /** Flush RX FIFO.
  * Use this function to flush the radio's
  * RX FIFO.
  *
 */
-void hal_nrf_flush_rx(void);
+void hal_nrf_flush_rx(_nrf_chip_t *nrf_chip);
 
 /** Flush TX FIFO.
  * Use this function to flush the radio's
  * TX FIFO.
  *
 */
-void hal_nrf_flush_tx(void);
+void hal_nrf_flush_tx(_nrf_chip_t *nrf_chip);
 
 /** No Operation command.
  * Use this function to receive the radio's
@@ -483,7 +483,7 @@ void hal_nrf_flush_tx(void);
  *
  * @return Status register
 */
-uint8_t hal_nrf_nop(void);
+uint8_t hal_nrf_nop(_nrf_chip_t *nrf_chip);
 //@}
 
 /** @name  Test */
@@ -496,7 +496,7 @@ uint8_t hal_nrf_nop(void);
  *
  * @param pll_lock PLL locked, TRUE or FALSE
 */
-void hal_nrf_set_pll_mode(bool pll_lock);
+void hal_nrf_set_pll_mode(_nrf_chip_t *nrf_chip, bool pll_lock);
 
 /** Set radio's LNA gain mode.
  * Use this function to either use HI
@@ -504,14 +504,14 @@ void hal_nrf_set_pll_mode(bool pll_lock);
  *
  * @param lna_gain LNA gain mode
 */
-void hal_nrf_set_lna_gain(bool lna_gain);
+void hal_nrf_set_lna_gain(_nrf_chip_t *nrf_chip, bool lna_gain);
 
 /** Enables continuous carrier transmit.
  * Use this function to enable or disable
  * continuous carrier transmission.
  * @param enable Enable continuous carrier
  */
-void hal_nrf_enable_continious_wave (bool enable);
+void hal_nrf_enable_continious_wave (_nrf_chip_t *nrf_chip, bool enable);
 
 /* hal_nrf_l01 basic functions, used by all the other functions */
 
@@ -530,7 +530,9 @@ void hal_nrf_enable_continious_wave (bool enable);
 */
 //uint8_t hal_nrf_rw(uint8_t value);
 
-uint8_t hal_nrf_read_reg(uint8_t reg);
+uint8_t hal_nrf_read_reg(_nrf_chip_t *nrf_chip, uint8_t reg);
+uint8_t hal_nrf_write_reg(_nrf_chip_t *nrf_chip, uint8_t reg, uint8_t value);
+void hal_nrf_enable_radio(_nrf_chip_t *nrf_chip);
 //@}
 #endif // HAL_NRF_H__
 /** @} */

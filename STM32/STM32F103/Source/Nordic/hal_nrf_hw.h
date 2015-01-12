@@ -36,13 +36,23 @@
 
 #define CHANAL 40
 #define MAX_NRFCHIP 3
-_nrfchip_t nrfchip[MAX_NRFCHIP];
 #define NRF_ADR_WIDTH 5
-uint8_t nrf_txaddr[MAX_NRFCHIP][NRF_ADR_WIDTH];
-uint8_t nrf_rxaddr[MAX_NRFCHIP][NRF_ADR_WIDTH];
 #define NRF_ID_WIDTH 5
-uint8_t nrf_id[MAX_NRFCHIP][NRF_ID_WIDTH];
+typedef enum{
+	NRF_RECIVE,
+	NRF_SEND
+}NRF_NUM_t;
+typedef struct __nrf_chip{
+	uint8_t radio_busy;
+	uint8_t (*NRF_Read_IRQ)(void);
+	void (*CSN_LOW)(void);
+	void (*CSN_HIGH)(void);
+	void (*CE_LOW)(void);
+	void (*CE_HIGH)(void);
+	uint8_t (*hal_nrf_rw)(uint8_t);
 
+}_nrf_chip_t;
+extern _nrf_chip_t nrf_chip;
 typedef struct __nrfchip {
 	uint8_t radio_busy;
 	uint8_t chanal;
@@ -108,9 +118,11 @@ extern uFUNu hal_nrf_rw;
   } while(false)
 
 #endif // HAL_NRF_LU1_H__
-void nrfchip_init(void);
-void nrfchip_spi1(void);
-void nrfchip_spi2(void);
-void nrfchip_choice(_nrfchip_t nrf);	
+typedef enum {
+	SPI_1,
+	SPI_2,
+	SPI_3
+}SPIx_t;
+void nrfchip_init(_nrf_chip_t *nrf_chip, SPIx_t SPIx);
 	
 /** @} */
