@@ -1,7 +1,7 @@
 #ifndef _NVIC_H_
 #define _NVIC_H_
 #include "version.h"
-
+extern uint8_t EXTIn;
 #define NVIC_SPI2_IRQ
 
 void NVIC_EXTI0_init(void);

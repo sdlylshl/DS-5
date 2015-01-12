@@ -33,13 +33,24 @@
 #define RX_ADR_WIDTH    5
 #define RX_PLOAD_WIDTH  4
 
+
 #define CHANAL 40
+#define MAX_NRFCHIP 3
+_nrfchip_t nrfchip[MAX_NRFCHIP];
+#define NRF_ADR_WIDTH 5
+uint8_t nrf_txaddr[MAX_NRFCHIP][NRF_ADR_WIDTH];
+uint8_t nrf_rxaddr[MAX_NRFCHIP][NRF_ADR_WIDTH];
+#define NRF_ID_WIDTH 5
+uint8_t nrf_id[MAX_NRFCHIP][NRF_ID_WIDTH];
 
 typedef struct __nrfchip {
 	uint8_t radio_busy;
-	uint8_t id[6];
-	uint8_t tx_addr[5];
-	uint8_t rx_addr[5];
+	uint8_t chanal;
+	uint8_t id[NRF_ID_WIDTH];
+	uint8_t tx_addr[NRF_ADR_WIDTH];
+	uint8_t rx_addr[NRF_ADR_WIDTH];
+	uint8_t head;
+	uint8_t end;
 	uint8_t rx_buffer[256];
 
 	struct _IRQ {
@@ -97,6 +108,7 @@ extern uFUNu hal_nrf_rw;
   } while(false)
 
 #endif // HAL_NRF_LU1_H__
+void nrfchip_init(void);
 void nrfchip_spi1(void);
 void nrfchip_spi2(void);
 void nrfchip_choice(_nrfchip_t nrf);	

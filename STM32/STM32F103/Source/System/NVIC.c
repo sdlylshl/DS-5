@@ -82,7 +82,7 @@
 //   NVIC_PriorityGroup_4  |                0-15               |            0                |   4 bits for pre-emption priority
 //                         |                                   |                             |   0 bits for subpriority                       
 //  ============================================================================================================================
-
+uint8_t EXTIn;
  void NVIC_EXTI0_init(void) {
 	
 	EXTI_InitTypeDef EXTI_InitStructure;
@@ -309,6 +309,7 @@ void EXTI9_5_IRQHandle(void){
 	if (EXTI_GetITStatus(EXTI_Line5) == SET) {
 		EXTI_ClearFlag(EXTI_Line5);
 		EXTI_ClearITPendingBit(EXTI_Line5);
+		EXTIn = 5;
 		NRF_ISR();
 	}else
 	if (EXTI_GetITStatus(EXTI_Line6) == SET) {
@@ -324,6 +325,7 @@ void EXTI9_5_IRQHandle(void){
 	if (EXTI_GetITStatus(EXTI_Line8) == SET) {
 		EXTI_ClearFlag(EXTI_Line8);
 		EXTI_ClearITPendingBit(EXTI_Line8);
+		EXTIn = 8;
 		NRF_ISR();
 	}else
 	if (EXTI_GetITStatus(EXTI_Line9) == SET) {

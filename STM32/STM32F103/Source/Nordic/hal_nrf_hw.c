@@ -22,9 +22,15 @@
 #include "./System/System_config.h"
 #include "hal_nrf_hw.h"
 
+#define MAX_NRFCHIP 3
+_nrfchip_t nrfchip;
+#define NRF_ADR_WIDTH 5
+uint8_t nrf_txaddr[MAX_NRFCHIP][NRF_ADR_WIDTH]={};
+uint8_t nrf_rxaddr[MAX_NRFCHIP][NRF_ADR_WIDTH]={};
+#define NRF_ID_WIDTH 5
+uint8_t nrf_id[MAX_NRFCHIP][NRF_ID_WIDTH]={};
 
-_nrfchip_t NRFCHIP;
-
+uint8_t nrf_rx_buffer[256];
 //{
 //	.id = {1,2,3,4},
 //	.IRQ._readirq =SPI1_readIRQ,
@@ -80,4 +86,23 @@ void nrfchip_choice(_nrfchip_t nrf){
 	hal_nrf_rw = nrf.IF.SPI._write_byte;
 
 }
+
+void nrfchip_init(){
+
+	nrfchip.id = nrf_id[0];
+	nrfchip.radio_busy =0;
+	nrfchip.chanal =40;
+	nrfchip.head =0;
+	nrfchip.end =0;
+	nrfchip.rx_buffer = nrf_rx_buffer;
+	nrfchip.rx_addr = nrf_rxaddr[0];
+	nrfchip.tx_addr = nrf_txaddr[0] ;
+	nrfchip.IRQ._readirq =SPI1_readIRQ;
+	nrfchip.CE._low =SPI1_ResetRST;
+	nrfchip.CE._high =SPI1_SetRST;
+	nrfchip.CS._low =SPI1_ResetNSS;
+	nrfchip.CS._high =SPI1_SetNSS;
+	nrfchip.IF.SPI._write_byte =SPI1_SendByte;
+}
+
 #endif

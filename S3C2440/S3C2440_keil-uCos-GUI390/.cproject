@@ -21,6 +21,9 @@
 							<tool id="com.arm.tool.c.compiler.baremetal.exe.debug.53643932" name="ARM C Compiler" superClass="com.arm.tool.c.compiler.baremetal.exe.debug">
 								<option id="com.arm.tool.c.compiler.option.incpath.2030398399" name="Include path (-I)" superClass="com.arm.tool.c.compiler.option.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/S3C2440/includes}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/GUIDemo}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/GUI/WM}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/uCOS_II/arm}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/GUI/Widget}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/Nand}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Source/Printf}&quot;"/>

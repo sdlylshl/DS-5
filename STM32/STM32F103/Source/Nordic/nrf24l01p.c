@@ -130,6 +130,11 @@ static void nrf_config() {
 }
 
 void nrf_rx_mode() {
+#ifdef MASTER
+	nrfchip_spi1();
+#else
+	nrfchip_spi2();
+#endif
 	CE_LOW();
 	//hal_nrf_flush_rx();
 	//hal_nrf_set_irq_mode(HAL_NRF_MASK_MAX_RT,false);
@@ -196,7 +201,9 @@ void nrf_master() {
 	uint8_t i;
 	printf(" master mode \n");
 
+	//nrfchip_spi1();
 	nrf_rx_mode();
+
 	while (1) {
 		//
 		//Delay_ms(100);
@@ -204,6 +211,11 @@ void nrf_master() {
 		//发送失败|收到数据 重发
 		if (radio_busy & RX_DR) {
 			radio_busy = 0;
+			#ifdef MASTER
+			nrfchip_spi2();
+		#else
+			nrfchip_spi2();
+		#endif
 			nrf_tx_dat(NRF__RX_BUF);
 			//printf("\r\n master recv dat :");
 			for (i = 0; i < 4; i++) {
@@ -264,7 +276,7 @@ void nrf_main() {
 
 	uint8_t status = 0;
 //    uint8_t i;
-	nrfchip_spi1();
+	nrfchip_spi2();
 	printf("nrf_spi1\n");
 
 	//nrfchip_spi2(); printf("nrf_spi2");
@@ -277,14 +289,18 @@ void nrf_main() {
 	//
 	/*判断连接状态*/
 	if (status == SUCCESS)
-		printf("\r\n       nrf2401 connect ok !	\r\n");
+		printf("\r\n   nrfchip_spi2    nrf2401 connect ok !	\r\n");
 	else
-		printf("\r\n       nrf2401 connect erro ! \r\n");
+		printf("\r\n   nrfchip_spi2   nrf2401 connect erro ! \r\n");
 	//nrf_test();
 	nrf_config();
-	//nrf_test();
+
+
 
 #ifdef MASTER
+	nrfchip_spi1();
+	nrf_config();
+	//nrf_test();
 	nrf_master();
 #else
 	nrf_device();
@@ -301,31 +317,39 @@ void NRF_ISR() {
 
 	// radio_busy = false;
 	switch (irq_flags) {
+
 	// Transmission success
 	case (1 << (uint8_t) HAL_NRF_TX_DS):
-		radio_busy = TX_DS;
+		if (EXTIn == 8) {
+			radio_busy = TX_DS;
+		}
 		// Data has been sent
 		break;
 		// Transmission failed (maximum re-transmits)
 	case (1 << (uint8_t) HAL_NRF_MAX_RT):
-		// When a MAX_RT interrupt occurs the TX payload will not be removed from the TX FIFO.
-		// If the packet is to be discarded this must be done manually by flushing the TX FIFO.
-		// Alternatively, CE_PULSE() can be called re-starting transmission of the payload.
-		// (Will only be possible after the radio irq flags are cleared)
-		//hal_nrf_flush_tx();
-		radio_busy = MAX_RT;
+		if (EXTIn == 8) {
+			// When a MAX_RT interrupt occurs the TX payload will not be removed from the TX FIFO.
+			// If the packet is to be discarded this must be done manually by flushing the TX FIFO.
+			// Alternatively, CE_PULSE() can be called re-starting transmission of the payload.
+			// (Will only be possible after the radio irq flags are cleared)
+			//hal_nrf_flush_tx();
+			radio_busy = MAX_RT;
+		}
 		break;
+
 		// If data received
 	case (1 << (uint8_t) HAL_NRF_RX_DR):
-		// Read payload
-		while (!hal_nrf_rx_fifo_empty()) {
-			//返回reg<<8+lenth
-			hal_nrf_read_rx_payload(NRF__RX_BUF);
+		if (EXTIn == 5) {
+			// Read payload
+			while (!hal_nrf_rx_fifo_empty()) {
+				//返回reg<<8+lenth
+				hal_nrf_read_rx_payload(NRF__RX_BUF);
+			}
+			//不要退出接收模式
+			CE_HIGH();
+			//数据接收完再将标志位置位
+			radio_busy = RX_DR;
 		}
-		//不要退出接收模式
-		CE_HIGH();
-		//数据接收完再将标志位置位
-		radio_busy = RX_DR;
 		break;
 	default:
 		break;

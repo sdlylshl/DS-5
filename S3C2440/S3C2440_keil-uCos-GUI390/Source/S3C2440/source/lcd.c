@@ -546,15 +546,15 @@ void Lcd_N35_Init(void)
 		
 	    OSTimeDly(200);
 		Lcd_ClearScr( (0x00<<11) | (0x00<<5) | (0x00) );  
-		Paint_Bmp(0, 0, 320, 240, ok2440);
+		//Paint_Bmp(0, 0, 320, 240, ok2440);
 		
 		OSTimeDly(200);
 		Lcd_ClearScr( (0x00<<11) | (0x00<<5) | (0x00) );  
-		Paint_Bmp(0, 0, 320, 240, TE2440);
+		//Paint_Bmp(0, 0, 320, 240, TE2440);
 		
 		OSTimeDly(200);
 		Lcd_ClearScr( (0x00<<11) | (0x00<<5) | (0x00) );  
-		Paint_Bmp(0, 0, 320, 240, TE2440_ii);
+		//Paint_Bmp(0, 0, 320, 240, TE2440_ii);
 		OSTimeDly(200);
 
 }
