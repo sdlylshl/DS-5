@@ -155,7 +155,7 @@ uint8_t nrf_tx_dat(_nrf_chip_t *nrf_chip, const uint8_t * txdat) {
 	uint32_t nrf_time;
 	nrf_chip->radio_busy = 0;
 	//测试时必须要加，否则发送失败
-	Delay_us(1000);
+	Delay_us(100);
 
 	//hal_nrf_set_irq_mode(HAL_NRF_MASK_MAX_RT,true);
 	//hal_nrf_set_irq_mode(HAL_NRF_MASK_TX_DS,true);
@@ -171,10 +171,13 @@ uint8_t nrf_tx_dat(_nrf_chip_t *nrf_chip, const uint8_t * txdat) {
 	//2.等待发送完成
 #ifdef NVIC_SPI2_IRQ
 	while (!(nrf_chip->radio_busy)) {
-		if (TIM4_GetDistanceTime(nrf_time) > 100) {
-			hal_nrf_flush_tx(nrf_chip);
+		if (TIM4_GetDistanceTime(nrf_time) > 10) {
+			//此处必须加延时不知为啥。。
+			Delay_us(100);
 			printf("send timeout !\n");
 			send_erro = 1;
+			hal_nrf_flush_tx(nrf_chip);
+
 			break;
 		}
 	}
@@ -259,10 +262,10 @@ void nrf_master() {
 
 		}
 		if(send_erro){
-			send_erro =0;
 			Delay_ms(10);
 			nrf_tx_dat(&nrf_chip_send, NRF__TX_BUF);
-
+			//重发一次
+			send_erro =0;
 		}
 
 	}
