@@ -13,7 +13,6 @@ int main() {
 	USART1_Init();
 //	USART3_Init();
 	TIM2_Start();	//通用定时器
-	
 	TIM4_Start(); //用来做网络延时计时使用
 	//nrf
 	SPI1_Init();

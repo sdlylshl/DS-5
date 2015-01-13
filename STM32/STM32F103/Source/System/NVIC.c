@@ -304,6 +304,7 @@ void EXTI1_IRQHandle(void){
 		EXTI_ClearITPendingBit(EXTI_Line1);
 	}
 }
+extern void NRF_ISR_DEVICE(void);
 extern void NRF_ISR_MASTER_RECV(void);
 extern void NRF_ISR_MASTER_SEND(void);
 void EXTI9_5_IRQHandle(void){
@@ -328,6 +329,7 @@ void EXTI9_5_IRQHandle(void){
 		EXTI_ClearITPendingBit(EXTI_Line8);
 		EXTIn = 8;
 		NRF_ISR_MASTER_SEND();
+		
 	}else
 	if (EXTI_GetITStatus(EXTI_Line9) == SET) {
 		EXTI_ClearFlag(EXTI_Line9);

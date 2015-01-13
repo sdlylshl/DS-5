@@ -17,7 +17,7 @@
 // Global variables
 uint8_t payload[RX_PLOAD_WIDTH];
 uint8_t NRF__RX_BUF[RX_PLOAD_WIDTH] = { 0, 0, 0, 0 }; //接收数据缓存
-uint8_t NRF__TX_BUF[TX_PLOAD_WIDTH] = { 0, 0x65, 2, 3 }; //发射数据缓存
+uint8_t NRF__TX_BUF[TX_PLOAD_WIDTH] = { 0x18, 0x65, 2, 3 }; //发射数据缓存
 //moren
 uint8_t NRF_MASTER_ADDRESS[TX_ADR_WIDTH] = { 0x34, 0x43, 0x10, 0x10, 0x01 }; // 定义一个静态发送地址
 uint8_t NRF_DEVICE_ADDRESS[RX_ADR_WIDTH] = { 0x34, 0x43, 0x10, 0x10, 0x01 };
@@ -27,7 +27,9 @@ _nrf_chip_t nrf_chip_send;
 _nrf_chip_t nrf_chip_device;
 uint8_t radio_busy = 0;
 uint8_t send_erro = 0;
+
 #define MASTER
+
 uint8_t nrf_test(_nrf_chip_t *nrf_chip) {
 	uint8_t reg;
 
@@ -146,14 +148,14 @@ void nrf_tx_mode(_nrf_chip_t *nrf_chip) {
 	//hal_nrf_set_irq_mode(HAL_NRF_MASK_TX_DS,false);
 	//hal_nrf_set_irq_mode(HAL_NRF_MASK_RX_DR,true);
 	hal_nrf_set_operation_mode(nrf_chip, HAL_NRF_PTX);
-	hal_nrf_enable_radio(nrf_chip);
+	//hal_nrf_enable_radio(nrf_chip);
 
 }
 uint8_t nrf_tx_dat(_nrf_chip_t *nrf_chip, const uint8_t * txdat) {
 	uint32_t nrf_time;
 	nrf_chip->radio_busy = 0;
 	//测试时必须要加，否则发送失败
-	Delay_us(100);
+	Delay_us(1000);
 
 	//hal_nrf_set_irq_mode(HAL_NRF_MASK_MAX_RT,true);
 	//hal_nrf_set_irq_mode(HAL_NRF_MASK_TX_DS,true);
@@ -169,9 +171,10 @@ uint8_t nrf_tx_dat(_nrf_chip_t *nrf_chip, const uint8_t * txdat) {
 	//2.等待发送完成
 #ifdef NVIC_SPI2_IRQ
 	while (!(nrf_chip->radio_busy)) {
-		if (TIM4_GetDistanceTime(nrf_time) > 10) {
-			printf("\nsend timeout !");
+		if (TIM4_GetDistanceTime(nrf_time) > 100) {
 			hal_nrf_flush_tx(nrf_chip);
+			printf("send timeout !\n");
+			send_erro = 1;
 			break;
 		}
 	}
@@ -182,6 +185,7 @@ uint8_t nrf_tx_dat(_nrf_chip_t *nrf_chip, const uint8_t * txdat) {
 	radio_busy = hal_nrf_get_clear_irq_flags(nrf_chip);
 
 #endif
+
 	if (nrf_chip->radio_busy & TX_DS) {
 		//printf("send data ok !\n");
 		printf("\n data send ok !");
@@ -201,8 +205,29 @@ uint8_t nrf_tx_dat(_nrf_chip_t *nrf_chip, const uint8_t * txdat) {
  2.
  */
 void nrf_master() {
+		uint8_t status = 0;
 	uint8_t i;
-
+//	printf("nrf_spi1\n");
+	nrfchip_init(&nrf_chip_send,SPI_2);
+	nrf_config(&nrf_chip_send);
+	
+	//nrfchip_spi2(); printf("nrf_spi2");
+	nrfchip_init(&nrf_chip_recv,SPI_1);
+	nrf_config(&nrf_chip_recv);	
+	//hal_nrf_set_operation_mode(&nrf_chip_recv, HAL_NRF_PRX);
+	
+	nrf_test(&nrf_chip_recv);
+	//nrf_EXIT_Config();
+	/*检测NRF模块与MCU的连接*/
+	while (!status) {
+		status = nrf_check(&nrf_chip_send);
+	}
+	//
+	/*判断连接状态*/
+	if (status == SUCCESS)
+		printf("\r\n   nrfchip_spi2    nrf2401 connect ok !	\r\n");
+	else
+		printf("\r\n   nrfchip_spi2   nrf2401 connect erro ! \r\n");
 	printf(" master mode \n");
 
 	//nrfchip_init(&nrf_chip_send,SPI_2);
@@ -212,41 +237,59 @@ void nrf_master() {
 	nrf_rx_mode(&nrf_chip_recv);
 	//nrf_tx_mode(&nrf_chip_send);
 	Delay_ms(100);
-	printf(" master mode start \n");
+	printf(" master mode start \n");	
+	
+	nrf_tx_dat(&nrf_chip_send, NRF__TX_BUF);
 	while (1) {
 		//Delay_ms(100);
 		//2.收到数据
 		//发送失败|收到数据 重发
 		if ((nrf_chip_recv.radio_busy) & RX_DR) {
 				nrf_chip_recv.radio_busy = 0;
-
-			//nrf_tx_dat(&nrf_chip_send, NRF__RX_BUF);
-			//printf("\r\n master recv dat :");
+			
 			for (i = 0; i < 4; i++) {
 				printf(" %d", NRF__RX_BUF[i]);
 			}
+			Delay_ms(10);
+			nrf_tx_dat(&nrf_chip_send, NRF__TX_BUF);
+			//printf("\r\n master recv dat :");
+
 			//hal_nrf_enable_radio(nrf_chip);
 			//printf("\r\n 主机端 接收到 从机端 发送的数据为");
+
+		}
+		if(send_erro){
+			send_erro =0;
+			Delay_ms(10);
+			nrf_tx_dat(&nrf_chip_send, NRF__TX_BUF);
 
 		}
 
 	}
 }
 void nrf_device() {
-
+		uint8_t status = 0;
 	uint32_t nrf_time;
 	uint8_t i;
-	uint8_t status = 0;
-
-
-
-	//new_nrfchip(nrf_chip_device, SPI2);
+//	uint8_t status = 0;
+	nrfchip_init(&nrf_chip_device, SPI_2);
 	nrf_config(&nrf_chip_device);
 
 	printf(" device mode \n");
-	//nrf_rx_mode();
+	//nrf_rx_mode(&nrf_chip_device);
+	nrf_tx_mode(&nrf_chip_device);
+	
+		while (!status) {
+		status = nrf_check(&nrf_chip_device);
+	}
+	//
+	/*判断连接状态*/
+	if (status == SUCCESS)
+		printf("\r\n   nrfchip_spi2    nrf2401 connect ok !	\r\n");
+	else
+		printf("\r\n   nrfchip_spi2   nrf2401 connect erro ! \r\n");
+	printf(" master mode \n");
 	while (1) {
-
 		//2.收到数据
 		if (nrf_chip_device.radio_busy & RX_DR) {
 				nrf_chip_device.radio_busy = 0;
@@ -265,16 +308,10 @@ void nrf_device() {
 		//}
 		if (TIM4_GetDistanceTime(nrf_time) > 1000) {
 			nrf_time = TIM4_GetCurrentTime();
+			Delay_ms(10);
 			//printf("\r\n 主机端 进入发送模式\r\n");
-			status = nrf_tx_dat(&nrf_chip_device, NRF__TX_BUF);
-			switch (status) {
-			case (1 << HAL_NRF_MAX_RT):
-				printf("\r\n device send Max times %x \r\n", status);
-				break;
-			case (1 << HAL_NRF_TX_DS):
-				printf("\r\n device Send OK !%x \r\n", status);
-				break;
-			}
+			 nrf_tx_dat(&nrf_chip_device, NRF__TX_BUF);
+			 nrf_rx_mode(&nrf_chip_device);
 			//printf("\r\n 主机端 进入发送模式 %x\r\n",status);
 		}
 
@@ -283,31 +320,6 @@ void nrf_device() {
 //*******************************************************
 void nrf_main() {
 
-	uint8_t status = 0;
-
-//	printf("nrf_spi1\n");
-	nrfchip_init(&nrf_chip_send,SPI_2);
-	nrf_config(&nrf_chip_send);
-	
-	//nrfchip_spi2(); printf("nrf_spi2");
-	nrfchip_init(&nrf_chip_recv,SPI_1);
-
-	//nrf_test(&nrf_chip_recv);
-	nrf_config(&nrf_chip_recv);	
-	hal_nrf_set_operation_mode(&nrf_chip_recv, HAL_NRF_PRX);
-	
-	nrf_test(&nrf_chip_recv);
-	//nrf_EXIT_Config();
-	/*检测NRF模块与MCU的连接*/
-	while (!status) {
-		status = nrf_check(&nrf_chip_recv);
-	}
-	//
-	/*判断连接状态*/
-	if (status == SUCCESS)
-		printf("\r\n   nrfchip_spi2    nrf2401 connect ok !	\r\n");
-	else
-		printf("\r\n   nrfchip_spi2   nrf2401 connect erro ! \r\n");
 //	//
 #ifdef MASTER
 	//nrf_test();
@@ -378,21 +390,17 @@ void NRF_ISR_DEVICE() {
 
 	// Transmission success
 	case (1 << (uint8_t) HAL_NRF_TX_DS):
-		if (EXTIn == 8) {
 			nrf_chip_device.radio_busy = TX_DS;
-		}
 		// Data has been sent
 		break;
 		// Transmission failed (maximum re-transmits)
 	case (1 << (uint8_t) HAL_NRF_MAX_RT):
-		if (EXTIn == 8) {
 			// When a MAX_RT interrupt occurs the TX payload will not be removed from the TX FIFO.
 			// If the packet is to be discarded this must be done manually by flushing the TX FIFO.
 			// Alternatively, CE_PULSE() can be called re-starting transmission of the payload.
 			// (Will only be possible after the radio irq flags are cleared)
 			//hal_nrf_flush_tx();
 			nrf_chip_device.radio_busy = MAX_RT;
-		}
 		break;
 	case (1 << (uint8_t) HAL_NRF_RX_DR):
 		while (!hal_nrf_rx_fifo_empty(&nrf_chip_device)) {
