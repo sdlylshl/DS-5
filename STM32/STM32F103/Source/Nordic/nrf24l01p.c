@@ -21,7 +21,7 @@ uint8_t NRF__TX_BUF[TX_PLOAD_WIDTH] = { 0, 0x65, 2, 3 }; //发射数据缓存
 //moren
 uint8_t NRF_MASTER_ADDRESS[TX_ADR_WIDTH] = { 0x34, 0x43, 0x10, 0x10, 0x01 }; // 定义一个静态发送地址
 uint8_t NRF_DEVICE_ADDRESS[RX_ADR_WIDTH] = { 0x34, 0x43, 0x10, 0x10, 0x01 };
-
+_nrf_chip_t nrf_chip_master;
 _nrf_chip_t nrf_chip_recv;
 _nrf_chip_t nrf_chip_send;
 _nrf_chip_t nrf_chip_device;
@@ -104,7 +104,7 @@ static void nrf_config(_nrf_chip_t *nrf_chip) {
 	hal_nrf_set_irq_mode(nrf_chip, HAL_NRF_MASK_MAX_RT, true);
 	hal_nrf_set_irq_mode(nrf_chip, HAL_NRF_MASK_TX_DS, true);
 	hal_nrf_set_irq_mode(nrf_chip, HAL_NRF_MASK_RX_DR, true);
-	hal_nrf_set_operation_mode(nrf_chip, HAL_NRF_PRX);
+	//hal_nrf_set_operation_mode(nrf_chip, HAL_NRF_PRX);
 
 	hal_nrf_flush_rx(nrf_chip);
 	hal_nrf_flush_tx(nrf_chip);
@@ -151,7 +151,7 @@ void nrf_tx_mode(_nrf_chip_t *nrf_chip) {
 }
 uint8_t nrf_tx_dat(_nrf_chip_t *nrf_chip, const uint8_t * txdat) {
 	uint32_t nrf_time;
-	radio_busy = 0;
+	nrf_chip->radio_busy = 0;
 	//测试时必须要加，否则发送失败
 	Delay_us(100);
 
@@ -204,22 +204,23 @@ void nrf_master() {
 	uint8_t i;
 
 	printf(" master mode \n");
-	nrfchip_init(&nrf_chip_recv,SPI_1);
-	nrf_config(&nrf_chip_recv);
-	nrfchip_init(&nrf_chip_send,SPI_2);
-	nrf_config(&nrf_chip_send);
+
+	//nrfchip_init(&nrf_chip_send,SPI_2);
+	//nrf_config(&nrf_chip_send);
 
 	//nrfchip_spi1();
 	nrf_rx_mode(&nrf_chip_recv);
-	nrf_tx_mode(&nrf_chip_send);
+	//nrf_tx_mode(&nrf_chip_send);
+	Delay_ms(100);
+	printf(" master mode start \n");
 	while (1) {
 		//Delay_ms(100);
 		//2.收到数据
 		//发送失败|收到数据 重发
-		if (nrf_chip_recv.radio_busy & RX_DR) {
-			radio_busy = 0;
+		if ((nrf_chip_recv.radio_busy) & RX_DR) {
+				nrf_chip_recv.radio_busy = 0;
 
-			nrf_tx_dat(&nrf_chip_send, NRF__RX_BUF);
+			//nrf_tx_dat(&nrf_chip_send, NRF__RX_BUF);
 			//printf("\r\n master recv dat :");
 			for (i = 0; i < 4; i++) {
 				printf(" %d", NRF__RX_BUF[i]);
@@ -247,8 +248,8 @@ void nrf_device() {
 	while (1) {
 
 		//2.收到数据
-		if (radio_busy & RX_DR) {
-			radio_busy = 0;
+		if (nrf_chip_device.radio_busy & RX_DR) {
+				nrf_chip_device.radio_busy = 0;
 
 			printf("\r\n device recv dat :");
 			for (i = 0; i < 4; i++) {
@@ -285,21 +286,29 @@ void nrf_main() {
 	uint8_t status = 0;
 
 //	printf("nrf_spi1\n");
-
+	nrfchip_init(&nrf_chip_send,SPI_2);
+	nrf_config(&nrf_chip_send);
+	
 	//nrfchip_spi2(); printf("nrf_spi2");
+	nrfchip_init(&nrf_chip_recv,SPI_1);
 
+	//nrf_test(&nrf_chip_recv);
+	nrf_config(&nrf_chip_recv);	
+	hal_nrf_set_operation_mode(&nrf_chip_recv, HAL_NRF_PRX);
+	
+	nrf_test(&nrf_chip_recv);
 	//nrf_EXIT_Config();
 	/*检测NRF模块与MCU的连接*/
-//	while (!status) {
-//		status = nrf_check();
-//	}
+	while (!status) {
+		status = nrf_check(&nrf_chip_recv);
+	}
 	//
 	/*判断连接状态*/
-//	if (status == SUCCESS)
-//		printf("\r\n   nrfchip_spi2    nrf2401 connect ok !	\r\n");
-//	else
-//		printf("\r\n   nrfchip_spi2   nrf2401 connect erro ! \r\n");
-//	//nrf_test();
+	if (status == SUCCESS)
+		printf("\r\n   nrfchip_spi2    nrf2401 connect ok !	\r\n");
+	else
+		printf("\r\n   nrfchip_spi2   nrf2401 connect erro ! \r\n");
+//	//
 #ifdef MASTER
 	//nrf_test();
 	nrf_master();

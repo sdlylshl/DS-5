@@ -53,40 +53,40 @@ uint8_t nrf_rx_buffer[256];
 //uint8_t nrfchip_rw(void) {return SPI1_readIRQ();}
 #if 1
 //函数指针定义
-void (*CSN_LOW)(void) = SPI2_ResetNSS;
-void (*CSN_HIGH)(void) = SPI2_SetNSS;
-void (*CE_LOW)(void) = SPI2_ResetRST;
-void (*CE_HIGH)(void) = SPI2_SetRST;
-uint8_t (*NRF_Read_IRQ)(void) = SPI2_readIRQ;
-uint8_t (*hal_nrf_rw)(uint8_t) = SPI2_SendByte;
+//void (*CSN_LOW)(void) = SPI2_ResetNSS;
+//void (*CSN_HIGH)(void) = SPI2_SetNSS;
+//void (*CE_LOW)(void) = SPI2_ResetRST;
+//void (*CE_HIGH)(void) = SPI2_SetRST;
+//uint8_t (*NRF_Read_IRQ)(void) = SPI2_readIRQ;
+//uint8_t (*hal_nrf_rw)(uint8_t) = SPI2_SendByte;
 
-void nrfchip_spi1(void) {
-	CSN_LOW = SPI1_ResetNSS;
-	CSN_HIGH = SPI1_SetNSS;
-	CE_LOW = SPI1_ResetRST;
-	CE_HIGH = SPI1_SetRST;
-	NRF_Read_IRQ = SPI1_readIRQ;
-	hal_nrf_rw = SPI1_SendByte;
-}
-void nrfchip_spi2(void) {
-	CSN_LOW = SPI2_ResetNSS;
-	CSN_HIGH = SPI2_SetNSS;
-	CE_LOW = SPI2_ResetRST;
-	CE_HIGH = SPI2_SetRST;
-	NRF_Read_IRQ = SPI2_readIRQ;
-	hal_nrf_rw = SPI2_SendByte;
-}
+//void nrfchip_spi1(void) {
+//	CSN_LOW = SPI1_ResetNSS;
+//	CSN_HIGH = SPI1_SetNSS;
+//	CE_LOW = SPI1_ResetRST;
+//	CE_HIGH = SPI1_SetRST;
+//	NRF_Read_IRQ = SPI1_readIRQ;
+//	hal_nrf_rw = SPI1_SendByte;
+//}
+//void nrfchip_spi2(void) {
+//	CSN_LOW = SPI2_ResetNSS;
+//	CSN_HIGH = SPI2_SetNSS;
+//	CE_LOW = SPI2_ResetRST;
+//	CE_HIGH = SPI2_SetRST;
+//	NRF_Read_IRQ = SPI2_readIRQ;
+//	hal_nrf_rw = SPI2_SendByte;
+//}
 
-void nrfchip_choice(_nrfchip_t nrf) {
+//void nrfchip_choice(_nrfchip_t nrf) {
 
-	CSN_LOW = nrf.CS._low;
-	CSN_HIGH = nrf.CS._high;
-	CE_LOW = nrf.CE._low;
-	CE_HIGH = nrf.CE._high;
-	NRF_Read_IRQ = nrf.IRQ._readirq;
-	hal_nrf_rw = nrf.IF.SPI._write_byte;
+//	CSN_LOW = nrf.CS._low;
+//	CSN_HIGH = nrf.CS._high;
+//	CE_LOW = nrf.CE._low;
+//	CE_HIGH = nrf.CE._high;
+//	NRF_Read_IRQ = nrf.IRQ._readirq;
+//	hal_nrf_rw = nrf.IF.SPI._write_byte;
 
-}
+//}
 //_nrf_chip_t nrf_chip;
 void nrfchip_init(_nrf_chip_t *nrf_chip,SPIx_t SPIx) {
 

@@ -781,7 +781,7 @@ uint16_t hal_nrf_read_multibyte_reg(_nrf_chip_t *nrf_chip, uint8_t reg, uint8_t 
         reg = hal_nrf_get_rx_data_source(nrf_chip);
         if (reg < 7U) {
             length = hal_nrf_read_rx_payload_width(nrf_chip);
-            CSN_LOW();
+            nrf_chip->CSN_LOW();
             nrf_chip->hal_nrf_rw(R_RX_PAYLOAD);
         } else {
             length = 0U;
