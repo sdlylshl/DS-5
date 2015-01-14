@@ -33,55 +33,64 @@ uint8_t send_erro = 0;
 uint8_t nrf_test(_nrf_chip_t *nrf_chip) {
 	uint8_t reg;
 
-	reg = hal_nrf_read_reg(nrf_chip, CONFIG);
-	reg = hal_nrf_read_reg(nrf_chip, EN_AA);
-	reg = hal_nrf_read_reg(nrf_chip, EN_RXADDR);
-	reg = hal_nrf_read_reg(nrf_chip, SETUP_AW);
-	reg = hal_nrf_read_reg(nrf_chip, SETUP_RETR);
-	reg = hal_nrf_read_reg(nrf_chip, RF_CH);
-	reg = hal_nrf_read_reg(nrf_chip, RF_SETUP);
-	reg = hal_nrf_read_reg(nrf_chip, STATUS);
-	reg = hal_nrf_read_reg(nrf_chip, OBSERVE_TX);
-	reg = hal_nrf_read_reg(nrf_chip, CD);
-	reg = hal_nrf_read_reg(nrf_chip, RX_ADDR_P0);
-	reg = hal_nrf_read_reg(nrf_chip, RX_ADDR_P1);
-	reg = hal_nrf_read_reg(nrf_chip, RX_ADDR_P2);
-	reg = hal_nrf_read_reg(nrf_chip, RX_ADDR_P3);
-	reg = hal_nrf_read_reg(nrf_chip, RX_ADDR_P4);
-	reg = hal_nrf_read_reg(nrf_chip, RX_ADDR_P5);
-	reg = hal_nrf_read_reg(nrf_chip, TX_ADDR);
-	reg = hal_nrf_read_reg(nrf_chip, RX_PW_P0);
-	reg = hal_nrf_read_reg(nrf_chip, RX_PW_P1);
-	reg = hal_nrf_read_reg(nrf_chip, RX_PW_P2);
-	reg = hal_nrf_read_reg(nrf_chip, RX_PW_P3);
-	reg = hal_nrf_read_reg(nrf_chip, RX_PW_P4);
-	reg = hal_nrf_read_reg(nrf_chip, RX_PW_P5);
-	reg = hal_nrf_read_reg(nrf_chip, FIFO_STATUS);
-	reg = hal_nrf_read_reg(nrf_chip, DYNPD);
-	reg = hal_nrf_read_reg(nrf_chip, FEATURE);
+	reg = hal_nrf_read_reg(nrf_chip, CONFIG); 	printf("\n CONFIG :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, EN_AA);		printf(" EN_AA :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, EN_RXADDR);printf(" EN_RXADDR :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, SETUP_AW); printf(" SETUP_AW :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, SETUP_RETR);printf(" SETUP_RETR :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, RF_CH);printf(" RF_CH :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, RF_SETUP);printf(" RF_SETUP :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, STATUS);printf(" STATUS :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, OBSERVE_TX);printf(" OBSERVE_TX :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, CD);printf(" CD :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, RX_ADDR_P0);printf(" RX_ADDR_P0 :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, RX_ADDR_P1);printf(" RX_ADDR_P0 :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, RX_ADDR_P2);printf(" RX_ADDR_P2 :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, RX_ADDR_P3);printf(" RX_ADDR_P0 :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, RX_ADDR_P4);printf(" RX_ADDR_P0 :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, RX_ADDR_P5);printf(" RX_ADDR_P0 :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, TX_ADDR);printf(" TX_ADDR :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, RX_PW_P0);printf(" RX_PW_P0 :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, RX_PW_P1);printf(" RX_PW_P0 :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, RX_PW_P2);printf(" RX_PW_P0 :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, RX_PW_P3);printf(" RX_PW_P0 :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, RX_PW_P4);printf(" RX_PW_P0 :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, RX_PW_P5);printf(" RX_PW_P0 :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, FIFO_STATUS);printf(" FIFO_STATUS :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, DYNPD);printf(" DYNPD :0x%02x\n", reg);
+	reg = hal_nrf_read_reg(nrf_chip, FEATURE);printf(" FEATURE :0x%02x\n", reg);
 	return reg;
 }
 static uint8_t nrf_check(_nrf_chip_t *nrf_chip) {
-	uint8_t buf[5] = { 0x12, 0x22, 0x32, 0x42, 0x52 };
-	uint8_t buf1[5];
+	uint8_t buf[5];
 	uint8_t i;
-	hal_nrf_get_address(nrf_chip, HAL_NRF_TX, buf1);
-	hal_nrf_get_address(nrf_chip, HAL_NRF_PIPE0, buf1);
-	hal_nrf_get_address(nrf_chip, HAL_NRF_PIPE1, buf1);
-	hal_nrf_get_address(nrf_chip, HAL_NRF_PIPE2, buf1);
-	hal_nrf_get_address(nrf_chip, HAL_NRF_PIPE3, buf1);
-	hal_nrf_get_address(nrf_chip, HAL_NRF_PIPE4, buf1);
-	hal_nrf_get_address(nrf_chip, HAL_NRF_PIPE5, buf1);
+	hal_nrf_get_address(nrf_chip, HAL_NRF_TX, buf);
+	printf(" HAL_NRF_TX :");
+	for (i = 0; i < 5; i++) {
+	 printf(" 0x%02x",buf[i]);
+	}
+	printf("\n");
+	hal_nrf_get_address(nrf_chip, HAL_NRF_PIPE0, buf);
+	hal_nrf_get_address(nrf_chip, HAL_NRF_PIPE1, buf);
+	hal_nrf_get_address(nrf_chip, HAL_NRF_PIPE2, buf);
+	hal_nrf_get_address(nrf_chip, HAL_NRF_PIPE3, buf);
+	hal_nrf_get_address(nrf_chip, HAL_NRF_PIPE4, buf);
+	hal_nrf_get_address(nrf_chip, HAL_NRF_PIPE5, buf);
 
 	/*写入5个字节的地址.	*/
 	//SPI_NRF_WriteBuf(NRF_WRITE_REG+TX_ADDR,buf,5);
-	hal_nrf_set_address(nrf_chip, HAL_NRF_TX, buf);
+	hal_nrf_set_address(nrf_chip, HAL_NRF_TX, NRF_MASTER_ADDRESS);
 	/*读出写入的地址 */
 	//SPI_NRF_ReadBuf(TX_ADDR,buf1,5);
-	hal_nrf_get_address(nrf_chip, HAL_NRF_TX, buf1);
+	hal_nrf_get_address(nrf_chip, HAL_NRF_TX, buf);	
+	printf(" HAL_NRF_TX :");
+	for (i = 0; i < 5; i++) {
+	 printf(" 0x%02x",buf[i]);
+	}
+	printf("\n");
 	/*比较*/
 	for (i = 0; i < 5; i++) {
-		if (buf1[i] != buf[i])
+		if (buf[i] != NRF_MASTER_ADDRESS[i])
 			break;
 	}
 
@@ -111,7 +120,7 @@ static void nrf_config(_nrf_chip_t *nrf_chip) {
 	hal_nrf_flush_rx(nrf_chip);
 	hal_nrf_flush_tx(nrf_chip);
 	//SETUP_AW设置地址宽度，默认5
-	//hal_nrf_set_address_width(nrf_chip, HAL_NRF_AW_5BYTES);
+	hal_nrf_set_address_width(nrf_chip, HAL_NRF_AW_5BYTES);
 	//RX_PW_P0设置接收数据宽度,默认0 nouse
 	hal_nrf_set_rx_payload_width(nrf_chip, HAL_NRF_PIPE0, RX_PLOAD_WIDTH);
 	//RX_ADDR_P0设置发送节点地址,默认0xE7E7E7E7E7
@@ -152,11 +161,11 @@ void nrf_tx_mode(_nrf_chip_t *nrf_chip) {
 
 }
 uint8_t nrf_tx_dat(_nrf_chip_t *nrf_chip, const uint8_t * txdat) {
-	uint32_t nrf_time;
+	uint32_t nrf_time=1000;
 	nrf_chip->radio_busy = 0;
 	//测试时必须要加，否则发送失败
-	Delay_us(100);
-
+	//Delay_us(100);
+	nrf_chip->CE_LOW();
 	//hal_nrf_set_irq_mode(HAL_NRF_MASK_MAX_RT,true);
 	//hal_nrf_set_irq_mode(HAL_NRF_MASK_TX_DS,true);
 	//hal_nrf_set_irq_mode(HAL_NRF_MASK_RX_DR,false);
@@ -167,13 +176,13 @@ uint8_t nrf_tx_dat(_nrf_chip_t *nrf_chip, const uint8_t * txdat) {
 	//Delay_us(15);
 	//CE_PULSE();
 
-	nrf_time = TIM4_GetCurrentTime();
+	//nrf_time = TIM4_GetCurrentTime();
 	//2.等待发送完成
 #ifdef NVIC_SPI2_IRQ
 	while (!(nrf_chip->radio_busy)) {
-		if (TIM4_GetDistanceTime(nrf_time) > 10) {
+		//if (TIM4_GetDistanceTime(nrf_time) > 10) {
+			if(!(nrf_time--)){
 			//此处必须加延时不知为啥。。
-			Delay_us(100);
 			printf("send timeout !\n");
 			send_erro = 1;
 			hal_nrf_flush_tx(nrf_chip);
@@ -211,20 +220,21 @@ void nrf_master() {
 		uint8_t status = 0;
 	uint8_t i;
 //	printf("nrf_spi1\n");
-	nrfchip_init(&nrf_chip_send,SPI_2);
-	nrf_config(&nrf_chip_send);
+	nrfchip_init(&nrf_chip_send,SPI_1);
+	nrf_config(&nrf_chip_send);	
+	hal_nrf_set_operation_mode(&nrf_chip_send, HAL_NRF_PTX);
 	
 	//nrfchip_spi2(); printf("nrf_spi2");
-	nrfchip_init(&nrf_chip_recv,SPI_1);
+	nrfchip_init(&nrf_chip_recv,SPI_2);
 	nrf_config(&nrf_chip_recv);	
-	//hal_nrf_set_operation_mode(&nrf_chip_recv, HAL_NRF_PRX);
+	hal_nrf_set_operation_mode(&nrf_chip_recv, HAL_NRF_PRX);
 	
 	nrf_test(&nrf_chip_recv);
 	//nrf_EXIT_Config();
 	/*检测NRF模块与MCU的连接*/
-	while (!status) {
-		status = nrf_check(&nrf_chip_send);
-	}
+
+		status = nrf_check(&nrf_chip_recv);
+
 	//
 	/*判断连接状态*/
 	if (status == SUCCESS)
@@ -253,8 +263,8 @@ void nrf_master() {
 			for (i = 0; i < 4; i++) {
 				printf(" %d", NRF__RX_BUF[i]);
 			}
-			Delay_ms(10);
-			nrf_tx_dat(&nrf_chip_send, NRF__TX_BUF);
+			//Delay_ms(10);
+			//nrf_tx_dat(&nrf_chip_send, NRF__TX_BUF);
 			//printf("\r\n master recv dat :");
 
 			//hal_nrf_enable_radio(nrf_chip);

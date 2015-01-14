@@ -8,7 +8,7 @@ int main() {
 //	uint8_t i;
 	uint32_t Time = 0;
 	//RCC_Config();
-	//NVIC_Config();
+	NVIC_Config();
 	//DMA_Config();
 	USART1_Init();
 //	USART3_Init();
@@ -20,10 +20,10 @@ int main() {
 	
 	PS2_Init();
 	LED_GPIO_Config();	
-
 		//开总中断
 	__set_PRIMASK(0);
-	nrf_main0();
+
+	nrf_main();
 //		NRF_device_main();
 //NRF_master_main();
 
