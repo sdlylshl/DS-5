@@ -8,7 +8,7 @@ int main() {
 //	uint8_t i;
 	uint32_t Time = 0;
 	//RCC_Config();
-	NVIC_Config();
+	//NVIC_Config();
 	//DMA_Config();
 	USART1_Init();
 //	USART3_Init();
@@ -23,7 +23,7 @@ int main() {
 
 		//开总中断
 	__set_PRIMASK(0);
-	nrf_main();
+	nrf_main0();
 //		NRF_device_main();
 //NRF_master_main();
 

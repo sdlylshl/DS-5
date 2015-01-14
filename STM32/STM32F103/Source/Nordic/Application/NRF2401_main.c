@@ -109,7 +109,22 @@ int NRF_device_main(void)
 	   //	     printf("\r\n   正在检测NRF与MCU是否正常连接。。。\r\n");
 			  
 while(1)
-	{  		 	
+	{  
+	//printf("\r\n 从机端 进入应答发送模式\r\n"); 
+	  	NRF_TX_Mode();
+
+		/*不断重发，直至发送成功*/	  
+	 do
+	   { 
+				if(!i++)
+					break;
+				
+		status = NRF_Tx_Dat(txbuf);
+				if(status & TX_DS)
+					break;
+		printf(" %x ",status); 
+		}while(status == MAX_RT);
+	} 		
  	//printf("\r\n 从机端 进入接收模式\r\n"); 
 	NRF_RX_Mode();
 	 
@@ -127,21 +142,7 @@ while(1)
 		txbuf[i] = rxbuf[i]; 
 		}
 	}   
-		//printf("\r\n 从机端 进入应答发送模式\r\n"); 
-	  	NRF_TX_Mode();
-
-		/*不断重发，直至发送成功*/	  
-	 do
-	   { 
-				if(!i++)
-					break;
-				
-		status = NRF_Tx_Dat(txbuf);
-				if(status & TX_DS)
-					break;
-		printf(" %x ",status); 
-		}while(status == MAX_RT);
-	} 
+	
 } 
 
 void nrf_recv(){
