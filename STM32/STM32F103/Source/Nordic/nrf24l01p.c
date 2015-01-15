@@ -20,12 +20,11 @@ uint8_t NRF__RX_BUF[RX_PLOAD_WIDTH] = { 0, 0, 0, 0 }; //接收数据缓存
 uint8_t NRF__TX_BUF[TX_PLOAD_WIDTH] = { 0x18, 0x65, 2, 3 }; //发射数据缓存
 uint8_t NRF__DTX_BUF[TX_PLOAD_WIDTH] = { 0x11, 0x65, 2, 3 }; //发射数据缓存
 //moren
-uint8_t NRF_MASTER_RECV_ADDRESS[TX_ADR_WIDTH] = { 0x34, 0x43, 0x10, 0x10, 0x01 }; // 定义一个静态发送地址
-//uint8_t NRF_MASTER_SEND_ADDRESS[TX_ADR_WIDTH] = { 0x34, 0x43, 0x10, 0x10, 0x01 }; // 定义一个静态发送地址
+uint8_t NRF_MASTER_RECV_ADDRESS[TX_ADR_WIDTH] = { 0xe7, 0xe7, 0xe7, 0xe7, 0xe7 }; // 定义一个静态发送地址
 uint8_t NRF_MASTER_SEND_ADDRESS[TX_ADR_WIDTH] = { 0x34, 0x43, 0x10, 0x10, 0x01 }; // 定义一个静态发送地址
 
 uint8_t NRF_DEVICE_RECV_ADDRESS[RX_ADR_WIDTH] = { 0x34, 0x43, 0x10, 0x10, 0x01 };
-uint8_t NRF_DEVICE_SEND_ADDRESS[RX_ADR_WIDTH] = { 0x34, 0x43, 0x10, 0x10, 0x01 };
+uint8_t NRF_DEVICE_SEND_ADDRESS[RX_ADR_WIDTH] = { 0xe7, 0xe7, 0xe7, 0xe7, 0xe7 };
 _nrf_chip_t nrf_chip_master;
 _nrf_chip_t nrf_chip_recv;
 _nrf_chip_t nrf_chip_send;
@@ -33,8 +32,8 @@ _nrf_chip_t nrf_chip_device;
 uint8_t radio_busy = 0;
 uint8_t send_erro = 0;
 #define MASTER_RX_CHANNEL 40
-#define MASTER_TX_CHANNEL 40
-#define DEVICE_RX_CHANNEL 40
+#define MASTER_TX_CHANNEL 70
+#define DEVICE_RX_CHANNEL 70
 #define DEVICE_TX_CHANNEL 40
 #define PLOAD_WIDTH 5
 
