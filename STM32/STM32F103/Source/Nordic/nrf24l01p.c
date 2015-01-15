@@ -32,6 +32,10 @@ uint8_t send_erro = 0;
 
 uint8_t nrf_test(_nrf_chip_t *nrf_chip) {
 	uint8_t reg;
+	if(nrf_chip == &nrf_chip_send)
+	printf("nrf_chip_send");
+	else
+		printf("nrf_chip_recv");
 
 	reg = hal_nrf_read_reg(nrf_chip, CONFIG); 	printf("\n CONFIG :0x%02x\n", reg);
 	reg = hal_nrf_read_reg(nrf_chip, EN_AA);		printf(" EN_AA :0x%02x\n", reg);
@@ -163,6 +167,7 @@ void nrf_tx_mode(_nrf_chip_t *nrf_chip) {
 uint8_t nrf_tx_dat(_nrf_chip_t *nrf_chip, const uint8_t * txdat) {
 	uint32_t nrf_time=1000;
 	nrf_chip->radio_busy = 0;
+	printf("\nsend\n");
 	//测试时必须要加，否则发送失败
 	//Delay_us(100);
 	nrf_chip->CE_LOW();
@@ -182,11 +187,13 @@ uint8_t nrf_tx_dat(_nrf_chip_t *nrf_chip, const uint8_t * txdat) {
 	while (!(nrf_chip->radio_busy)) {
 		//if (TIM4_GetDistanceTime(nrf_time) > 10) {
 			if(!(nrf_time--)){
+				printf("busy%x",nrf_chip_send.radio_busy);
 			//此处必须加延时不知为啥。。
 			printf("send timeout !\n");
 			send_erro = 1;
 			hal_nrf_flush_tx(nrf_chip);
-
+			//nrf_test(&nrf_chip_recv);				
+			//nrf_test(&nrf_chip_send);
 			break;
 		}
 	}
@@ -217,18 +224,23 @@ uint8_t nrf_tx_dat(_nrf_chip_t *nrf_chip, const uint8_t * txdat) {
  2.
  */
 void nrf_master() {
-		uint8_t status = 0;
+	uint8_t status = 0;
+	uint32_t nrf_time;
 	uint8_t i;
 //	printf("nrf_spi1\n");
 	nrfchip_init(&nrf_chip_send,SPI_1);
-	nrf_config(&nrf_chip_send);	
-	hal_nrf_set_operation_mode(&nrf_chip_send, HAL_NRF_PTX);
-	
-	//nrfchip_spi2(); printf("nrf_spi2");
 	nrfchip_init(&nrf_chip_recv,SPI_2);
-	nrf_config(&nrf_chip_recv);	
+
+	nrf_test(&nrf_chip_send);
+	nrf_test(&nrf_chip_recv);
+
+	nrf_config(&nrf_chip_send);	
+	nrf_config(&nrf_chip_recv);
+	
+	hal_nrf_set_operation_mode(&nrf_chip_send, HAL_NRF_PTX);
 	hal_nrf_set_operation_mode(&nrf_chip_recv, HAL_NRF_PRX);
 	
+	nrf_test(&nrf_chip_send);
 	nrf_test(&nrf_chip_recv);
 	//nrf_EXIT_Config();
 	/*检测NRF模块与MCU的连接*/
@@ -271,11 +283,18 @@ void nrf_master() {
 			//printf("\r\n 主机端 接收到 从机端 发送的数据为");
 
 		}
+			if (TIM4_GetDistanceTime(nrf_time) > 1000) {
+			nrf_time = TIM4_GetCurrentTime();
+				nrf_tx_dat(&nrf_chip_send, NRF__TX_BUF);
+				}
+		
 		if(send_erro){
-			Delay_ms(10);
+			while(hal_nrf_get_carrier_detect(&nrf_chip_send));
+			if(!hal_nrf_get_carrier_detect(&nrf_chip_send)){
 			nrf_tx_dat(&nrf_chip_send, NRF__TX_BUF);
 			//重发一次
 			send_erro =0;
+			}
 		}
 
 	}
@@ -344,47 +363,47 @@ void nrf_main() {
 }
 void NRF_ISR_MASTER_RECV() {
 	uint8_t irq_flags = 0;
-
+	_nrf_chip_t *nrf_chip = &nrf_chip_recv;
 	// Read and clear IRQ flags from radio
-	irq_flags = hal_nrf_get_clear_irq_flags(&nrf_chip_recv);
+	irq_flags = hal_nrf_get_clear_irq_flags(nrf_chip);
 	if (irq_flags & RX_DR) {
-		while (!hal_nrf_rx_fifo_empty(&nrf_chip_recv)) {
+		while (!hal_nrf_rx_fifo_empty(nrf_chip)) {
 			//返回reg<<8+lenth
-			hal_nrf_read_rx_payload(&nrf_chip_recv, NRF__RX_BUF);
+			hal_nrf_read_rx_payload(nrf_chip, NRF__RX_BUF);
 		}
-		hal_nrf_enable_radio(&nrf_chip_recv); //不要退出接收模式
+		hal_nrf_enable_radio(nrf_chip); //不要退出接收模式
 		//数据接收完再将标志位置位
-		nrf_chip_recv.radio_busy = RX_DR;
+		nrf_chip->radio_busy = RX_DR;
 	}
 }
 
 // Radio interrupt
 void NRF_ISR_MASTER_SEND() {
 	uint8_t irq_flags = 0;
-
+	_nrf_chip_t *nrf_chip = &nrf_chip_send;
 	// Read and clear IRQ flags from radio
-	irq_flags = hal_nrf_get_clear_irq_flags(&nrf_chip_send);
+	irq_flags = hal_nrf_get_clear_irq_flags(nrf_chip);
 
 	// radio_busy = false;
 	switch (irq_flags) {
 
 	// Transmission success
 	case (1 << (uint8_t) HAL_NRF_TX_DS):
-		if (EXTIn == 8) {
-			nrf_chip_send.radio_busy = TX_DS;
-		}
+		
+			nrf_chip->radio_busy = TX_DS;
+		
 		// Data has been sent
 		break;
 		// Transmission failed (maximum re-transmits)
 	case (1 << (uint8_t) HAL_NRF_MAX_RT):
-		if (EXTIn == 8) {
+	
 			// When a MAX_RT interrupt occurs the TX payload will not be removed from the TX FIFO.
 			// If the packet is to be discarded this must be done manually by flushing the TX FIFO.
 			// Alternatively, CE_PULSE() can be called re-starting transmission of the payload.
 			// (Will only be possible after the radio irq flags are cleared)
 			//hal_nrf_flush_tx();
-			nrf_chip_send.radio_busy = MAX_RT;
-		}
+			nrf_chip->radio_busy = MAX_RT;
+	
 		break;
 
 	default:

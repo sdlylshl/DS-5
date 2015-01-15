@@ -43,7 +43,7 @@ typedef enum{
 	NRF_SEND
 }NRF_NUM_t;
 typedef struct __nrf_chip{
-	uint8_t radio_busy;
+	volatile uint8_t radio_busy;
 	uint8_t (*NRF_Read_IRQ)(void);
 	void (*CSN_LOW)(void);
 	void (*CSN_HIGH)(void);
