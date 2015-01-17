@@ -57,6 +57,8 @@
 ;                                                                              |
 ;------------------------------------------------------------------------------+
 #include Project.inc
+
+#define FLAG_EEPROM_BIT1 1
 	udata
 EEPROM_ADDRESS		res 1
 EEPROM_ByteCount	res 1
@@ -64,7 +66,7 @@ EEPROM_ByteCount	res 1
 	global EEPROM__Write, EEPROM__WriteBytes, EEPROM__Read, EEPROM__ReadBytes
 	
 flag_ovr	udata_ovr
-flag res 1		;using bit 1 of flag register
+flag res 1		;using bit 1 of flag register if WriteBytes set 1 
 ;------------------------------------------------------------------------------+
 ;                                                                              |
 ;    EEPROM__Write( w  EEPROM_ADDRESS )                                         |
@@ -109,11 +111,13 @@ EEPROM__Write
 	MOVWF	EEADR			; Data memory to write
 EEWRITE2
 	BSF		EECON1,WREN		; Command Write Enable
+    BCF     INTCON,GIE      ; Disable INTs
 	MOVLW	55H
 	MOVWF	EECON2			; Write 55H
 	MOVLW	0AAH
 	MOVWF	EECON2			; Write AAH
 	BSF		EECON1,WR		; Command Write
+    BSF     INTCON,GIE      ; Enable INTS
 WR_WAIT
 	CLRWDT
 	BTFSC	EECON1,WR		; Wait for write to complete
@@ -124,7 +128,7 @@ EEWRITE3
 	banksel	EEPROM_ADDRESS
 	INCF	EEPROM_ADDRESS,F	; Auto-increase Address Pointer
 	banksel	flag
-	btfss	flag,1
+	btfss	flag,FLAG_EEPROM_BIT1
 	RETLW	0H
 	goto	return_write
 ;------------------------------------------------------------------------------+
@@ -167,7 +171,7 @@ EEWRITE3
 ;------------------------------------------------------------------------------+
 EEPROM__WriteBytes
 	banksel	flag
-	bsf		flag,1
+	bsf		flag,FLAG_EEPROM_BIT1
 	banksel EEPROM_ByteCount
 	movwf	EEPROM_ByteCount
 EEPROM__WriteBytes_loop
@@ -180,7 +184,7 @@ return_write
 	decfsz	EEPROM_ByteCount,F
 	goto	EEPROM__WriteBytes_loop
 	banksel	flag
-	bcf		flag,1
+	bcf		flag,FLAG_EEPROM_BIT1
 	return
 ;------------------------------------------------------------------------------+
 ;                                                                              |
@@ -229,7 +233,7 @@ EEPROM__Read
 	banksel	EEPROM_ADDRESS
 	INCF	EEPROM_ADDRESS,F	; Auto-increase Address Pointer
 	banksel	flag
-	btfss	flag,1
+	btfss	flag,FLAG_EEPROM_BIT1
 	RETURN						; Return without changing w-register
 	goto	return_read
 ;------------------------------------------------------------------------------+
@@ -272,7 +276,7 @@ EEPROM__Read
 ;------------------------------------------------------------------------------+
 EEPROM__ReadBytes
 	banksel	flag
-	bsf		flag,1
+	bsf		flag,FLAG_EEPROM_BIT1
 	banksel EEPROM_ByteCount
 	movwf	EEPROM_ByteCount
 EEPROM__ReadBytes_loop
@@ -285,7 +289,7 @@ return_read
 	decfsz	EEPROM_ByteCount,F
 	goto	EEPROM__ReadBytes_loop
 	banksel	flag
-	bcf		flag,1
+	bcf		flag,FLAG_EEPROM_BIT1
 	return
 ;****************************************************** 
 ;	END OF FILE : EEPROM.asm

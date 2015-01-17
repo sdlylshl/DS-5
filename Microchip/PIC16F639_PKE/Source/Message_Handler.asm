@@ -50,10 +50,12 @@ CSR4	res	1
 CSR5	res	1
 CSR6	res	1
 CSR7	res	1
+
 DAT0	res	1		; 32-bit data buffer
 DAT1	res	1
 DAT2	res	1
 DAT3	res	1
+
 SER0	res	1		; 32-bit Serial number buffer
 SER1	res	1
 SER2	res	1

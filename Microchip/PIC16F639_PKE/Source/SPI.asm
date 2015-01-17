@@ -17,7 +17,8 @@
 #define	AFECS		PORTC,1		; Chip select output
 #define	SCK			PORTC,2		; SPI Clock Output
 #define	SDIO		PORTC,3		; Serial output
-	
+
+#define FLAG_SPI_BIT0 0	
 	udata
 SPI_BufferH res 1
 SPI_BufferL res 1
@@ -31,6 +32,16 @@ flag	res 1		;using bit 0
 	global SPI_BufferH, SPI_BufferL
 	global SPI__Read, SPI__Write
 	code
+    
+;SPI从模块初始化  
+
+SPI__Init  
+        banksel TRISC  
+    movlw   b'11001110'     ; Set LFDATA,ALERT, and CS as inputs   
+    movwf   TRISC           ;   
+    banksel PORTC  
+    bsf     AFECS           ; Take AFE CS Line high  
+        return  
 ;------------------------------------------------------------------------------+
 ;                                                                              |
 ;     SPI_BufferH  SPI_BufferL SPI__Read( SPI_BufferH  SPI_BufferL )            |
@@ -71,9 +82,10 @@ flag	res 1		;using bit 0
 ;        SPI_BufferH and SPI_BufferL.                                          |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
+;读取SPI总线上的数据，先得发送出数据，然后才能读取  
 SPI__Read
 	banksel	flag
-	bsf		flag,0
+	bsf		flag,FLAG_SPI_BIT0
 	goto	SPI__ShiftOutBuffer
 ;------------------------------------------------------------------------------+
 ;                                                                              |
@@ -108,7 +120,7 @@ SPI__Read
 ;------------------------------------------------------------------------------+
 SPI__Write
 	banksel	flag
-	bcf		flag,0
+	bcf		flag,FLAG_SPI_BIT0
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ; Subroutine: ShiftOutSPIBuffer
 ;   
@@ -150,12 +162,22 @@ SPI__Write
 ;
 ;	@stacklevel 1
 ;
-;
-;
+;-----------------------------------------------------------------------
+;从PIC16F639这一端向AFE通过SPI移出数据:SPI.BufferH,SPI.BufferL.高位先被移出  
+;满足时序如下：  
+;    1.SCLK/ALERT拉低  
+;    2.CS拉低  
+;    3.根据要移出的数值置位或清零SDIO  
+;    4.SCLK/ALERT拉高  
+;    5.SCLK/ALERT拉低  
+;    6.(3-5)循环16次  
+;    7.CS拉高  
+;   flag.0  
+;------------------------------------------------------------------------
 SPI__ShiftOutBuffer	
 	banksel TRISC
 	movf	TRISC,W
-	andlw	b'11110001'
+	andlw	b'11110001'     ; Set SDIO,SCK, and CS as outputs 
 	movwf	TRISC
 	movlw	.16
 	banksel Count00
@@ -184,7 +206,7 @@ ShiftOutLoop
 	bsf		AFECS
 	bsf		SCK
 	banksel	flag
-	btfss	flag,0
+	btfss	flag,FLAG_SPI_BIT0
 	goto	SPI__end
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ; Subroutine: ShiftInSPIBuffer
@@ -230,7 +252,18 @@ ShiftOutLoop
 ;
 ;	@stacklevel 1
 ;
-;
+;----------------------------------------------------------------------
+;从PIC16F639的SPI线上移进数据:SPI.BufferH,SPI.BufferL.高位先被移进  
+;满足时序如下：  
+;    1.SCLK/ALERT拉低  
+;    2.CS拉低  
+;    3.根据要移出的数值置位或清零SDIO  
+;    4.SCLK/ALERT拉高  
+;    5.SCLK/ALERT拉低  
+;    6.(3-5)循环16次  
+;    7.CS拉高  
+;   flag.0  
+;---------------------------------------------------------------------
 SPI__ShiftInBuffer
 	banksel TRISC
 	bsf		TRISC,3			;Set SDIO as an input

@@ -63,6 +63,7 @@
 #include SPI.inc
 #include EEPROM.inc
 ;equ 相当于 #define
+#define FLAG_AFE_BIT2 2
 AFE_READCMD			equ	0xC0
 AFE_WRITECMD		equ	0xE0
 ;
@@ -359,7 +360,7 @@ AFE__WriteNVerifyRegister
 	btfss	STATUS,Z
 	retlw	0x01
 	banksel	flag
-	btfsc	flag,2
+	btfsc	flag,FLAG_AFE_BIT2
 	goto	return_write_cfg
 	return
 ;------------------------------------------------------------------------------+
@@ -399,7 +400,7 @@ AFE__WriteNVerifyRegister
 AFE__WriteCfg
 	call	AFE__CalcColumnParity		;Ensure parity bits are correct
 	banksel	flag
-	bsf		flag,2
+	bsf		flag,FLAG_AFE_BIT2
 	banksel TEMP3
 	movlw	0x07
 	movwf	TEMP3

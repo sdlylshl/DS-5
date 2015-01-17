@@ -60,6 +60,7 @@
 ;------------------------------------------------------------------------------+
 #include "Project.inc"
 #define DELAY_Returned	DELAY_flag,3
+#define FLAG_DELAY_BIT3 3
 wait macro Cyc
 	local tmp = Cyc
 	while tmp > .0

@@ -121,7 +121,7 @@
     ifndef MSG_INTERRUPT
     #define	MSG_INTERRUPT	(1<<REC_EVENT)
     endif
-
+#define FLAG_DEBOUNCE_BIT4 4
 ;uninitialized data
 u_3	udata
 PORTA_LAST		res 1
@@ -199,7 +199,7 @@ TIMER1_INT
 	btfsc	STATUS,Z			; idle counter == 0 ?
 	bsf		EVENT_REG,IDLE		; yes, then set idle event
 	banksel	flag
-	btfss	flag,4				; is debounce event set?
+	btfss	flag,FLAG_DEBOUNCE_BIT4				; is debounce event set?
 	goto	BUTTON_TIMER1		; no, then finalize Timer 1 interrupt
 	banksel	Button_Counter		; Debouncing button (32-64ms), if button event occured
 	decfsz	Button_Counter,F	; decrement debounce counter, is counter 0?
@@ -251,7 +251,7 @@ IS_BUTTON
 	banksel Button_Counter					
 	movwf	Button_Counter
 	banksel	flag
-	bsf		flag,4							; set debounce flag
+	bsf		flag,FLAG_DEBOUNCE_BIT4							; set debounce flag
 END_PORTA
 	banksel PORTA_NOW
 	movf	PORTA_NOW,W

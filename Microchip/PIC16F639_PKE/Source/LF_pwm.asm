@@ -23,10 +23,10 @@
 #include Delay.inc
 #include SPI.inc
 #include AFE_639.inc
-	ifndef LF__PORT
+	ifndef LF_PORT
 ;------------------------------------------------------------------------------+
 ;                                                                              |
-;    Constant LF__PORT                                                          |
+;    Constant LF_PORT                                                          |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
 ;                                                                              |
@@ -37,12 +37,12 @@
 ;                                                                              |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
-#define LF__PORT		PORTC
+#define LF_PORT		PORTC
 	endif
-	ifndef LF__PIN
+	ifndef LF_PIN
 ;------------------------------------------------------------------------------+
 ;                                                                              |
-;    Constant LF__PIN                                                           |
+;    Constant LF_PIN                                                           |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
 ;                                                                              |
@@ -53,13 +53,13 @@
 ;                                                                              |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
-#define LF__PIN		3
+#define LF_PIN		3
 	endif
-#define	LFDATA		LF__PORT,LF__PIN		; Low Frequency Data IN
-	ifndef LF__T_PERIOD_MAX
+#define	LFDATA		LF_PORT,LF_PIN		; Low Frequency Data IN
+	ifndef LF_T_PERIOD_MAX
 ;------------------------------------------------------------------------------+
 ;                                                                              |
-;    Constant LF__T_PERIOD_MAX                                                  |
+;    Constant LF_T_PERIOD_MAX                                                  |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
 ;                                                                              |
@@ -71,12 +71,12 @@
 ;                                                                              |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
-#define LF__T_PERIOD_MAX	.8000
+#define LF_T_PERIOD_MAX	.8000
 	endif
-	ifndef LF__T_INST
+	ifndef LF_T_INST
 ;------------------------------------------------------------------------------+
 ;                                                                              |
-;    Constant LF__T_INST                                                        |
+;    Constant LF_T_INST                                                        |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
 ;                                                                              |
@@ -87,12 +87,12 @@
 ;                                                                              |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
-#define LF__T_INST		.5
+#define LF_T_INST		.5
 	endif
-	ifndef LF__T_NOISE_MAX
+	ifndef LF_T_NOISE_MAX
 ;------------------------------------------------------------------------------+
 ;                                                                              |
-;    Constant LF__T_NOISE_MAX                                                   |
+;    Constant LF_T_NOISE_MAX                                                   |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
 ;                                                                              |
@@ -110,12 +110,12 @@
 ;           _______________________________________                            |
 ;        __|                         |______|                                  |
 ;------------------------------------------------------------------------------+
-#define LF__T_NOISE_MAX	.200
+#define LF_T_NOISE_MAX	.200
 	endif
-	ifndef LF__T_STEP
+	ifndef LF_T_STEP
 ;------------------------------------------------------------------------------+
 ;                                                                              |
-;    Constant LF__T_STEP                                                        |
+;    Constant LF_T_STEP                                                        |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
 ;                                                                              |
@@ -131,7 +131,7 @@
 ;          ____________                                                        |
 ;        _|            |__________________________|                            |
 ;------------------------------------------------------------------------------+
-#define LF__T_STEP		.250
+#define LF_T_STEP		.250
 	endif
 	udata
 LF_Parity		res 1
@@ -142,7 +142,7 @@ Counter			res 1
 Time			res 1
 	global	LF__Send8, LF__Receive8, LF__ReadBuffer, LF__SendBuffer
 	variable PRE_BITS = B'00000000'
-	variable TMP_PRESCALER = ( LF__T_PERIOD_MAX / (.220 * LF__T_INST) ) + .1
+	variable TMP_PRESCALER = ( LF_T_PERIOD_MAX / (.220 * LF_T_INST) ) + .1
 	variable PRESCALER = .2
 	if ( TMP_PRESCALER == .1)
 PRE_BITS = B'00001000'
@@ -189,9 +189,9 @@ PRESCALER*=.2
 ;------------------------------------------------------------------------------+
 LF__Send_Clamp_One
 	AFE__SendCMDClampON
-	DELAY__WaitFor LF__T_STEP,'u'
+	DELAY__WaitFor LF_T_STEP,'u'
 	AFE__SendCMDClampOFF
-	DELAY__WaitFor LF__T_STEP, 'u'
+	DELAY__WaitFor LF_T_STEP, 'u'
 	return
 ; ***********************************************************************	
 ; Send_Clamp_Zero()
@@ -223,9 +223,9 @@ LF__Send_Clamp_One
 ;------------------------------------------------------------------------------+
 LF__Send_Clamp_Zero
 	AFE__SendCMDClampON
-	DELAY__WaitFor LF__T_STEP, 'u'
+	DELAY__WaitFor LF_T_STEP, 'u'
 	AFE__SendCMDClampOFF
-	DELAY__WaitFor 2*LF__T_STEP, 'u'
+	DELAY__WaitFor 2*LF_T_STEP, 'u'
 	return
 ; ***********************************************************************
 ; * AFE Receive Routine 												*
@@ -277,7 +277,7 @@ ReceiveNext2
 	goto	Return.Fail
 	btfsc	INTCON,T0IF
 	goto	Return.Fail
-	movlw	(3*LF__T_PERIOD_MAX)/(4*PRESCALER*LF__T_INST);0x9C			; Determine Bit value Time>156, then Zero else One
+	movlw	(3*LF_T_PERIOD_MAX)/(4*PRESCALER*LF_T_INST);0x9C			; Determine Bit value Time>156, then Zero else One
 	subwf	Time,W
 	banksel LF_Buffer	
 	movf	LF_COUNTER,W
@@ -491,9 +491,9 @@ LF__SendBuffer.loop
 ;------------------------------------------------------------------------------+
 LF__DetectFalling
 		banksel Counter
-		movlw	(LF__T_NOISE_MAX/(LF__T_INST*.9))+1
+		movlw	(LF_T_NOISE_MAX/(LF_T_INST*.9))+1
 		movwf	Counter								; initialize debounce counter
-		movlw	(.115*LF__T_PERIOD_MAX/(.100*LF__T_INST*PRESCALER))+1	; 
+		movlw	(.115*LF_T_PERIOD_MAX/(.100*LF_T_INST*PRESCALER))+1	; 
 		banksel TMR0
 		subwf	TMR0,W								; over maximum period time?
 		btfsc	STATUS,C
@@ -501,7 +501,7 @@ LF__DetectFalling
 		btfsc	INTCON,T0IF							; As there is a resonant frequency in this routine
 		goto	Return.Fail							; Check also absolute timing
 LF__DetectFalling.Debounce
-		banksel LF__PORT
+		banksel LF_PORT
 		btfsc	LFDATA								; is pin low?
 		goto	LF__DetectFalling					; no, then start from beginning
 		banksel Counter
@@ -533,9 +533,9 @@ LF__DetectFalling.Debounce
 ;------------------------------------------------------------------------------+
 LF__DetectRising
 		banksel Counter
-		movlw	(LF__T_NOISE_MAX/(LF__T_INST*.9))+1
+		movlw	(LF_T_NOISE_MAX/(LF_T_INST*.9))+1
 		movwf	Counter								; initialize debounce counter
-		movlw	(.115*LF__T_PERIOD_MAX/(.100*LF__T_INST*PRESCALER))+1	; 
+		movlw	(.115*LF_T_PERIOD_MAX/(.100*LF_T_INST*PRESCALER))+1	; 
 		banksel TMR0
 		subwf	TMR0,W								; over maximum period time?
 		btfsc	STATUS,C
@@ -543,7 +543,7 @@ LF__DetectRising
 		btfsc	INTCON,T0IF							; As there is a resonant frequency in this routine
 		goto	Return.Fail							; Check also absolute timing
 LF__DetectRising.Debounce
-		banksel LF__PORT
+		banksel LF_PORT
 		btfss	LFDATA								; is pin low?
 		goto	LF__DetectRising						; no, then start from beginning
 		banksel Counter

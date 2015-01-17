@@ -23,9 +23,9 @@
 ;------------------------------------------------------------------------------+
 #include "Project.inc"
 #include "Delay.inc"
-#ifndef RF__PIN
-	#define RF__PIN		5		; RF Modulation Output
-	#define RF__PORT		PORTC
+#ifndef RF_PIN
+	#define RF_PIN		5		; RF Modulation Output
+	#define RF_PORT	PORTC
 #endif
 RF_ovr	udata_ovr
 RF_COUNTER		res 1
@@ -33,10 +33,10 @@ RF_Byte_Counter	res 1
 RF_Data_REG		res 1
 Parity			res 1
 
-	ifndef RF__T_HDR_INIT
+	ifndef RF_T_HDR_INIT
 ;------------------------------------------------------------------------------+
 ;                                                                              |
-;    Constant RF__T_HDR_INIT                                                    |
+;    Constant RF_T_HDR_INIT                                                    |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
 ;                                                                              |
@@ -51,12 +51,12 @@ Parity			res 1
 ;        ___|               |_____________|                                    |
 ;        |__________________|                                                  |
 ;------------------------------------------------------------------------------+
-#define RF__T_HDR_INIT .4100
+#define RF_T_HDR_INIT .4100
 	endif
-	ifndef RF__T_HDR_GAP
+	ifndef RF_T_HDR_GAP
 ;------------------------------------------------------------------------------+
 ;                                                                              |
-;    Constant RF__T_HDR_GAP                                                     |
+;    Constant RF_T_HDR_GAP                                                     |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
 ;                                                                              |
@@ -64,7 +64,7 @@ Parity			res 1
 ;                                                                              |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
-#define RF__T_HDR_GAP .550
+#define RF_T_HDR_GAP .550
 	endif
 	ifndef RF__T_HDR_HIGH
 ;------------------------------------------------------------------------------+
@@ -92,10 +92,10 @@ Parity			res 1
 ;------------------------------------------------------------------------------+
 #define RF__T_HDR_LOW .2100
 	endif
-	ifndef RF__T_STEP
+	ifndef RF_T_STEP
 ;------------------------------------------------------------------------------+
 ;                                                                              |
-;    Constant RF__T_STEP                                                        |
+;    Constant RF_T_STEP                                                        |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
 ;                                                                              |
@@ -107,7 +107,7 @@ Parity			res 1
 ;          _____________                                                       |
 ;        _|             |___________________________|                          |
 ;------------------------------------------------------------------------------+
-#define RF__T_STEP .250
+#define RF_T_STEP .250
 	endif
 	
 	
@@ -214,26 +214,26 @@ TransmitNext
 	goto	SendOne			; send high value
 SendZero
 	call 	DELAY__Wait
-	banksel RF__PORT
-	bsf		RF__PORT,RF__PIN	; rf modulation on
-	movlw	((2*RF__T_STEP)/.50)
+	banksel RF_PORT
+	bsf		RF_PORT,RF_PIN	; rf modulation on
+	movlw	((2*RF_T_STEP)/.50)
 	call 	DELAY__start
 	call 	DELAY__Wait
-	banksel RF__PORT
-	bcf		RF__PORT,RF__PIN	; rf modulation off
-	movlw	(RF__T_STEP/.50)
+	banksel RF_PORT
+	bcf		RF_PORT,RF_PIN	; rf modulation off
+	movlw	(RF_T_STEP/.50)
 	call 	DELAY__start
 	goto	SendNextBit		; send next bit
 SendOne
 	call 	DELAY__Wait
-	banksel RF__PORT
-	bsf		RF__PORT,RF__PIN	; rf modulation on
-	movlw	(RF__T_STEP/.50)
+	banksel RF_PORT
+	bsf		RF_PORT,RF_PIN	; rf modulation on
+	movlw	(RF_T_STEP/.50)
 	call 	DELAY__start
 	call 	DELAY__Wait
-	banksel RF__PORT
-	bcf		RF__PORT,RF__PIN	; rf modulation off
-	movlw	((2*RF__T_STEP)/.50)
+	banksel RF_PORT
+	bcf		RF_PORT,RF_PIN	; rf modulation off
+	movlw	((2*RF_T_STEP)/.50)
 	call 	DELAY__start
 	banksel	Parity
 	incf	Parity,F
@@ -293,23 +293,23 @@ EndTX
 ;                                                                              |
 ;------------------------------------------------------------------------------+
 RF__Send_Header
-	banksel	RF__PORT
-	bsf		RF__PORT,RF__PIN	; modulation data for rf
-	movlw	(RF__T_HDR_INIT/.50)
+	banksel	RF_PORT
+	bsf		RF_PORT,RF_PIN	; modulation data for rf
+	movlw	(RF_T_HDR_INIT/.50)
 	call	DELAY__start
 	call	DELAY__Wait
-	banksel	RF__PORT
-	bcf		RF__PORT,RF__PIN	; turn off modulation data for rf
-	movlw	(RF__T_HDR_GAP/.50)
+	banksel	RF_PORT
+	bcf		RF_PORT,RF_PIN	; turn off modulation data for rf
+	movlw	(RF_T_HDR_GAP/.50)
 	call	DELAY__start
 	call	DELAY__Wait
-	banksel	RF__PORT
-	bsf		RF__PORT,RF__PIN	; modulation data for rf
+	banksel	RF_PORT
+	bsf		RF_PORT,RF_PIN	; modulation data for rf
 	MOVLW	(RF__T_HDR_HIGH/.50)
 	call	DELAY__start
 	call	DELAY__Wait
-	banksel	RF__PORT
-	bcf		RF__PORT,RF__PIN	; turn off modulation data for rf
+	banksel	RF_PORT
+	bcf		RF_PORT,RF_PIN	; turn off modulation data for rf
 	movlw	(RF__T_HDR_LOW/.50)
 	call	DELAY__start
 	return	
