@@ -19,10 +19,10 @@
 ;          ____________                                                        |
 ;        _|            |__________________________|                            |
 ;------------------------------------------------------------------------------+
-#include Project.inc
-#include Delay.inc
-#include SPI.inc
-#include AFE_639.inc
+#include "Project.inc"
+#include "Delay.inc"
+#include "SPI.inc"
+#include "AFE_639.inc"
 	ifndef LF_PORT
 ;------------------------------------------------------------------------------+
 ;                                                                              |
@@ -287,7 +287,7 @@ ReceiveNext2
 	incf	LF_Parity,F
 	rrf		LF_Buffer,F		; Rotate bit received bit, now in carry, into receive buffer
 ;	banksel LF_COUNTER
-	decf	LF_COUNTER, f		; Decrement receive count register by one
+	decf	LF_COUNTER,F		; Decrement receive count register by one
 	goto	ReceiveNext		; ... no, then receive next bit
 ParityCheck
 	btfss	STATUS,C
@@ -407,7 +407,7 @@ SendNext
 	Call	LF__Send_Clamp_Zero	; ... Yes, then send LF Clamp Zero
 	banksel LF_Buffer
 	rrf		LF_Buffer,1			; Right Rotate Data Register to get next bit
-	decfsz	LF_COUNTER, f		; Decrement receive count register by one
+	decfsz	LF_COUNTER,F		; Decrement receive count register by one
 	goto	SendNext			; ... no, then receive next bit
 	AFE__SendCMDClampOFF
 	return					

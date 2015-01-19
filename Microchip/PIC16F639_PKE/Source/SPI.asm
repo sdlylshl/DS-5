@@ -12,7 +12,7 @@
 ;                                                                              |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
-#include Project.inc	
+#include "Project.inc"
 ;	when overriding these values, you will have to change the source code
 #define	AFECS		PORTC,1		; Chip select output
 #define	SCK			PORTC,2		; SPI Clock Output
@@ -187,8 +187,8 @@ SPI__ShiftOutBuffer
 	bcf		AFECS
 ShiftOutLoop
 	banksel SPI_BufferH
-	rlf		SPI_BufferL, f
-	rlf		SPI_BufferH, f
+	rlf		SPI_BufferL,F
+	rlf		SPI_BufferH,F
 	banksel	PORTC
 	btfss	STATUS,C
 	bcf		SDIO
@@ -200,7 +200,7 @@ ShiftOutLoop
 	bcf		SCK
 ;	CLRWDT
 	banksel Count00
-	decfsz	Count00, f
+	decfsz	Count00,F
 	goto	ShiftOutLoop
 	banksel PORTC
 	bsf		AFECS
@@ -282,11 +282,11 @@ ShiftInLoop
 	bsf		STATUS, C
 	bcf		SCK
 	banksel SPI_BufferL
-	rlf		SPI_BufferL, f
-	rlf		SPI_BufferH, f
+	rlf		SPI_BufferL,F
+	rlf		SPI_BufferH,F
 ;	CLRWDT
 	banksel Count00
-	decfsz	Count00, f
+	decfsz	Count00,F
 	goto	ShiftInLoop
 	banksel PORTC
 	bsf		AFECS

@@ -24,9 +24,9 @@
 ;                                                                              |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
-#include Project.inc
-#include PIC16F639.inc
-#include RF.inc
+#include "Project.inc"
+#include "PIC16F639.inc"
+#include "RF.inc"
 
 	global Button_Handler, Button_Handler_Init
 

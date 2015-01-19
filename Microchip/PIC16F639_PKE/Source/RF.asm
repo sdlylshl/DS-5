@@ -209,7 +209,7 @@ Transmit8
 	movwf	RF_COUNTER	; initialize count register
 TransmitNext
 	banksel RF_Data_REG
-	rrf		RF_Data_REG, f		; rotate receive register
+	rrf		RF_Data_REG,F		; rotate receive register
 	btfsc	STATUS, C		; test bit to be transmited
 	goto	SendOne			; send high value
 SendZero
@@ -243,7 +243,7 @@ SendNextBit
 	movf	RF_COUNTER,F
 	btfsc	STATUS,Z
 	goto	EndTX
-	decfsz	RF_COUNTER, f	; decrement counter register
+	decfsz	RF_COUNTER,F	; decrement counter register
 	goto	TransmitNext 	; transmit next bit
 SendParity
 ;	btfsc	Parity,7

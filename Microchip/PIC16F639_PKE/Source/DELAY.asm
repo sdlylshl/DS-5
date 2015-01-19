@@ -147,7 +147,7 @@ lastloop
 Delay40us							; time=((X*3)+6)*(1/(Fosc/4))		
 	movlw	.25						; 1 cycle + 2 cycles for CALL		(TEMP2)
 	movwf	DELAY_TEMP1				; 1 cycle							(TEMP2)
-	decfsz	DELAY_TEMP1, f			; 1 cycle							(TEMP1*TEMP2)
+	decfsz	DELAY_TEMP1,F			; 1 cycle							(TEMP1*TEMP2)
 	goto	$-1						; 2 cycles							((TEMP1-1)*TEMP2)
 	return							; 2 cycles + 1 cyclec for DECFSZ	(TEMP2)
 ;------------------------------------------------------------------------------+

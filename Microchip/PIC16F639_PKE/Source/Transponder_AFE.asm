@@ -58,10 +58,10 @@
 ;                                                                              |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
-#include Project.inc
-#include Delay.inc
-#include SPI.inc
-#include EEPROM.inc
+#include "Project.inc"
+#include "Delay.inc"
+#include "SPI.inc"
+#include "EEPROM.inc"
 ;equ 相当于 #define
 #define FLAG_AFE_BIT2 2
 AFE_READCMD			equ	0xC0

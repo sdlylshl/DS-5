@@ -26,7 +26,7 @@
 ;		 Software License Agreement
 ;
 ; The software supplied herewith by Microchip Technology Incorporated 
-; (the "Company") for its PICmicro® Microcontroller is intended and 
+; (the "Company") for its PICmicroï¿½ Microcontroller is intended and 
 ; supplied to you, the Company's customer, for use solely and 
 ; exclusively on Microchip PICmicro Microcontroller products. The 
 ; software is owned by the Company and/or its supplier, and is 
@@ -56,7 +56,7 @@
 ;                                                                              |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
-#include Project.inc
+#include "Project.inc"
 
 #define FLAG_EEPROM_BIT1 1
 	udata

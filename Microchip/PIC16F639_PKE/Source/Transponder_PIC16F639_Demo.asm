@@ -68,14 +68,14 @@
 ;                                                                              |
 ;                                                                              |
 ;------------------------------------------------------------------------------+
-#include Project.inc
-#include Delay.inc
-#include RF.inc
-#include EEPROM.inc
-#include SPI.inc
-#include AFE_639.inc
-#include Massage_Handler.inc
-#include Button_Handler.inc
+#include "Project.inc"
+#include "Delay.inc"
+#include "RF.inc"
+#include "EEPROM.inc"
+#include "SPI.inc"
+#include "AFE_639.inc"
+#include "Massage_Handler.inc"
+#include "Button_Handler.inc"
    	__CONFIG _FOSC_INTOSCIO & _WDTE_OFF & _PWRTE_ON & _MCLRE_OFF & _CP_OFF & _CPD_OFF & _BOREN_ON & _IESO_ON & _FCMEN_ON & _WURE_OFF
     __idlocs	0x1234
 ;-----------------------------------------|

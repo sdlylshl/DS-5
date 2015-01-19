@@ -1,7 +1,7 @@
 
 
 	list p=16F639				; list directive to define processor
-	#include <p16f639.inc>      ; processor specific variable definitions
+	#include "p16f639.inc"      ; processor specific variable definitions
 
 	ERRORLEVEL 0,-302,-312	; Messages, Warnings and Errors Printed
                         		; Ignore [301] => Processor Mismatch. 

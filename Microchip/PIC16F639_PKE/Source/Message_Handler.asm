@@ -29,13 +29,13 @@
 ;        ____|          |_|    |____| |_|                                      |
 ;        |_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                           |
 ;------------------------------------------------------------------------------+
-#include	Project.inc
-#include	PIC16F639.inc
-#include	LF.inc
-#include	RF.inc
-#include	EEPROM.inc
-#include	Delay.inc
-#include	AFE_639.inc
+#include	"Project.inc"
+#include	"PIC16F639.inc"
+#include	"LF.inc"
+#include	"RF.inc"
+#include	"EEPROM.inc"
+#include	"Delay.inc"
+#include	"AFE_639.inc"
 	global	MESSAGE_HANDLER
 	udata
 COUNTER		res	1
