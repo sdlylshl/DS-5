@@ -47,18 +47,18 @@ static void SPI_GPIO_Config(void) {
 /****************************************************************************
 【功能说明】SPI接口IO初始化
 ****************************************************************************/
-void SPI_IO_INIT( void )
+void SPI_INIT( void )
 {
 	 SPI_GPIO_Config();
    SPI_MOSI_LOW();		//SI put 0
    SPI_CLK_LOW();		//SCK put 0
-   { uint16_t k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //延时至少300ns
+   SPI_DELAY();
    SPI_CSN_HIGH() ;
-   { uint16_t k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //延时至少300ns
+   SPI_DELAY();
 }
 
 /****************************************************************************
-【功能说明】SPI接口读出写入数据
+【功能说明】SPI接口读出写入数据 MSB 上升沿读取
 ****************************************************************************/
 uint8_t SPI_ReadWrite(uint8_t data)
 {
@@ -67,8 +67,7 @@ uint8_t SPI_ReadWrite(uint8_t data)
 	SPI_CLK_LOW();
 //	SPI_MOSI_LOW();
 	SPI_CSN_LOW();
-	{ uint16_t k=0; for( ; k <= DELAY_TIME; k++ ) ;  }  //延时至少300ns
-
+	SPI_DELAY();
 	for( m = 0; m < 8; m++ )
 	{
 		if( (data&0x80)==0x80 ){
@@ -76,11 +75,9 @@ uint8_t SPI_ReadWrite(uint8_t data)
 		}else{
 			SPI_MOSI_LOW();
 		}
-
-		{ uint16_t k=0; for( ; k <= DELAY_TIME; k++ ) ;  } 
+		SPI_DELAY();
 		SPI_CLK_HIGH() ;
-		//{ uint16_t k=0; for( ; k <= DELAY_TIME; k++ ) ;  } 
-
+		
 		data = data<<1;
 		if( SPI_MISO_READ() != 0 ){
 			data |= 0x01 ;
@@ -88,9 +85,9 @@ uint8_t SPI_ReadWrite(uint8_t data)
 			data &= 0xfe;
 		}
 
-		{ uint16_t k=0; for( ; k <= DELAY_TIME; k++ ) ;  } 
+		SPI_DELAY();
 		SPI_CLK_LOW() ;
-		//{ uint16_t k=0; for( ; k <= DELAY_TIME; k++ ) ;  } 
+		
 	}
 
 	return (data);

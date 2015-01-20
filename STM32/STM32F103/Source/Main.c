@@ -16,8 +16,8 @@ int main() {
 	TIM4_Start(); //用来做网络延时计时使用
 	//nrf
 	SPI1_Init();
-	SPI2_Init();
-	
+	//SPI2_Init();
+	SPI_INIT();
 	PS2_Init();
 	LED_GPIO_Config();	
 		//开总中断

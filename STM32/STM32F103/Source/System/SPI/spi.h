@@ -3,8 +3,10 @@
 
 #include "version.h"
 
-#define DELAY_TIME      500
+#define DELAY_TIME      10
 
+#define SPI_DELAY()
+//__STATIC_INLINE void SPI_DELAY(){ uint16_t k=0; for( ; k <= DELAY_TIME; k++ );}
 
 #define SPI_IRQ_PORT            GPIOD
 #define SPI_IRQ_PIN             GPIO_Pin_8
@@ -66,6 +68,8 @@ GPIO_ResetBits(SPI_CSN_PORT, SPI_CSN_PIN);}
 
 __STATIC_INLINE uint8_t SPI_IRQ_READ(){ return GPIO_ReadInputDataBit(SPI_IRQ_PORT, SPI_IRQ_PIN);}
 
+
+extern void SPI_INIT( void );
 extern uint8_t SPI_ReadWrite(uint8_t data);
 #endif
 

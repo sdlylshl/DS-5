@@ -279,7 +279,7 @@ void nrf_master()
 
     //注册接口函数
     nrfchip_init(&nrf_chip_send,SPI_1);
-    nrfchip_init(&nrf_chip_recv,SPI_2);
+    nrfchip_init(&nrf_chip_recv,SPI);
     //测试模块寄存器
     nrf_test(&nrf_chip_send);
     nrf_test(&nrf_chip_recv);
@@ -339,7 +339,7 @@ void nrf_device()
     uint32_t nrf_time;
     uint8_t i;
 //	uint8_t status = 0;
-    nrfchip_init(&nrf_chip_device, SPI_2);
+    nrfchip_init(&nrf_chip_device, SPI);
     nrf_test(&nrf_chip_device);
     nrf_check(&nrf_chip_device);
     nrf_config(&nrf_chip_device);

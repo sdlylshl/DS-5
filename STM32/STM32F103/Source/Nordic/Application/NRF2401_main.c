@@ -89,7 +89,7 @@ nrf__test();
 }
 
 
-int NRF_device_main(void)
+void NRF_device_main(void)
 {      
 
 /*SPI接口初始化*/   
