@@ -93,6 +93,15 @@ void nrfchip_init(_nrf_chip_t *nrf_chip,SPIx_t SPIx) {
 
 	assert_param(IS_SPI_ALL_PERIPH(SPIx));
 
+	if (SPIx == SPI)
+	{
+		nrf_chip->CSN_LOW = SPI_CSN_LOW;
+		nrf_chip->CSN_HIGH = SPI_CSN_HIGH;
+		nrf_chip->CE_LOW = SPI_CEN_LOW;
+		nrf_chip->CE_HIGH = SPI_CEN_HIGH;
+		nrf_chip->NRF_Read_IRQ = SPI_IRQ_READ;
+		nrf_chip->hal_nrf_rw = SPI_ReadWrite;
+	}else
 	if (SPIx == SPI_1)
 	{
 		nrf_chip->CSN_LOW = SPI1_ResetNSS;

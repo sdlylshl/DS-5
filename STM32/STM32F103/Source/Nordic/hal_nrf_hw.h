@@ -119,6 +119,7 @@ extern uFUNu hal_nrf_rw;
 
 #endif // HAL_NRF_LU1_H__
 typedef enum {
+	SPI,	
 	SPI_1,
 	SPI_2,
 	SPI_3

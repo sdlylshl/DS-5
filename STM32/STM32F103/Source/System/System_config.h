@@ -20,6 +20,7 @@
 #endif // CABINET_DEVICE 
 
 #include "./NVIC.h"
+#include ".\SPI\spi.h"
 #include ".\SPI\spi1.h"
 #include ".\SPI\spi2.h"
 #include ".\SPI\spi3.h"
