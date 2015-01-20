@@ -372,8 +372,12 @@ MAIN
     movwf   EEPROM_ADDRESS 
 	
     movlw   0x12                                                           
-    call    EEPROM__Write     
-	
+    call    EEPROM__Write 
+    
+    movlw   0x0f                                                            
+    movwf   SPI_Buffer                                                        
+    call    SPI__ReadWrite 
+    
 	RF__Init
 	SPI__Init
 	AFE__Init

@@ -45,17 +45,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=Source/Button_Handler.asm Source/DELAY.asm Source/EEPROM.asm Source/LF_pwm.asm Source/Message_Handler.asm Source/RF.asm Source/SPI.asm Source/Transponder_AFE.asm Source/Transponder_PIC16F639_Demo.asm
+SOURCEFILES_QUOTED_IF_SPACED=Source/Button_Handler.asm Source/DELAY.asm Source/EEPROM.asm Source/LF_pwm.asm Source/Message_Handler.asm Source/RF.asm Source/SPI.asm Source/Transponder_AFE.asm Source/Transponder_PIC16F639_Demo.asm Source/SPI_simulate.asm
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Source/Button_Handler.o ${OBJECTDIR}/Source/DELAY.o ${OBJECTDIR}/Source/EEPROM.o ${OBJECTDIR}/Source/LF_pwm.o ${OBJECTDIR}/Source/Message_Handler.o ${OBJECTDIR}/Source/RF.o ${OBJECTDIR}/Source/SPI.o ${OBJECTDIR}/Source/Transponder_AFE.o ${OBJECTDIR}/Source/Transponder_PIC16F639_Demo.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/Source/Button_Handler.o.d ${OBJECTDIR}/Source/DELAY.o.d ${OBJECTDIR}/Source/EEPROM.o.d ${OBJECTDIR}/Source/LF_pwm.o.d ${OBJECTDIR}/Source/Message_Handler.o.d ${OBJECTDIR}/Source/RF.o.d ${OBJECTDIR}/Source/SPI.o.d ${OBJECTDIR}/Source/Transponder_AFE.o.d ${OBJECTDIR}/Source/Transponder_PIC16F639_Demo.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Source/Button_Handler.o ${OBJECTDIR}/Source/DELAY.o ${OBJECTDIR}/Source/EEPROM.o ${OBJECTDIR}/Source/LF_pwm.o ${OBJECTDIR}/Source/Message_Handler.o ${OBJECTDIR}/Source/RF.o ${OBJECTDIR}/Source/SPI.o ${OBJECTDIR}/Source/Transponder_AFE.o ${OBJECTDIR}/Source/Transponder_PIC16F639_Demo.o ${OBJECTDIR}/Source/SPI_simulate.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/Source/Button_Handler.o.d ${OBJECTDIR}/Source/DELAY.o.d ${OBJECTDIR}/Source/EEPROM.o.d ${OBJECTDIR}/Source/LF_pwm.o.d ${OBJECTDIR}/Source/Message_Handler.o.d ${OBJECTDIR}/Source/RF.o.d ${OBJECTDIR}/Source/SPI.o.d ${OBJECTDIR}/Source/Transponder_AFE.o.d ${OBJECTDIR}/Source/Transponder_PIC16F639_Demo.o.d ${OBJECTDIR}/Source/SPI_simulate.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/Source/Button_Handler.o ${OBJECTDIR}/Source/DELAY.o ${OBJECTDIR}/Source/EEPROM.o ${OBJECTDIR}/Source/LF_pwm.o ${OBJECTDIR}/Source/Message_Handler.o ${OBJECTDIR}/Source/RF.o ${OBJECTDIR}/Source/SPI.o ${OBJECTDIR}/Source/Transponder_AFE.o ${OBJECTDIR}/Source/Transponder_PIC16F639_Demo.o
+OBJECTFILES=${OBJECTDIR}/Source/Button_Handler.o ${OBJECTDIR}/Source/DELAY.o ${OBJECTDIR}/Source/EEPROM.o ${OBJECTDIR}/Source/LF_pwm.o ${OBJECTDIR}/Source/Message_Handler.o ${OBJECTDIR}/Source/RF.o ${OBJECTDIR}/Source/SPI.o ${OBJECTDIR}/Source/Transponder_AFE.o ${OBJECTDIR}/Source/Transponder_PIC16F639_Demo.o ${OBJECTDIR}/Source/SPI_simulate.o
 
 # Source Files
-SOURCEFILES=Source/Button_Handler.asm Source/DELAY.asm Source/EEPROM.asm Source/LF_pwm.asm Source/Message_Handler.asm Source/RF.asm Source/SPI.asm Source/Transponder_AFE.asm Source/Transponder_PIC16F639_Demo.asm
+SOURCEFILES=Source/Button_Handler.asm Source/DELAY.asm Source/EEPROM.asm Source/LF_pwm.asm Source/Message_Handler.asm Source/RF.asm Source/SPI.asm Source/Transponder_AFE.asm Source/Transponder_PIC16F639_Demo.asm Source/SPI_simulate.asm
 
 
 CFLAGS=
@@ -154,6 +154,14 @@ ${OBJECTDIR}/Source/Transponder_PIC16F639_Demo.o: Source/Transponder_PIC16F639_D
 	@${DEP_GEN} -d "${OBJECTDIR}/Source/Transponder_PIC16F639_Demo.o"
 	@${FIXDEPS} "${OBJECTDIR}/Source/Transponder_PIC16F639_Demo.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
+${OBJECTDIR}/Source/SPI_simulate.o: Source/SPI_simulate.asm  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/Source" 
+	@${RM} ${OBJECTDIR}/Source/SPI_simulate.o.d 
+	@${RM} ${OBJECTDIR}/Source/SPI_simulate.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/Source/SPI_simulate.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG  -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/Source/SPI_simulate.lst\" -e\"${OBJECTDIR}/Source/SPI_simulate.err\" $(ASM_OPTIONS)   -o\"${OBJECTDIR}/Source/SPI_simulate.o\" \"Source/SPI_simulate.asm\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/Source/SPI_simulate.o"
+	@${FIXDEPS} "${OBJECTDIR}/Source/SPI_simulate.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	
 else
 ${OBJECTDIR}/Source/Button_Handler.o: Source/Button_Handler.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/Source" 
@@ -226,6 +234,14 @@ ${OBJECTDIR}/Source/Transponder_PIC16F639_Demo.o: Source/Transponder_PIC16F639_D
 	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/Source/Transponder_PIC16F639_Demo.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/Source/Transponder_PIC16F639_Demo.lst\" -e\"${OBJECTDIR}/Source/Transponder_PIC16F639_Demo.err\" $(ASM_OPTIONS)   -o\"${OBJECTDIR}/Source/Transponder_PIC16F639_Demo.o\" \"Source/Transponder_PIC16F639_Demo.asm\" 
 	@${DEP_GEN} -d "${OBJECTDIR}/Source/Transponder_PIC16F639_Demo.o"
 	@${FIXDEPS} "${OBJECTDIR}/Source/Transponder_PIC16F639_Demo.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	
+${OBJECTDIR}/Source/SPI_simulate.o: Source/SPI_simulate.asm  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/Source" 
+	@${RM} ${OBJECTDIR}/Source/SPI_simulate.o.d 
+	@${RM} ${OBJECTDIR}/Source/SPI_simulate.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/Source/SPI_simulate.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/Source/SPI_simulate.lst\" -e\"${OBJECTDIR}/Source/SPI_simulate.err\" $(ASM_OPTIONS)   -o\"${OBJECTDIR}/Source/SPI_simulate.o\" \"Source/SPI_simulate.asm\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/Source/SPI_simulate.o"
+	@${FIXDEPS} "${OBJECTDIR}/Source/SPI_simulate.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
 endif
 

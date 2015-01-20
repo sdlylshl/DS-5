@@ -32,16 +32,7 @@ flag	res 1		;using bit 0
 	global SPI_BufferH, SPI_BufferL
 	global SPI__Read, SPI__Write
 	code
-    
-;SPI从模块初始化  
-
-SPI__Init  
-        banksel TRISC  
-    movlw   b'11001110'     ; Set LFDATA,ALERT, and CS as inputs   
-    movwf   TRISC           ;   
-    banksel PORTC  
-    bsf     AFECS           ; Take AFE CS Line high  
-        return  
+ 
 ;------------------------------------------------------------------------------+
 ;                                                                              |
 ;     SPI_BufferH  SPI_BufferL SPI__Read( SPI_BufferH  SPI_BufferL )            |
