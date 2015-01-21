@@ -6,7 +6,7 @@
 #define DELAY_TIME      10
 
 #define SPI_DELAY()
-//__STATIC_INLINE void SPI_DELAY(){ uint16_t k=0; for( ; k <= DELAY_TIME; k++ );}
+//static __INLINE void SPI_DELAY(){ uint16_t k=0; for( ; k <= DELAY_TIME; k++ );}
 
 #define SPI_IRQ_PORT            GPIOD
 #define SPI_IRQ_PIN             GPIO_Pin_8
@@ -53,20 +53,20 @@
 
 //#define SPI_IRQ_READ()      GPIO_ReadInputDataBit(SPI_IRQ_PORT, SPI_IRQ_PIN)
 
-__STATIC_INLINE void SPI_CEN_HIGH(){GPIO_SetBits(SPI_CEN_PORT, SPI_CEN_PIN);}
-__STATIC_INLINE void SPI_CEN_LOW() {GPIO_ResetBits(SPI_CEN_PORT, SPI_CEN_PIN);}
-__STATIC_INLINE void SPI_CSN_HIGH(){GPIO_SetBits(SPI_CSN_PORT, SPI_CSN_PIN);}
-__STATIC_INLINE void SPI_CSN_LOW() {
+static __INLINE void SPI_CEN_HIGH(){GPIO_SetBits(SPI_CEN_PORT, SPI_CEN_PIN);}
+static __INLINE void SPI_CEN_LOW() {GPIO_ResetBits(SPI_CEN_PORT, SPI_CEN_PIN);}
+static __INLINE void SPI_CSN_HIGH(){GPIO_SetBits(SPI_CSN_PORT, SPI_CSN_PIN);}
+static __INLINE void SPI_CSN_LOW() {
 GPIO_ResetBits(SPI_CSN_PORT, SPI_CSN_PIN);}
 
-//__STATIC_INLINE void SPI_CLK_HIGH(){GPIO_SetBits(SPI_CLK_PORT, SPI_CLK_PIN);}
-//__STATIC_INLINE void SPI_CLK_LOW() {GPIO_ResetBits(SPI_CLK_PORT, SPI_CLK_PIN);}
-//__STATIC_INLINE void SPI_MOSI_HIGH(){GPIO_SetBits(SPI_MOSI_PORT, SPI_MOSI_PIN);}
-//__STATIC_INLINE void SPI_MOSI_LOW() {GPIO_ResetBits(SPI_MOSI_PORT, SPI_MOSI_PIN);}
+//static __INLINE void SPI_CLK_HIGH(){GPIO_SetBits(SPI_CLK_PORT, SPI_CLK_PIN);}
+//static __INLINE void SPI_CLK_LOW() {GPIO_ResetBits(SPI_CLK_PORT, SPI_CLK_PIN);}
+//static __INLINE void SPI_MOSI_HIGH(){GPIO_SetBits(SPI_MOSI_PORT, SPI_MOSI_PIN);}
+//static __INLINE void SPI_MOSI_LOW() {GPIO_ResetBits(SPI_MOSI_PORT, SPI_MOSI_PIN);}
 
-//__STATIC_INLINE uint8_t SPI_MISO_READ(){return GPIO_ReadInputDataBit(SPI_MISO_PORT, SPI_MISO_PIN);}
+//static __INLINE uint8_t SPI_MISO_READ(){return GPIO_ReadInputDataBit(SPI_MISO_PORT, SPI_MISO_PIN);}
 
-__STATIC_INLINE uint8_t SPI_IRQ_READ(){ return GPIO_ReadInputDataBit(SPI_IRQ_PORT, SPI_IRQ_PIN);}
+static __INLINE uint8_t SPI_IRQ_READ(){ return GPIO_ReadInputDataBit(SPI_IRQ_PORT, SPI_IRQ_PIN);}
 
 
 extern void SPI_INIT( void );
