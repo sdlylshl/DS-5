@@ -31,6 +31,7 @@ uint8_t NRF_MASTER_SEND_ADDRESS[TX_ADR_WIDTH] = { 0x34, 0x43, 0x10, 0x10, 0x01 }
 #define MASTER_TX_CHANNEL 70
 #define DEVICE_RX_CHANNEL MASTER_TX_CHANNEL
 #define DEVICE_TX_CHANNEL MASTER_RX_CHANNEL
+#define NRF_ADDRESS_WIDTH 5
 
 //_nrf_chip_t nrf_chip_master;
 _nrf_chip_t nrf_chip_recv;
@@ -41,7 +42,7 @@ _nrf_chip_t nrf_chip_device;
 
 #define PLOAD_WIDTH 5
 uint8_t send_erro = 0;
-#define MASTER
+//#define MASTER
 
 uint8_t nrf_test(_nrf_chip_t *nrf_chip)
 {
@@ -180,7 +181,7 @@ static void nrf_config(_nrf_chip_t *nrf_chip)
     //hal_nrf_set_address(nrf_chip, HAL_NRF_PIPE1,NRF_DEVICE_ADDRESS);
 
     //SETUP_RETR设置重发次数,重发间隔,默认3次,250us
-    hal_nrf_set_auto_retr(nrf_chip, 10, 500);
+    hal_nrf_set_auto_retr(nrf_chip, 0, 0);
     //NRF_EN_AA,EN_RXADDR开启通道0的自动应答,开启时强制打开CRC校验,默认开启
     hal_nrf_open_pipe(nrf_chip, HAL_NRF_PIPE0, NRF_EN_AA);
     //CONFIG打开CRC16校验,默认8位
@@ -247,11 +248,12 @@ uint8_t nrf_tx_dat(_nrf_chip_t *nrf_chip, const uint8_t * txdat)
     //nrf_time = TIM4_GetCurrentTime();
     //2.等待发送完成
 #ifdef NVIC_SPI2_IRQ
-    while (!(nrf_chip->radio_busy)) {
-        //if (TIM4_GetDistanceTime(nrf_time) > 10) {
-        if(!(nrf_time--)) {
+    while (!(nrf_chip->radio_busy))
+		{
+        //if (TIM4_GetDistanceTime(nrf_time) > 10)
+        if(!(nrf_time--)) 
+				{
             printf("busy%x",nrf_chip->radio_busy);
-            //此处必须加延时不知为啥。。
             printf("send timeout !\n");
             send_erro = 1;
             hal_nrf_flush_tx(nrf_chip);
@@ -260,13 +262,22 @@ uint8_t nrf_tx_dat(_nrf_chip_t *nrf_chip, const uint8_t * txdat)
             break;
         }
     }
-
 #else
-    while(NRF_Read_IRQ());
-
-    radio_busy = hal_nrf_get_clear_irq_flags(nrf_chip);
-
+    while(NRF_Read_IRQ())
+ {
+        //if (TIM4_GetDistanceTime(nrf_time) > 10)
+        if(!(nrf_time--)) 
+				{
+            printf("busy%x",nrf_chip->radio_busy);
+            printf("send timeout !\n");
+            send_erro = 1;
+            hal_nrf_flush_tx(nrf_chip);
+            break;
+        }
+    }
+    nrf_chip->radio_busy = hal_nrf_get_clear_irq_flags(nrf_chip);
 #endif
+
 
     if (nrf_chip->radio_busy & TX_DS) {
         //printf("send data ok !\n");
@@ -372,11 +383,12 @@ void nrf_device()
 //    NRF_RF_CH      :0x28
 //    NRF_RX_ADDR_P0 :0xe7
 //    NRF_TX_ADDR    :0xe7
+
 //	uint8_t status = 0;
     uint32_t nrf_time;
     uint8_t i;
 //	uint8_t status = 0;
-    nrfchip_init(&nrf_chip_device, SPI);
+    nrfchip_init(&nrf_chip_device, SPI_2);
     nrf_test(&nrf_chip_device);
     nrf_check(&nrf_chip_device);
     nrf_config(&nrf_chip_device);

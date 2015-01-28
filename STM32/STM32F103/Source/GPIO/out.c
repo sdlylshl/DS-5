@@ -296,13 +296,12 @@ uint32_t lock_base_open;
 //2.开关间隔ms
 uint32_t LOCK_INTERVALS_TIME = 500;
 uint32_t lock_base_intervals;
-
-uint32_t GetCurrentTime() {
-	return TIM4_GetCurrentTime();
-}
-uint32_t GetDistanceTime(uint32_t prev) {
-	return TIM4_GetDistanceTime(prev);
-}
+//uint32_t GetCurrentTime() {
+//	return TIM4_GetCurrentTime();
+//}
+//uint32_t GetDistanceTime(uint32_t prev) {
+//	return TIM4_GetDistanceTime(prev);
+//}
 
 int8_t Locker_open(uint8_t ch) {
 	//1.等待间隔是否到达

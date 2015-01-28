@@ -21,7 +21,7 @@
  * 淘宝    ：http://firestm32.taobao.com
 **********************************************************************************/
 #include "SPI_NRF.h"
-
+#include <stdio.h>
 // SPI2
 #include "./System/System_config.h"
 
@@ -37,63 +37,56 @@
 #define MASTER_TX_CHANNEL 70
 #define DEVICE_RX_CHANNEL MASTER_TX_CHANNEL
 #define DEVICE_TX_CHANNEL MASTER_RX_CHANNEL
+#define NRF_ADDRESS_WIDTH 5
 
- //uint8_t TX_ADDRESS[TX_ADR_WIDTH] = {0x34,0x43,0x10,0x10,0x01};  // 定义一个静态发送地址
- //uint8_t RX_ADDRESS[RX_ADR_WIDTH] = {0x34,0x43,0x10,0x10,0x01};
-
-#define GetCurrentTime TIM2_GetCurrentTime
-#define GetDistanceTime TIM2_GetDistanceTime
-void Delay(__IO u32 nCount)
+//#define GetCurrentTime TIM2_GetCurrentTime
+//#define GetDistanceTime TIM2_GetDistanceTime
+void Delay(volatile uint32_t nCount)
 {
   for(; nCount != 0; nCount--);
 } 
+////注册外部接口函数
+//SPI2
+//void (*NRF_CSN_LOW)(void) = SPI2_ResetNSS;
+//void (*NRF_CSN_HIGH)(void) = SPI2_SetNSS;
+//void (*NRF_CE_LOW)(void) = SPI2_ResetRST;
+//void (*NRF_CE_HIGH)(void) = SPI2_SetRST;
+//uint8_t (*NRF_GET_IRQ)(void) = SPI2_readIRQ;
+//uint8_t (*SPI_NRF_RW)(uint8_t) = SPI2_SendByte;
+
+// 模拟SPI
+void (*NRF_CSN_LOW)(void) = SPI_CSN_LOW;
+void (*NRF_CSN_HIGH)(void) = SPI_CSN_HIGH;
+void (*NRF_CE_LOW)(void) = SPI_CEN_LOW;
+void (*NRF_CE_HIGH)(void) = SPI_CEN_HIGH;
+uint8_t (*NRF_GET_IRQ)(void) = SPI_IRQ_READ;
+uint8_t (*SPI_NRF_RW)(uint8_t) = SPI_ReadWrite;
 
 
-void NRF_GPIO_Config() {
-	GPIO_InitTypeDef GPIO_InitStructure;
+//static void NRF_CSN_HIGH(){
+//		SPI2_SCS_HIGH();
+//}
+//static void NRF_CSN_LOW(){
+//		SPI2_SCS_LOW();
+//}
+//static void NRF_CE_HIGH(){
+//		//NRF_CE(1);
+//	SPI2_RST_HIGH();
+//}
+//static  void NRF_CE_LOW(){
+//		//NRF_CE(0);
+//	SPI2_RST_LOW();
+//}
 
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD, ENABLE);
+//static uint8_t NRF_GET_IRQ(){
+//	//return NRF_IRQ_READ();
+////return (GPIO_ReadInputDataBit(NRF_IRQ_PORT, NRF_IRQ_PIN)); //低电平产生中断
+//	return SPI2_READ_IRQ();
+//}
 
-	GPIO_InitStructure.GPIO_Pin = NRF_IRQ_PIN;
-	GPIO_InitStructure.GPIO_Mode = NRF_IRQ_MODE;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(NRF_IRQ_PORT, &GPIO_InitStructure);
-
-	GPIO_InitStructure.GPIO_Pin = NRF_CE_PIN;
-	GPIO_InitStructure.GPIO_Mode = NRF_CE_MODE;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(NRF_CE_PORT, &GPIO_InitStructure);
-}
-//#define NRF_CSN_HIGH()      GPIO_SetBits(GPIOA, GPIO_Pin_1)
-//#define NRF_CSN_LOW()      GPIO_ResetBits(GPIOA, GPIO_Pin_1)		 //csn置低
-//#define NRF_CE_HIGH()	   GPIO_SetBits(GPIOA,GPIO_Pin_2)
-//#define NRF_CE_LOW()	   GPIO_ResetBits(GPIOA,GPIO_Pin_2)			  //CE置低
-//#define NRF_Read_IRQ()		GPIO_ReadInputDataBit ( GPIOA, GPIO_Pin_3) //中断引脚
-//注册外部接口函数
-static void NRF_CSN_HIGH(){
-		SPI2_SCS_HIGH();
-}
-static void NRF_CSN_LOW(){
-		SPI2_SCS_LOW();
-}
-static void NRF_CE_HIGH(){
-		//NRF_CE(1);
-	SPI2_RST_HIGH();
-}
-static  void NRF_CE_LOW(){
-		//NRF_CE(0);
-	SPI2_RST_LOW();
-}
-
-static uint8_t NRF_Read_IRQ(){
-	//return NRF_IRQ_READ();
-//return (GPIO_ReadInputDataBit(NRF_IRQ_PORT, NRF_IRQ_PIN)); //低电平产生中断
-	return SPI2_READ_IRQ();
-}
-
-static uint8_t SPI_NRF_RW(uint8_t dat){
-	return SPI2_SendByte(dat);
-}
+//static uint8_t SPI_NRF_RW(uint8_t dat){
+//	return SPI2_SendByte(dat);
+//}
 
 /*
  * 函数名：SPI_NRF_Init
@@ -106,87 +99,9 @@ static uint8_t SPI_NRF_RW(uint8_t dat){
 void SPI_NRF_Init(){
 	//NRF_GPIO_Config();
 	//SPI2_Init();
-	NRF_CSN_HIGH(); 
+	//NRF_CSN_HIGH(); 
 }
-//void SPI_NRF_Init(void)
-//{
-//  SPI_InitTypeDef  SPI_InitStructure;
-//  GPIO_InitTypeDef GPIO_InitStructure;
-//  
-// /*使能GPIOB,GPIOD,复用功能时钟*/
-//  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOE|RCC_APB2Periph_AFIO, ENABLE);
 
-// /*使能SPI1时钟*/
-//  RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
-
-////   /*配置485芯片的控制引脚GPIOA^0，防止干扰NRF*/
-////  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
-////  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-////  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; //推挽输出
-////  GPIO_Init(GPIOA, &GPIO_InitStructure);  
-////  GPIO_ResetBits(GPIOA, GPIO_Pin_0);               //禁止485的发送模式，接收模式仍开
-
-//   /*配置 SPI_NRF_SPI的 SCK,MISO,MOSI引脚，GPIOA^5,GPIOA^6,GPIOA^7 */
-//  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7;
-//  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
-//  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP; //复用功能
-//  GPIO_Init(GPIOA, &GPIO_InitStructure);  
-
-//  /*配置SPI_NRF_SPI的CE引脚，GPIOA^2和SPI_NRF_SPI的 CSN 引脚: NSS GPIOA^8*/
-//   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2|GPIO_Pin_1;
-//  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
-//  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-//  GPIO_Init(GPIOA, &GPIO_InitStructure);
-
-
-//   /*配置SPI_NRF_SPI的IRQ引脚，GPIOA^3*/
-//  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
-//  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
-//  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU ;  //上拉输入
-//  GPIO_Init(GPIOA, &GPIO_InitStructure); 
-//		  
-//  /* 这是自定义的宏，用于拉高csn引脚，NRF进入空闲状态 */
-//  NRF_CSN_HIGH(); 
-// 
-//  SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex; //双线全双工
-//  SPI_InitStructure.SPI_Mode = SPI_Mode_Master;	 					//主模式
-//  SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;	 				//数据大小8位
-//  SPI_InitStructure.SPI_CPOL = SPI_CPOL_Low;		 				//时钟极性，空闲时为低
-//  SPI_InitStructure.SPI_CPHA = SPI_CPHA_1Edge;						//第1个边沿有效，上升沿为采样时刻
-//  SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;		   					//NSS信号由软件产生
-//  SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_8;  //8分频，9MHz
-//  SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;  				//高位在前
-//  SPI_InitStructure.SPI_CRCPolynomial = 7;
-//  SPI_Init(SPI1, &SPI_InitStructure);
-
-//  /* Enable SPI1  */
-//  SPI_Cmd(SPI1, ENABLE);
-//}
-
-
-
-
-/*
- * 函数名：SPI_NRF_RW
- * 描述  ：用于向NRF读/写一字节数据
- * 输入  ：写入的数据
- * 输出  ：读取得的数据
- * 调用  ：内部调用
- */
-//uint8_t SPI_NRF_RW(uint8_t dat)
-//{  	
-//   /* 当 SPI发送缓冲器非空时等待 */
-//  while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);
-//  
-//   /* 通过 SPI2发送一字节数据 */
-//  SPI_I2S_SendData(SPI1, dat);		
-// 
-//   /* 当SPI接收缓冲器为空时等待 */
-//  while (SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_RXNE) == RESET);
-
-//  /* Return the byte read from the SPI bus */
-//  return SPI_I2S_ReceiveData(SPI1);
-//}
 
 /*
  * 函数名：SPI_NRF_WriteReg
@@ -306,67 +221,83 @@ uint8_t SPI_NRF_WriteBuf(uint8_t reg ,uint8_t *pBuf,uint8_t bytes)
   	return (status);	//返回NRF24L01的状态 		
 }
 
-/*
- * 函数名：NRF_RX_Mode
- * 描述  ：配置并进入接收模式
- * 输入  ：无	
- * 输出  ：无
- * 调用  ：外部调用
- */
-void NRF_RX_Mode(void)
+void NRF_COMN_CONFIG(void){
+	//	 NRF_EN_AA      :0x3f
+	//	 NRF_EN_RXADDR  :0x03
+	//	 NRF_SETUP_AW   :0x03
+	//	 NRF_SETUP_RETR :0x1a
+	//	 NRF_RF_SETUP   :0x0f
+	//	 NRF_OBSERVE_TX :0x00
+	//	 NRF_RX_PW_P0   :0x04
+	NRF_CE_LOW();
+	SPI_NRF_WriteReg(NRF_WRITE_REG + NRF_EN_AA,0x3f);	  //使能通道0的自动应答
+	SPI_NRF_WriteReg(NRF_WRITE_REG + NRF_EN_RXADDR,0x03);//使能通道0的接收地址
+	SPI_NRF_WriteReg(NRF_WRITE_REG + NRF_SETUP_AW,0x03);
+	SPI_NRF_WriteReg(NRF_WRITE_REG + NRF_SETUP_RETR,0x00);
+	SPI_NRF_WriteReg(NRF_WRITE_REG + NRF_RF_SETUP,0x0f); //设置TX发射参数,0db增益,2Mbps,低噪声增益开启
+	SPI_NRF_WriteReg(NRF_WRITE_REG + NRF_OBSERVE_TX,0x00);
+	SPI_NRF_WriteReg(NRF_WRITE_REG + NRF_RX_PW_P0,RX_PLOAD_WIDTH);//选择通道0的有效数据宽度
+}
 
-{
-	NRF_CE_LOW();	
+//主机专用寄存器配置
+//    send
+//    NRF_CONFIG     :0x0e
+//    NRF_RF_CH      :0x46
+//    NRF_RX_ADDR_P0 :0x34
+//    NRF_TX_ADDR    :0x34
+//    recv
+//    NRF_CONFIG     :0x0f
+//    NRF_RF_CH      :0x28
+//    NRF_RX_ADDR_P0 :0xe7
+//    NRF_TX_ADDR    :0xe7
 
-   SPI_NRF_WriteBuf(NRF_WRITE_REG+NRF_RX_ADDR_P0,NRF_MASTER_RECV_ADDRESS,RX_ADR_WIDTH);//写RX节点地址
+void NRF_MSATER_TX_MODE(void){
 
-   SPI_NRF_WriteReg(NRF_WRITE_REG+NRF_EN_AA,0x01);    //使能通道0的自动应答    
+	NRF_CE_LOW();
+	SPI_NRF_WriteReg(NRF_WRITE_REG + NRF_CONFIG,0x0e);    //配置基本工作模式的参数;PWR_UP,EN_CRC,16BIT_CRC,发射模式,开启所有中断
+	SPI_NRF_WriteReg(NRF_WRITE_REG + NRF_RF_CH,0x46);
 
-   SPI_NRF_WriteReg(NRF_WRITE_REG+NRF_EN_RXADDR,0x01);//使能通道0的接收地址    
+	SPI_NRF_WriteBuf(NRF_WRITE_REG + NRF_RX_ADDR_P0,NRF_MASTER_SEND_ADDRESS,NRF_ADDRESS_WIDTH);
+	SPI_NRF_WriteBuf(NRF_WRITE_REG + NRF_TX_ADDR,NRF_MASTER_SEND_ADDRESS,NRF_ADDRESS_WIDTH);
+}
+void NRF_MSATER_RX_MODE(void){
+	NRF_CE_LOW();
+	SPI_NRF_WriteReg(NRF_WRITE_REG + NRF_CONFIG,0x0f);    //配置基本工作模式的参数;PWR_UP,EN_CRC,16BIT_CRC,发射模式,开启所有中断
+	SPI_NRF_WriteReg(NRF_WRITE_REG + NRF_RF_CH,0x28);
 
-   SPI_NRF_WriteReg(NRF_WRITE_REG+NRF_RF_CH,CHANAL);      //设置RF通信频率    
+	SPI_NRF_WriteBuf(NRF_WRITE_REG + NRF_RX_ADDR_P0,NRF_MASTER_RECV_ADDRESS,NRF_ADDRESS_WIDTH);
+	SPI_NRF_WriteBuf(NRF_WRITE_REG + NRF_TX_ADDR,NRF_MASTER_RECV_ADDRESS,NRF_ADDRESS_WIDTH);
+	NRF_CE_HIGH();
+}
+//设备专用寄存器配置
+//    recv
+//    NRF_CONFIG     :0x0f
+//    NRF_RF_CH      :0x46
+//    NRF_RX_ADDR_P0 :0x34
+//    NRF_TX_ADDR    :0x34
+//    send
+//    NRF_CONFIG     :0x0e
+//    NRF_RF_CH      :0x28
+//    NRF_RX_ADDR_P0 :0xe7
+//    NRF_TX_ADDR    :0xe7
+void NRF_DEVICE_RX_MODE(void){
+uint8_t state;
+	NRF_CE_LOW();
+	SPI_NRF_WriteReg(NRF_WRITE_REG + NRF_CONFIG,0x0f);    //配置基本工作模式的参数;PWR_UP,EN_CRC,16BIT_CRC,发射模式,开启所有中断
+	SPI_NRF_WriteReg(NRF_WRITE_REG + NRF_RF_CH,0x46);
 
-   SPI_NRF_WriteReg(NRF_WRITE_REG+NRF_RX_PW_P0,RX_PLOAD_WIDTH);//选择通道0的有效数据宽度      
+	SPI_NRF_WriteBuf(NRF_WRITE_REG + NRF_RX_ADDR_P0,NRF_DEVICE_RECV_ADDRESS,NRF_ADDRESS_WIDTH);
+	SPI_NRF_WriteBuf(NRF_WRITE_REG + NRF_TX_ADDR,NRF_DEVICE_RECV_ADDRESS,NRF_ADDRESS_WIDTH);
 
-   SPI_NRF_WriteReg(NRF_WRITE_REG+NRF_RF_SETUP,0x0f); //设置TX发射参数,0db增益,2Mbps,低噪声增益开启   
+	NRF_CE_HIGH();
+}
+void NRF_DEVICE_TX_MODE(void){
+	NRF_CE_LOW();
+	SPI_NRF_WriteReg(NRF_WRITE_REG + NRF_CONFIG,0x0e);    //配置基本工作模式的参数;PWR_UP,EN_CRC,16BIT_CRC,发射模式,开启所有中断
+	SPI_NRF_WriteReg(NRF_WRITE_REG + NRF_RF_CH,0x28);
 
-   SPI_NRF_WriteReg(NRF_WRITE_REG+NRF_CONFIG, 0x0f);  //配置基本工作模式的参数;PWR_UP,EN_CRC,16BIT_CRC,接收模式 
-
-/*CE拉高，进入接收模式*/	
-  NRF_CE_HIGH();
-
-}    
-
-/*
- * 函数名：NRF_TX_Mode
- * 描述  ：配置发送模式
- * 输入  ：无	
- * 输出  ：无
- * 调用  ：外部调用
- */
-void NRF_TX_Mode(void)
-{  
-	NRF_CE_LOW();		
-
-   SPI_NRF_WriteBuf(NRF_WRITE_REG+NRF_TX_ADDR,NRF_MASTER_SEND_ADDRESS,TX_ADR_WIDTH);    //写TX节点地址 
-
-   SPI_NRF_WriteBuf(NRF_WRITE_REG+NRF_RX_ADDR_P0,NRF_MASTER_RECV_ADDRESS,RX_ADR_WIDTH); //设置TX节点地址,主要为了使能ACK   
-
-   SPI_NRF_WriteReg(NRF_WRITE_REG+NRF_EN_AA,0x01);     //使能通道0的自动应答    
-
-   SPI_NRF_WriteReg(NRF_WRITE_REG+NRF_EN_RXADDR,0x01); //使能通道0的接收地址  
-
-   SPI_NRF_WriteReg(NRF_WRITE_REG+NRF_SETUP_RETR,0x1a);//设置自动重发间隔时间:500us + 86us;最大自动重发次数:10次
-
-   SPI_NRF_WriteReg(NRF_WRITE_REG+NRF_RF_CH,CHANAL);       //设置RF通道为CHANAL
-
-   SPI_NRF_WriteReg(NRF_WRITE_REG+NRF_RF_SETUP,0x0e);  //设置TX发射参数,0db增益,2Mbps,低噪声增益开启   
-	
-   SPI_NRF_WriteReg(NRF_WRITE_REG+NRF_CONFIG,0x0e);    //配置基本工作模式的参数;PWR_UP,EN_CRC,16BIT_CRC,发射模式,开启所有中断
-
-/*CE拉高，进入发送模式*/	
-  NRF_CE_HIGH();
-    Delay(0xffff); //CE要拉高一段时间才进入发送模式
+	SPI_NRF_WriteBuf(NRF_WRITE_REG + NRF_RX_ADDR_P0,NRF_DEVICE_SEND_ADDRESS,NRF_ADDRESS_WIDTH);
+	SPI_NRF_WriteBuf(NRF_WRITE_REG + NRF_TX_ADDR,NRF_DEVICE_SEND_ADDRESS,NRF_ADDRESS_WIDTH);
 }
 
 
@@ -414,70 +345,43 @@ uint8_t NRF_Check(void)
 uint8_t NRF_Tx_Dat(uint8_t *txbuf)
 {
 	uint8_t state;  
-	uint32_t ct = GetCurrentTime();
-	 /*ce为低，进入待机模式1*/
-	NRF_CE_LOW();
+	uint32_t nrf_time=0x3000;
+	
+	NRF_CE_LOW();						
+	SPI_NRF_WriteBuf(NRF_WR_TX_PAYLOAD,txbuf,TX_PLOAD_WIDTH);
+	NRF_CE_HIGH();                           
+	while(NRF_GET_IRQ()){
 
-	/*写数据到TX BUF 最大 32个字节*/						
-   SPI_NRF_WriteBuf(NRF_WR_TX_PAYLOAD,txbuf,TX_PLOAD_WIDTH);
-
-      /*CE为高，txbuf非空，发送数据包 */   
- 	 NRF_CE_HIGH();
-	  	Delay(0xFF);
-	  /*等待发送完成中断 */                            
-	while(NRF_Read_IRQ()){
-
-			if(GetDistanceTime(ct)>20)
-			break;
+        if(!(nrf_time--)) 
+				{
+            printf("send timeout !\n");
+            //send_erro = 1;	
+					 //SPI_NRF_WriteReg(NRF_FLUSH_TX,NRF_NOP);    //1.超时清除TX FIFO寄存器 
+            break;
+        }
 			} 	
 	
 	/*读取状态寄存器的值 */                              
 	state = SPI_NRF_ReadReg(NRF_STATUS);
 
-	 /*清除TX_DS或MAX_RT中断标志*/                  
-	SPI_NRF_WriteReg(NRF_WRITE_REG+NRF_STATUS,state); 	
-
-	SPI_NRF_WriteReg(NRF_FLUSH_TX,NRF_NOP);    //清除TX FIFO寄存器 
+	 // 清除TX_DS或MAX_RT中断标志                 
+	SPI_NRF_WriteReg(NRF_WRITE_REG+NRF_STATUS,state); 
+	//  清除TX FIFO寄存器 	
+	SPI_NRF_WriteReg(NRF_FLUSH_TX,NRF_NOP);   
 
 	 /*判断中断类型*/    
-	if(state&MAX_RT)                     //达到最大重发次数
+	if(state&MAX_RT){                     //达到最大重发次数
+		printf("send max !\n");
 			 return MAX_RT; 
-
-	else if(state&TX_DS)                  //发送完成
-		 	return TX_DS;
+	}
+	else if(state&TX_DS) {                 //发送完成
+		printf("send ok \n");
+	 	return TX_DS;
+	}
 	 else						  
 			return ERROR;                 //其他原因发送失败
 } 
 
-uint8_t  nrf__test(){
-	uint8_t reg;
-    
-    reg = SPI_NRF_ReadReg(NRF_CONFIG);
-    reg = SPI_NRF_ReadReg(NRF_EN_AA      );
-    reg = SPI_NRF_ReadReg(NRF_EN_RXADDR  );
-    reg = SPI_NRF_ReadReg(NRF_SETUP_AW   );
-    reg = SPI_NRF_ReadReg(NRF_SETUP_RETR );
-    reg = SPI_NRF_ReadReg(NRF_RF_CH      );
-    reg = SPI_NRF_ReadReg(NRF_RF_SETUP   );
-    reg = SPI_NRF_ReadReg(NRF_STATUS     );
-    reg = SPI_NRF_ReadReg(NRF_OBSERVE_TX );
-    reg = SPI_NRF_ReadReg(NRF_CD         );
-    reg = SPI_NRF_ReadReg(NRF_RX_ADDR_P0 );
-    reg = SPI_NRF_ReadReg(NRF_RX_ADDR_P1 );
-    reg = SPI_NRF_ReadReg(NRF_RX_ADDR_P2 );
-    reg = SPI_NRF_ReadReg(NRF_RX_ADDR_P3 );
-    reg = SPI_NRF_ReadReg(NRF_RX_ADDR_P4 );
-    reg = SPI_NRF_ReadReg(NRF_RX_ADDR_P5 );
-    reg = SPI_NRF_ReadReg(NRF_TX_ADDR    );
-    reg = SPI_NRF_ReadReg(NRF_RX_PW_P0   );
-    reg = SPI_NRF_ReadReg(NRF_RX_PW_P1   );
-    reg = SPI_NRF_ReadReg(NRF_RX_PW_P2   );
-    reg = SPI_NRF_ReadReg(NRF_RX_PW_P3   );
-    reg = SPI_NRF_ReadReg(NRF_RX_PW_P4   );
-    reg = SPI_NRF_ReadReg(NRF_RX_PW_P5   );
-    reg = SPI_NRF_ReadReg(NRF_FIFO_STATUS);
-		return reg;
-}
  /*
  * 函数名：NRF_Rx_Dat
  * 描述  ：用于从NRF的接收缓冲区中读出数据
@@ -490,10 +394,12 @@ uint8_t NRF_Rx_Dat(uint8_t *rxbuf)
 	uint32_t ct = GetCurrentTime();
 	uint8_t state; 
 	NRF_CE_HIGH();	 //进入接收状态
+	//Delay(1000);
+	printf("recv mode");
 	 /*等待接收中断*/
-	while(NRF_Read_IRQ()){
-		//if(GetDistanceTime(ct)>200)
-		//	break;
+	while(NRF_GET_IRQ()){
+		if(GetDistanceTime(ct)>500)
+			break;
 	} 
 	
 	NRF_CE_LOW();  	 //进入待机状态

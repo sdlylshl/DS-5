@@ -88,7 +88,10 @@ void NRF_RX_Mode(void);
 uint8_t NRF_Rx_Dat(uint8_t *rxbuf);
 uint8_t NRF_Tx_Dat(uint8_t *txbuf);
 uint8_t NRF_Check(void); 
-
+void NRF_MSATER_RX_MODE(void);
+void NRF_MSATER_TX_MODE(void);
+void NRF_DEVICE_RX_MODE(void);
+void NRF_DEVICE_TX_MODE(void);
 #endif /* __SPI_NRF_H */
 
 

@@ -120,7 +120,7 @@ void nrfchip_init(_nrf_chip_t *nrf_chip,SPIx_t SPIx) {
 		nrf_chip->hal_nrf_rw = SPI2_SendByte;
 
 	}
-	//return nrf_chip;
+//	return nrf_chip;
 //	nrfchip.id = nrf_id[0];
 //	nrfchip.radio_busy =0;
 //	nrfchip.chanal =40;

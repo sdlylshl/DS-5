@@ -45,6 +45,11 @@ typedef enum {
   DMA
 } WorkMode;
 
+
+extern uint32_t (*GetCurrentTime)(void);
+extern uint32_t (*GetDistanceTime)(uint32_t );
+
+
 uint8_t * GetSID(void);
 void DMA_Config(DMA_Channel_TypeDef* DMA_CHx,uint32_t PeripheralBaseAddr,uint32_t MemoryBaseAddr,uint32_t BufferSize);
 void NVIC_Config(void);
