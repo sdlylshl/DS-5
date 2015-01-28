@@ -1,0 +1,113 @@
+MASTER ≈‰÷√«∞
+nrf_chip_master_send
+ NRF_CONFIG     :0x00
+ NRF_EN_AA      :0x3f
+ NRF_EN_RXADDR  :0x03
+ NRF_SETUP_AW   :0x03
+NRF_SETUP_RETR :0x03
+ NRF_RF_CH      :0x02
+ NRF_RF_SETUP   :0x0f
+ NRF_STATUS     :0x0e
+NRF_OBSERVE_TX :0x00
+ NRF_CD         :0x00
+NRF_RX_ADDR_P0 :0xe7
+ NRF_TX_ADDR    :0xe7
+ NRF_RX_PW_P0   :0x00
+NRF_FIFO_STATUS:0x11
+ 
+nrf_chip_master_recv
+ NRF_CONFIG     :0x08
+ NRF_EN_AA      :0x3f
+ NRF_EN_RXADDR  :0x03
+ NRF_SETUP_AW   :0x03
+NRF_SETUP_RETR :0x03
+ NRF_RF_CH      :0x02
+ NRF_RF_SETUP   :0x0f
+ NRF_STATUS     :0x0e
+NRF_OBSERVE_TX :0x00
+ NRF_CD         :0x00
+NRF_RX_ADDR_P0 :0xe7
+ NRF_TX_ADDR    :0xe7
+ NRF_RX_PW_P0   :0x00
+NRF_FIFO_STATUS:0x11
+HAL_NRF_TX : 0xe7 0xe7 0xe7 0xe7 0xe7
+HAL_NRF_TX : 0x00 0x38 0x01 0x40 0x40
+ 
+   nrfchip    nrf2401 connect ok !   
+HAL_NRF_TX : 0xe7 0xe7 0xe7 0xe7 0xe7
+HAL_NRF_TX : 0x00 0x38 0x01 0x40 0x40
+ 
+   nrfchip    nrf2401 connect ok !   
+ 
+nrf_chip_master_send
+ NRF_CONFIG     :0x0e
+ NRF_EN_AA      :0x3f
+ NRF_EN_RXADDR  :0x03
+ NRF_SETUP_AW   :0x03
+NRF_SETUP_RETR :0x1a
+ NRF_RF_CH      :0x46
+ NRF_RF_SETUP   :0x0f
+ NRF_STATUS     :0x0e
+NRF_OBSERVE_TX :0x00
+ NRF_CD         :0x00
+NRF_RX_ADDR_P0 :0x34
+ NRF_TX_ADDR    :0x34
+ NRF_RX_PW_P0   :0x04
+NRF_FIFO_STATUS:0x11
+ 
+nrf_chip_master_recv
+ NRF_CONFIG     :0x0f
+ NRF_EN_AA      :0x3f
+ NRF_EN_RXADDR  :0x03
+ NRF_SETUP_AW   :0x03
+NRF_SETUP_RETR :0x1a
+ NRF_RF_CH      :0x28
+ NRF_RF_SETUP   :0x0f
+ NRF_STATUS     :0x0e
+NRF_OBSERVE_TX :0x00
+ NRF_CD         :0x00
+NRF_RX_ADDR_P0 :0xe7
+ NRF_TX_ADDR    :0xe7
+ NRF_RX_PW_P0   :0x04
+NRF_FIFO_STATUS:0x11
+master mode start 
+
+ DEVICE ƒ£ Ω≈‰÷√
+
+nrf_chip_device
+ NRF_CONFIG     :0x08
+ NRF_EN_AA      :0x3f
+ NRF_EN_RXADDR  :0x03
+ NRF_SETUP_AW   :0x03
+NRF_SETUP_RETR :0x03
+ NRF_RF_CH      :0x02
+ NRF_RF_SETUP   :0x0f
+ NRF_STATUS     :0x0e
+NRF_OBSERVE_TX :0x00
+ NRF_CD         :0x00
+NRF_RX_ADDR_P0 :0xe7
+ NRF_TX_ADDR    :0xe7
+ NRF_RX_PW_P0   :0x00
+NRF_FIFO_STATUS:0x11
+HAL_NRF_TX : 0xe7 0xe7 0xe7 0xe7 0xe7
+HAL_NRF_TX : 0x00 0x38 0x01 0x40 0x40
+ 
+   nrfchip    nrf2401 connect ok !   
+ 
+nrf_chip_device
+ NRF_CONFIG     :0x0e
+ NRF_EN_AA      :0x3f
+ NRF_EN_RXADDR  :0x03
+ NRF_SETUP_AW   :0x03
+NRF_SETUP_RETR :0x1a
+ NRF_RF_CH      :0x28
+ NRF_RF_SETUP   :0x0f
+ NRF_STATUS     :0x0e
+NRF_OBSERVE_TX :0x00
+ NRF_CD         :0x00
+NRF_RX_ADDR_P0 :0xe7
+ NRF_TX_ADDR    :0xe7
+ NRF_RX_PW_P0   :0x04
+NRF_FIFO_STATUS:0x11
+device mode 
+

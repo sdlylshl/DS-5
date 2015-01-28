@@ -40,17 +40,16 @@ _nrf_chip_t nrf_chip_device;
 
 
 #define PLOAD_WIDTH 5
-uint8_t radio_busy = 0;
 uint8_t send_erro = 0;
-//#define MASTER
+#define MASTER
 
 uint8_t nrf_test(_nrf_chip_t *nrf_chip)
 {
     uint8_t reg;
     if(nrf_chip == &nrf_chip_send)
-        printf("\nnrf_chip_send\n");
+        printf("\nnrf_chip_master_send\n");
     else if(nrf_chip == &nrf_chip_recv)
-        printf("\nnrf_chip_recv\n");
+        printf("\nnrf_chip_master_recv\n");
     else
         printf("\nnrf_chip_device\n");
 
@@ -141,6 +140,16 @@ static uint8_t nrf_check(_nrf_chip_t *nrf_chip)
 
 static void nrf_config(_nrf_chip_t *nrf_chip)
 {
+	//通用寄存器设置
+//	 NRF_EN_AA      :0x3f
+//	 NRF_EN_RXADDR  :0x03
+//	 NRF_SETUP_AW   :0x03
+//	 NRF_SETUP_RETR :0x1a
+//	 NRF_RF_SETUP   :0x0f
+//	 NRF_OBSERVE_TX :0x00
+//	 NRF_CD         :0x00
+//	 NRF_RX_PW_P0   :0x04
+
     //参数配置必须在POWER DOWN 模式下
     //进入空闲模式
     //系统设置
@@ -263,7 +272,7 @@ uint8_t nrf_tx_dat(_nrf_chip_t *nrf_chip, const uint8_t * txdat)
         //printf("send data ok !\n");
         printf("\n data send ok !");
 
-    } else if (radio_busy & MAX_RT) {
+    } else if (nrf_chip->radio_busy & MAX_RT) {
         printf("\n send max times");
         hal_nrf_flush_tx(nrf_chip);
     }
@@ -281,6 +290,17 @@ void nrf_master()
 {
     uint32_t nrf_time;
     uint8_t i;
+//主机专用寄存器配置
+//    send
+//    NRF_CONFIG     :0x0e
+//    NRF_RF_CH      :0x46
+//    NRF_RX_ADDR_P0 :0x34
+//    NRF_TX_ADDR    :0x34
+//    recv
+//    NRF_CONFIG     :0x0f
+//    NRF_RF_CH      :0x28
+//    NRF_RX_ADDR_P0 :0xe7
+//    NRF_TX_ADDR    :0xe7
 
     //注册接口函数
     nrfchip_init(&nrf_chip_send,SPI_1);
@@ -340,6 +360,18 @@ void nrf_master()
 }
 void nrf_device()
 {
+
+//设备专用寄存器配置
+//    recv
+//    NRF_CONFIG     :0x0f
+//    NRF_RF_CH      :0x46
+//    NRF_RX_ADDR_P0 :0x34
+//    NRF_TX_ADDR    :0x34
+//    send
+//    NRF_CONFIG     :0x0e
+//    NRF_RF_CH      :0x28
+//    NRF_RX_ADDR_P0 :0xe7
+//    NRF_TX_ADDR    :0xe7
 //	uint8_t status = 0;
     uint32_t nrf_time;
     uint8_t i;
