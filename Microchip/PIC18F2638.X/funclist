@@ -1,0 +1,12 @@
+_TMR2_ISR: CODE, 358 0 32
+_main: CODE, 210 0 108
+_INTERRUPT_Initialize: CODE, 468 0 12
+_EUSART_Transmit_ISR: CODE, 390 0 26
+__initialization: CODE, 436 0 12
+_TMR0_StartTimer: CODE, 480 0 4
+_INTERRUPT_InterruptManager: CODE, 8 0 202
+_TMR2_CallBack: CODE, 484 0 2
+_EUSART_Receive_ISR: CODE, 454 0 14
+_TMR0_ISR: CODE, 416 0 20
+_TMR0_Initialize: CODE, 318 0 40
+Total: 472
