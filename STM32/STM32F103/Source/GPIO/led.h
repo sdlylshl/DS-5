@@ -11,24 +11,24 @@
 #define OFF 0
 #define Flip 0 //翻转
 #define  LED_RCC_PORT (RCC_APB2Periph_GPIOA|RCC_APB2Periph_GPIOB|RCC_APB2Periph_GPIOC|RCC_APB2Periph_GPIOD|RCC_APB2Periph_GPIOE|RCC_APB2Periph_AFIO)
-// 社会安防
-#define  LED2_USE					 1
-#define  LED2_PORT     GPIOD
-#define  LED2_PIN      GPIO_Pin_1
-
 //
 #define  LED1_USE					 0
 #define  LED1_PORT     GPIOD  
 #define  LED1_PIN      GPIO_Pin_0  
-//#define  LED2_USE					 1
-//#define  LED2_PORT     GPIOD
-//#define  LED2_PIN      GPIO_Pin_6
+
+#define  LED2_USE					 1
+#define  LED2_PORT     GPIOD
+//#define  LED2_PIN      GPIO_Pin_6				
+//#define  LED2_PIN      GPIO_Pin_1				// PD1  社会安防V1.0 --朱文飞
+#define  LED2_PIN      GPIO_Pin_5			// PD5  PARKINGV2.0  
+
 #define  LED3_USE					 1
 #define  LED3_PORT     GPIOC
 #define  LED3_PIN      GPIO_Pin_11
 #define  LED4_USE					 0
 #define  LED4_PORT     GPIOD
-#define  LED4_PIN      GPIO_Pin_3  
+#define  LED4_PIN      GPIO_Pin_3  		//zhuwenfei
+//#define  LED4_PIN      GPIO_Pin_7 	//PARKINGV2.0  
 #define  LED5_USE					 0
 #define  LED5_PORT     GPIOD  
 #define  LED5_PIN      GPIO_Pin_15  

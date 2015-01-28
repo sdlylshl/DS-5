@@ -12,20 +12,23 @@ int main() {
 //	uint8_t i;
 	uint32_t Time = 0;
 	//RCC_Config();
-	//NVIC_Config();
+	NVIC_Config();
 	//DMA_Config();
 	USART1_Init();
 //	USART3_Init();
 	TIM2_Start();	//通用定时器
 	TIM4_Start(); //用来做网络延时计时使用
+
 	//nrf
 	SPI1_Init();
 	//SPI2_Init();
-	SPI_INIT();
+	//SPI_INIT();
 	PS2_Init();
 	LED_GPIO_Config();	
+	//SPI_Flash_Init();
+	//testFlash();
 		//开总中断
-	__set_PRIMASK(0);
+	__set_PRIMASK(0);	
 
 	nrf_main0();
 //		NRF_device_main();

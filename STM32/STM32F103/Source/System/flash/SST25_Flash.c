@@ -1,6 +1,6 @@
 
 #include "SST25_Flash.h"
-
+char * flashTestData = "1234567890";
 unsigned char SST25_buffer[4096];
 uint16_t logNr = 2; //当前记录编号 
 void SPI_Flash_Init(void);
@@ -208,13 +208,15 @@ void Bulk_clr(){
 ****************************************************************************/ 
 void FlashReadID(void)
 {
+	uint8_t fac_id;
+	uint8_t dev_id;
 	Select_Flash();	
   	SPI_Flash_SendByte(0x90);
 	SPI_Flash_SendByte(0x00);
 	SPI_Flash_SendByte(0x00);
 	SPI_Flash_SendByte(0x00);
-  	//fac_id= SPI_Flash_ReadByte();		          //BFH: 工程码SST
-	//dev_id= SPI_Flash_ReadByte();	              //41H: 器件型号SST25VF016B     
+  fac_id= SPI_Flash_ReadByte();		          //BFH: 工程码SST
+	dev_id= SPI_Flash_ReadByte();	              //41H: 器件型号SST25VF016B     
   	NotSelect_Flash();	
 }
 
@@ -244,7 +246,7 @@ void SPI_Flash_Init(void)
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
   GPIO_Init(GPIOB, &GPIO_InitStructure);
 
-  /* SPI1配置 */ 
+  /* SPI2配置 */ 
   SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
   SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
   SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;
@@ -306,7 +308,9 @@ void testFlash(void )
 {
 	int i = 0;
 //uint8_t flashTestData[2000] = {0};
-
+FlashReadID();
+	SST25_W_BLOCK(0, flashTestData,5);	
+	SST25_R_BLOCK(0 * 64, SST25_buffer,64);
 	for(;i< 10;i++)
 	{
 		SST25_R_BLOCK(i * 64, SST25_buffer,64);
@@ -316,10 +320,10 @@ void testFlash(void )
 	}
 //sect_clr(0);
 //Bulk_clr();
-return;
+//return;
 //	for(i = 0;i< 2000;i++)
 //		flashTestData[i] = 1;
-//	SST25_W_BLOCK(0, flashTestData,200);	
+	
 //	SST25_R_BLOCK(0, SST25_buffer,100);
 //	UART1_Put_String(SST25_buffer);
 //sect_clr(0);
