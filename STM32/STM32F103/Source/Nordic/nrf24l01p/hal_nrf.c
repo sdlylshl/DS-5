@@ -638,7 +638,7 @@ void hal_nrf_enable_dynamic_ack(_nrf_chip_t *nrf_chip, bool enable)
 
 void hal_nrf_write_tx_payload(_nrf_chip_t *nrf_chip, const uint8_t *tx_pload, uint8_t length)
 {
-    hal_nrf_write_multibyte_reg(nrf_chip, NRF_W_TX_PAYLOAD, tx_pload, length);
+    hal_nrf_write_multibyte_reg(nrf_chip, NRF_WR_TX_PAYLOAD, tx_pload, length);
 }
 
 void hal_nrf_write_tx_payload_noack(_nrf_chip_t *nrf_chip, const uint8_t *tx_pload, uint8_t length)
@@ -782,7 +782,7 @@ uint16_t hal_nrf_read_multibyte_reg(_nrf_chip_t *nrf_chip, uint8_t reg, uint8_t 
         if (reg < 7U) {
             length = hal_nrf_read_rx_payload_width(nrf_chip);
             nrf_chip->CSN_LOW();
-            nrf_chip->hal_nrf_rw(NRF_R_RX_PAYLOAD);
+            nrf_chip->hal_nrf_rw(NRF_RD_RX_PAYLOAD);
         } else {
             length = 0U;
         }

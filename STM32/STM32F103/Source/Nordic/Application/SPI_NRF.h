@@ -31,8 +31,8 @@
 // SPI(nRF24L01) commands ,	NRF的SPI命令宏定义，详见NRF功能使用文档
 #define NRF_READ_REG    0x00  // Define read command to register
 #define NRF_WRITE_REG   0x20  // Define write command to register
-#define RD_RX_PLOAD 0x61  // Define RX payload register address
-#define WR_TX_PLOAD 0xA0  // Define TX payload register address
+#define NRF_RD_RX_PAYLOAD 0x61  // Define RX payload register address
+#define NRF_WR_TX_PAYLOAD 0xA0  // Define TX payload register address
 #define NRF_FLUSH_TX    0xE1  // Define flush TX register command
 #define NRF_FLUSH_RX    0xE2  // Define flush RX register command
 #define NRF_REUSE_TX_PL 0xE3  // Define reuse TX payload register command

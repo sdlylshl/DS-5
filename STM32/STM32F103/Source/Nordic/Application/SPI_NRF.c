@@ -419,7 +419,7 @@ uint8_t NRF_Tx_Dat(uint8_t *txbuf)
 	NRF_CE_LOW();
 
 	/*写数据到TX BUF 最大 32个字节*/						
-   SPI_NRF_WriteBuf(WR_TX_PLOAD,txbuf,TX_PLOAD_WIDTH);
+   SPI_NRF_WriteBuf(NRF_WR_TX_PAYLOAD,txbuf,TX_PLOAD_WIDTH);
 
       /*CE为高，txbuf非空，发送数据包 */   
  	 NRF_CE_HIGH();
@@ -506,7 +506,7 @@ uint8_t NRF_Rx_Dat(uint8_t *rxbuf)
 	/*判断是否接收到数据*/
 	if(state&RX_DR)                                 //接收到数据
 	{
-	  SPI_NRF_ReadBuf(RD_RX_PLOAD,rxbuf,RX_PLOAD_WIDTH);//读取数据
+	  SPI_NRF_ReadBuf(NRF_RD_RX_PAYLOAD,rxbuf,RX_PLOAD_WIDTH);//读取数据
 	     SPI_NRF_WriteReg(NRF_FLUSH_RX,NRF_NOP);          //清除RX FIFO寄存器
 	  return RX_DR; 
 	}

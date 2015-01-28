@@ -27,8 +27,8 @@ This file is radio-chip dependent, and are included with the hal_nrf.h
 //@{
 /* nRF24L01 Instruction Definitions */
 #define NRF_W_REGISTER         0x20U  /**< Register write command */
-#define NRF_R_RX_PAYLOAD       0x61U  /**< Read RX payload command */
-#define NRF_W_TX_PAYLOAD       0xA0U  /**< Write TX payload command */
+#define NRF_RD_RX_PAYLOAD       0x61U  /**< Read RX payload command */
+#define NRF_WR_TX_PAYLOAD       0xA0U  /**< Write TX payload command */
 #define NRF_FLUSH_TX           0xE1U  /**< Flush TX register command */
 #define NRF_FLUSH_RX           0xE2U  /**< Flush RX register command */
 #define NRF_REUSE_TX_PL        0xE3U  /**< Reuse TX payload command */
@@ -196,10 +196,10 @@ typedef enum {
 	HAL_NRF_RX_FULL,							/**<0> 1: RX FIFO full. */
 	HAL_NRF_TX_EMPTY =4,					/**<1> 1: TX FIFO empty */
 	HAL_NRF_TX_FIFO_FULL,					/**<0> 1: TX FIFO full. */
-	HAL_NRF_TX_REUSE							/**<0>    TX payload reuse is active until NRF_W_TX_PAYLOAD or FLUSH TX is executed.
+	HAL_NRF_TX_REUSE							/**<0>    TX payload reuse is active until NRF_WR_TX_PAYLOAD or FLUSH TX is executed.
 																			    TX_REUSE=1	Pulse the CE high for at least 10us to Reuse last transmitted payload.
 																			    TX_REUSE is set by the SPI command NRF_REUSE_TX_PL, 
-																			    and is reset by the SPI commands NRF_W_TX_PAYLOAD or FLUSH TX*/
+																			    and is reset by the SPI commands NRF_WR_TX_PAYLOAD or FLUSH TX*/
 } hal_nrf_fifo_status_t;
 
 /** @name NRF_CONFIG register bit definitions */
