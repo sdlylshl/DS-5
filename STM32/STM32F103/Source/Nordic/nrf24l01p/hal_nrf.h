@@ -64,7 +64,7 @@
 void hal_nrf_set_irq_mode(_nrf_chip_t *nrf_chip, hal_nrf_irq_source_t int_source, bool irq_state);
 
 /* For the obsolete nRF24L01 it is necessary to issue an activate command before the
- * features enabled by the FEATURE register can be used. For nRF24L01+ these features
+ * features enabled by the NRF_FEATURE register can be used. For nRF24L01+ these features
  * are by default enabled.
 */
 void hal_nrf_activate_features(_nrf_chip_t *nrf_chip);
@@ -365,7 +365,7 @@ uint8_t hal_nrf_get_fifo_status(_nrf_chip_t *nrf_chip);
  * Use this function to check if RX FIFO
  * is empty.
  *
- * Reads STATUS register to check this, not FIFO_STATUS
+ * Reads NRF_STATUS register to check this, not NRF_FIFO_STATUS
  *
  * @return RX FIFO empty bit
  * @retval FALSE RX FIFO NOT empty

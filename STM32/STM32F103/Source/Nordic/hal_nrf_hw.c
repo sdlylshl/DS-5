@@ -22,15 +22,15 @@
 #include "./System/System_config.h"
 #include "hal_nrf_hw.h"
 
-#define MAX_NRFCHIP 3
-_nrfchip_t nrfchip;
-#define NRF_ADR_WIDTH 5
-uint8_t nrf_txaddr[MAX_NRFCHIP][NRF_ADR_WIDTH];
-uint8_t nrf_rxaddr[MAX_NRFCHIP][NRF_ADR_WIDTH];
-#define NRF_ID_WIDTH 5
-uint8_t nrf_id[MAX_NRFCHIP][NRF_ID_WIDTH];
-
-uint8_t nrf_rx_buffer[256];
+//#define MAX_NRFCHIP 1
+//_nrfchip_t nrfchip;
+//#define NRF_ADR_WIDTH 5
+//uint8_t nrf_txaddr[MAX_NRFCHIP][NRF_ADR_WIDTH];
+//uint8_t nrf_rxaddr[MAX_NRFCHIP][NRF_ADR_WIDTH];
+//#define NRF_ID_WIDTH 5
+//uint8_t nrf_id[MAX_NRFCHIP][NRF_ID_WIDTH];
+//
+//uint8_t nrf_rx_buffer[256];
 
 //{
 //	.id = {1,2,3,4},

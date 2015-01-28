@@ -35,9 +35,9 @@
 
 
 #define CHANAL 40
-#define MAX_NRFCHIP 3
-#define NRF_ADR_WIDTH 5
-#define NRF_ID_WIDTH 5
+//#define MAX_NRFCHIP 1
+//#define NRF_ADR_WIDTH 5
+//#define NRF_ID_WIDTH 5
 typedef enum{
 	NRF_RECIVE,
 	NRF_SEND
@@ -53,44 +53,44 @@ typedef struct __nrf_chip{
 
 }_nrf_chip_t;
 extern _nrf_chip_t nrf_chip;
-typedef struct __nrfchip {
-	uint8_t radio_busy;
-	uint8_t chanal;
-	uint8_t id[NRF_ID_WIDTH];
-	uint8_t tx_addr[NRF_ADR_WIDTH];
-	uint8_t rx_addr[NRF_ADR_WIDTH];
-	uint8_t head;
-	uint8_t end;
-	uint8_t rx_buffer[256];
+//typedef struct __nrfchip {
+//	uint8_t radio_busy;
+//	uint8_t chanal;
+//	uint8_t id[NRF_ID_WIDTH];
+//	uint8_t tx_addr[NRF_ADR_WIDTH];
+//	uint8_t rx_addr[NRF_ADR_WIDTH];
+//	uint8_t head;
+//	uint8_t end;
+//	uint8_t rx_buffer[256];
+//
+//	struct _IRQ {
+//		uint8_t (*_readirq)(void);
+//	} IRQ;
+//	struct _CE {
+//		void (*_low)(void);
+//		void (*_high)(void);
+//	} CE;
+//	struct _CS {
+//		void (*_low)(void);
+//		void (*_high)(void);
+//	} CS;
+//
+//	union _IF {
+//
+//		struct {
+//			uint8_t (*_read_byte)(void);
+//			uint8_t (*_write_byte)(uint8_t wb);
+//		} SPI;
+//	} IF;
+//} _nrfchip_t;
 
-	struct _IRQ {
-		uint8_t (*_readirq)(void);
-	} IRQ;
-	struct _CE {
-		void (*_low)(void);
-		void (*_high)(void);
-	} CE;
-	struct _CS {
-		void (*_low)(void);
-		void (*_high)(void);
-	} CS;
 
-	union _IF {
-
-		struct {
-			uint8_t (*_read_byte)(void);
-			uint8_t (*_write_byte)(uint8_t wb);
-		} SPI;
-	} IF;
-} _nrfchip_t;
-
-
-typedef void (*vFUNv)(void);
-typedef uint8_t (*uFUNu)(uint8_t);
-typedef uint8_t (*uFUNv)(void);
-extern vFUNv CSN_LOW,CSN_HIGH,CE_LOW,CE_HIGH;
-extern uFUNv NRF_Read_IRQ;
-extern uFUNu hal_nrf_rw;
+//typedef void (*vFUNv)(void);
+//typedef uint8_t (*uFUNu)(uint8_t);
+//typedef uint8_t (*uFUNv)(void);
+//extern vFUNv CSN_LOW,CSN_HIGH,CE_LOW,CE_HIGH;
+//extern uFUNv NRF_Read_IRQ;
+//extern uFUNu hal_nrf_rw;
 
 //extern void (*CSN_LOW)(void);
 //extern void (*CSN_HIGH)(void);

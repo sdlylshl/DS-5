@@ -72,7 +72,7 @@ uint16_t hal_nrf_read_multibyte_reg(_nrf_chip_t *nrf_chip, uint8_t reg, uint8_t 
 void hal_nrf_write_multibyte_reg(_nrf_chip_t *nrf_chip, uint8_t reg, const uint8_t *pbuf, uint8_t length);
 
 /**
- * Typedef for the CONFIG register. Contains all the bitaddressable
+ * Typedef for the NRF_CONFIG register. Contains all the bitaddressable
  * settings in the bits struct and the value sent to the radio in the uint8_t
  */
 typedef union {
@@ -90,7 +90,7 @@ typedef union {
 } config_t;
 
 /**
- * Typedef for the EN_AA, EN_RXADDR and DYNPD registers. Contains all the
+ * Typedef for the NRF_EN_AA, NRF_EN_RXADDR and NRF_DYNPD registers. Contains all the
  * bitaddressable settings in the bits struct and the value sent to the radio
  * in the uint8_t
  */
@@ -108,7 +108,7 @@ typedef union {
 } en_pipes_t;
 
 /**
- * Typedef for the SETUP_AW register. Contains all the bitaddressable
+ * Typedef for the NRF_SETUP_AW register. Contains all the bitaddressable
  * settings in the bits struct and the value sent to the radio in the uint8_t
  */
 typedef union {
@@ -120,7 +120,7 @@ typedef union {
 } setup_aw_t;
 
 /**
- * Typedef for the SETUP_RETR register. Contains all the bitaddressable
+ * Typedef for the NRF_SETUP_RETR register. Contains all the bitaddressable
  * settings in the bits struct and the value sent to the radio in the uint8_t
  */
 typedef union {
@@ -132,7 +132,7 @@ typedef union {
 } setup_retr_t;
 
 /**
- * Typedef for the RF_CH register. Contains all the bitaddressable
+ * Typedef for the NRF_RF_CH register. Contains all the bitaddressable
  * settings in the bits struct and the value sent to the radio in the uint8_t
  */
 typedef union {
@@ -144,7 +144,7 @@ typedef union {
 } rf_ch_t;
 
 /**
- * Typedef for the RF_SETUP register. Contains all the bitaddressable
+ * Typedef for the NRF_RF_SETUP register. Contains all the bitaddressable
  * settings in the bits struct and the value sent to the radio in the uint8_t
  */
 typedef union {
@@ -173,7 +173,7 @@ typedef union {
 } rx_pw_t;
 
 /**
- * Typedef for the FEATURE register. Contains all the bitaddressable
+ * Typedef for the NRF_FEATURE register. Contains all the bitaddressable
  * settings in the bits struct and the value sent to the radio in the uint8_t
  */
 typedef union {
@@ -189,7 +189,7 @@ typedef union {
 void hal_nrf_set_operation_mode(_nrf_chip_t *nrf_chip, hal_nrf_operation_mode_t op_mode)
 {
     config_t config;
-    config.value = hal_nrf_read_reg (nrf_chip, CONFIG);
+    config.value = hal_nrf_read_reg (nrf_chip, NRF_CONFIG);
 
     if(op_mode == HAL_NRF_PRX) {
         config.bits.prim_rx = 1U;
@@ -197,13 +197,13 @@ void hal_nrf_set_operation_mode(_nrf_chip_t *nrf_chip, hal_nrf_operation_mode_t 
         config.bits.prim_rx = 0U;
     }
 
-    hal_nrf_write_reg (nrf_chip, CONFIG, config.value);
+    hal_nrf_write_reg (nrf_chip, NRF_CONFIG, config.value);
 }
 
 void hal_nrf_set_power_mode(_nrf_chip_t *nrf_chip, hal_nrf_pwr_mode_t pwr_mode)
 {
     config_t config;
-    config.value = hal_nrf_read_reg (nrf_chip, CONFIG);
+    config.value = hal_nrf_read_reg (nrf_chip, NRF_CONFIG);
 
     if(pwr_mode == HAL_NRF_PWR_UP) {
         config.bits.pwr_up = 1U;
@@ -211,13 +211,13 @@ void hal_nrf_set_power_mode(_nrf_chip_t *nrf_chip, hal_nrf_pwr_mode_t pwr_mode)
         config.bits.pwr_up = 0U;
     }
 
-    hal_nrf_write_reg (nrf_chip, CONFIG, config.value);
+    hal_nrf_write_reg (nrf_chip, NRF_CONFIG, config.value);
 }
 
 void hal_nrf_set_crc_mode(_nrf_chip_t *nrf_chip, hal_nrf_crc_mode_t crc_mode)
 {
     config_t config;
-    config.value = hal_nrf_read_reg (nrf_chip, CONFIG);
+    config.value = hal_nrf_read_reg (nrf_chip, NRF_CONFIG);
 
     switch (crc_mode) {
     case HAL_NRF_CRC_OFF:
@@ -235,13 +235,13 @@ void hal_nrf_set_crc_mode(_nrf_chip_t *nrf_chip, hal_nrf_crc_mode_t crc_mode)
         break;
     }
 
-    hal_nrf_write_reg (nrf_chip, CONFIG, config.value);
+    hal_nrf_write_reg (nrf_chip, NRF_CONFIG, config.value);
 }
 
 void hal_nrf_set_irq_mode(_nrf_chip_t *nrf_chip, hal_nrf_irq_source_t int_source, bool irq_state)
 {
     config_t config;
-    config.value = hal_nrf_read_reg (nrf_chip, CONFIG);
+    config.value = hal_nrf_read_reg (nrf_chip, NRF_CONFIG);
 
     switch (int_source) {
     case HAL_NRF_MAX_RT:
@@ -255,14 +255,14 @@ void hal_nrf_set_irq_mode(_nrf_chip_t *nrf_chip, hal_nrf_irq_source_t int_source
         break;
     }
 
-    hal_nrf_write_reg (nrf_chip, CONFIG, config.value);
+    hal_nrf_write_reg (nrf_chip, NRF_CONFIG, config.value);
 }
 
 uint8_t hal_nrf_get_clear_irq_flags(_nrf_chip_t *nrf_chip)
 {
     uint8_t retval;
 
-    retval = hal_nrf_write_reg (nrf_chip, STATUS, (BIT_6|BIT_5|BIT_4));
+    retval = hal_nrf_write_reg (nrf_chip, NRF_STATUS, (BIT_6|BIT_5|BIT_4));
 
     return (retval & (BIT_6|BIT_5|BIT_4));
 }
@@ -272,8 +272,8 @@ uint8_t hal_nrf_clear_irq_flags_get_status(_nrf_chip_t *nrf_chip)
     uint8_t retval;
 
     // When RFIRQ is cleared (when calling write_reg), pipe information is unreliable (read again with read_reg)
-    retval = hal_nrf_write_reg (nrf_chip, STATUS, (BIT_6|BIT_5|BIT_4)) & (BIT_6|BIT_5|BIT_4);
-    retval |= hal_nrf_read_reg (nrf_chip, STATUS) & (BIT_3|BIT_2|BIT_1|BIT_0);
+    retval = hal_nrf_write_reg (nrf_chip, NRF_STATUS, (BIT_6|BIT_5|BIT_4)) & (BIT_6|BIT_5|BIT_4);
+    retval |= hal_nrf_read_reg (nrf_chip, NRF_STATUS) & (BIT_3|BIT_2|BIT_1|BIT_0);
 
     return (retval);
 }
@@ -281,7 +281,7 @@ uint8_t hal_nrf_clear_irq_flags_get_status(_nrf_chip_t *nrf_chip)
 
 void hal_nrf_clear_irq_flag(_nrf_chip_t *nrf_chip, hal_nrf_irq_source_t int_source)
 {
-    hal_nrf_write_reg (nrf_chip, STATUS, SET_BIT_POS(int_source));
+    hal_nrf_write_reg (nrf_chip, NRF_STATUS, SET_BIT_POS(int_source));
 }
 
 uint8_t hal_nrf_get_irq_flags(_nrf_chip_t *nrf_chip)
@@ -293,8 +293,8 @@ void hal_nrf_open_pipe(_nrf_chip_t *nrf_chip, hal_nrf_address_t pipe_num, bool a
 {
     en_pipes_t en_rxaddr;
     en_pipes_t en_aa;
-    en_rxaddr.value = hal_nrf_read_reg (nrf_chip, EN_RXADDR);
-    en_aa.value = hal_nrf_read_reg (nrf_chip, EN_AA);
+    en_rxaddr.value = hal_nrf_read_reg (nrf_chip, NRF_EN_RXADDR);
+    en_aa.value = hal_nrf_read_reg (nrf_chip, NRF_EN_AA);
 
     switch(pipe_num) {
     case HAL_NRF_PIPE0:
@@ -327,16 +327,16 @@ void hal_nrf_open_pipe(_nrf_chip_t *nrf_chip, hal_nrf_address_t pipe_num, bool a
         break;
     }
 
-    hal_nrf_write_reg (nrf_chip, EN_RXADDR, en_rxaddr.value);
-    hal_nrf_write_reg (nrf_chip, EN_AA, en_aa.value);
+    hal_nrf_write_reg (nrf_chip, NRF_EN_RXADDR, en_rxaddr.value);
+    hal_nrf_write_reg (nrf_chip, NRF_EN_AA, en_aa.value);
 }
 
 void hal_nrf_close_pipe(_nrf_chip_t *nrf_chip, hal_nrf_address_t pipe_num)
 {
     en_pipes_t en_rxaddr;
     en_pipes_t en_aa;
-    en_rxaddr.value = hal_nrf_read_reg (nrf_chip, EN_RXADDR);
-    en_aa.value = hal_nrf_read_reg (nrf_chip, EN_AA);
+    en_rxaddr.value = hal_nrf_read_reg (nrf_chip, NRF_EN_RXADDR);
+    en_aa.value = hal_nrf_read_reg (nrf_chip, NRF_EN_AA);
 
     switch(pipe_num) {
     case HAL_NRF_PIPE0:
@@ -359,8 +359,8 @@ void hal_nrf_close_pipe(_nrf_chip_t *nrf_chip, hal_nrf_address_t pipe_num)
         break;
     }
 
-    hal_nrf_write_reg (nrf_chip, EN_RXADDR, en_rxaddr.value);
-    hal_nrf_write_reg (nrf_chip, EN_AA, en_aa.value);
+    hal_nrf_write_reg (nrf_chip, NRF_EN_RXADDR, en_rxaddr.value);
+    hal_nrf_write_reg (nrf_chip, NRF_EN_AA, en_aa.value);
 }
 
 void hal_nrf_set_address(_nrf_chip_t *nrf_chip, const hal_nrf_address_t address, const uint8_t *addr)
@@ -369,13 +369,13 @@ void hal_nrf_set_address(_nrf_chip_t *nrf_chip, const hal_nrf_address_t address,
     case HAL_NRF_TX:
     case HAL_NRF_PIPE0:
     case HAL_NRF_PIPE1:
-        hal_nrf_write_multibyte_reg(nrf_chip, W_REGISTER + RX_ADDR_P0 + (uint8_t) address, addr, hal_nrf_get_address_width(nrf_chip));
+        hal_nrf_write_multibyte_reg(nrf_chip, NRF_W_REGISTER + NRF_RX_ADDR_P0 + (uint8_t) address, addr, hal_nrf_get_address_width(nrf_chip));
         break;
     case HAL_NRF_PIPE2:
     case HAL_NRF_PIPE3:
     case HAL_NRF_PIPE4:
     case HAL_NRF_PIPE5:
-        hal_nrf_write_reg (nrf_chip, RX_ADDR_P0 + (uint8_t) address, *addr);
+        hal_nrf_write_reg (nrf_chip, NRF_RX_ADDR_P0 + (uint8_t) address, *addr);
         break;
 
     case HAL_NRF_ALL:
@@ -392,7 +392,7 @@ uint8_t hal_nrf_get_address(_nrf_chip_t *nrf_chip, const hal_nrf_address_t addre
     case HAL_NRF_TX:
         return (uint8_t)hal_nrf_read_multibyte_reg (nrf_chip, address, addr);
     default:
-        *addr = hal_nrf_read_reg(nrf_chip, RX_ADDR_P0 + address);
+        *addr = hal_nrf_read_reg(nrf_chip, NRF_RX_ADDR_P0 + address);
         return 1U;
     }
 }
@@ -403,7 +403,7 @@ void hal_nrf_set_auto_retr(_nrf_chip_t *nrf_chip, uint8_t retr, uint16_t delay)
     setup_retr.bits.ard = (uint8_t)(delay >> 8);
     setup_retr.bits.arc = retr;
 
-    hal_nrf_write_reg (nrf_chip, SETUP_RETR, setup_retr.value);
+    hal_nrf_write_reg (nrf_chip, NRF_SETUP_RETR, setup_retr.value);
 }
 
 void hal_nrf_set_address_width(_nrf_chip_t *nrf_chip, hal_nrf_address_width_t address_width)
@@ -412,17 +412,17 @@ void hal_nrf_set_address_width(_nrf_chip_t *nrf_chip, hal_nrf_address_width_t ad
     setup_aw.value = 0U;
     setup_aw.bits.aw = (uint8_t)address_width - 2U;
 
-    hal_nrf_write_reg (nrf_chip, SETUP_AW, setup_aw.value);
+    hal_nrf_write_reg (nrf_chip, NRF_SETUP_AW, setup_aw.value);
 }
 
 uint8_t hal_nrf_get_address_width (_nrf_chip_t *nrf_chip)
 {
-    return hal_nrf_read_reg (nrf_chip, SETUP_AW) + 2U;
+    return hal_nrf_read_reg (nrf_chip, NRF_SETUP_AW) + 2U;
 }
 
 void hal_nrf_set_rx_payload_width(_nrf_chip_t *nrf_chip, hal_nrf_address_t pipe_num, uint8_t pload_width)
 {
-    hal_nrf_write_reg (nrf_chip, RX_PW_P0 + pipe_num, pload_width);
+    hal_nrf_write_reg (nrf_chip, NRF_RX_PW_P0 + pipe_num, pload_width);
 }
 
 uint8_t hal_nrf_get_pipe_status(_nrf_chip_t *nrf_chip, hal_nrf_address_t pipe_num)
@@ -431,8 +431,8 @@ uint8_t hal_nrf_get_pipe_status(_nrf_chip_t *nrf_chip, hal_nrf_address_t pipe_nu
     en_pipes_t en_aa;
     uint8_t en_rx_r, en_aa_r;
 
-    en_rxaddr.value = hal_nrf_read_reg (nrf_chip, EN_RXADDR);
-    en_aa.value = hal_nrf_read_reg (nrf_chip, EN_AA);
+    en_rxaddr.value = hal_nrf_read_reg (nrf_chip, NRF_EN_RXADDR);
+    en_aa.value = hal_nrf_read_reg (nrf_chip, NRF_EN_AA);
 
     switch (pipe_num) {
     case 0:
@@ -470,12 +470,12 @@ uint8_t hal_nrf_get_pipe_status(_nrf_chip_t *nrf_chip, hal_nrf_address_t pipe_nu
 
 uint8_t hal_nrf_get_auto_retr_status(_nrf_chip_t *nrf_chip)
 {
-    return hal_nrf_read_reg(nrf_chip, OBSERVE_TX);
+    return hal_nrf_read_reg(nrf_chip, NRF_OBSERVE_TX);
 }
 
 uint8_t hal_nrf_get_packet_lost_ctr(_nrf_chip_t *nrf_chip)
 {
-    return ((hal_nrf_read_reg(nrf_chip, OBSERVE_TX) & (BIT_7|BIT_6|BIT_5|BIT_4)) >> 4);
+    return ((hal_nrf_read_reg(nrf_chip, NRF_OBSERVE_TX) & (BIT_7|BIT_6|BIT_5|BIT_4)) >> 4);
 }
 
 uint8_t hal_nrf_get_rx_payload_width(_nrf_chip_t *nrf_chip, hal_nrf_address_t pipe_num)
@@ -484,22 +484,22 @@ uint8_t hal_nrf_get_rx_payload_width(_nrf_chip_t *nrf_chip, hal_nrf_address_t pi
 
     switch (pipe_num) {
     case 0:
-        pw = hal_nrf_read_reg (nrf_chip, RX_PW_P0);
+        pw = hal_nrf_read_reg (nrf_chip, NRF_RX_PW_P0);
         break;
     case 1:
-        pw = hal_nrf_read_reg (nrf_chip, RX_PW_P1);
+        pw = hal_nrf_read_reg (nrf_chip, NRF_RX_PW_P1);
         break;
     case 2:
-        pw = hal_nrf_read_reg (nrf_chip, RX_PW_P2);
+        pw = hal_nrf_read_reg (nrf_chip, NRF_RX_PW_P2);
         break;
     case 3:
-        pw = hal_nrf_read_reg (nrf_chip, RX_PW_P3);
+        pw = hal_nrf_read_reg (nrf_chip, NRF_RX_PW_P3);
         break;
     case 4:
-        pw = hal_nrf_read_reg (nrf_chip, RX_PW_P4);
+        pw = hal_nrf_read_reg (nrf_chip, NRF_RX_PW_P4);
         break;
     case 5:
-        pw = hal_nrf_read_reg (nrf_chip, RX_PW_P5);
+        pw = hal_nrf_read_reg (nrf_chip, NRF_RX_PW_P5);
         break;
     default:
         pw = 0U;
@@ -514,23 +514,23 @@ void hal_nrf_set_rf_channel(_nrf_chip_t *nrf_chip, uint8_t channel)
     rf_ch_t rf_ch;
     rf_ch.value = 0U;
     rf_ch.bits.rf_ch = channel;
-    hal_nrf_write_reg (nrf_chip, RF_CH, rf_ch.value);
+    hal_nrf_write_reg (nrf_chip, NRF_RF_CH, rf_ch.value);
 }
 
 void hal_nrf_set_output_power(_nrf_chip_t *nrf_chip, hal_nrf_output_power_t power)
 {
     rf_setup_t rf_setup;
-    rf_setup.value = hal_nrf_read_reg (nrf_chip, RF_SETUP);
+    rf_setup.value = hal_nrf_read_reg (nrf_chip, NRF_RF_SETUP);
 
     rf_setup.bits.rf_pwr = (uint8_t)power;
 
-    hal_nrf_write_reg (nrf_chip, RF_SETUP, rf_setup.value);
+    hal_nrf_write_reg (nrf_chip, NRF_RF_SETUP, rf_setup.value);
 }
 
 void hal_nrf_set_datarate(_nrf_chip_t *nrf_chip, hal_nrf_datarate_t datarate)
 {
     rf_setup_t rf_setup;
-    rf_setup.value = hal_nrf_read_reg (nrf_chip, RF_SETUP);
+    rf_setup.value = hal_nrf_read_reg (nrf_chip, NRF_RF_SETUP);
 
     switch (datarate) {
     case HAL_NRF_250KBPS:
@@ -548,52 +548,52 @@ void hal_nrf_set_datarate(_nrf_chip_t *nrf_chip, hal_nrf_datarate_t datarate)
         break;
     }
 
-    hal_nrf_write_reg (nrf_chip, RF_SETUP, rf_setup.value);
+    hal_nrf_write_reg (nrf_chip, NRF_RF_SETUP, rf_setup.value);
 }
 
 bool hal_nrf_rx_fifo_empty(_nrf_chip_t *nrf_chip)
 {
-    return (bool)((hal_nrf_read_reg(nrf_chip, FIFO_STATUS) >> HAL_NRF_RX_EMPTY) & 0x01U);
+    return (bool)((hal_nrf_read_reg(nrf_chip, NRF_FIFO_STATUS) >> HAL_NRF_RX_EMPTY) & 0x01U);
 }
 
 bool hal_nrf_rx_fifo_full(_nrf_chip_t *nrf_chip)
 {
-    return (bool)((hal_nrf_read_reg(nrf_chip, FIFO_STATUS) >> HAL_NRF_RX_FULL) & 0x01U);
+    return (bool)((hal_nrf_read_reg(nrf_chip, NRF_FIFO_STATUS) >> HAL_NRF_RX_FULL) & 0x01U);
 }
 
 bool hal_nrf_tx_fifo_empty(_nrf_chip_t *nrf_chip)
 {
-    return (bool)((hal_nrf_read_reg(nrf_chip, FIFO_STATUS) >> HAL_NRF_TX_EMPTY) & 0x01U);
+    return (bool)((hal_nrf_read_reg(nrf_chip, NRF_FIFO_STATUS) >> HAL_NRF_TX_EMPTY) & 0x01U);
 }
 
 bool hal_nrf_tx_fifo_full(_nrf_chip_t *nrf_chip)
 {
-    return (bool)((hal_nrf_read_reg(nrf_chip, FIFO_STATUS) >> HAL_NRF_TX_FIFO_FULL) & 0x01U);
+    return (bool)((hal_nrf_read_reg(nrf_chip, NRF_FIFO_STATUS) >> HAL_NRF_TX_FIFO_FULL) & 0x01U);
 }
 
 uint8_t hal_nrf_get_tx_fifo_status(_nrf_chip_t *nrf_chip)
 {
-    return ((hal_nrf_read_reg(nrf_chip, FIFO_STATUS) & ((1U<<HAL_NRF_TX_FIFO_FULL)|(1U<<HAL_NRF_TX_EMPTY))) >> 4);
+    return ((hal_nrf_read_reg(nrf_chip, NRF_FIFO_STATUS) & ((1U<<HAL_NRF_TX_FIFO_FULL)|(1U<<HAL_NRF_TX_EMPTY))) >> 4);
 }
 
 uint8_t hal_nrf_get_rx_fifo_status(_nrf_chip_t *nrf_chip)
 {
-    return (hal_nrf_read_reg(nrf_chip, FIFO_STATUS) & ((1U<<HAL_NRF_RX_FULL)|(1U<<HAL_NRF_RX_EMPTY)));
+    return (hal_nrf_read_reg(nrf_chip, NRF_FIFO_STATUS) & ((1U<<HAL_NRF_RX_FULL)|(1U<<HAL_NRF_RX_EMPTY)));
 }
 
 uint8_t hal_nrf_get_fifo_status(_nrf_chip_t *nrf_chip)
 {
-    return hal_nrf_read_reg(nrf_chip, FIFO_STATUS);
+    return hal_nrf_read_reg(nrf_chip, NRF_FIFO_STATUS);
 }
 
 uint8_t hal_nrf_get_transmit_attempts(_nrf_chip_t *nrf_chip)
 {
-    return (hal_nrf_read_reg(nrf_chip, OBSERVE_TX) & (BIT_3|BIT_2|BIT_1|BIT_0));
+    return (hal_nrf_read_reg(nrf_chip, NRF_OBSERVE_TX) & (BIT_3|BIT_2|BIT_1|BIT_0));
 }
 
 bool hal_nrf_get_carrier_detect(_nrf_chip_t *nrf_chip)
 {
-    return (bool)(hal_nrf_read_reg(nrf_chip, CD) & 0x01U);
+    return (bool)(hal_nrf_read_reg(nrf_chip, NRF_CD) & 0x01U);
 }
 
 void hal_nrf_activate_features(_nrf_chip_t *nrf_chip)
@@ -606,54 +606,54 @@ void hal_nrf_setup_dynamic_payload (_nrf_chip_t *nrf_chip, uint8_t setup)
     en_pipes_t dynpd;
     dynpd.value = setup & (uint8_t)~0xC0U;
 
-    hal_nrf_write_reg (nrf_chip, DYNPD, dynpd.value);
+    hal_nrf_write_reg (nrf_chip, NRF_DYNPD, dynpd.value);
 }
 
 void hal_nrf_enable_dynamic_payload(_nrf_chip_t *nrf_chip, bool enable)
 {
     feature_t feature;
-    feature.value = hal_nrf_read_reg (nrf_chip, FEATURE);
+    feature.value = hal_nrf_read_reg (nrf_chip, NRF_FEATURE);
     feature.bits.en_dpl = (enable) ? 1U : 0U;
 
-    hal_nrf_write_reg (nrf_chip, FEATURE, feature.value);
+    hal_nrf_write_reg (nrf_chip, NRF_FEATURE, feature.value);
 }
 
 void hal_nrf_enable_ack_payload(_nrf_chip_t *nrf_chip, bool enable)
 {
     feature_t feature;
-    feature.value = hal_nrf_read_reg (nrf_chip, FEATURE);
+    feature.value = hal_nrf_read_reg (nrf_chip, NRF_FEATURE);
     feature.bits.en_ack_pay = (enable) ? 1U : 0U;
 
-    hal_nrf_write_reg (nrf_chip, FEATURE, feature.value);
+    hal_nrf_write_reg (nrf_chip, NRF_FEATURE, feature.value);
 }
 
 void hal_nrf_enable_dynamic_ack(_nrf_chip_t *nrf_chip, bool enable)
 {
     feature_t feature;
-    feature.value = hal_nrf_read_reg (nrf_chip, FEATURE);
+    feature.value = hal_nrf_read_reg (nrf_chip, NRF_FEATURE);
     feature.bits.en_dyn_ack = (enable) ? 1U : 0U;
 
-    hal_nrf_write_reg (nrf_chip, FEATURE, feature.value);
+    hal_nrf_write_reg (nrf_chip, NRF_FEATURE, feature.value);
 }
 
 void hal_nrf_write_tx_payload(_nrf_chip_t *nrf_chip, const uint8_t *tx_pload, uint8_t length)
 {
-    hal_nrf_write_multibyte_reg(nrf_chip, W_TX_PAYLOAD, tx_pload, length);
+    hal_nrf_write_multibyte_reg(nrf_chip, NRF_W_TX_PAYLOAD, tx_pload, length);
 }
 
 void hal_nrf_write_tx_payload_noack(_nrf_chip_t *nrf_chip, const uint8_t *tx_pload, uint8_t length)
 {
-    hal_nrf_write_multibyte_reg(nrf_chip, W_TX_PAYLOAD_NOACK, tx_pload, length);
+    hal_nrf_write_multibyte_reg(nrf_chip, NRF_W_TX_PAYLOAD_NOACK, tx_pload, length);
 }
 
 void hal_nrf_write_ack_payload(_nrf_chip_t *nrf_chip, uint8_t pipe, const uint8_t *tx_pload, uint8_t length)
 {
-    hal_nrf_write_multibyte_reg(nrf_chip, W_ACK_PAYLOAD | pipe, tx_pload, length);
+    hal_nrf_write_multibyte_reg(nrf_chip, NRF_W_ACK_PAYLOAD | pipe, tx_pload, length);
 }
 
 uint8_t hal_nrf_read_rx_payload_width(_nrf_chip_t *nrf_chip)
 {
-    return hal_nrf_read_reg(nrf_chip, R_RX_PL_WID);
+    return hal_nrf_read_reg(nrf_chip, NRF_R_RX_PL_WID);
 }
 
 uint16_t hal_nrf_read_rx_payload(_nrf_chip_t *nrf_chip, uint8_t *rx_pload)
@@ -671,7 +671,7 @@ uint8_t hal_nrf_get_rx_data_source(_nrf_chip_t *nrf_chip)
 void hal_nrf_reuse_tx(_nrf_chip_t *nrf_chip)
 {
 	nrf_chip->CSN_LOW();
-    nrf_chip->hal_nrf_rw(REUSE_TX_PL);
+    nrf_chip->hal_nrf_rw(NRF_REUSE_TX_PL);
     nrf_chip->CSN_HIGH();
 }
 
@@ -683,14 +683,14 @@ bool hal_nrf_get_reuse_tx_status(_nrf_chip_t *nrf_chip)
 void hal_nrf_flush_rx(_nrf_chip_t *nrf_chip)
 {
 	nrf_chip->CSN_LOW();
-	nrf_chip->hal_nrf_rw(FLUSH_RX);
+	nrf_chip->hal_nrf_rw(NRF_FLUSH_RX);
 	nrf_chip->CSN_HIGH();
 }
 
 void hal_nrf_flush_tx(_nrf_chip_t *nrf_chip)
 {
 	nrf_chip->CSN_LOW();
-	nrf_chip->hal_nrf_rw(FLUSH_TX);
+	nrf_chip->hal_nrf_rw(NRF_FLUSH_TX);
 	nrf_chip->CSN_HIGH();
 }
 
@@ -699,7 +699,7 @@ uint8_t hal_nrf_nop(_nrf_chip_t *nrf_chip)
     uint8_t retval;
 
     nrf_chip->CSN_LOW();
-    retval = nrf_chip->hal_nrf_rw(NOP);
+    retval = nrf_chip->hal_nrf_rw(NRF_NOP);
     nrf_chip->CSN_HIGH();
 
     return retval;
@@ -708,19 +708,19 @@ uint8_t hal_nrf_nop(_nrf_chip_t *nrf_chip)
 void hal_nrf_set_pll_mode(_nrf_chip_t *nrf_chip, bool pll_lock)
 {
     rf_setup_t rf_setup;
-    rf_setup.value = hal_nrf_read_reg (nrf_chip, RF_SETUP);
+    rf_setup.value = hal_nrf_read_reg (nrf_chip, NRF_RF_SETUP);
     rf_setup.bits.pll_lock = (pll_lock) ? 1U : 0U;
 
-    hal_nrf_write_reg(nrf_chip, RF_SETUP, rf_setup.value);
+    hal_nrf_write_reg(nrf_chip, NRF_RF_SETUP, rf_setup.value);
 }
 
 void hal_nrf_enable_continious_wave (_nrf_chip_t *nrf_chip, bool enable)
 {
     rf_setup_t rf_setup;
-    rf_setup.value = hal_nrf_read_reg (nrf_chip, RF_SETUP);
+    rf_setup.value = hal_nrf_read_reg (nrf_chip, NRF_RF_SETUP);
     rf_setup.bits.cont_wave = (enable ? 1U : 0U);
 
-    hal_nrf_write_reg(nrf_chip, RF_SETUP, rf_setup.value);
+    hal_nrf_write_reg(nrf_chip, NRF_RF_SETUP, rf_setup.value);
 }
 
 uint8_t hal_nrf_read_reg(_nrf_chip_t *nrf_chip, uint8_t reg)
@@ -733,7 +733,7 @@ uint8_t hal_nrf_read_reg(_nrf_chip_t *nrf_chip, uint8_t reg)
 
     nrf_chip->hal_nrf_rw(reg);
 
-    temp = nrf_chip->hal_nrf_rw(NOP);
+    temp = nrf_chip->hal_nrf_rw(NRF_NOP);
 
     nrf_chip->CSN_HIGH();
 
@@ -753,7 +753,7 @@ uint8_t hal_nrf_write_reg(_nrf_chip_t *nrf_chip, uint8_t reg, uint8_t value)
     nrf_chip->CSN_LOW();
 
     /*发送命令及寄存器号 */
-    retval = nrf_chip->hal_nrf_rw(W_REGISTER+reg);
+    retval = nrf_chip->hal_nrf_rw(NRF_W_REGISTER+reg);
 
     /*向寄存器写入数据*/
     nrf_chip->hal_nrf_rw(value);
@@ -774,7 +774,7 @@ uint16_t hal_nrf_read_multibyte_reg(_nrf_chip_t *nrf_chip, uint8_t reg, uint8_t 
     case HAL_NRF_TX:
         length = hal_nrf_get_address_width(nrf_chip);
         nrf_chip->CSN_LOW();
-        nrf_chip->hal_nrf_rw(RX_ADDR_P0 + reg);
+        nrf_chip->hal_nrf_rw(NRF_RX_ADDR_P0 + reg);
         break;
 
     case HAL_NRF_RX_PLOAD:
@@ -782,7 +782,7 @@ uint16_t hal_nrf_read_multibyte_reg(_nrf_chip_t *nrf_chip, uint8_t reg, uint8_t 
         if (reg < 7U) {
             length = hal_nrf_read_rx_payload_width(nrf_chip);
             nrf_chip->CSN_LOW();
-            nrf_chip->hal_nrf_rw(R_RX_PAYLOAD);
+            nrf_chip->hal_nrf_rw(NRF_R_RX_PAYLOAD);
         } else {
             length = 0U;
         }
@@ -794,7 +794,7 @@ uint16_t hal_nrf_read_multibyte_reg(_nrf_chip_t *nrf_chip, uint8_t reg, uint8_t 
     }
 
     for(byte_cnt=0; byte_cnt<length; byte_cnt++)
-        pbuf[byte_cnt] = nrf_chip->hal_nrf_rw(NOP); //从NRF24L01读取数据
+        pbuf[byte_cnt] = nrf_chip->hal_nrf_rw(NRF_NOP); //从NRF24L01读取数据
     nrf_chip->CSN_HIGH();
 
     return (((uint16_t) reg << 8) | length);

@@ -15,28 +15,33 @@
 //地址长度为3-5个字节，其内容为接收机的地址
 
 // Global variables
-uint8_t payload[RX_PLOAD_WIDTH];
+//uint8_t payload[RX_PLOAD_WIDTH];
 uint8_t NRF__RX_BUF[RX_PLOAD_WIDTH] = { 0, 0, 0, 0 }; //接收数据缓存
 uint8_t NRF__TX_BUF[TX_PLOAD_WIDTH] = { 0x18, 0x65, 2, 3 }; //发射数据缓存
-uint8_t NRF__DTX_BUF[TX_PLOAD_WIDTH] = { 0x11, 0x65, 2, 3 }; //发射数据缓存
-//moren
+//uint8_t NRF__DTX_BUF[TX_PLOAD_WIDTH] = { 0x11, 0x65, 2, 3 }; //发射数据缓存
+
+//device ----------------master
+//send 0xe7   --       0xe7            40
+//recv 0x34  --- -       0x34           70
 uint8_t NRF_MASTER_RECV_ADDRESS[TX_ADR_WIDTH] = { 0xe7, 0xe7, 0xe7, 0xe7, 0xe7 }; // 定义一个静态发送地址
 uint8_t NRF_MASTER_SEND_ADDRESS[TX_ADR_WIDTH] = { 0x34, 0x43, 0x10, 0x10, 0x01 }; // 定义一个静态发送地址
+#define NRF_DEVICE_RECV_ADDRESS NRF_MASTER_SEND_ADDRESS
+#define NRF_DEVICE_SEND_ADDRESS NRF_MASTER_RECV_ADDRESS
+#define MASTER_RX_CHANNEL 40
+#define MASTER_TX_CHANNEL 70
+#define DEVICE_RX_CHANNEL MASTER_TX_CHANNEL
+#define DEVICE_TX_CHANNEL MASTER_RX_CHANNEL
 
-uint8_t NRF_DEVICE_RECV_ADDRESS[RX_ADR_WIDTH] = { 0x34, 0x43, 0x10, 0x10, 0x01 };
-uint8_t NRF_DEVICE_SEND_ADDRESS[RX_ADR_WIDTH] = { 0xe7, 0xe7, 0xe7, 0xe7, 0xe7 };
-_nrf_chip_t nrf_chip_master;
+//_nrf_chip_t nrf_chip_master;
 _nrf_chip_t nrf_chip_recv;
 _nrf_chip_t nrf_chip_send;
 _nrf_chip_t nrf_chip_device;
+
+
+
+#define PLOAD_WIDTH 5
 uint8_t radio_busy = 0;
 uint8_t send_erro = 0;
-#define MASTER_RX_CHANNEL 40
-#define MASTER_TX_CHANNEL 70
-#define DEVICE_RX_CHANNEL 70
-#define DEVICE_TX_CHANNEL 40
-#define PLOAD_WIDTH 5
-
 //#define MASTER
 
 uint8_t nrf_test(_nrf_chip_t *nrf_chip)
@@ -49,46 +54,46 @@ uint8_t nrf_test(_nrf_chip_t *nrf_chip)
     else
         printf("\nnrf_chip_device\n");
 
-    reg = hal_nrf_read_reg(nrf_chip, CONFIG);
-    printf(" CONFIG     :0x%02x\n", reg);
-    reg = hal_nrf_read_reg(nrf_chip, EN_AA);
-    printf(" EN_AA      :0x%02x\n", reg);
-    reg = hal_nrf_read_reg(nrf_chip, EN_RXADDR);
-    printf(" EN_RXADDR  :0x%02x\n", reg);
-    reg = hal_nrf_read_reg(nrf_chip, SETUP_AW);
-    printf(" SETUP_AW   :0x%02x\n", reg);
-    reg = hal_nrf_read_reg(nrf_chip, SETUP_RETR);
-    printf(" SETUP_RETR :0x%02x\n", reg);
-    reg = hal_nrf_read_reg(nrf_chip, RF_CH);
-    printf(" RF_CH      :0x%02x\n", reg);
-    reg = hal_nrf_read_reg(nrf_chip, RF_SETUP);
-    printf(" RF_SETUP   :0x%02x\n", reg);
-    reg = hal_nrf_read_reg(nrf_chip, STATUS);
-    printf(" STATUS     :0x%02x\n", reg);
-    reg = hal_nrf_read_reg(nrf_chip, OBSERVE_TX);
-    printf(" OBSERVE_TX :0x%02x\n", reg);
-    reg = hal_nrf_read_reg(nrf_chip, CD);
-    printf(" CD         :0x%02x\n", reg);
-    reg = hal_nrf_read_reg(nrf_chip, RX_ADDR_P0);
-    printf(" RX_ADDR_P0 :0x%02x\n", reg);
-//	reg = hal_nrf_read_reg(nrf_chip, RX_ADDR_P1);	printf(" RX_ADDR_P0 :0x%02x\n", reg);
-//	reg = hal_nrf_read_reg(nrf_chip, RX_ADDR_P2);	printf(" RX_ADDR_P2 :0x%02x\n", reg);
-//	reg = hal_nrf_read_reg(nrf_chip, RX_ADDR_P3);	printf(" RX_ADDR_P0 :0x%02x\n", reg);
-//	reg = hal_nrf_read_reg(nrf_chip, RX_ADDR_P4);	printf(" RX_ADDR_P0 :0x%02x\n", reg);
-//	reg = hal_nrf_read_reg(nrf_chip, RX_ADDR_P5);	printf(" RX_ADDR_P0 :0x%02x\n", reg);
-    reg = hal_nrf_read_reg(nrf_chip, TX_ADDR);
-    printf(" TX_ADDR    :0x%02x\n", reg);
-    reg = hal_nrf_read_reg(nrf_chip, RX_PW_P0);
-    printf(" RX_PW_P0   :0x%02x\n", reg);
-//	reg = hal_nrf_read_reg(nrf_chip, RX_PW_P1);		printf(" RX_PW_P0   :0x%02x\n", reg);
-//	reg = hal_nrf_read_reg(nrf_chip, RX_PW_P2);		printf(" RX_PW_P0   :0x%02x\n", reg);
-//	reg = hal_nrf_read_reg(nrf_chip, RX_PW_P3);		printf(" RX_PW_P0   :0x%02x\n", reg);
-//	reg = hal_nrf_read_reg(nrf_chip, RX_PW_P4);		printf(" RX_PW_P0   :0x%02x\n", reg);
-//	reg = hal_nrf_read_reg(nrf_chip, RX_PW_P5);		printf(" RX_PW_P0   :0x%02x\n", reg);
-    reg = hal_nrf_read_reg(nrf_chip, FIFO_STATUS);
-    printf(" FIFO_STATUS:0x%02x\n", reg);
-//	reg = hal_nrf_read_reg(nrf_chip, DYNPD);printf(" DYNPD :0x%02x\n", reg);
-//	reg = hal_nrf_read_reg(nrf_chip, FEATURE);printf(" FEATURE :0x%02x\n", reg);
+    reg = hal_nrf_read_reg(nrf_chip, NRF_CONFIG);
+    printf(" NRF_CONFIG     :0x%02x\n", reg);
+    reg = hal_nrf_read_reg(nrf_chip, NRF_EN_AA);
+    printf(" NRF_EN_AA      :0x%02x\n", reg);
+    reg = hal_nrf_read_reg(nrf_chip, NRF_EN_RXADDR);
+    printf(" NRF_EN_RXADDR  :0x%02x\n", reg);
+    reg = hal_nrf_read_reg(nrf_chip, NRF_SETUP_AW);
+    printf(" NRF_SETUP_AW   :0x%02x\n", reg);
+    reg = hal_nrf_read_reg(nrf_chip, NRF_SETUP_RETR);
+    printf(" NRF_SETUP_RETR :0x%02x\n", reg);
+    reg = hal_nrf_read_reg(nrf_chip, NRF_RF_CH);
+    printf(" NRF_RF_CH      :0x%02x\n", reg);
+    reg = hal_nrf_read_reg(nrf_chip, NRF_RF_SETUP);
+    printf(" NRF_RF_SETUP   :0x%02x\n", reg);
+    reg = hal_nrf_read_reg(nrf_chip, NRF_STATUS);
+    printf(" NRF_STATUS     :0x%02x\n", reg);
+    reg = hal_nrf_read_reg(nrf_chip, NRF_OBSERVE_TX);
+    printf(" NRF_OBSERVE_TX :0x%02x\n", reg);
+    reg = hal_nrf_read_reg(nrf_chip, NRF_CD);
+    printf(" NRF_CD         :0x%02x\n", reg);
+    reg = hal_nrf_read_reg(nrf_chip, NRF_RX_ADDR_P0);
+    printf(" NRF_RX_ADDR_P0 :0x%02x\n", reg);
+//	reg = hal_nrf_read_reg(nrf_chip, NRF_RX_ADDR_P1);	printf(" NRF_RX_ADDR_P0 :0x%02x\n", reg);
+//	reg = hal_nrf_read_reg(nrf_chip, NRF_RX_ADDR_P2);	printf(" NRF_RX_ADDR_P2 :0x%02x\n", reg);
+//	reg = hal_nrf_read_reg(nrf_chip, NRF_RX_ADDR_P3);	printf(" NRF_RX_ADDR_P0 :0x%02x\n", reg);
+//	reg = hal_nrf_read_reg(nrf_chip, NRF_RX_ADDR_P4);	printf(" NRF_RX_ADDR_P0 :0x%02x\n", reg);
+//	reg = hal_nrf_read_reg(nrf_chip, NRF_RX_ADDR_P5);	printf(" NRF_RX_ADDR_P0 :0x%02x\n", reg);
+    reg = hal_nrf_read_reg(nrf_chip, NRF_TX_ADDR);
+    printf(" NRF_TX_ADDR    :0x%02x\n", reg);
+    reg = hal_nrf_read_reg(nrf_chip, NRF_RX_PW_P0);
+    printf(" NRF_RX_PW_P0   :0x%02x\n", reg);
+//	reg = hal_nrf_read_reg(nrf_chip, NRF_RX_PW_P1);		printf(" NRF_RX_PW_P0   :0x%02x\n", reg);
+//	reg = hal_nrf_read_reg(nrf_chip, NRF_RX_PW_P2);		printf(" NRF_RX_PW_P0   :0x%02x\n", reg);
+//	reg = hal_nrf_read_reg(nrf_chip, NRF_RX_PW_P3);		printf(" NRF_RX_PW_P0   :0x%02x\n", reg);
+//	reg = hal_nrf_read_reg(nrf_chip, NRF_RX_PW_P4);		printf(" NRF_RX_PW_P0   :0x%02x\n", reg);
+//	reg = hal_nrf_read_reg(nrf_chip, NRF_RX_PW_P5);		printf(" NRF_RX_PW_P0   :0x%02x\n", reg);
+    reg = hal_nrf_read_reg(nrf_chip, NRF_FIFO_STATUS);
+    printf(" NRF_FIFO_STATUS:0x%02x\n", reg);
+//	reg = hal_nrf_read_reg(nrf_chip, NRF_DYNPD);printf(" NRF_DYNPD :0x%02x\n", reg);
+//	reg = hal_nrf_read_reg(nrf_chip, NRF_FEATURE);printf(" NRF_FEATURE :0x%02x\n", reg);
     return reg;
 }
 static uint8_t nrf_check(_nrf_chip_t *nrf_chip)
@@ -110,10 +115,10 @@ static uint8_t nrf_check(_nrf_chip_t *nrf_chip)
     hal_nrf_get_address(nrf_chip, HAL_NRF_PIPE5, buf);
 
     /*写入5个字节的地址.	*/
-    //SPI_NRF_WriteBuf(NRF_WRITE_REG+TX_ADDR,buf,5);
+    //SPI_NRF_WriteBuf(NRF_WRITE_REG+NRF_TX_ADDR,buf,5);
     hal_nrf_set_address(nrf_chip, HAL_NRF_TX, addr);
     /*读出写入的地址 */
-    //SPI_NRF_ReadBuf(TX_ADDR,buf1,5);
+    //SPI_NRF_ReadBuf(NRF_TX_ADDR,buf1,5);
     hal_nrf_get_address(nrf_chip, HAL_NRF_TX, buf);
     printf(" HAL_NRF_TX :");
     for (i = 0; i < 5; i++) {
@@ -167,8 +172,8 @@ static void nrf_config(_nrf_chip_t *nrf_chip)
 
     //SETUP_RETR设置重发次数,重发间隔,默认3次,250us
     hal_nrf_set_auto_retr(nrf_chip, 10, 500);
-    //EN_AA,EN_RXADDR开启通道0的自动应答,开启时强制打开CRC校验,默认开启
-    hal_nrf_open_pipe(nrf_chip, HAL_NRF_PIPE0, EN_AA);
+    //NRF_EN_AA,EN_RXADDR开启通道0的自动应答,开启时强制打开CRC校验,默认开启
+    hal_nrf_open_pipe(nrf_chip, HAL_NRF_PIPE0, NRF_EN_AA);
     //CONFIG打开CRC16校验,默认8位
     hal_nrf_set_crc_mode(nrf_chip, HAL_NRF_CRC_16BIT);
     //CONFIG默认POWER DOWN
@@ -374,7 +379,7 @@ void nrf_device()
            // while(hal_nrf_get_carrier_detect(&nrf_chip_device));
             nrf_tx_mode(&nrf_chip_device,NRF_DEVICE_SEND_ADDRESS,DEVICE_TX_CHANNEL);
             //nrf_test(&nrf_chip_device);
-            nrf_tx_dat(&nrf_chip_device, NRF__DTX_BUF);
+            nrf_tx_dat(&nrf_chip_device, NRF__TX_BUF);
             nrf_rx_mode(&nrf_chip_device,NRF_DEVICE_RECV_ADDRESS,DEVICE_RX_CHANNEL);
             //printf("\r\n 主机端 进入发送模式 %x\r\n",status);
         }
