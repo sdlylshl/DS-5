@@ -12,7 +12,7 @@ int main() {
 //	uint8_t i;
 	uint32_t Time = 0;
 	//RCC_Config();
-	NVIC_Config();
+	//NVIC_Config();
 	//DMA_Config();
 	USART1_Init();
 //	USART3_Init();
@@ -22,7 +22,7 @@ int main() {
 	//nrf
 	SPI1_Init();
 	//SPI2_Init();
-	//SPI_INIT();
+	SPI_INIT();
 	PS2_Init();
 	LED_GPIO_Config();	
 	//SPI_Flash_Init();

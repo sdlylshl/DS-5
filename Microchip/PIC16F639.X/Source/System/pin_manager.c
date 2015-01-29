@@ -40,8 +40,8 @@ void PIN_MANAGER_Initialize(void)
     CMCON0bits.CM = 0x07;    
     TRISCbits.TRISC0 =0;
     TRISCbits.TRISC4 =0;
-    PORTCbits.RC0 =0;
-    PORTCbits.RC4 =0;
+    PORTCbits.RC0 =1;
+    PORTCbits.RC4 =1;
 
     TRISA = 0xFF;
 }

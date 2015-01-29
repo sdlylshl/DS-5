@@ -10,7 +10,7 @@
   void SPI_CEN_HIGH(){SPI_CE = 1;}
   void SPI_CEN_LOW() {SPI_CE = 0;}
   void SPI_CSN_HIGH(){SPI_CS = 1;}
-  void SPI_CSN_LOW() {SPI_CS = 0;}
+  void SPI_CSN_LOW(void) {SPI_CS = 0;}
 
    void SPI_CLK_HIGH(){SPI_CLK = 1;}
   void SPI_CLK_LOW() {SPI_CLK = 0;}
@@ -39,20 +39,21 @@ void SPI_INIT( void )
     //使能电平变换中断
     IOCAbits.IOCA2 = 1;
 
-    TRISAbits.TRISA0 =0;
-    TRISAbits.TRISA1 =0;
-    TRISAbits.TRISA2 =1;
-    TRISAbits.TRISA3 =1;
-    TRISAbits.TRISA4 =0;
-    TRISAbits.TRISA5 =0;
+    TRISAbits.TRISA0 =0;    //CE
+    TRISAbits.TRISA1 =0;    //CS
+    TRISAbits.TRISA2 =1;    //IRQ
+    TRISAbits.TRISA3 =1;    //MISO
+    TRISAbits.TRISA4 =0;    //CLK
+    TRISAbits.TRISA5 =0;    //MOSI
 
-    PORTAbits.RA0 =0;
-
-   SPI_MOSI_LOW();		//SI put 0
-   SPI_CLK_LOW();		//SCK put 0
+    //PORTAbits.RA0 =0;
+   
+   SPI_MOSI_LOW();		//MOSI put 0
+   SPI_CLK_LOW();		//CLK put 0
    SPI_DELAY();
    SPI_CSN_HIGH() ;
    SPI_DELAY();
+ 
 }
 
 /****************************************************************************
@@ -70,12 +71,13 @@ uint8_t SPI_ReadWrite(uint8_t data)
 	{
 		if( (data&0x80)==0x80 ){
 			SPI_MOSI_HIGH();
+                         
 		}else{
 			SPI_MOSI_LOW();
 		}
 		SPI_DELAY();
 		SPI_CLK_HIGH() ;
-		
+		 
 		data = data<<1;
 		if( SPI_MISO_READ() != 0 ){
 			data |= 0x01 ;

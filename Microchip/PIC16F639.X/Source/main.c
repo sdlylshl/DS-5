@@ -20,13 +20,13 @@
 //3 RA4(OSC_CLKOUT) --- CLK
 //2 RA5(OSC_CLKIN)  ---MOSI
 
-extern void nrf_main();
+extern void nrf_main0();
 int main(int argc, char** argv) {
     uint32_t time;
 
     SYSTEM_Initialize();
-
-    nrf_main();
+ nrf_main0();
+    
     while(1){
 
         if(TMR0_GetDistanceTime(time)>5000){

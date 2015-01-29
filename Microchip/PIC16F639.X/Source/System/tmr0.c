@@ -6,7 +6,8 @@
 volatile uint8_t timer0ReloadVal8bit;
 
 volatile uint32_t time0;
-
+uint32_t (*GetCurrentTime)(void) =TMR0_GetCurrentTime;
+uint32_t (*GetDistanceTime)(uint32_t ) = TMR0_GetDistanceTime;
 
 void TMR0_Initialize(void)
 {
@@ -70,7 +71,7 @@ void TMR0_ISR(void)
     INTCONbits.T0IF = 0;
 
     // reload TMR0
-    TMR0+ = timer0ReloadVal8bit;
+   // TMR0+ = timer0ReloadVal8bit;
     time0 +=1;
 
     // add your TMR0 interrupt custom code

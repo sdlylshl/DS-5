@@ -10,12 +10,14 @@
 
 #include "pin_manager.h"
 #include "tmr0.h"
+#include "spi.h"
+
 //#include "pwm1.h"
 
 
 //#include "eusart.h"
 //#include "hlvd.h"
-//#include "spi1.h"
+
 //#include "memory.h"
 //#include "adc.h"
 

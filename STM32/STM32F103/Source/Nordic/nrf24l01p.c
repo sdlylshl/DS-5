@@ -42,7 +42,7 @@ _nrf_chip_t nrf_chip_device;
 
 #define PLOAD_WIDTH 5
 uint8_t send_erro = 0;
-//#define MASTER
+#define MASTER
 
 uint8_t nrf_test(_nrf_chip_t *nrf_chip)
 {
