@@ -20,24 +20,29 @@
  * 论坛    ：http://www.amobbs.com/forum-1008-1.html
  * 淘宝    ：http://firestm32.taobao.com
  **********************************************************************************/
-#include "hal_nrf2401.h"
 #include <stdio.h>
-// SPI2
-#include "./System/System_config.h"
+#include <stddef.h>
+#include <assert.h>
+#include "NRF2401.h"
 #include "../common/hal_nrf_hw.h"
-// extern uint8_t NRF__RX_BUF[];		//接收数据缓存
-// extern uint8_t NRF__TX_BUF[];		//发射数据缓存
+// SPI2
 
-extern uint8_t NRF_MASTER_RECV_ADDRESS[];
-extern uint8_t NRF_MASTER_SEND_ADDRESS[];
+#include "./System/System_config.h"
 
-//#define NRF_DEVICE_RECV_ADDRESS NRF_MASTER_SEND_ADDRESS
-//#define NRF_DEVICE_SEND_ADDRESS NRF_MASTER_RECV_ADDRESS
-//#define MASTER_RX_CHANNEL 40
-//#define MASTER_TX_CHANNEL 70
-//#define DEVICE_RX_CHANNEL MASTER_TX_CHANNEL
-//#define DEVICE_TX_CHANNEL MASTER_RX_CHANNEL
-//#define NRF_ADDRESS_WIDTH 5
+
+_nrf_chip_t nrf_chip = {0};
+
+void nrfchip_init0(void) {
+
+	nrf_chip.CSN_LOW = SPI_CSN_LOW;
+	nrf_chip.CSN_HIGH = SPI_CSN_HIGH;
+	nrf_chip.CE_LOW = SPI_CEN_LOW;
+	nrf_chip.CE_HIGH = SPI_CEN_HIGH;
+	nrf_chip.NRF_Read_IRQ = SPI_IRQ_READ;
+	nrf_chip.hal_spi_rw = SPI_ReadWrite;
+
+}
+
 
 //#define GetCurrentTime TIM2_GetCurrentTime
 //#define GetDistanceTime TIM2_GetDistanceTime
@@ -45,6 +50,7 @@ void Delay(volatile uint32_t nCount) {
 	for (; nCount != 0; nCount--)
 		;
 }
+
 /*
  * 函数名：SPI_NRF_WriteReg
  * 描述  ：用于向NRF特定的寄存器写入数据
@@ -55,13 +61,14 @@ void Delay(volatile uint32_t nCount) {
  */
 uint8_t nrf_spi_writereg(uint8_t reg, uint8_t dat) {
 	uint8_t status;
+	//assert(nrf_chip.CE_LOW == NULL);
 	nrf_chip.CE_LOW();
 	/*置低CSN，使能SPI传输*/
 	nrf_chip.CSN_LOW();
 	/*发送命令及寄存器号 */
-	status = nrf_chip.hal_nrf_rw(reg);
+	status = nrf_chip.hal_spi_rw(reg);
 	/*向寄存器写入数据*/
-	nrf_chip.hal_nrf_rw(dat);
+	nrf_chip.hal_spi_rw(dat);
 	/*CSN拉高，完成*/
 	nrf_chip.CSN_HIGH();
 	/*返回状态寄存器的值*/
@@ -83,10 +90,10 @@ uint8_t SPI_NRF_ReadReg(uint8_t reg) {
 	nrf_chip.CSN_LOW();
 
 	/*发送寄存器号*/
-	nrf_chip.hal_nrf_rw(reg);
+	nrf_chip.hal_spi_rw(reg);
 
 	/*读取寄存器的值 */
-	reg_val = nrf_chip.hal_nrf_rw(NRF_NOP);
+	reg_val = nrf_chip.hal_spi_rw(NRF_NOP);
 
 	/*CSN拉高，完成*/
 	nrf_chip.CSN_HIGH();
@@ -111,11 +118,11 @@ uint8_t spi_nrf_readbuf(uint8_t reg, uint8_t *pBuf, uint8_t bytes) {
 	nrf_chip.CSN_LOW();
 
 	/*发送寄存器号*/
-	status = nrf_chip.hal_nrf_rw(reg);
+	status = nrf_chip.hal_spi_rw(reg);
 
 	/*读取缓冲区数据*/
 	for (byte_cnt = 0; byte_cnt < bytes; byte_cnt++)
-		pBuf[byte_cnt] = nrf_chip.hal_nrf_rw(NRF_NOP); //从NRF24L01读取数据
+		pBuf[byte_cnt] = nrf_chip.hal_spi_rw(NRF_NOP); //从NRF24L01读取数据
 
 	/*CSN拉高，完成*/
 	nrf_chip.CSN_HIGH();
@@ -139,11 +146,11 @@ uint8_t nrf_spi_writebuf(uint8_t reg, uint8_t *pBuf, uint8_t bytes) {
 	nrf_chip.CSN_LOW();
 
 	/*发送寄存器号*/
-	status = nrf_chip.hal_nrf_rw(reg);
+	status = nrf_chip.hal_spi_rw(reg);
 
 	/*向缓冲区写入数据*/
 	for (byte_cnt = 0; byte_cnt < bytes; byte_cnt++)
-		nrf_chip.hal_nrf_rw(*pBuf++);	//写数据到缓冲区
+		nrf_chip.hal_spi_rw(*pBuf++);	//写数据到缓冲区
 
 	/*CSN拉高，完成*/
 	nrf_chip.CSN_HIGH();

@@ -22,6 +22,26 @@
 #include "./System/System_config.h"
 #include "hal_nrf_hw.h"
 
+
+// Global variables
+//uint8_t payload[RX_PLOAD_WIDTH];
+uint8_t NRF__RX_BUF[NRF_PLOAD_WIDTH] = { 0, 0, 0, 0 }; //接收数据缓存
+uint8_t NRF__TX_BUF[NRF_PLOAD_WIDTH] = { 0x18, 0x65, 2, 3 }; //发射数据缓存
+//uint8_t NRF__DTX_BUF[TX_PLOAD_WIDTH] = { 0x11, 0x65, 2, 3 }; //发射数据缓存
+uint8_t NRF_CHIPID[NRF_ADDRESS_WIDTH] = { 0, 0, 0, 0, 1 };
+//1.配置地址 0xe7
+//发送成功后配置地址为 ID
+//上传成功 OK
+
+
+//device ----------------master
+//send 0xe7   --       0xe7            40
+//recv 0x34  --- -       0x34           70
+uint8_t NRF_MASTER_RECV_ADDRESS[NRF_ADDRESS_WIDTH] =
+		{ 0xe7, 0xe7, 0xe7, 0xe7, 0xe7 }; // 定义一个静态发送地址
+uint8_t NRF_MASTER_SEND_ADDRESS[NRF_ADDRESS_WIDTH] =
+		{ 0x34, 0x43, 0x10, 0x10, 0x01 }; // 定义一个静态发送地址
+
 #if 1
 //函数指针定义
 //void (*CSN_LOW)(void) = SPI2_ResetNSS;
@@ -30,21 +50,10 @@
 //void (*CE_HIGH)(void) = SPI2_SetRST;
 //uint8_t (*NRF_Read_IRQ)(void) = SPI2_readIRQ;
 //uint8_t (*hal_nrf_rw)(uint8_t) = SPI2_SendByte;
-const uint8_t chip_id[NRF_ADDRESS_WIDTH] ={0,0,0,0,1};
-_nrf_chip_t nrf_chip;
 
-void nrfchip_init0(void) {
 
-	nrf_chip.CSN_LOW = SPI_CSN_LOW;
-	nrf_chip.CSN_HIGH = SPI_CSN_HIGH;
-	nrf_chip.CE_LOW = SPI_CEN_LOW;
-	nrf_chip.CE_HIGH = SPI_CEN_HIGH;
-	nrf_chip.NRF_Read_IRQ = SPI_IRQ_READ;
-	nrf_chip.hal_nrf_rw = SPI_ReadWrite;
 
-}
-
-void nrfchipX_init(_nrf_chip_t *nrf_chip, SPIx_t SPIx) {
+void nrfchip_num_init(_nrf_chip_t *nrf_chip, SPIx_t SPIx) {
 
 	assert_param(IS_SPI_ALL_PERIPH(SPIx));
 
@@ -54,21 +63,21 @@ void nrfchipX_init(_nrf_chip_t *nrf_chip, SPIx_t SPIx) {
 		nrf_chip->CE_LOW = SPI_CEN_LOW;
 		nrf_chip->CE_HIGH = SPI_CEN_HIGH;
 		nrf_chip->NRF_Read_IRQ = SPI_IRQ_READ;
-		nrf_chip->hal_nrf_rw = SPI_ReadWrite;
+		nrf_chip->hal_spi_rw = SPI_ReadWrite;
 	} else if (SPIx == SPI_1) {
 		nrf_chip->CSN_LOW = SPI1_ResetNSS;
 		nrf_chip->CSN_HIGH = SPI1_SetNSS;
 		nrf_chip->CE_LOW = SPI1_ResetRST;
 		nrf_chip->CE_HIGH = SPI1_SetRST;
 		nrf_chip->NRF_Read_IRQ = SPI1_readIRQ;
-		nrf_chip->hal_nrf_rw = SPI1_SendByte;
+		nrf_chip->hal_spi_rw = SPI1_SendByte;
 	} else if (SPIx == SPI_2) {
 		nrf_chip->CSN_LOW = SPI2_ResetNSS;
 		nrf_chip->CSN_HIGH = SPI2_SetNSS;
 		nrf_chip->CE_LOW = SPI2_ResetRST;
 		nrf_chip->CE_HIGH = SPI2_SetRST;
 		nrf_chip->NRF_Read_IRQ = SPI2_readIRQ;
-		nrf_chip->hal_nrf_rw = SPI2_SendByte;
+		nrf_chip->hal_spi_rw = SPI2_SendByte;
 
 	}
 }

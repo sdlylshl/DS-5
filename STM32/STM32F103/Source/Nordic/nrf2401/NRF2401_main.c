@@ -9,7 +9,7 @@
  * 淘宝    ：http://firestm32.taobao.com
  **********************************************************************************/
 #include "stdio.h"
-#include "hal_nrf2401.h"
+#include "NRF2401.h"
 //usart1
 #include "./System/System_config.h"
 
@@ -84,6 +84,8 @@ void NRF_device_main(void) {
 extern void nrf_comn_config(void);
 
 void nrf_main0() {
+
+	 nrfchip_init0();
 	/*检测NRF模块与MCU的连接*/
 	status = nrf_check();
 	if (status == SUCCESS)

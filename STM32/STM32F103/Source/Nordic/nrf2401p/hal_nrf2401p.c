@@ -671,7 +671,7 @@ uint8_t hal_nrf_get_rx_data_source(_nrf_chip_t *nrf_chip)
 void hal_nrf_reuse_tx(_nrf_chip_t *nrf_chip)
 {
 	nrf_chip->CSN_LOW();
-    nrf_chip->hal_nrf_rw(NRF_REUSE_TX_PL);
+    nrf_chip->hal_spi_rw(NRF_REUSE_TX_PL);
     nrf_chip->CSN_HIGH();
 }
 
@@ -683,14 +683,14 @@ bool hal_nrf_get_reuse_tx_status(_nrf_chip_t *nrf_chip)
 void hal_nrf_flush_rx(_nrf_chip_t *nrf_chip)
 {
 	nrf_chip->CSN_LOW();
-	nrf_chip->hal_nrf_rw(NRF_FLUSH_RX);
+	nrf_chip->hal_spi_rw(NRF_FLUSH_RX);
 	nrf_chip->CSN_HIGH();
 }
 
 void hal_nrf_flush_tx(_nrf_chip_t *nrf_chip)
 {
 	nrf_chip->CSN_LOW();
-	nrf_chip->hal_nrf_rw(NRF_FLUSH_TX);
+	nrf_chip->hal_spi_rw(NRF_FLUSH_TX);
 	nrf_chip->CSN_HIGH();
 }
 
@@ -699,7 +699,7 @@ uint8_t hal_nrf_nop(_nrf_chip_t *nrf_chip)
     uint8_t retval;
 
     nrf_chip->CSN_LOW();
-    retval = nrf_chip->hal_nrf_rw(NRF_NOP);
+    retval = nrf_chip->hal_spi_rw(NRF_NOP);
     nrf_chip->CSN_HIGH();
 
     return retval;
@@ -731,9 +731,9 @@ uint8_t hal_nrf_read_reg(_nrf_chip_t *nrf_chip, uint8_t reg)
 
     nrf_chip->CSN_LOW();
 
-    nrf_chip->hal_nrf_rw(reg);
+    nrf_chip->hal_spi_rw(reg);
 
-    temp = nrf_chip->hal_nrf_rw(NRF_NOP);
+    temp = nrf_chip->hal_spi_rw(NRF_NOP);
 
     nrf_chip->CSN_HIGH();
 
@@ -753,10 +753,10 @@ uint8_t hal_nrf_write_reg(_nrf_chip_t *nrf_chip, uint8_t reg, uint8_t value)
     nrf_chip->CSN_LOW();
 
     /*发送命令及寄存器号 */
-    retval = nrf_chip->hal_nrf_rw(NRF_W_REGISTER+reg);
+    retval = nrf_chip->hal_spi_rw(NRF_W_REGISTER+reg);
 
     /*向寄存器写入数据*/
-    nrf_chip->hal_nrf_rw(value);
+    nrf_chip->hal_spi_rw(value);
 
     nrf_chip->CSN_HIGH();
 
@@ -774,7 +774,7 @@ uint16_t hal_nrf_read_multibyte_reg(_nrf_chip_t *nrf_chip, uint8_t reg, uint8_t 
     case HAL_NRF_TX:
         length = hal_nrf_get_address_width(nrf_chip);
         nrf_chip->CSN_LOW();
-        nrf_chip->hal_nrf_rw(NRF_RX_ADDR_P0 + reg);
+        nrf_chip->hal_spi_rw(NRF_RX_ADDR_P0 + reg);
         break;
 
     case HAL_NRF_RX_PLOAD:
@@ -782,7 +782,7 @@ uint16_t hal_nrf_read_multibyte_reg(_nrf_chip_t *nrf_chip, uint8_t reg, uint8_t 
         if (reg < 7U) {
             length = hal_nrf_read_rx_payload_width(nrf_chip);
             nrf_chip->CSN_LOW();
-            nrf_chip->hal_nrf_rw(NRF_RD_RX_PAYLOAD);
+            nrf_chip->hal_spi_rw(NRF_RD_RX_PAYLOAD);
         } else {
             length = 0U;
         }
@@ -794,7 +794,7 @@ uint16_t hal_nrf_read_multibyte_reg(_nrf_chip_t *nrf_chip, uint8_t reg, uint8_t 
     }
 
     for(byte_cnt=0; byte_cnt<length; byte_cnt++)
-        pbuf[byte_cnt] = nrf_chip->hal_nrf_rw(NRF_NOP); //从NRF24L01读取数据
+        pbuf[byte_cnt] = nrf_chip->hal_spi_rw(NRF_NOP); //从NRF24L01读取数据
     nrf_chip->CSN_HIGH();
 
     return (((uint16_t) reg << 8) | length);
@@ -807,11 +807,11 @@ void hal_nrf_write_multibyte_reg(_nrf_chip_t *nrf_chip, uint8_t reg, const uint8
     nrf_chip->CSN_LOW();
 
     /*发送寄存器号*/
-    nrf_chip->hal_nrf_rw(reg);
+    nrf_chip->hal_spi_rw(reg);
 
     /*向缓冲区写入数据*/
     for(byte_cnt=0; byte_cnt<length; byte_cnt++)
-    	nrf_chip->hal_nrf_rw(*pbuf++);	//写数据到缓冲区
+    	nrf_chip->hal_spi_rw(*pbuf++);	//写数据到缓冲区
 
     nrf_chip->CSN_HIGH();
 }

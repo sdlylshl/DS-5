@@ -656,37 +656,32 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>NRF2401</GroupName>
-          <Files>
-            <File>
-              <FileName>NRF2401_main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\Nordic\Application\NRF2401_main.c</FilePath>
-            </File>
-            <File>
-              <FileName>SPI_NRF.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\Nordic\Application\SPI_NRF.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>Nordic</GroupName>
           <Files>
             <File>
-              <FileName>nrf24l01p.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\Nordic\nrf24l01p.c</FilePath>
-            </File>
-            <File>
-              <FileName>hal_nrf.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\Nordic\nrf24l01p\hal_nrf.c</FilePath>
-            </File>
-            <File>
               <FileName>hal_nrf_hw.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Source\Nordic\hal_nrf_hw.c</FilePath>
+              <FilePath>.\Source\Nordic\common\hal_nrf_hw.c</FilePath>
+            </File>
+            <File>
+              <FileName>NRF2401.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Nordic\nrf2401\NRF2401.c</FilePath>
+            </File>
+            <File>
+              <FileName>NRF2401_main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Nordic\nrf2401\NRF2401_main.c</FilePath>
+            </File>
+            <File>
+              <FileName>hal_nrf2401p.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Nordic\nrf2401p\hal_nrf2401p.c</FilePath>
+            </File>
+            <File>
+              <FileName>nrf24l01p.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Nordic\nrf2401p\nrf24l01p.c</FilePath>
             </File>
           </Files>
         </Group>

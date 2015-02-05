@@ -14,23 +14,6 @@
 //帧头| 地址 |控制域| 数据| CRC
 //地址长度为3-5个字节，其内容为接收机的地址
 
-// Global variables
-//uint8_t payload[RX_PLOAD_WIDTH];
-uint8_t NRF__RX_BUF[NRF_PLOAD_WIDTH] = { 0, 0, 0, 0 }; //接收数据缓存
-uint8_t NRF__TX_BUF[NRF_PLOAD_WIDTH] = { 0x18, 0x65, 2, 3 }; //发射数据缓存
-//uint8_t NRF__DTX_BUF[TX_PLOAD_WIDTH] = { 0x11, 0x65, 2, 3 }; //发射数据缓存
-uint8_t NRF_CHIPID[NRF_ADDRESS_WIDTH] = { 0, 0, 0, 0, 1 };
-//1.配置地址 0xe7
-//发送成功后配置地址为 ID
-//上传成功 OK
-
-//device ----------------master
-//send 0xe7   --       0xe7            40
-//recv 0x34  --- -       0x34           70
-uint8_t NRF_MASTER_RECV_ADDRESS[NRF_ADDRESS_WIDTH] =
-		{ 0xe7, 0xe7, 0xe7, 0xe7, 0xe7 }; // 定义一个静态发送地址
-uint8_t NRF_MASTER_SEND_ADDRESS[NRF_ADDRESS_WIDTH] =
-		{ 0x34, 0x43, 0x10, 0x10, 0x01 }; // 定义一个静态发送地址
 
 //#define NRF_ADDRESS_WIDTH 5
 
@@ -302,8 +285,8 @@ void nrf_master(void) {
 //    NRF_TX_ADDR    :0xe7
 
 	//注册接口函数
-	nrfchipX_init(&nrf_chip_send, SPI_1);
-	nrfchipX_init(&nrf_chip_recv, SPI);
+	nrfchip_num_init(&nrf_chip_send, SPI_1);
+	nrfchip_num_init(&nrf_chip_recv, SPI);
 	//测试模块寄存器
 	nrf_chip_test(&nrf_chip_send);
 	nrf_chip_test(&nrf_chip_recv);
@@ -377,7 +360,7 @@ void nrf_device(void) {
 	uint32_t nrf_time;
 	uint8_t i;
 //	uint8_t status = 0;
-	nrfchipX_init(&nrf_chip_device, SPI_2);
+	nrfchip_num_init(&nrf_chip_device, SPI_2);
 	nrf_chip_test(&nrf_chip_device);
 	nrf_chip_check(&nrf_chip_device);
 	nrf_chip_config(&nrf_chip_device);

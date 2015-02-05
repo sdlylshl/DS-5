@@ -30,6 +30,8 @@
 
 #define NRF_ADDRESS_WIDTH 		5
 #define NRF_PLOAD_WIDTH  		5
+extern uint8_t NRF__RX_BUF[NRF_PLOAD_WIDTH];
+extern uint8_t NRF__TX_BUF[NRF_PLOAD_WIDTH];
 
 extern uint8_t NRF_MASTER_RECV_ADDRESS[NRF_ADDRESS_WIDTH];
 extern uint8_t NRF_MASTER_SEND_ADDRESS[NRF_ADDRESS_WIDTH];
@@ -78,7 +80,7 @@ typedef struct __nrf_chip {
 	void (*CSN_HIGH)(void);
 	void (*CE_LOW)(void);
 	void (*CE_HIGH)(void);
-	uint8_t (*hal_nrf_rw)(uint8_t);
+	uint8_t (*hal_spi_rw)(uint8_t);
 
 } _nrf_chip_t;
 extern _nrf_chip_t nrf_chip;
@@ -149,6 +151,6 @@ extern _nrf_chip_t nrf_chip;
 #endif // __HAL_NRF_HW_H_typedef enum {
 	SPI, SPI_1, SPI_2, SPI_3
 } SPIx_t;
-void nrfchipX_init(_nrf_chip_t *nrf_chip, SPIx_t SPIx);
+void nrfchip_num_init(_nrf_chip_t *nrf_chip, SPIx_t SPIx);
 
 /** @} */

@@ -24,7 +24,8 @@
 //
 //uint8_t spi_nrf_readbuf(uint8_t reg,uint8_t *pBuf,uint8_t bytes);
 //uint8_t nrf_spi_writebuf(uint8_t reg ,uint8_t *pBuf,uint8_t bytes);
-//
+
+void nrfchip_init0(void);
 //void NRF_TX_Mode(void);
 //void NRF_RX_Mode(void);
 uint8_t nrf_rx_dat(uint8_t *rxbuf);

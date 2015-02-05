@@ -305,8 +305,6 @@ void EXTI1_IRQHandle(void){
 	}
 }
 extern void nrf_isr(void);
-extern void NRF_ISR_MASTER_RECV(void);
-extern void NRF_ISR_MASTER_SEND(void);
 void EXTI9_5_IRQHandle(void){
 
 	if (EXTI_GetITStatus(EXTI_Line5) == SET) {
