@@ -44,8 +44,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "hal_nrf_reg.h"
-#include "../hal_nrf_hw.h"
+//#include "hal_nrf_reg.h"
+#include "../common/hal_nrf_hw.h"
 
 /** @name Setup */
 //@{

@@ -23,7 +23,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "../nordic_common.h"
+#include "nordic_common.h"
 #include "hal_nrf.h"
 
 #define SET_BIT_POS(pos) ((uint8_t) (1U<<( (uint8_t) (pos) )))

@@ -24,8 +24,9 @@
 #define __HAL_NRF_HW_H_
 //#include "nrf24lu1p.h"
 #include "version.h"
+#include "hal_nrf_reg.h"
 // SPI2
-#include "../System/System_config.h"
+#include "../../System/System_config.h"
 
 #define NRF_ADDRESS_WIDTH 		5
 #define NRF_PLOAD_WIDTH  		5

@@ -24,8 +24,7 @@
 #include <stdio.h>
 // SPI2
 #include "./System/System_config.h"
-#include "../hal_nrf_hw.h"
-#include "../nrf24l01p/hal_nrf_reg.h"
+#include "../common/hal_nrf_hw.h"
 // extern uint8_t NRF__RX_BUF[];		//接收数据缓存
 // extern uint8_t NRF__TX_BUF[];		//发射数据缓存
 
