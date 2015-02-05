@@ -3,16 +3,13 @@
 #include "config.h"
 char *str = "\r\n This is a USART1_printf demo \r\n";
 extern void nrf_main0(void);
-extern void nrf_main(void);
-int NRF_master_main(void);
-
-
+//extern void nrf_main(void);
 
 int main() {
 //	uint8_t i;
 	uint32_t Time = 0;
 	//RCC_Config();
-	//NVIC_Config();
+	NVIC_Config();
 	//DMA_Config();
 	USART1_Init();
 //	USART3_Init();
@@ -24,11 +21,11 @@ int main() {
 	//SPI2_Init();
 	SPI_INIT();
 	PS2_Init();
-	LED_GPIO_Config();	
+	LED_GPIO_Config();
 	//SPI_Flash_Init();
 	//testFlash();
-		//开总中断
-	__set_PRIMASK(0);	
+	//开总中断
+	__set_PRIMASK(0);
 
 	nrf_main0();
 //		NRF_device_main();
@@ -42,11 +39,10 @@ int main() {
 	//LCD12864P_main();
 
 	//while(1)
-		printf("USART1 start");
+	printf("USART1 start");
 	//CAN_main();
 	Ethernet_Init();
 
-	
 	//Ethernet_main();
 	printf("%slist", str);
 	while (1) {
@@ -84,7 +80,7 @@ int main() {
 		//
 		//PfmBuffer_Next(PfmBuffer_Read());
 	}
-	return 0;
+//	return 0;
 }
 
 #ifdef  USE_FULL_ASSERT

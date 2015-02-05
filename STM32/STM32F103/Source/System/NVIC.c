@@ -304,7 +304,7 @@ void EXTI1_IRQHandle(void){
 		EXTI_ClearITPendingBit(EXTI_Line1);
 	}
 }
-extern void NRF_ISR(void);
+extern void nrf_isr(void);
 extern void NRF_ISR_MASTER_RECV(void);
 extern void NRF_ISR_MASTER_SEND(void);
 void EXTI9_5_IRQHandle(void){
@@ -313,7 +313,7 @@ void EXTI9_5_IRQHandle(void){
 		EXTI_ClearFlag(EXTI_Line5);
 		EXTI_ClearITPendingBit(EXTI_Line5);
 		EXTIn = 5;	printf("\nSPI1 EXTI5\n");
-		NRF_ISR();
+		nrf_isr();
 	}else
 	if (EXTI_GetITStatus(EXTI_Line6) == SET) {
 		EXTI_ClearFlag(EXTI_Line6);
@@ -331,7 +331,7 @@ void EXTI9_5_IRQHandle(void){
 		EXTIn = 8;	printf("\nSPI2 EXTI8\n");
 		//NRF_ISR_MASTER_RECV();
 		//NRF_ISR_DEVICE();
-		NRF_ISR();
+		nrf_isr();
 	}else
 	if (EXTI_GetITStatus(EXTI_Line9) == SET) {
 		EXTI_ClearFlag(EXTI_Line9);

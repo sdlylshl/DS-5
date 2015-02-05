@@ -17,7 +17,7 @@ uint8_t SPI_Flash_SendByte(uint8_t byte);		//	FLASH操作基本函数，发送�
 
 
 void FlashWaitBusy(void);			//Flash忙检测
-void FlashReadID(void);		        //读取flashID四个字节
+uint16_t FlashReadID(void);		        //读取flashID四个字节
 
 void sect_clr(unsigned long a1);
 void testFlash(void );

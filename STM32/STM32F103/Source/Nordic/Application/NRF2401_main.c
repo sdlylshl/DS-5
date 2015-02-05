@@ -26,13 +26,13 @@ void NRF_master_main(void){
 }
 void NRF_device_main(void) {
 	uint32_t nrf_time;
-	NRF_DEVICE_RX_MODE();
-	while (1) {
+	nrf_device_rx_mode();
+	while (true) {
 
 		if (GetDistanceTime(nrf_time) > 1000) {
 			nrf_time = GetCurrentTime();
 
-			NRF_DEVICE_TX_MODE();
+			nrf_device_tx_mode();
 			printf("Send data: ");
 			i = 100; //重发次数
 			do {
@@ -45,10 +45,10 @@ void NRF_device_main(void) {
 				}
 				printf(" %x ", status);
 			} while ((i--) && 1); //(status == MAX_RT);
-			NRF_DEVICE_RX_MODE();
+			nrf_device_rx_mode();
 		}
 		//NRF_DEVICE_RX_MODE();
-		if(NRF_Rx_Dat(NRF__RX_BUF) == RX_DR){
+		if(nrf_rx_dat(NRF__RX_BUF) == RX_DR){
 			if (status == RX_DR) {
 				printf("\r\n Device Data is : ");
 				for (i = 0; i < 4; i++) {
@@ -62,9 +62,9 @@ void NRF_device_main(void) {
 			}
 
 		}
-		NRF_DEVICE_RX_MODE();
+		nrf_device_rx_mode();
 		/*等待接收数据*/
-		status = NRF_Rx_Dat(NRF__RX_BUF);
+		status = nrf_rx_dat(NRF__RX_BUF);
 
 		/*判断接收状态*/
 		if (status == RX_DR) {
@@ -81,11 +81,11 @@ void NRF_device_main(void) {
 	}
 }
 
-extern void NRF_COMN_CONFIG(void);
+extern void nrf_comn_config(void);
 
 void nrf_main0() {
 	/*检测NRF模块与MCU的连接*/
-	status = NRF_Check();
+	status = nrf_check();
 	if (status == SUCCESS)
 		printf("\r\n       nrf2401 connect ok !	\r\n");
 	//		 printf("\r\n      NRF与MCU连接成功\r\n");
@@ -93,8 +93,7 @@ void nrf_main0() {
 		printf("\r\n       nrf2401 connect erro ! \r\n");
 	//	     printf("\r\n   正在检测NRF与MCU是否正常连接。。。\r\n");
 
-	SPI_NRF_Init();
-	NRF_COMN_CONFIG();
+	nrf_comn_config();
 	printf("nrf_main0 init\n");
 //NRF_master_main();
 	NRF_device_main();

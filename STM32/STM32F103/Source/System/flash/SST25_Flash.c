@@ -1,6 +1,6 @@
 
 #include "SST25_Flash.h"
-char * flashTestData = "1234567890";
+uint8_t * flashTestData = "1234567890";
 unsigned char SST25_buffer[4096];
 uint16_t logNr = 2; //当前记录编号 
 void SPI_Flash_Init(void);
@@ -12,7 +12,6 @@ void wen(void);
 void wdis(void);
 void wsr(void);
 unsigned char rdsr(void);
-void FlashReadID(void);
 void sect_clr(unsigned long a1);  
 void SST25_R_BLOCK(unsigned long addr, unsigned char *readbuff, unsigned int BlockSize);
 void SST25_W_BLOCK(uint32_t addr, uint8_t *readbuff, uint16_t BlockSize);
@@ -206,7 +205,7 @@ void Bulk_clr(){
 * 说    明：
 * 调用方法：无 
 ****************************************************************************/ 
-void FlashReadID(void)
+uint16_t FlashReadID(void)
 {
 	uint8_t fac_id;
 	uint8_t dev_id;
@@ -217,7 +216,8 @@ void FlashReadID(void)
 	SPI_Flash_SendByte(0x00);
   fac_id= SPI_Flash_ReadByte();		          //BFH: 工程码SST
 	dev_id= SPI_Flash_ReadByte();	              //41H: 器件型号SST25VF016B     
-  	NotSelect_Flash();	
+  	NotSelect_Flash();
+  	return (fac_id<<8|dev_id);
 }
 
 /*******************************************************************************
