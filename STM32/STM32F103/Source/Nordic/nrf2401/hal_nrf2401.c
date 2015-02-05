@@ -20,7 +20,7 @@
  * 论坛    ：http://www.amobbs.com/forum-1008-1.html
  * 淘宝    ：http://firestm32.taobao.com
  **********************************************************************************/
-#include "SPI_NRF.h"
+#include "hal_nrf2401.h"
 #include <stdio.h>
 // SPI2
 #include "./System/System_config.h"
@@ -340,7 +340,7 @@ uint8_t nrf_rx_dat(uint8_t *rxbuf) {
 	/*判断是否接收到数据*/
 	if (state & RX_DR)                                 //接收到数据
 	{
-		spi_nrf_readbuf(NRF_RD_RX_PAYLOAD, rxbuf, NRF_PLOAD_WIDTH);        //读取数据
+		spi_nrf_readbuf(NRF_RD_RX_PAYLOAD, rxbuf, NRF_PLOAD_WIDTH);       //读取数据
 		nrf_spi_writereg(NRF_FLUSH_RX, NRF_NOP);          //清除RX FIFO寄存器
 		return RX_DR;
 	} else

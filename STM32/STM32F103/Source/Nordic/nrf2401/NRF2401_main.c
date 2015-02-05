@@ -9,7 +9,7 @@
  * 淘宝    ：http://firestm32.taobao.com
  **********************************************************************************/
 #include "stdio.h"
-#include "SPI_NRF.h"
+#include "hal_nrf2401.h"
 //usart1
 #include "./System/System_config.h"
 

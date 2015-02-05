@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include "stdio.h"
-#include "hal_nrf.h"
+#include "hal_nrf2401p.h"
 //工作模式的配置
 //Mode		 PWR_UP			 PRIM_RX(1) 		CE
 //发送模式 		 1 			0 				1
