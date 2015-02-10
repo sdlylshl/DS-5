@@ -27,7 +27,7 @@ int main() {
 	//开总中断
 	__set_PRIMASK(0);
 
-	nrf_main0();
+	nrf_main();
 //		NRF_device_main();
 //NRF_master_main();
 

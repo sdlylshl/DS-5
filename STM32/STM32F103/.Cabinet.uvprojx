@@ -463,11 +463,6 @@
               <FileType>1</FileType>
               <FilePath>.\Source\W5500\Ethernet\W5500\w5500.c</FilePath>
             </File>
-            <File>
-              <FileName>pfmBuffer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\W5500\Application\Buffer\PfmBuffer\pfmBuffer.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -682,6 +677,21 @@
               <FileName>nrf24l01p.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\Nordic\nrf2401p\nrf24l01p.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Algorithm</GroupName>
+          <Files>
+            <File>
+              <FileName>pfmBuffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Algorithm\Buffer\PfmBuffer\pfmBuffer.c</FilePath>
+            </File>
+            <File>
+              <FileName>Queue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Algorithm\Queue\Queue.c</FilePath>
             </File>
           </Files>
         </Group>

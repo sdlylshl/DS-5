@@ -81,7 +81,7 @@ void NRF_device_main(void) {
 	}
 }
 
-extern void nrf_comn_config(void);
+extern void nrf_common_config(void);
 
 void nrf_main0() {
 
@@ -95,7 +95,7 @@ void nrf_main0() {
 		printf("\r\n       nrf2401 connect erro ! \r\n");
 	//	     printf("\r\n   正在检测NRF与MCU是否正常连接。。。\r\n");
 
-	nrf_comn_config();
+	nrf_common_config();
 	printf("nrf_main0 init\n");
 //NRF_master_main();
 	NRF_device_main();

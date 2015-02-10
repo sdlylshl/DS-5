@@ -158,7 +158,7 @@ uint8_t nrf_spi_writebuf(uint8_t reg, uint8_t *pBuf, uint8_t bytes) {
 	return (status);	//返回NRF24L01的状态
 }
 
-void nrf_comn_config(void) {
+void nrf_common_config(void) {
 	//	 NRF_EN_AA      :0x3f
 	//	 NRF_EN_RXADDR  :0x03
 	//	 NRF_SETUP_AW   :0x03
