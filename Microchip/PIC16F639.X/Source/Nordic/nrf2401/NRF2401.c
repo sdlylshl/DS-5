@@ -29,7 +29,6 @@
 
 //#include "./System/System_config.h"
 
-
 _nrf_chip_t nrf_chip = {0};
 
 void nrfchip_init0(void) {

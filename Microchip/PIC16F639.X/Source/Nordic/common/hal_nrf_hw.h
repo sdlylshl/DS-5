@@ -23,10 +23,10 @@
 #ifndef __HAL_NRF_HW_H_
 #define __HAL_NRF_HW_H_
 //#include "nrf24lu1p.h"
-#include "version.h"
+#include "../../version.h"
 #include "hal_nrf_reg.h"
 // SPI2
-#include "../../System/System_config.h"
+#include "../../System/spi.h"
 
 #define NRF_ADDRESS_WIDTH 		5
 #define NRF_PLOAD_WIDTH  		5
@@ -153,9 +153,7 @@ extern _nrf_chip_t nrf_chip;
   CE_LOW();  \
   } while(false)
 
-#endif // __HAL_NRF_HW_H_typedef enum {
-	SPI, SPI_1, SPI_2, SPI_3
-} SPIx_t;
-void nrfchip_num_init(_nrf_chip_t *nrf_chip, SPIx_t SPIx);
+#endif // __HAL_NRF_HW_H_
+
 
 /** @} */

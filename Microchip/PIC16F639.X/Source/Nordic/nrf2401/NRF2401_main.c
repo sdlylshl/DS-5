@@ -8,14 +8,15 @@
  * 论坛    ：http://www.amobbs.com/forum-1008-1.html
  * 淘宝    ：http://firestm32.taobao.com
  **********************************************************************************/
-#include <stdio.h>
+#include "stdio.h"
 #include <stdbool.h>
 #include "NRF2401.h"
 //usart1
 //#include "./System/System_config.h"
 
 uint8_t status; //用于判断接收/发送状态
-
+//u8 NRF__TX_BUF[4] = { 0, 1, 2, 3 }; //发送缓冲
+//u8 NRF__RX_BUF[4]; //接收缓冲
 int i = 0;
 void NRF_master_main(void){
 	uint32_t nrf_time;

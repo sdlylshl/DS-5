@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
     SYSTEM_Initialize();
     INTERRUPT_PeripheralInterruptEnable();
     INTERRUPT_GlobalInterruptEnable();
-    while(1);
+    //while(1);
     nrf_main0();
 
 

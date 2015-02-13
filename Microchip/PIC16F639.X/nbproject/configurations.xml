@@ -5,10 +5,13 @@
     </logicalFolder>
     <logicalFolder name="SourceFiles" displayName="源文件" projectFiles="true">
       <logicalFolder name="f2" displayName="Nordic" projectFiles="true">
-        <itemPath>Source/Nordic/Application/SPI_NRF.c</itemPath>
-        <itemPath>Source/Nordic/Application/SPI_NRF.h</itemPath>
-        <itemPath>Source/Nordic/Application/NRF2401_main.c</itemPath>
-        <itemPath>Source/Nordic/Application/NRF2401_main.h</itemPath>
+        <itemPath>Source/Nordic/common/hal_nrf_hw.c</itemPath>
+        <itemPath>Source/Nordic/common/hal_nrf_hw.h</itemPath>
+        <itemPath>Source/Nordic/common/hal_nrf_reg.h</itemPath>
+        <itemPath>Source/Nordic/nrf2401/NRF2401.c</itemPath>
+        <itemPath>Source/Nordic/nrf2401/NRF2401.h</itemPath>
+        <itemPath>Source/Nordic/nrf2401/NRF2401_main.c</itemPath>
+        <itemPath>Source/Nordic/nrf2401/NRF2401_main.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="System" projectFiles="true">
         <itemPath>Source/System/tmr0.c</itemPath>
@@ -139,6 +142,7 @@
         <property key="ToolFirmwareFilePath"
                   value="Press to browse for a specific firmware version"/>
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
+        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>
