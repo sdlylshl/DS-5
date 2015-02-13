@@ -33,11 +33,14 @@
 【功能说明】SPI接口IO初始化
 ****************************************************************************/
 void SPI_INIT( void )
-{   //上拉
-    WPUDAbits.WPUDA2 =1;
-    WDAbits.WDA2 =1;
-    //使能电平变换中断
-    IOCAbits.IOCA2 = 1;
+{
+//  RA2 上拉
+    OPTION_REGbits.nRAPU = 0;  //启用PORTA上下拉使能
+    WDAbits.WDA2 =1;    //选择上拉
+    WPUDAbits.WPUDA2 =1; // 1使能上下拉
+//  RA2外部中断配置
+    OPTION_REGbits.INTEDG =0;   //RA2下降沿触发中断
+    INTCONbits.INTE = 1;    //启用RA2为中断
 
     TRISAbits.TRISA0 =0;    //CE
     TRISAbits.TRISA1 =0;    //CS
@@ -45,14 +48,25 @@ void SPI_INIT( void )
     TRISAbits.TRISA3 =1;    //MISO
     TRISAbits.TRISA4 =0;    //CLK
     TRISAbits.TRISA5 =0;    //MOSI
+//测试
+//SPI_MOSI_LOW();		//MOSI put 0
+//SPI_CLK_LOW();		//CLK put 0
+//SPI_CEN_LOW();
+//SPI_CSN_LOW();
+//SPI_MOSI_HIGH();		//MOSI put 0
+//SPI_CLK_HIGH();		//CLK put 0
+//SPI_CEN_HIGH();
+//SPI_CSN_HIGH();
+//   while(1);
 
     //PORTAbits.RA0 =0;
-   
+   SPI_CEN_HIGH();
    SPI_MOSI_LOW();		//MOSI put 0
    SPI_CLK_LOW();		//CLK put 0
    SPI_DELAY();
    SPI_CSN_HIGH() ;
    SPI_DELAY();
+
  
 }
 

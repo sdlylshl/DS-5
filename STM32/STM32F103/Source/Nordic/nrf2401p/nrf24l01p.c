@@ -16,7 +16,6 @@
 //帧头| 地址 |控制域| 数据| CRC
 //地址长度为3-5个字节，其内容为接收机的地址
 
-#define MASTER
 //#define NRF_ADDRESS_WIDTH 5
 //小端模式
 _nrf_chip_t nrf_chip_recv;
@@ -193,10 +192,8 @@ void nrf_master(void) {
 	//通用配置
 	nrf_chip_config(&nrf_chip_send);
 	nrf_chip_config(&nrf_chip_recv);
-	nrf_chip_rx_mode(&nrf_chip_recv, NRF_MASTER_RECV_ADDRESS,
-			MASTER_RX_CHANNEL);
-	nrf_chip_tx_mode(&nrf_chip_send, NRF_MASTER_SEND_ADDRESS,
-			MASTER_TX_CHANNEL);
+	nrf_chip_rx_mode(&nrf_chip_recv, NRF_MASTER_RECV_ADDRESS,MASTER_RX_CHANNEL);
+	nrf_chip_tx_mode(&nrf_chip_send, NRF_MASTER_SEND_ADDRESS,MASTER_TX_CHANNEL);
 	//配置完成
 	nrf_chip_test(&nrf_chip_send);
 	nrf_chip_test(&nrf_chip_recv);
@@ -205,7 +202,7 @@ void nrf_master(void) {
 	//切记,此处一定要打开接收模式
 	hal_nrf_enable_radio(&nrf_chip_recv);
 	//nrf_tx_dat(&nrf_chip_send, NRF__TX_BUF);
-
+#if 0
 	while (1) {
 		//小端模式
 //		1.接收到数据
@@ -219,15 +216,15 @@ void nrf_master(void) {
 		Delay_ms(10);
 
 	}
-
+#else
 	while (1) {
 		//Delay_ms(100);
 		//2.收到数据
 		//发送失败|收到数据 重发
 		if ((nrf_chip_recv.flag) & RX_DR) {
 			nrf_chip_recv.flag = 0;
-
-			for (i = 0; i < 4; i++) {
+			printf("master recv data:");
+			for (i = 0; i < NRF_PLOAD_WIDTH; i++) {
 				printf(" %d", NRF__RX_BUF[i]);
 			}
 			//Delay_ms(10);
@@ -236,26 +233,25 @@ void nrf_master(void) {
 
 			//hal_nrf_enable_radio(nrf_chip);
 			//printf("\r\n 主机端 接收到 从机端 发送的数据为");
-
+			nrf_chip_tx_data(&nrf_chip_send, NRF__RX_BUF,MASTER_TX_CHANNEL, NRF__TX_BUF);
 		}
-		if (TIM4_GetDistanceTime(nrf_time) > 5010) {
-			nrf_time = TIM4_GetCurrentTime();
-			nrf_chip_tx_data(&nrf_chip_send, NRF_MASTER_RECV_ADDRESS,
-					MASTER_RX_CHANNEL, NRF__TX_BUF);
-		}
+//		if (TIM4_GetDistanceTime(nrf_time) > 5010) {
+//			nrf_time = TIM4_GetCurrentTime();
+//			nrf_chip_tx_data(&nrf_chip_send, NRF_MASTER_RECV_ADDRESS,MASTER_TX_CHANNEL, NRF__TX_BUF);
+//		}
 
 		if (send_erro) {
 			while (hal_nrf_get_carrier_detect(&nrf_chip_send))
 				;
 			if (!hal_nrf_get_carrier_detect(&nrf_chip_send)) {
-				nrf_chip_tx_data(&nrf_chip_send, NRF_MASTER_RECV_ADDRESS,
-						MASTER_RX_CHANNEL, NRF__TX_BUF);
+				nrf_chip_tx_data(&nrf_chip_send, NRF_MASTER_RECV_ADDRESS,MASTER_TX_CHANNEL, NRF__TX_BUF);
 				//重发一次
 				send_erro = 0;
 			}
 		}
 
 	}
+	#endif
 }
 
 void nrf_device(void) {
@@ -276,7 +272,7 @@ void nrf_device(void) {
 	uint32_t nrf_time;
 	uint8_t i;
 //	uint8_t status = 0;
-	nrfchip_num_init(&nrf_chip_device, SPI_2);
+	nrfchip_num_init(&nrf_chip_device, SPI);
 	nrf_chip_test(&nrf_chip_device);
 	nrf_chip_check(&nrf_chip_device);
 	nrf_chip_config(&nrf_chip_device);
@@ -322,6 +318,9 @@ void nrf_device(void) {
 
 	}
 }
+
+#define MASTER
+//#define NRF_ISR
 //*******************************************************
 void nrf_main(void) {
 
@@ -336,7 +335,7 @@ void nrf_main(void) {
 }
 
 void nrf_isr(void) {
-
+#ifdef NRF_ISR
 	uint8_t irq_flags = 0;
 	_nrf_chip_t *nrf_chip;
 #ifdef MASTER
@@ -378,6 +377,7 @@ void nrf_isr(void) {
 	default:
 		break;
 	}
+	#endif
 }
 
 static uint8_t nrf_chip_check(_nrf_chip_t *nrf_chip) {

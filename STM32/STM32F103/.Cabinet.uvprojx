@@ -684,14 +684,14 @@
           <GroupName>Algorithm</GroupName>
           <Files>
             <File>
-              <FileName>pfmBuffer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\Algorithm\Buffer\PfmBuffer\pfmBuffer.c</FilePath>
-            </File>
-            <File>
               <FileName>Queue.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\Algorithm\Queue\Queue.c</FilePath>
+            </File>
+            <File>
+              <FileName>pfmBuffer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\Algorithm\Buffer\PfmBuffer\pfmBuffer.c</FilePath>
             </File>
           </Files>
         </Group>

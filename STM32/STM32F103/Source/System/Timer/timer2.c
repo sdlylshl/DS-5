@@ -92,16 +92,5 @@ void TIM2_ISR(void){
 			timer_curtain_stop++;
 		}
 
-		if (time2 > 500) {
-			LED2( ON);
-		}
-		if (time2 > 1000) {
-
-			LED2( OFF);
-			time2 = 0;
-
-		}
-
-
 }
 

@@ -3,7 +3,7 @@
 #include "config.h"
 char *str = "\r\n This is a USART1_printf demo \r\n";
 extern void nrf_main0(void);
-//extern void nrf_main(void);
+extern void nrf_main(void);
 
 int main() {
 //	uint8_t i;
@@ -27,7 +27,7 @@ int main() {
 	//开总中断
 	__set_PRIMASK(0);
 
-	nrf_main();
+	nrf_main0();
 //		NRF_device_main();
 //NRF_master_main();
 

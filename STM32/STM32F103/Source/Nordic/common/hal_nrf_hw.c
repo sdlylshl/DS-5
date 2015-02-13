@@ -25,10 +25,11 @@
 
 // Global variables
 //uint8_t payload[RX_PLOAD_WIDTH];
-uint8_t NRF__RX_BUF[NRF_PLOAD_WIDTH] = {4,3,2,1}; //接收数据缓存
-uint8_t NRF__TX_BUF[NRF_PLOAD_WIDTH] = { 0x18, 0x65, 2, 3 }; //发射数据缓存
+uint8_t NRF__RX_BUF[NRF_PLOAD_WIDTH] = {0,0,0,0,0}; //接收数据缓存
+uint8_t NRF__TX_BUF[NRF_PLOAD_WIDTH] = { 5,4,3,2,1}; //发射数据缓存
 //uint8_t NRF__DTX_BUF[TX_PLOAD_WIDTH] = { 0x11, 0x65, 2, 3 }; //发射数据缓存
-uint8_t NRF_CHIPID[NRF_ADDRESS_WIDTH] = { 0, 0, 0, 0, 1 };
+uint8_t NRF_CHIPID[NRF_ADDRESS_WIDTH] = {5,4,3,2,1};
+
 //1.配置地址 0xe7
 //发送成功后配置地址为 ID
 //上传成功 OK

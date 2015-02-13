@@ -225,19 +225,17 @@ void nrf_device_rx_mode(void) {
 //	uint8_t state;
 	nrf_chip.CE_LOW();
 	nrf_spi_writereg(NRF_W_REGISTER + NRF_CONFIG, 0x0f); //配置基本工作模式的参数;PWR_UP,EN_CRC,16BIT_CRC,发射模式,开启所有中断
-	nrf_spi_writereg(NRF_W_REGISTER + NRF_RF_CH, 0x46);
+	nrf_spi_writereg(NRF_W_REGISTER + NRF_RF_CH, 70);
 
-	nrf_spi_writebuf(NRF_W_REGISTER + NRF_RX_ADDR_P0, NRF_DEVICE_RECV_ADDRESS,
-	NRF_ADDRESS_WIDTH);
-	nrf_spi_writebuf(NRF_W_REGISTER + NRF_TX_ADDR, NRF_DEVICE_RECV_ADDRESS,
-	NRF_ADDRESS_WIDTH);
+	nrf_spi_writebuf(NRF_W_REGISTER + NRF_RX_ADDR_P0, NRF_DEVICE_RECV_ADDRESS,	NRF_ADDRESS_WIDTH);
+	nrf_spi_writebuf(NRF_W_REGISTER + NRF_TX_ADDR, NRF_DEVICE_RECV_ADDRESS,	NRF_ADDRESS_WIDTH);
 
 	nrf_chip.CE_HIGH();
 }
 void nrf_device_tx_mode(void) {
 	nrf_chip.CE_LOW();
 	nrf_spi_writereg(NRF_W_REGISTER + NRF_CONFIG, 0x0e); //配置基本工作模式的参数;PWR_UP,EN_CRC,16BIT_CRC,发射模式,开启所有中断
-	nrf_spi_writereg(NRF_W_REGISTER + NRF_RF_CH, 0x28);
+	nrf_spi_writereg(NRF_W_REGISTER + NRF_RF_CH, 40);
 
 	nrf_spi_writebuf(NRF_W_REGISTER + NRF_RX_ADDR_P0, NRF_DEVICE_SEND_ADDRESS,
 	NRF_ADDRESS_WIDTH);

@@ -35,6 +35,6 @@ void SYSTEM_Initialize(void)
     PIN_MANAGER_Initialize();
     TMR0_Initialize();
     SPI_INIT();
-    INTERRUPT_PeripheralInterruptEnable();
-    //INTERRUPT_GlobalInterruptEnable();
+//    INTERRUPT_PeripheralInterruptEnable();
+//    INTERRUPT_GlobalInterruptEnable();
 }

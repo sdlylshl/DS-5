@@ -92,12 +92,13 @@ extern void NRF_COMN_CONFIG(void);
 
 void nrf_main0() {
 	/*检测NRF模块与MCU的连接*/
+    PORTCbits.RC0 = 1;
     PORTCbits.RC4 = 1;
 	status = NRF_Check();
 	if (status == true){
 		printf("\r\n       nrf2401 connect ok !	\r\n");
 	//		 printf("\r\n      NRF与MCU连接成功\r\n");
-               PORTCbits.RC4 = !PORTCbits.RC4;
+               PORTCbits.RC0 = 0;//!PORTCbits.RC0;
         }
 	else
 		printf("\r\n       nrf2401 connect erro ! \r\n");

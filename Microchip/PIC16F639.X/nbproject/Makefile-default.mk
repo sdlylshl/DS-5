@@ -45,17 +45,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=Source/System/tmr0.c Source/System/mcc.c Source/System/pin_manager.c Source/System/interrupt_manager.c Source/System/spi.c Source/main.c Source/Nordic/Application/SPI_NRF.c Source/Nordic/Application/NRF2401_main.c
+SOURCEFILES_QUOTED_IF_SPACED=Source/Nordic/Application/SPI_NRF.c Source/Nordic/Application/NRF2401_main.c Source/System/tmr0.c Source/System/mcc.c Source/System/pin_manager.c Source/System/interrupt_manager.c Source/System/spi.c Source/main.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Source/System/tmr0.p1 ${OBJECTDIR}/Source/System/mcc.p1 ${OBJECTDIR}/Source/System/pin_manager.p1 ${OBJECTDIR}/Source/System/interrupt_manager.p1 ${OBJECTDIR}/Source/System/spi.p1 ${OBJECTDIR}/Source/main.p1 ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1 ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1
-POSSIBLE_DEPFILES=${OBJECTDIR}/Source/System/tmr0.p1.d ${OBJECTDIR}/Source/System/mcc.p1.d ${OBJECTDIR}/Source/System/pin_manager.p1.d ${OBJECTDIR}/Source/System/interrupt_manager.p1.d ${OBJECTDIR}/Source/System/spi.p1.d ${OBJECTDIR}/Source/main.p1.d ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1.d ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1 ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1 ${OBJECTDIR}/Source/System/tmr0.p1 ${OBJECTDIR}/Source/System/mcc.p1 ${OBJECTDIR}/Source/System/pin_manager.p1 ${OBJECTDIR}/Source/System/interrupt_manager.p1 ${OBJECTDIR}/Source/System/spi.p1 ${OBJECTDIR}/Source/main.p1
+POSSIBLE_DEPFILES=${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1.d ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1.d ${OBJECTDIR}/Source/System/tmr0.p1.d ${OBJECTDIR}/Source/System/mcc.p1.d ${OBJECTDIR}/Source/System/pin_manager.p1.d ${OBJECTDIR}/Source/System/interrupt_manager.p1.d ${OBJECTDIR}/Source/System/spi.p1.d ${OBJECTDIR}/Source/main.p1.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/Source/System/tmr0.p1 ${OBJECTDIR}/Source/System/mcc.p1 ${OBJECTDIR}/Source/System/pin_manager.p1 ${OBJECTDIR}/Source/System/interrupt_manager.p1 ${OBJECTDIR}/Source/System/spi.p1 ${OBJECTDIR}/Source/main.p1 ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1 ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1
+OBJECTFILES=${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1 ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1 ${OBJECTDIR}/Source/System/tmr0.p1 ${OBJECTDIR}/Source/System/mcc.p1 ${OBJECTDIR}/Source/System/pin_manager.p1 ${OBJECTDIR}/Source/System/interrupt_manager.p1 ${OBJECTDIR}/Source/System/spi.p1 ${OBJECTDIR}/Source/main.p1
 
 # Source Files
-SOURCEFILES=Source/System/tmr0.c Source/System/mcc.c Source/System/pin_manager.c Source/System/interrupt_manager.c Source/System/spi.c Source/main.c Source/Nordic/Application/SPI_NRF.c Source/Nordic/Application/NRF2401_main.c
+SOURCEFILES=Source/Nordic/Application/SPI_NRF.c Source/Nordic/Application/NRF2401_main.c Source/System/tmr0.c Source/System/mcc.c Source/System/pin_manager.c Source/System/interrupt_manager.c Source/System/spi.c Source/main.c
 
 
 CFLAGS=
@@ -81,6 +81,22 @@ MP_PROCESSOR_OPTION=16F639
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
+${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1: Source/Nordic/Application/SPI_NRF.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/Source/Nordic/Application" 
+	@${RM} ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1.d 
+	@${RM} ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,+osccal,-resetbits,-download,-stackcall,+clib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1  Source/Nordic/Application/SPI_NRF.c 
+	@-${MV} ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.d ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1: Source/Nordic/Application/NRF2401_main.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/Source/Nordic/Application" 
+	@${RM} ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1.d 
+	@${RM} ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,+osccal,-resetbits,-download,-stackcall,+clib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1  Source/Nordic/Application/NRF2401_main.c 
+	@-${MV} ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.d ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
 ${OBJECTDIR}/Source/System/tmr0.p1: Source/System/tmr0.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/Source/System" 
 	@${RM} ${OBJECTDIR}/Source/System/tmr0.p1.d 
@@ -129,11 +145,12 @@ ${OBJECTDIR}/Source/main.p1: Source/main.c  nbproject/Makefile-${CND_CONF}.mk
 	@-${MV} ${OBJECTDIR}/Source/main.d ${OBJECTDIR}/Source/main.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/Source/main.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
+else
 ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1: Source/Nordic/Application/SPI_NRF.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/Source/Nordic/Application" 
 	@${RM} ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1.d 
 	@${RM} ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,+osccal,-resetbits,-download,-stackcall,+clib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1  Source/Nordic/Application/SPI_NRF.c 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,+osccal,-resetbits,-download,-stackcall,+clib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1  Source/Nordic/Application/SPI_NRF.c 
 	@-${MV} ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.d ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
@@ -141,11 +158,10 @@ ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1: Source/Nordic/Applicatio
 	@${MKDIR} "${OBJECTDIR}/Source/Nordic/Application" 
 	@${RM} ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1.d 
 	@${RM} ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  -D__DEBUG=1 --debugger=pickit3  --double=24 --float=24 --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,+osccal,-resetbits,-download,-stackcall,+clib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1  Source/Nordic/Application/NRF2401_main.c 
+	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,+osccal,-resetbits,-download,-stackcall,+clib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1  Source/Nordic/Application/NRF2401_main.c 
 	@-${MV} ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.d ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-else
 ${OBJECTDIR}/Source/System/tmr0.p1: Source/System/tmr0.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/Source/System" 
 	@${RM} ${OBJECTDIR}/Source/System/tmr0.p1.d 
@@ -193,22 +209,6 @@ ${OBJECTDIR}/Source/main.p1: Source/main.c  nbproject/Makefile-${CND_CONF}.mk
 	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,+osccal,-resetbits,-download,-stackcall,+clib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/Source/main.p1  Source/main.c 
 	@-${MV} ${OBJECTDIR}/Source/main.d ${OBJECTDIR}/Source/main.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/Source/main.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1: Source/Nordic/Application/SPI_NRF.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/Source/Nordic/Application" 
-	@${RM} ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1.d 
-	@${RM} ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,+osccal,-resetbits,-download,-stackcall,+clib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1  Source/Nordic/Application/SPI_NRF.c 
-	@-${MV} ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.d ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Source/Nordic/Application/SPI_NRF.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1: Source/Nordic/Application/NRF2401_main.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/Source/Nordic/Application" 
-	@${RM} ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1.d 
-	@${RM} ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1 
-	${MP_CC} --pass1 $(MP_EXTRA_CC_PRE) --chip=$(MP_PROCESSOR_OPTION) -Q -G  --double=24 --float=24 --opt=default,+asm,+asmfile,-speed,+space,-debug --addrqual=ignore --mode=free -P -N255 --warn=0 --asmlist --summary=default,-psect,-class,+mem,-hex,-file --output=default,-inhx032 --runtime=default,+clear,+init,-keep,-no_startup,+osccal,-resetbits,-download,-stackcall,+clib --output=-mcof,+elf:multilocs --stack=compiled:auto:auto "--errformat=%f:%l: error: (%n) %s" "--warnformat=%f:%l: warning: (%n) %s" "--msgformat=%f:%l: advisory: (%n) %s"    -o${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1  Source/Nordic/Application/NRF2401_main.c 
-	@-${MV} ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.d ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Source/Nordic/Application/NRF2401_main.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 endif
 

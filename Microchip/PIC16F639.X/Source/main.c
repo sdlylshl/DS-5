@@ -19,14 +19,19 @@
 //4 RA3(MCLR)      ---- MISO
 //3 RA4(OSC_CLKOUT) --- CLK
 //2 RA5(OSC_CLKIN)  ---MOSI
-
+//  RC0     LED0
+//  RC4     LED1
 extern void nrf_main0();
 int main(int argc, char** argv) {
     uint32_t time;
 
     SYSTEM_Initialize();
- nrf_main0();
-    
+    INTERRUPT_PeripheralInterruptEnable();
+    INTERRUPT_GlobalInterruptEnable();
+    while(1);
+    nrf_main0();
+
+
     while(1){
 
         if(TMR0_GetDistanceTime(time)>5000){
