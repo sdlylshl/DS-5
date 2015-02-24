@@ -54,6 +54,7 @@ uint8_t NRF_MASTER_SEND_ADDRESS[NRF_ADDRESS_WIDTH] =
 
 
 
+
 void nrfchip_num_init(_nrf_chip_t *nrf_chip, SPIx_t SPIx) {
 
 	assert_param(IS_SPI_ALL_PERIPH(SPIx));

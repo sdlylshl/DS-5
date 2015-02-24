@@ -18,12 +18,12 @@ uint8_t recv_write;
 uint8_t recv_read;
 
 typedef struct cmd {
-	uint8_t usable;
 	uint8_t len;
+	uint8_t usable;
 	uint8_t data[128];
-} cmd_t;
+}pfmbuffer_t;
 
-cmd_t datcmd_t[10];
+pfmbuffer_t datcmd_t[10];
 
 void PfmBuffer_Init(void) {
 	recv_write = 0;

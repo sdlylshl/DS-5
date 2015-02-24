@@ -13,7 +13,7 @@
 #include "NRF2401.h"
 //usart1
 //#include "./System/System_config.h"
-
+#include "../common/hal_nrf_hw.h"
 uint8_t status; //用于判断接收/发送状态
 
 int i = 0;

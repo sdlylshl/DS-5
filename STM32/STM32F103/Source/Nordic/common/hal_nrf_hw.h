@@ -153,9 +153,8 @@ extern _nrf_chip_t nrf_chip;
   CE_LOW();  \
   } while(false)
 
-#endif // __HAL_NRF_HW_H_typedef enum {
+
+typedef enum {
 	SPI, SPI_1, SPI_2, SPI_3
 } SPIx_t;
-void nrfchip_num_init(_nrf_chip_t *nrf_chip, SPIx_t SPIx);
-
-/** @} */
+#endif // __HAL_NRF_HW_H_

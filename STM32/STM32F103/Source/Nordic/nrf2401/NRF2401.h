@@ -3,7 +3,7 @@
 #ifndef __SPI_NRF_H
 #define __SPI_NRF_H
 
-#include "version.h"
+#include "../common/hal_nrf_hw.h"
 
 
 #define MAX_RT      0x10 //达到最大重发次数中断标志位

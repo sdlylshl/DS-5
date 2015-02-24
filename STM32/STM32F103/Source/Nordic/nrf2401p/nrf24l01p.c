@@ -167,7 +167,8 @@ uint8_t nrf_chip_tx_data(_nrf_chip_t *nrf_chip, const uint8_t *addr,
 void nrf_master(void) {
 	uint32_t nrf_time = 10;
 	uint8_t i;
-	chipid.id = (*(uint32_t *)NRF__RX_BUF);
+	Item_t uitem;
+	//chipid.id = (*(uint32_t *)NRF__RX_BUF);
 //主机专用寄存器配置
 //    send
 //    NRF_CONFIG     :0x0e
@@ -205,9 +206,12 @@ void nrf_master(void) {
 #if 0
 	while (1) {
 		//小端模式
-//		1.接收到数据
-		if (1||(nrf_chip_recv.flag) & RX_DR) {
 
+//		1.接收到数据,这里必须保证循环时间大于中断时间，否则需要采用循环数组
+		if ((nrf_chip_recv.flag) & RX_DR) {
+			nrf_chip_recv.flag = 0;
+//			2.送入接收队列
+			uitem.id = (*(uint32_t *)NRF__RX_BUF);
 			if(NULL == EnQueue(&queue_recv,chipid.id)){
 				//失败
 

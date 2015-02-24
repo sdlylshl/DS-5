@@ -60,7 +60,7 @@ Node_t * GetQueueHead( Queue_t *const pqueue,Item_t *pitem)
 {
     if(IsEmpty(pqueue)!=1&&pitem!=NULL)
     {
-        *pitem = pqueue->head->id;
+        pitem = pqueue->head->pdata;
     }
     return pqueue->head;
 }
@@ -71,7 +71,7 @@ Node_t * GetQueueTail( Queue_t *const pqueue,Item_t *pitem)
 {
     if(IsEmpty(pqueue)!=1&&pitem!=NULL)
     {
-        *pitem = pqueue->tail->id;
+        pitem = pqueue->tail->pdata;
     }
     return pqueue->tail;
 }
@@ -96,12 +96,12 @@ Node_t * InsertQueue(Queue_t *pqueue,Node_t *pnode)
 }
 
 /*将新元素入队*/
-Node_t * EnQueue(Queue_t *pqueue,Item_t item)
+Node_t * EnQueue(Queue_t *pqueue,Item_t *pitem)
 {
 	Node_t * pnode = (Node_t *)malloc(sizeof(Node_t));
     if(pnode != NULL)
     {
-        pnode->id = item;
+        pnode->pdata = pitem;
         pnode->next = NULL;
 
         if(IsEmpty(pqueue))
@@ -125,7 +125,7 @@ Node_t * DeQueue(Queue_t *pqueue,Item_t *pitem)
     if(IsEmpty(pqueue)!=1&&pnode!=NULL)
     {
         if(pitem!=NULL)
-            *pitem = pnode->id;
+            pitem = pnode->pdata;
         pqueue->size--;
         pqueue->head = pnode->next;
         free(pnode);
@@ -142,7 +142,7 @@ void QueueTraverse(Queue_t *pqueue,void (*operate)())
     int i = pqueue->size;
     while(i--)
     {
-    	operate(pnode->id);
+    	operate(pnode->pdata);
         pnode = pnode->next;
     }
 
@@ -161,7 +161,7 @@ void queue_main()
     printf("0-9依次入队并输出如下：\n");
     for(i=0;i<10;i++)
     {
-        EnQueue(pq,its);
+        EnQueue(pq,&its);
         GetQueueTail(pq,&its);
         printf("%d ",its);
     }

@@ -2,7 +2,7 @@
  ============================================================================
  Name        : BipBuffer.c
  Author      : elines
- Version     :
+ Version     :高效的两段式循环缓冲区
  Copyright   : Your copyright notice
  Description : Hello World in C, Ansi-style
  ============================================================================
@@ -18,13 +18,13 @@
 
 BipBufferInfo_t *pBipBufferInfo = NULL;
 /*
- *������ƣ�init_bipbuffer_struct
- *�����ܣ���ʼ���ṹ
- *����˵����data_len ��ֵ
- *�� �� ֵ��void
+ *函数名称：init_bipbuffer_struct
+ *函数功能：初始化结构
+ *参数说明：data_len 传值
+ *返 回 值：void
  */
 static void init_bipbuffer_struct(unsigned long buf_len) {
-	//��ʼ���ṹ
+	//初始化结构
 	pBipBufferInfo->size_a = 0;
 	pBipBufferInfo->size_b = 0;
 	pBipBufferInfo->offset_a = 0;
@@ -35,21 +35,20 @@ static void init_bipbuffer_struct(unsigned long buf_len) {
 }
 
 /*
- *������ƣ�init_bipbuffer
- *�����ܣ������Ч����ʽѭ��������
- *����˵����data_len Ҫ���仺����Ĵ�С��һ������ҳΪ��λ
- *�� �� ֵ���ɹ�����0��ʧ�ܷ��ظ���
+ *函数名称：init_bipbuffer
+ *函数功能：分配高效两段式循环缓冲区
+ *参数说明：data_len 要分配缓冲区的大小，一般是以页为单位
+ *返 回 值：成功返回0，失败返回负数
  */
 extern BipBufferInfo_t bipBufferInfo;
 extern char buffers[];
 int init_bipbuffer(unsigned long buf_len) {
 	//pBipBufferInfo = (BipBufferInfo_t *)malloc(sizeof(BipBufferInfo_t));
 	pBipBufferInfo = &bipBufferInfo;
-	if (pBipBufferInfo == NULL
-	)
+	if (pBipBufferInfo == NULL)
 		return -1;
 
-	//���仺�����С
+	//分配缓冲区大小
 	//pBipBufferInfo->bipbuffer_addr = (char*)malloc(buf_len);
 	pBipBufferInfo->bipbuffer_addr = (char*) buffers;
 
@@ -65,10 +64,10 @@ int init_bipbuffer(unsigned long buf_len) {
 }
 
 /*
- *������ƣ�destroy_bipbuffer
- *�����ܣ��ͷŻ�����
- *����˵����void
- *�� �� ֵ���ɹ�����0
+ *函数名称：destroy_bipbuffer
+ *函数功能：释放缓冲区
+ *参数说明：void
+ *返 回 值：成功返回0
  */
 int destroy_bipbuffer(void) {
 	if (pBipBufferInfo->bipbuffer_addr) {
@@ -85,10 +84,10 @@ int destroy_bipbuffer(void) {
 }
 
 /*
- *������ƣ�get_space_after_a
- *�����ܣ�����ڴ��A����л�����Ĵ�С
- *����˵����void
- *�� �� ֵ�����л�����Ĵ�С
+ *函数名称：get_space_after_a
+ *函数功能：获得内存块A后空闲缓冲区的大小
+ *参数说明：void
+ *返 回 值：空闲缓冲区的大小
  */
 static unsigned long get_space_after_a(void) {
 	return pBipBufferInfo->buffer_len - pBipBufferInfo->offset_a
@@ -96,10 +95,10 @@ static unsigned long get_space_after_a(void) {
 }
 
 /*
- *������ƣ�get_b_free_space
- *�����ܣ�����ڴ��B���л�����Ĵ�С
- *����˵����void
- *�� �� ֵ�����л�����Ĵ�С
+ *函数名称：get_b_free_space
+ *函数功能：获得内存块B空闲缓冲区的大小
+ *参数说明：void
+ *返 回 值：空闲缓冲区的大小
  */
 static unsigned long get_b_free_space(void) {
 	return pBipBufferInfo->offset_a - pBipBufferInfo->offset_b
@@ -107,10 +106,10 @@ static unsigned long get_b_free_space(void) {
 }
 
 /*
- *������ƣ�get_reserve_addr
- *�����ܣ���ÿ��л�����ĵ�ַ
- *����˵����want_size����Ҫ�Ĵ�С��actually_sizeʵ���ܸ���Ĵ�С
- *�� �� ֵ���п��пռ䷵�ص�ַ��û���򷵻�NULL
+ *函数名称：get_reserve_addr
+ *函数功能：获得空闲缓冲区的地址
+ *参数说明：want_size：需要的大小，actually_size实际能给出的大小
+ *返 回 值：有空闲空间返回地址，没有则返回NULL
  */
 static char *get_reserve_addr(unsigned long want_size,
 		unsigned long *actually_size) {
@@ -124,7 +123,7 @@ static char *get_reserve_addr(unsigned long want_size,
 		if (free_space_size == 0)
 			return NULL;
 
-		//����Ŀռ������Ҫ�Ŀռ䣬˵���ж���Ŀռ�
+		//多余的空间大于需要的空间，说明有多余的空间
 		if (want_size < free_space_size)
 			free_space_size = want_size;
 
@@ -139,16 +138,16 @@ static char *get_reserve_addr(unsigned long want_size,
 		 and allocate the bigger one.
 		 */
 		/*
-		 ����ڴ��B�����ڣ������пռ��Ƿ���ڴ��A�󣬷�������
+		 如果内存块B不存在，检查空闲空间是否比内存块A大，分配最大的
 		 */
 		free_space_size = get_space_after_a();
 		printf("\nfree space:%ld", free_space_size);
-		if (free_space_size >= pBipBufferInfo->offset_a) //�ڴ��A���и��Ŀռ�
+		if (free_space_size >= pBipBufferInfo->offset_a)    //内存块A后有更大的空间
 				{
 			if (free_space_size == 0)
 				return NULL;
 
-			//�����Ҫ����Ŀռ�С�ڿ��еĿռ�
+			//如果需要分配的空间小于空闲的空间
 			if (want_size < free_space_size)
 				free_space_size = want_size;
 
@@ -158,7 +157,7 @@ static char *get_reserve_addr(unsigned long want_size,
 					+ pBipBufferInfo->size_a;
 			return pBipBufferInfo->bipbuffer_addr
 					+ pBipBufferInfo->offset_reserve;
-		} else //���пռ䲻��
+		} else    //空闲空间不够
 		{
 			if (pBipBufferInfo->offset_a == 0)
 				return NULL;
@@ -177,10 +176,10 @@ static char *get_reserve_addr(unsigned long want_size,
 }
 
 /*
- *������ƣ�commit_data
- *�����ܣ����д����޸Ļ������ָ��
- *����˵����use_size����С
- *�� �� ֵ��void
+ *函数名称：commit_data
+ *函数功能：数据写入后，修改缓冲区的指针
+ *参数说明：use_size：大小
+ *返 回 值：void
  */
 static void commit_data(unsigned long use_size) {
 	if (use_size == 0) {
@@ -217,10 +216,10 @@ static void commit_data(unsigned long use_size) {
 }
 
 /*
- *������ƣ�get_contiguous_block
- *�����ܣ���ÿɶ������
- *����˵����data_len����С
- *�� �� ֵ�����ؿɶ����׵�ַ
+ *函数名称：get_contiguous_block
+ *函数功能：获得可读的数据
+ *参数说明：data_len：大小
+ *返 回 值：返回可读的首地址
  */
 static char *get_contiguous_block(unsigned long *data_len) {
 	if (pBipBufferInfo->size_a == 0) {
@@ -233,10 +232,10 @@ static char *get_contiguous_block(unsigned long *data_len) {
 }
 
 /*
- *������ƣ�commit_block
- *�����ܣ���ݶ������޸Ļ������ָ��
- *����˵����use_size����С
- *�� �� ֵ��void
+ *函数名称：commit_block
+ *函数功能：数据读出后，修改缓冲区的指针
+ *参数说明：use_size：大小
+ *返 回 值：void
  */
 static void commit_block(unsigned long use_size) {
 	if (use_size >= pBipBufferInfo->size_a) {
@@ -251,40 +250,40 @@ static void commit_block(unsigned long use_size) {
 }
 
 /*
- *������ƣ�get_committed_size
- *�����ܣ���ÿ�A�Ϳ�B���ܴ�С
- *����˵����void
- *�� �� ֵ����С
+ *函数名称：get_committed_size
+ *函数功能：获得块A和块B的总大小
+ *参数说明：void
+ *返 回 值：大小
  */
 unsigned long get_committed_size(void) {
 	return pBipBufferInfo->size_a + pBipBufferInfo->size_b;
 }
 
 /*
- *������ƣ�get_reservation_size
- *�����ܣ���ô洢�Ĵ�С
- *����˵����void
- *�� �� ֵ����С
+ *函数名称：get_reservation_size
+ *函数功能：获得存储的大小
+ *参数说明：void
+ *返 回 值：大小
  */
 unsigned long get_reservation_size(void) {
 	return pBipBufferInfo->size_reserve;
 }
 
 /*
- *������ƣ�get_buffer_size
- *�����ܣ�������������Ĵ�С
- *����˵����void
- *�� �� ֵ����С
+ *函数名称：get_buffer_size
+ *函数功能：获得整个缓冲区的大小
+ *参数说明：void
+ *返 回 值：大小
  */
 unsigned long get_buffer_size(void) {
 	return pBipBufferInfo->buffer_len;
 }
 
 /*
- *������ƣ�write_data_to_bipbuffer
- *������: �򻺳���д�����
- *����˵����buff:Ҫд�����ݣ�data_len:Ҫд��Ĵ�С
- *�� �� ֵ��ʵ��д��Ĵ�С
+ *函数名称：write_data_to_bipbuffer
+ *函数功能: 向缓冲区写入数据
+ *参数说明：buff:要写入的数据，data_len:要写入的大小
+ *返 回 值：实际写入的大小
  */
 unsigned long write_data_to_bipbuffer(char *buff, unsigned long data_len) {
 	char *data = NULL;
@@ -301,10 +300,10 @@ unsigned long write_data_to_bipbuffer(char *buff, unsigned long data_len) {
 }
 
 /*
- *������ƣ�read_data_from_bipbuffer
- *������: �ӻ�����������
- *����˵����buff:Ҫ��������ݣ�data_len:ҪҪ�����Ĵ�С
- *�� �� ֵ��ʵ�ʶ����Ĵ�С
+ *函数名称：read_data_from_bipbuffer
+ *函数功能: 从缓冲区读出数据
+ *参数说明：buff:要读出的数据，data_len:要要读出的大小
+ *返 回 值：实际读出的大小
  */
 unsigned long read_data_from_bipbuffer(char *buff, unsigned long data_len) {
 	char *data = NULL;
