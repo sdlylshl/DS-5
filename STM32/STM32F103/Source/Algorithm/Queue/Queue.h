@@ -18,8 +18,10 @@ typedef struct _data{
 	unsigned char checksum;
 	unsigned int id;
 }Item_t;
+
+//定义单链表节点
 //typedef struct node * PNode;
-//定义节点数据
+
 //队列节点包含队列指针 和 数据成员
 typedef struct __node
 {

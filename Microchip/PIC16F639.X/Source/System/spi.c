@@ -41,13 +41,20 @@ void SPI_INIT( void )
 //  RA2外部中断配置
     OPTION_REGbits.INTEDG =0;   //RA2下降沿触发中断
     INTCONbits.INTE = 1;    //启用RA2为中断
+//    TRISAbits.TRISA0 =0;    //CE
+//    TRISAbits.TRISA1 =0;    //CS
+//    TRISAbits.TRISA2 =1;    //IRQ
+//    TRISAbits.TRISA3 =1;    //MISO
+//    TRISAbits.TRISA4 =0;    //CLK
+//    TRISAbits.TRISA5 =0;    //MOSI
 
     TRISAbits.TRISA0 =0;    //CE
     TRISAbits.TRISA1 =0;    //CS
-    TRISAbits.TRISA2 =1;    //IRQ
-    TRISAbits.TRISA3 =1;    //MISO
-    TRISAbits.TRISA4 =0;    //CLK
-    TRISAbits.TRISA5 =0;    //MOSI
+    TRISAbits.TRISA4 =1;    //IRQ
+
+    TRISCbits.TRISC0 =0;    //CLK
+    TRISCbits.TRISC4 =0;    //MOSI
+    TRISCbits.TRISC5 =1;    //MISO
 //测试
 //SPI_MOSI_LOW();		//MOSI put 0
 //SPI_CLK_LOW();		//CLK put 0

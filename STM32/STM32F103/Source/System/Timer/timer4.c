@@ -18,7 +18,7 @@ void TIM4_Init(void) {
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
 	TIM_DeInit(TIM4);
-	TIM4_NVIC_Configuration();
+//	TIM4_NVIC_Configuration();
 	TIM_TimeBaseStructure.TIM_Period = 1000;
 	/* 累计 TIM_Period个频率后产生一个更新或者中断 */
 	TIM_TimeBaseStructure.TIM_Prescaler = (SystemCoreClock / 1000000 - 1); //(72 - 1);

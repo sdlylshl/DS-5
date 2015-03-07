@@ -10,18 +10,24 @@ int main() {
 	uint32_t Time = 0;
 	//RCC_Config();
 	NVIC_Config();
-	//DMA_Config();
-	USART1_Init();
-//	USART3_Init();
+	LED_GPIO_Config();
 	TIM2_Start();	//通用定时器
 	TIM4_Start(); //用来做网络延时计时使用
+	//DMA_Config();
+	USART1_Init();
+	DAC_Config();
 
+
+//	USART3_Init();
+
+
+	wavplay();
+	while(1);
 	//nrf
 	SPI1_Init();
 	//SPI2_Init();
 	SPI_INIT();
 	PS2_Init();
-	LED_GPIO_Config();
 	//SPI_Flash_Init();
 	//testFlash();
 	//开总中断

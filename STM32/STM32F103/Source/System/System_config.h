@@ -34,7 +34,7 @@
 #include ".\Timer\timer2.h"
 #include ".\Timer\timer3.h"
 #include ".\Timer\timer4.h"
-
+#include ".\DAC\DAC.h"
 #include ".\RTC\rtc.h"
 
 #include ".\CAN\can1.h"

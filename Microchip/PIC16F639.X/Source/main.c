@@ -21,6 +21,24 @@
 //2 RA5(OSC_CLKIN)  ---MOSI
 //  RC0     LED0
 //  RC4     LED1
+
+
+// RA0/ICSPDAT     CE
+// RA1/ICSPCLK     CSN
+// RC0             SCK
+// RA4             MOSI
+// RC5             MISO
+// RC4             IRQ
+// RA5             LED
+//最终方案：
+// RA0/ICSPDAT     CE
+// RA1/ICSPCLK     CSN
+// RA4             IRQ
+// RA5             LED
+
+// RC0             SCK
+// RC5             MISO
+// RC4             MOSI
 extern void nrf_main0();
 int main(int argc, char** argv) {
     uint32_t time;

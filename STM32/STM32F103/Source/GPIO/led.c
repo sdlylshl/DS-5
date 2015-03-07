@@ -55,7 +55,7 @@ void LED_GPIO_Config(void) {
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; //开漏输出   
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
 	GPIO_Init(LED2_PORT, &GPIO_InitStructure);
-	//LED2(1);
+	LED2(0);
 #endif
 #if LED3_USE	
 	GPIO_InitStructure.GPIO_Pin = LED3_PIN;
