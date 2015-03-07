@@ -107,7 +107,7 @@ uint8_t WAV_Init(uint8_t* pbuf) //初始化并显示文件信息	注: 仅适用�
 	printf("wavlen:   %d\n", wavinfo.wavhead.wavlen);
 	printf("DATAlen:  %d\n", wavinfo.wavhead.DATAlen);
 	printf("声道Channels: %d\n", wavinfo.wavhead.Channels);
-	printf("采样字节数 BlockAlign: %d\n", wavinfo.wavhead.BlockAlign);
+	printf("BlockAlign: %d\n", wavinfo.wavhead.BlockAlign);
 	printf("采样位数BitsPerSample: %d\n", wavinfo.wavhead.BitsPerSample);
 	printf("采样频率SamplesPerSec: %d\n", wavinfo.wavhead.SamplesPerSec);
 	printf("比特率AvgBytesPerSec: %dkps\n",
@@ -120,7 +120,7 @@ typedef struct TS {
 	uint8_t Prescaler;
 } TIME_SET_t;
 TIME_SET_t timeseting;
-
+uint32_t pos;
 uint8_t volume = 100; //音量
 uint8_t wav_buf[1024];
 uint32_t DApc;
@@ -161,14 +161,15 @@ void wavplay() {
 	default:
 		return;
 	}
-
+	TIM_SetCounter(TIM2, 0);
 	TIM_SetAutoreload(TIM2, timeseting.Period);
-	TIM_PrescalerConfig(TIM2, timeseting.Prescaler, TIM_PSCReloadMode_Update);
+	TIM_PrescalerConfig(TIM2, timeseting.Prescaler, TIM_PSCReloadMode_Immediate);
 	
 		music+=0x2c;
 		for (j = 0; j < 512; j++) {
 			wav_buf[j] = *(music++);
 		}
+		DApc =0;
 	__set_PRIMASK(0);
 	times = (wavinfo.wavhead.DATAlen >> 10) - 1;
 //	music = (uint8_t *)dear;
@@ -185,13 +186,13 @@ void wavplay() {
 			wav_buf[j] = *(music++);
 		}
 	}
-		DAC_SetChannel1Data(DAC_Align_8b_R, 0);
-	DAC_SoftwareTriggerCmd(DAC_Channel_1, ENABLE);
-	__set_PRIMASK(1);
+	
+	
 	printf("play end ");
-
+__set_PRIMASK(1);
 }
 uint8_t nu = 0;
+
 void TIMx_IRQHandle() {
 	
 	uint16_t DACL_Value, DACR_Value;
@@ -212,14 +213,13 @@ void TIMx_IRQHandle() {
 			DACR_Value = DACL_Value;
 		} else {	//立体声
 
-			DACL_Value = (((u8) (wav_buf[DApc + 1] - 0x80) << 4)
-					| (wav_buf[DApc] >> 4)) * 10 / volume;
+			DACL_Value = (((uint8_t) (wav_buf[DApc + 1] - 0x80) << 4)	| (wav_buf[DApc] >> 4))* volume / 100;
 			DApc+=2;
-			DACR_Value = (((u8) (wav_buf[DApc + 1] - 0x80) << 4)
-					| (wav_buf[DApc] >> 4)) * 10 / volume;
+			DACR_Value = (((uint8_t) (wav_buf[DApc + 1] - 0x80) << 4)	| (wav_buf[DApc] >> 4))* volume / 100;
 			DApc+=2;
 		}
 	}
+
 	DAC_SetChannel1Data(DAC_Align_12b_R, DACL_Value);
 	DAC_SoftwareTriggerCmd(DAC_Channel_1, ENABLE);
 	if (0) {
@@ -230,7 +230,7 @@ void TIMx_IRQHandle() {
 	if (DApc == 512)
 		DACdone = 1;
 	if (DApc == 1024) {
-		printf("%d \n",((nu++)*100)/((wavinfo.wavhead.DATAlen >> 10)));
+//		printf("%d \n",((nu++)*100)/((wavinfo.wavhead.DATAlen >> 10)));
 		DApc = 0;
 		DACdone = 1;
 	}
