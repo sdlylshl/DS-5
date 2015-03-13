@@ -1,0 +1,242 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{6eeb2714-715f-4965-9db0-1ea3116ef3ea}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{5a251260-dc5c-4841-a859-c0309d3ce1a1}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="项目说明">
+      <UniqueIdentifier>{7a2ef9c8-715a-48da-915b-8f9894da2b84}</UniqueIdentifier>
+      <Extensions>txt</Extensions>
+    </Filter>
+    <Filter Include="源文件\Main">
+      <UniqueIdentifier>{dde9e9a4-fde3-479f-97db-082d99e3fc74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\W5500">
+      <UniqueIdentifier>{6f790cb8-c920-4f5c-a37c-f9f053295bd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\System">
+      <UniqueIdentifier>{681cd0de-592b-48d0-b0a0-8a1795cf3d0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\LCD12864">
+      <UniqueIdentifier>{853554e3-5e12-492e-b542-8ce067f87cef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\GPIO">
+      <UniqueIdentifier>{15cd0810-79d6-4896-922d-eae0dfbfd7de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\PS2">
+      <UniqueIdentifier>{e1675aaa-a741-42e9-a02d-b1022e82fb91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Nordic">
+      <UniqueIdentifier>{ba5addc8-e9b0-4fbe-bb15-1d33b7ff612f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Algorithm">
+      <UniqueIdentifier>{39d0297c-c4bb-4fb2-ae83-b0f633a5f52b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Wavplay">
+      <UniqueIdentifier>{f64d1021-d419-47bb-b791-b643d4dfcfa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\::CMSIS">
+      <UniqueIdentifier>{f5942cc8-c538-4545-b770-d05b4a4ac94d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\::Device">
+      <UniqueIdentifier>{558999cf-d782-4a9c-8728-8c22ac1a30ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\fatFS">
+      <UniqueIdentifier>{e5845be1-29d6-48dc-a5fe-a5bff6ad67e5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Source\Main.c">
+      <Filter>源文件\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Retarget.c">
+      <Filter>源文件\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\stm32f10x_it.c">
+      <Filter>源文件\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\W5500\Application\Application.c">
+      <Filter>源文件\W5500</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\W5500\Application\loopback_client.c">
+      <Filter>源文件\W5500</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\W5500\Application\loopback_server.c">
+      <Filter>源文件\W5500</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\W5500\Ethernet\socket.c">
+      <Filter>源文件\W5500</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\W5500\Ethernet\wizchip_conf.c">
+      <Filter>源文件\W5500</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\W5500\Platform\gpio_w5500.c">
+      <Filter>源文件\W5500</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\W5500\Ethernet\W5500\w5500.c">
+      <Filter>源文件\W5500</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\DMA.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\NVIC.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\RCC.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\SID.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\CAN\can1.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\CRC\crc.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\Delay\delay.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\Delay\SysTick.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\Malloc\malloc.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\SPI\spi1.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\SPI\spi2.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\SPI\spi3.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\Timer\timer1.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\Timer\timer2.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\Timer\timer3.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\Timer\timer4.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\Usart\usart1.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\Usart\usart3.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\Usart\usart.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\flash\flash.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\flash\SST25_Flash.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\flash\W25X_flash.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\RTC\rtc.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\SPI\spi.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\DAC\DAC.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\LCD12864\LCD12864_gpio.c">
+      <Filter>源文件\LCD12864</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\GPIO\in.c">
+      <Filter>源文件\GPIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\GPIO\led.c">
+      <Filter>源文件\GPIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\GPIO\out.c">
+      <Filter>源文件\GPIO</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\PS2\ps2.c">
+      <Filter>源文件\PS2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\PS2\keyboard\keyboard.c">
+      <Filter>源文件\PS2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\PS2\mouse\mouse.c">
+      <Filter>源文件\PS2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Nordic\common\hal_nrf_hw.c">
+      <Filter>源文件\Nordic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Nordic\nrf2401\NRF2401.c">
+      <Filter>源文件\Nordic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Nordic\nrf2401\NRF2401_main.c">
+      <Filter>源文件\Nordic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Nordic\nrf2401p\hal_nrf2401p.c">
+      <Filter>源文件\Nordic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Nordic\nrf2401p\nrf24l01p.c">
+      <Filter>源文件\Nordic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Algorithm\Queue\Queue.c">
+      <Filter>源文件\Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Algorithm\PfmBuffer\pfmBuffer.c">
+      <Filter>源文件\Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\WavPlayer\wavpaly.c">
+      <Filter>源文件\Wavplay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\fatFs\src\diskio.c">
+      <Filter>源文件\fatFS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\fatFs\src\ff.c">
+      <Filter>源文件\fatFS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\fatFs\src\option\cc936.c">
+      <Filter>源文件\fatFS</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Source\LCD12864\LCD12864P\LCD12864P.C">
+      <Filter>源文件\LCD12864</Filter>
+    </None>
+    <None Include="..\Source\LCD12864\LCD12864P\LCD12864P_main.C">
+      <Filter>源文件\LCD12864</Filter>
+    </None>
+    <None Include="Readme.txt">
+      <Filter>项目说明</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\fatFs\src\diskio.h">
+      <Filter>源文件\fatFS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\fatFs\src\ff.h">
+      <Filter>源文件\fatFS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\fatFs\src\ffconf.h">
+      <Filter>源文件\fatFS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\fatFs\src\integer.h">
+      <Filter>源文件\fatFS</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

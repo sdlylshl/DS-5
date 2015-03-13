@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Cabinet|Win32">
+      <Configuration>Cabinet</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{630C639D-C434-4F17-AB2D-5D46AF7B2116}</ProjectGuid>
+    <Keyword>MakeFileProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Cabinet|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Cabinet|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Cabinet|Win32'">
+    <NMakeOutput>Cabinet.exe</NMakeOutput>
+    <NMakePreprocessorDefinitions>USE_STDPERIPH_DRIVER;STM32F10X_HD;__CC_ARM;__MICROLIB;_RTE_</NMakePreprocessorDefinitions>
+    <IncludePath>..\Source;../Libraries/CMSIS/CM3/CoreSupport;../Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x;../Libraries/STM32F10x_StdPeriph_Driver/inc;../RTE;../RTE/Device/STM32F103VE</IncludePath>
+    <NMakeBuildCommandLine>"D:\Program Files\keil\Keil_v5\UV4\UV4.exe " -b "$(ProjectDir)..\.Cabinet.uvprojx" -t "Cabinet" -j0</NMakeBuildCommandLine>
+    <NMakeIncludeSearchPath>"D:\Program Files\Keil\Keil_v5\ARM\ARMCC\include"</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="..\Source\LCD12864\LCD12864P\LCD12864P.C" />
+    <None Include="..\Source\LCD12864\LCD12864P\LCD12864P_main.C" />
+    <None Include="Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Source\fatFs\src\diskio.c" />
+    <ClCompile Include="..\Source\fatFs\src\ff.c" />
+    <ClCompile Include="..\Source\fatFs\src\option\cc936.c" />
+    <ClCompile Include="..\Source\Main.c" />
+    <ClCompile Include="..\Source\Retarget.c" />
+    <ClCompile Include="..\Source\stm32f10x_it.c" />
+    <ClCompile Include="..\Source\W5500\Application\Application.c" />
+    <ClCompile Include="..\Source\W5500\Application\loopback_client.c" />
+    <ClCompile Include="..\Source\W5500\Application\loopback_server.c" />
+    <ClCompile Include="..\Source\W5500\Ethernet\socket.c" />
+    <ClCompile Include="..\Source\W5500\Ethernet\wizchip_conf.c" />
+    <ClCompile Include="..\Source\W5500\Platform\gpio_w5500.c" />
+    <ClCompile Include="..\Source\W5500\Ethernet\W5500\w5500.c" />
+    <ClCompile Include="..\Source\System\DMA.c" />
+    <ClCompile Include="..\Source\System\NVIC.c" />
+    <ClCompile Include="..\Source\System\RCC.c" />
+    <ClCompile Include="..\Source\System\SID.c" />
+    <ClCompile Include="..\Source\System\CAN\can1.c" />
+    <ClCompile Include="..\Source\System\CRC\crc.c" />
+    <ClCompile Include="..\Source\System\Delay\delay.c" />
+    <ClCompile Include="..\Source\System\Delay\SysTick.c" />
+    <ClCompile Include="..\Source\System\Malloc\malloc.c" />
+    <ClCompile Include="..\Source\System\SPI\spi1.c" />
+    <ClCompile Include="..\Source\System\SPI\spi2.c" />
+    <ClCompile Include="..\Source\System\SPI\spi3.c" />
+    <ClCompile Include="..\Source\System\Timer\timer1.c" />
+    <ClCompile Include="..\Source\System\Timer\timer2.c" />
+    <ClCompile Include="..\Source\System\Timer\timer3.c" />
+    <ClCompile Include="..\Source\System\Timer\timer4.c" />
+    <ClCompile Include="..\Source\System\Usart\usart1.c" />
+    <ClCompile Include="..\Source\System\Usart\usart3.c" />
+    <ClCompile Include="..\Source\System\Usart\usart.c" />
+    <ClCompile Include="..\Source\System\flash\flash.c" />
+    <ClCompile Include="..\Source\System\flash\SST25_Flash.c" />
+    <ClCompile Include="..\Source\System\flash\W25X_flash.c" />
+    <ClCompile Include="..\Source\System\RTC\rtc.c" />
+    <ClCompile Include="..\Source\System\SPI\spi.c" />
+    <ClCompile Include="..\Source\System\DAC\DAC.c" />
+    <ClCompile Include="..\Source\LCD12864\LCD12864_gpio.c" />
+    <ClCompile Include="..\Source\GPIO\in.c" />
+    <ClCompile Include="..\Source\GPIO\led.c" />
+    <ClCompile Include="..\Source\GPIO\out.c" />
+    <ClCompile Include="..\Source\PS2\ps2.c" />
+    <ClCompile Include="..\Source\PS2\keyboard\keyboard.c" />
+    <ClCompile Include="..\Source\PS2\mouse\mouse.c" />
+    <ClCompile Include="..\Source\Nordic\common\hal_nrf_hw.c" />
+    <ClCompile Include="..\Source\Nordic\nrf2401\NRF2401.c" />
+    <ClCompile Include="..\Source\Nordic\nrf2401\NRF2401_main.c" />
+    <ClCompile Include="..\Source\Nordic\nrf2401p\hal_nrf2401p.c" />
+    <ClCompile Include="..\Source\Nordic\nrf2401p\nrf24l01p.c" />
+    <ClCompile Include="..\Source\Algorithm\Queue\Queue.c" />
+    <ClCompile Include="..\Source\Algorithm\PfmBuffer\pfmBuffer.c" />
+    <ClCompile Include="..\Source\WavPlayer\wavpaly.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h" />
+    <ClInclude Include="..\Source\fatFs\src\diskio.h" />
+    <ClInclude Include="..\Source\fatFs\src\ff.h" />
+    <ClInclude Include="..\Source\fatFs\src\ffconf.h" />
+    <ClInclude Include="..\Source\fatFs\src\integer.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

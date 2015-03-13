@@ -25,6 +25,8 @@
 #include ".\SPI\spi2.h"
 #include ".\SPI\spi3.h"
 
+#include ".\flash\SST25_Flash.h"
+
 #include ".\Usart\usart.h"
 #include ".\Usart\usart1.h"
 //#include ".\Usart\usart2.h"

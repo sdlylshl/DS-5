@@ -50,7 +50,7 @@
           <OutputName>STM32F103</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
-          <CreateHexFile>0</CreateHexFile>
+          <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
           <ListingPath>.\</ListingPath>
@@ -707,6 +707,21 @@
               <FileName>wavpaly.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\WavPlayer\wavpaly.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>fatFs</GroupName>
+          <Files>
+            <File>
+              <FileName>ff.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\fatFs\src\ff.c</FilePath>
+            </File>
+            <File>
+              <FileName>diskio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\fatFs\src\diskio.c</FilePath>
             </File>
           </Files>
         </Group>

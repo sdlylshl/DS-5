@@ -6,9 +6,11 @@
  */
 #include "version.h"
 #include "stdio.h"
-#include "dear.h"
+//#include "ms.h"
+//#include "dear.h"
 #include "stm32f10x_dac.h"
 #include "stm32f10x_tim.h"
+uint8_t * dear="12345";
 #if Big-Endian
 // 大端模式
 const uint32_t DWWAV_RIFF = 0x52494646;
@@ -208,7 +210,9 @@ void TIMx_IRQHandle() {
 
 	} else if (wavinfo.wavhead.BitsPerSample == 16) {	//16位精度(先低位后高位)
 		if (wavinfo.wavhead.Channels == 1) {	//单声道
-			DACL_Value = (((uint8_t) (wav_buf[DApc + 1] - 0x80) << 4) | (wav_buf[DApc] >> 4))* volume / 100 ;
+			//DACL_Value = (((uint8_t) (wav_buf[DApc + 1] - 0x80) << 4) | (wav_buf[DApc] >> 4))* volume / 100 ;
+			
+			DACL_Value = (((uint8_t) (wav_buf[DApc + 1] -0x80)<<4) )* volume / 100 ;
 			DApc+=2;
 			DACR_Value = DACL_Value;
 		} else {	//立体声
@@ -219,7 +223,6 @@ void TIMx_IRQHandle() {
 			DApc+=2;
 		}
 	}
-
 	DAC_SetChannel1Data(DAC_Align_12b_R, DACL_Value);
 	DAC_SoftwareTriggerCmd(DAC_Channel_1, ENABLE);
 	if (0) {

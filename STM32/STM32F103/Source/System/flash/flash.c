@@ -5,9 +5,7 @@
 //extern void Delay_us(__IO uint32_t us);
 extern void Delay_ms(__IO uint32_t ms);
 
-// 1 已用的柜子的数量
-// 
-//extern uint8_t conf_boxes_num_used; //conf_data[0]
+
 uint32_t conf_data[100];
 
 

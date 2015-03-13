@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <assert.h>
 #include "config.h"
+#include "./System/System_config.h"
+
 char *str = "\r\n This is a USART1_printf demo \r\n";
 extern void nrf_main0(void);
 extern void nrf_main(void);
-
+extern void wavplay(void);
 int main() {
 //	uint8_t i;
 	uint32_t Time = 0;
@@ -21,18 +23,18 @@ int main() {
 //	USART3_Init();
 
 
-	wavplay();
-	while(1);
 	//nrf
 	SPI1_Init();
-	//SPI2_Init();
-	SPI_INIT();
+	SPI2_Init();
+	//SPI_INIT();
 	PS2_Init();
+	//SPI2
 	//SPI_Flash_Init();
-	//testFlash();
+
+	testFlash();
 	//开总中断
 	__set_PRIMASK(0);
-
+	wavplay();
 	nrf_main();
 //		NRF_device_main();
 //NRF_master_main();
