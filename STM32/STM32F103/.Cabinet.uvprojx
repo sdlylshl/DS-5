@@ -714,14 +714,14 @@
           <GroupName>fatFs</GroupName>
           <Files>
             <File>
-              <FileName>ff.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\fatFs\src\ff.c</FilePath>
-            </File>
-            <File>
               <FileName>diskio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Source\fatFs\src\diskio.c</FilePath>
+              <FilePath>.\Source\FATFS\diskio.c</FilePath>
+            </File>
+            <File>
+              <FileName>ff.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\FATFS\ff.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -30,7 +30,7 @@ int main() {
 	PS2_Init();
 	//SPI2
 	//SPI_Flash_Init();
-
+	filesysinit();
 	testFlash();
 	//开总中断
 	__set_PRIMASK(0);

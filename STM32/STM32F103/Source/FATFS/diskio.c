@@ -11,7 +11,7 @@
 //#include "usbdisk.h"	/* Example: Header file of existing USB MSD control module */
 //#include "atadrive.h"	/* Example: Header file of existing ATA harddisk control module */
 //#include "sdcard.h"		/* Example: Header file of existing MMC/SDC contorl module */
-#include "../../System/System_config.h"
+#include "../System/System_config.h"
 /* Definitions of physical drive number for each drive */
 #define ATA		0	/* Example: Map ATA harddisk to physical drive 0 */
 #define MMC		1	/* Example: Map MMC/SD card to physical drive 1 */
@@ -19,38 +19,78 @@
 #define SST25		3	/*SPI flash SST25*/		
 
 BYTE filebuffer[4096];     // 
+
+#define SST25_PAGE_SIZE 512
 #define SST25_SECTOR_SIZE 4096
-#define SST25_BLOCK_SIZE 512 
+#define SST25_SECTOR_COUNT (0x200000/SST25_SECTOR_SIZE)
+#define SST25_BLOCK_SIZE (4096/SST25_SECTOR_SIZE)
+#define SST25_CLUSTOR_SIZE SST25_BLOCK_SIZE
 
 
 
 #include "ff.h"
 #include "diskio.h"
-FATFS flash_fs;                      // Âß¼­Çı¶¯Æ÷µÄ±êÖ¾
-FIL GBK16_FIL,EN16,UNI_GBK_FIL,GBK_UNI_FIL;   // ÎÄ¼ş±êÖ¾ 
-UINT flash_br;   //ÎÄ¼ş¶Á/Ğ´×Ö½Ú¼ÆÊı  
-FRESULT flash_res;           // FatFs ¹¦ÄÜº¯Êı·µ»Ø½á¹û±äÁ¿
+FATFS *fs;	
+FATFS flash_fs[_VOLUMES];                      //   å·¥ä½œåŒº
+FIL GBK16_FIL,EN16,UNI_GBK_FIL,GBK_UNI_FIL;   // æ–‡ä»¶æ ‡å¿— 
+UINT flash_br;   //æ–‡ä»¶è¯»/å†™å­—èŠ‚è®¡æ•°  
+FRESULT flash_res;           // FatFs åŠŸèƒ½å‡½æ•°è¿”å›ç»“æœå˜é‡
 
 	/********************************************************************************
-*º¯ÊıÔ­ĞÍ£ºvoid FLASH_GBK_Init(void)
-*º¯Êı¹¦ÄÜ£ºGB UNI ¸÷ÖÖ±àÂë³õÊ¼»¯
+*å‡½æ•°åŸå‹ï¼švoid FLASH_GBK_Init(void)
+*å‡½æ•°åŠŸèƒ½ï¼šGB UNI å„ç§ç¼–ç åˆå§‹åŒ–
 *********************************************************************************/
-void FLASH_GBK_Init(void)//gbk³õÊ¼»¯ 
+void FLASH_GBK_Init(void)//gbkåˆå§‹åŒ– 
 {     
-	  //³õÊ¼»¯¿¨ÖĞµÄ×Ö·ûÎÄ¼ş
-		//flash_res = f_open(&UNI_GBK_FIL, "/uni2oem.sys", FA_OPEN_EXISTING | FA_READ); //ÒÔ¶ÁµÄ·½Ê½´ò¿ªÑ¡ÖĞµÄÎÄ¼ş	
-	  //if (flash_res )    while(1);   /* ³ö´í */ 
-		//flash_res = f_open(&GBK_UNI_FIL, "/oem2uni.sys", FA_OPEN_EXISTING | FA_READ); //ÒÔ¶ÁµÄ·½Ê½´ò¿ªÑ¡ÖĞµÄÎÄ¼ş	
-	  //if (flash_res )    while(1);   /* ³ö´í */ 
-		flash_res = f_open(&GBK16_FIL, "/st16.sys", FA_OPEN_EXISTING | FA_READ); //ÒÔ¶ÁµÄ·½Ê½´ò¿ªÑ¡ÖĞµÄÎÄ¼ş	
-	  if (flash_res )    while(1);   /* ³ö´í */ 
-		flash_res = f_open(&EN16, "/en16.sys", FA_OPEN_EXISTING | FA_READ); //ÒÔ¶ÁµÄ·½Ê½´ò¿ªÑ¡ÖĞµÄÎÄ¼ş	
-	  if (flash_res )    while(1);   /* ³ö´í */ 
+	  //åˆå§‹åŒ–å¡ä¸­çš„å­—ç¬¦æ–‡ä»¶
+		//flash_res = f_open(&UNI_GBK_FIL, "/uni2oem.sys", FA_OPEN_EXISTING | FA_READ); //ä»¥è¯»çš„æ–¹å¼æ‰“å¼€é€‰ä¸­çš„æ–‡ä»¶	
+	  //if (flash_res )    while(1);   /* å‡ºé”™ */ 
+		//flash_res = f_open(&GBK_UNI_FIL, "/oem2uni.sys", FA_OPEN_EXISTING | FA_READ); //ä»¥è¯»çš„æ–¹å¼æ‰“å¼€é€‰ä¸­çš„æ–‡ä»¶	
+	  //if (flash_res )    while(1);   /* å‡ºé”™ */ 
+		flash_res = f_open(&GBK16_FIL, "/st16.sys", FA_OPEN_EXISTING | FA_READ); //ä»¥è¯»çš„æ–¹å¼æ‰“å¼€é€‰ä¸­çš„æ–‡ä»¶	
+	  if (flash_res )    while(1);   /* å‡ºé”™ */ 
+		flash_res = f_open(&EN16, "/en16.sys", FA_OPEN_EXISTING | FA_READ); //ä»¥è¯»çš„æ–¹å¼æ‰“å¼€é€‰ä¸­çš„æ–‡ä»¶	
+	  if (flash_res )    while(1);   /* å‡ºé”™ */ 
 }
 void filesysinit(){
+	int i;
+	uint32_t bw,br;
+	//FlashChipErase();	//1.
+	//è¯»å–sector0
+	SST25_ReadHighSpeed(0, filebuffer,SST25_SECTOR_SIZE);
+	for(i=0;i<SST25_SECTOR_SIZE;i++){
+		if(!(i%16)){
+			printf("\n");
+		}
+		printf("%x ",filebuffer[i]);
 
-	flash_res=f_mount(&flash_fs,"",1);							 //1.½«ÎÄ¼şÏµÍ³ÉèÖÃµ½0Çø Á¢¼´Ó³Éä 
-	FLASH_GBK_Init();
+	}
+	//flash_fs.drv = SST25;
+	flash_res=f_mount(&flash_fs[3],"3:",1);							 //1.å°†æ–‡ä»¶ç³»ç»Ÿè®¾ç½®åˆ°0åŒº ç«‹å³æ˜ å°„
+	//f_mkfs("3:",0,1);					//2.æ ¼å¼åŒ–
+			flash_res=f_getfree("3:",&i,&fs);
+			flash_res = f_open(&EN16, "3:file.bin", FA_CREATE_ALWAYS | FA_WRITE);
+	for(i=0;i<100;i++){
+	filebuffer[i]=i;
+	}		
+			flash_res = f_write(&EN16, filebuffer, 100, &bw);   
+			f_close(&EN16);
+			flash_res = f_open(&EN16, "3:file.bin", FA_OPEN_EXISTING | FA_READ);
+for(i=0;i<100;i++){
+	filebuffer[i]=0;
+	}			
+			flash_res = f_read(&EN16, filebuffer, 100, &br); 
+
+	SST25_ReadHighSpeed(0, filebuffer,SST25_SECTOR_SIZE);
+	for(i=0;i<SST25_SECTOR_SIZE;i++){
+		if(!(i%16)){
+			printf("\n");
+		}
+		printf("%x ",filebuffer[i]);
+
+	}
+//	
+//	FLASH_GBK_Init();
 }
 
 /*-----------------------------------------------------------------------*/
@@ -146,7 +186,8 @@ DSTATUS disk_initialize (
 			}
 			else
 			{
-				stat = STA_PROTECT;
+				//stat = STA_PROTECT;
+				stat =0;
 			}
 			return stat;
 	
@@ -320,20 +361,18 @@ DRESULT disk_ioctl (
 
 		return res;
 	case SST25:
-
-		if (pdrv){ return RES_PARERR; }
-
 		switch (cmd)
 		{
 		case CTRL_SYNC:
+			res = RES_OK;			
 			break;
 		case GET_BLOCK_SIZE:
-			*(DWORD*)buff = SST25_BLOCK_SIZE;
+			*(DWORD*)buff = 16;
 			break;
-		case GET_SECTOR_COUNT:
-			*(DWORD*)buff = SST25_BLOCK_SIZE;
+		case GET_SECTOR_COUNT:	
+			*(DWORD*)buff = SST25_SECTOR_COUNT;
 			break;
-		case GET_SECTOR_SIZE:
+		case GET_SECTOR_SIZE:/* Get internal block size in unit of sector */
 			*(WORD*)buff = SST25_SECTOR_SIZE;
 			break;
 		default:

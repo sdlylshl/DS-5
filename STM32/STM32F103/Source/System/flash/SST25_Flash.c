@@ -5,7 +5,9 @@ uint16_t logNr = 2; //当前记录编号
 //2048K/4=512 page
 #define SST25_PAGE_SIZE 512
 #define SST25_SECTOR_SIZE 4096
-#define SST25_BLOCK_SIZE 512 
+#define SST25_SECTOR_COUNT (0x200000/SST25_SECTOR_SIZE)
+#define SST25_BLOCK_SIZE (4096/SST25_SECTOR_SIZE)
+#define SST25_CLUSTOR_SIZE SST25_BLOCK_SIZE
 
 /****************************************************************************
 * 名    称：unsigned char rdsr(void)
@@ -180,7 +182,7 @@ void SST25_ReadHighSpeed(uint32_t addr, uint8_t *readbuff, uint16_t BlockSize){
 	SPI_Flash_SendByte(addr&0xff);
 	SPI_Flash_SendByte(0);
 	while(i<BlockSize){	
-		readbuff[i]=SPI_Flash_ReadByte();
+		readbuff[i]=0xFF^SPI_Flash_ReadByte();
 		
 		i++;
 	}
@@ -195,7 +197,7 @@ void SST25_WriteByte(uint32_t addr, uint8_t data){
 	SPI_Flash_SendByte((addr & 0xffffff) >> 16);
 	SPI_Flash_SendByte((addr & 0xffff) >> 8);
 	SPI_Flash_SendByte(addr & 0xff);
-	SPI_Flash_SendByte(data);
+	SPI_Flash_SendByte(0xFF^data);
 	DeSelect_Flash();
 	FlashWriteDisable();
 //	Select_Flash();
@@ -219,8 +221,8 @@ void SST25_WriteAutoAddrIncrease(uint32_t addr, uint8_t *readbuff, uint16_t size
 	SPI_Flash_SendByte((addr&0xffffff)>>16);
 	SPI_Flash_SendByte((addr&0xffff)>>8);
 	SPI_Flash_SendByte(addr&0xff);
-  	SPI_Flash_SendByte(readbuff[0]);
-	SPI_Flash_SendByte(readbuff[1]);
+  	SPI_Flash_SendByte(0xFF^readbuff[0]);
+	SPI_Flash_SendByte(0xFF^readbuff[1]);
 	DeSelect_Flash();
 	i=2;
 	while(i<size){
@@ -228,8 +230,8 @@ void SST25_WriteAutoAddrIncrease(uint32_t addr, uint8_t *readbuff, uint16_t size
 		while(a2>0) a2--;
 		Select_Flash();
 		SPI_Flash_SendByte(0xad);
-		SPI_Flash_SendByte(readbuff[i++]);
-		SPI_Flash_SendByte(readbuff[i++]);
+		SPI_Flash_SendByte(0xFF^readbuff[i++]);
+		SPI_Flash_SendByte(0xFF^readbuff[i++]);
 		DeSelect_Flash();
 	}
 	
@@ -265,8 +267,8 @@ uint8_t SST25_disk_write(uint8_t *pbuff,		/* Data buffer to store read data */
 
 		while (count --)
 		{
-			FlashSectorErase(sector);
-			SST25_WriteAutoAddrIncrease(sector << 12, pbuff, SST25_SECTOR_SIZE);
+			//FlashSectorErase(sector);
+			SST25_WriteAutoAddrIncrease(sector << 12, pbuff, SST25_SECTOR_SIZE );
 		}
 }
 

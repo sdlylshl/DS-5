@@ -8,9 +8,9 @@
 
 
 #if !_USE_LFN || _CODE_PAGE != 936
-#error This file is not needed in current configuration. Remove from the project.
-#endif
-
+//#error This file is not needed in current configuration. Remove from the project.
+//#endif
+#else
 static
 const WCHAR uni2oem[] = {
 /*  Unicode - OEM,  Unicode - OEM,  Unicode - OEM,  Unicode - OEM */
@@ -10971,3 +10971,4 @@ WCHAR ff_wtoupper (	/* Upper converted character */
 
 	return tbl_lower[i] ? tbl_upper[i] : chr;
 }
+#endif

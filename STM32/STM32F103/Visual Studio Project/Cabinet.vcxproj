@@ -36,9 +36,9 @@
     <None Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Source\fatFs\src\diskio.c" />
-    <ClCompile Include="..\Source\fatFs\src\ff.c" />
-    <ClCompile Include="..\Source\fatFs\src\option\cc936.c" />
+    <ClCompile Include="..\Source\FATFS\diskio.c" />
+    <ClCompile Include="..\Source\FATFS\ff.c" />
+    <ClCompile Include="..\Source\FATFS\option\cc936.c" />
     <ClCompile Include="..\Source\Main.c" />
     <ClCompile Include="..\Source\Retarget.c" />
     <ClCompile Include="..\Source\stm32f10x_it.c" />
@@ -92,10 +92,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h" />
-    <ClInclude Include="..\Source\fatFs\src\diskio.h" />
-    <ClInclude Include="..\Source\fatFs\src\ff.h" />
-    <ClInclude Include="..\Source\fatFs\src\ffconf.h" />
-    <ClInclude Include="..\Source\fatFs\src\integer.h" />
+    <ClInclude Include="..\Source\FATFS\diskio.h" />
+    <ClInclude Include="..\Source\FATFS\ff.h" />
+    <ClInclude Include="..\Source\FATFS\ffconf.h" />
+    <ClInclude Include="..\Source\FATFS\integer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
