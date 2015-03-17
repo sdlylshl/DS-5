@@ -52,10 +52,7 @@ uint32_t TIM4_GetDistanceTime(uint32_t pretime) {
 uint32_t TIM4_GetCurrentTime(void) {
 	return (time4);
 }
-void TIM4_IRQHandle(void) {
-	if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET) {
-		TIM_ClearITPendingBit(TIM4, TIM_FLAG_Update);
+void TIM4_IRQ(void) {	
 		time4++;
-	}
 }
 

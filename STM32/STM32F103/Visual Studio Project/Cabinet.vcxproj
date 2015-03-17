@@ -39,7 +39,10 @@
     <ClCompile Include="..\Source\FATFS\diskio.c" />
     <ClCompile Include="..\Source\FATFS\ff.c" />
     <ClCompile Include="..\Source\FATFS\option\cc936.c" />
+    <ClCompile Include="..\Source\GPIO\Beep.c" />
+    <ClCompile Include="..\Source\LCD1602\lcd_1602a.c" />
     <ClCompile Include="..\Source\Main.c" />
+    <ClCompile Include="..\Source\panel\panel.c" />
     <ClCompile Include="..\Source\Retarget.c" />
     <ClCompile Include="..\Source\stm32f10x_it.c" />
     <ClCompile Include="..\Source\W5500\Application\Application.c" />
@@ -96,6 +99,7 @@
     <ClInclude Include="..\Source\FATFS\ff.h" />
     <ClInclude Include="..\Source\FATFS\ffconf.h" />
     <ClInclude Include="..\Source\FATFS\integer.h" />
+    <ClInclude Include="..\Source\LCD1602\lcd_1602a.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

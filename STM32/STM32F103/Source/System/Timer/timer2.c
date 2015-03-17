@@ -78,19 +78,19 @@ uint32_t TIM2_GetCurrentTime(void) {
 void TIM2_ISR(void){
 
 		time2++;
-		Zigbee_time++;
-		Net_time++;
-		time_out++;
-		timer_Device_update++;
-		timer_Zigbee_getStatus++;
-		timer_Zigbee_getBattery++;
-		timer_Zigbee_sendBuff++;
-		timer_Zigbee_ClearRequest++;
-		timer_Zigbee_operate_default++;
-		timer_Zigbee_reset_default++;
-		if (timer_curtain_stop) {
+		/*	Zigbee_time++;
+			Net_time++;
+			time_out++;
+			timer_Device_update++;
+			timer_Zigbee_getStatus++;
+			timer_Zigbee_getBattery++;
+			timer_Zigbee_sendBuff++;
+			timer_Zigbee_ClearRequest++;
+			timer_Zigbee_operate_default++;
+			timer_Zigbee_reset_default++;
+			if (timer_curtain_stop) {
 			timer_curtain_stop++;
-		}
+			}*/
 
 }
 

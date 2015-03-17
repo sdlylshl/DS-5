@@ -223,18 +223,21 @@ void NVIC_Config(void) {
 	//NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
 	NVIC_SetPriorityGrouping(4);
 	
-
+#if 1
 	NVIC_SetPriority(USART1_IRQn, 3);
 	NVIC_EnableIRQ(USART1_IRQn);
-
+#endif
+#if 0
 	NVIC_EXTI0_init();	
 	NVIC_SetPriority(EXTI0_IRQn, 4);
 //	NVIC_EnableIRQ(EXTI0_IRQn);
-	  //PS2
+#endif 
+#if 0		//PS2
 	NVIC_EXTI1_init();	
 	NVIC_SetPriority(EXTI1_IRQn, 4);
 //	NVIC_EnableIRQ(EXTI1_IRQn);
-
+#endif
+#if 0
 #ifdef NVIC_SPI2_IRQ
 	//SPI2_IRQ
 	NVIC_EXTI5_init();
@@ -242,15 +245,19 @@ void NVIC_Config(void) {
 	NVIC_SetPriority(EXTI9_5_IRQn, 10);
 	NVIC_EnableIRQ(EXTI9_5_IRQn);
 #endif
-	
+#endif
+#if	1
 	NVIC_SetPriority(TIM2_IRQn, 8);
 	NVIC_EnableIRQ(TIM2_IRQn);
-	
+#endif	
+#if 0
 	NVIC_SetPriority(TIM3_IRQn, 9);
-//	NVIC_EnableIRQ(TIM3_IRQn);
-	
+	NVIC_EnableIRQ(TIM3_IRQn);
+#endif
+#if 1
 	NVIC_SetPriority(TIM4_IRQn, 10);
 	NVIC_EnableIRQ(TIM4_IRQn);
+#endif
 	//开总中断
 	//__set_PRIMASK(0);
 }
@@ -278,8 +285,20 @@ void TIM2_IRQHandle(void) {
 extern void TIM3_IRQ(void);
 void TIM3_IRQHandle(void) {
 	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) {
+		
 		TIM3_IRQ();
 		TIM_ClearITPendingBit(TIM3, TIM_FLAG_Update);
+	}
+}
+extern void (*BeepCallback_ISR)(void);
+extern void(*LEDCallback_ISR)(void);
+extern volatile uint32_t time4;
+void TIM4_IRQHandle(void) {
+	if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET) {
+		time4++;
+		BeepCallback_ISR();
+		LEDCallback_ISR();
+		TIM_ClearITPendingBit(TIM4, TIM_FLAG_Update);
 	}
 }
 void EXTI0_IRQHandle(void){

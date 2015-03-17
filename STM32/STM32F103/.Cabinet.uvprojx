@@ -633,6 +633,11 @@
               <FileType>1</FileType>
               <FilePath>.\Source\GPIO\out.c</FilePath>
             </File>
+            <File>
+              <FileName>Beep.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\GPIO\Beep.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -724,6 +729,19 @@
               <FilePath>.\Source\FATFS\ff.c</FilePath>
             </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>LCD1602</GroupName>
+          <Files>
+            <File>
+              <FileName>lcd_1602a.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\LCD1602\lcd_1602a.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Key</GroupName>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>

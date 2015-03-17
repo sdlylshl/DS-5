@@ -2,7 +2,8 @@
 #include <assert.h>
 #include "config.h"
 #include "./System/System_config.h"
-
+#include "./GPIO/Beep.h"
+#include "./GPIO/led.h"
 char *str = "\r\n This is a USART1_printf demo \r\n";
 extern void nrf_main0(void);
 extern void nrf_main(void);
@@ -17,11 +18,15 @@ int main() {
 	TIM4_Start(); //用来做网络延时计时使用
 	//DMA_Config();
 	USART1_Init();
-	DAC_Config();
 
-
+	BeepStart(500);
+	LEDFlashing(500);
+	LED3(1);
+		BeepStart(500);
+	__set_PRIMASK(0);
 //	USART3_Init();
-
+	LCD1602_Init();
+	while(1);
 
 	//nrf
 	SPI1_Init();
@@ -34,6 +39,7 @@ int main() {
 	testFlash();
 	//开总中断
 	__set_PRIMASK(0);
+	DAC_Config();
 	wavplay();
 	nrf_main();
 //		NRF_device_main();

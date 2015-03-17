@@ -19,12 +19,15 @@
 #define  LED2_USE					 1
 #define  LED2_PORT     GPIOD
 //#define  LED2_PIN      GPIO_Pin_6				
-//#define  LED2_PIN      GPIO_Pin_1				// PD1  社会安防V1.0 --朱文飞
-#define  LED2_PIN      GPIO_Pin_5			// PD5  PARKINGV2.0  
+//#define  LED2_PIN      GPIO_Pin_1			// PD1  社会安防V1.0 --朱文飞
+//#define  LED2_PIN      GPIO_Pin_5			// PD5  PARKINGV2.0  
+#define  LED2_PIN      GPIO_Pin_2			// PD2  panel
 
 #define  LED3_USE					 1
 #define  LED3_PORT     GPIOC
-#define  LED3_PIN      GPIO_Pin_11
+//#define  LED3_PIN      GPIO_Pin_11
+#define  LED3_PIN      GPIO_Pin_15		//panel 键盘按键登
+
 #define  LED4_USE					 0
 #define  LED4_PORT     GPIOD
 #define  LED4_PIN      GPIO_Pin_3  		//zhuwenfei
@@ -52,6 +55,7 @@
 #define    LED7(x)   x ? GPIO_SetBits(LED7_PORT,LED7_PIN):  GPIO_ResetBits(LED7_PORT,LED7_PIN)
 #define    LED8(x)   x ? GPIO_SetBits(LED8_PORT,LED8_PIN):  GPIO_ResetBits(LED8_PORT,LED8_PIN)
 
-void LED_GPIO_Config(void);
-					
+extern void LED_GPIO_Config(void);
+extern void LEDFlashing(uint32_t ms);
+extern void(*LEDCallback_ISR)(void);
 #endif /* __LED_H */

@@ -49,6 +49,12 @@
     <Filter Include="源文件\fatFS">
       <UniqueIdentifier>{e5845be1-29d6-48dc-a5fe-a5bff6ad67e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\LCD1602">
+      <UniqueIdentifier>{99089918-b781-4d03-8d03-28fadacacd9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\panel">
+      <UniqueIdentifier>{6241feab-2621-4313-8aa4-bcf3955a5808}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Main.c">
@@ -201,14 +207,23 @@
     <ClCompile Include="..\Source\WavPlayer\wavpaly.c">
       <Filter>源文件\Wavplay</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\fatFs\src\diskio.c">
-      <Filter>源文件\fatFS</Filter>
+    <ClCompile Include="..\Source\FATFS\diskio.c">
+      <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\fatFs\src\ff.c">
-      <Filter>源文件\fatFS</Filter>
+    <ClCompile Include="..\Source\FATFS\ff.c">
+      <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\fatFs\src\option\cc936.c">
-      <Filter>源文件\fatFS</Filter>
+    <ClCompile Include="..\Source\FATFS\option\cc936.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\LCD1602\lcd_1602a.c">
+      <Filter>源文件\LCD1602</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\panel\panel.c">
+      <Filter>源文件\panel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\GPIO\Beep.c">
+      <Filter>源文件\GPIO</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -226,17 +241,20 @@
     <ClInclude Include="..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\fatFs\src\diskio.h">
-      <Filter>源文件\fatFS</Filter>
+    <ClInclude Include="..\Source\FATFS\diskio.h">
+      <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\fatFs\src\ff.h">
-      <Filter>源文件\fatFS</Filter>
+    <ClInclude Include="..\Source\FATFS\ff.h">
+      <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\fatFs\src\ffconf.h">
-      <Filter>源文件\fatFS</Filter>
+    <ClInclude Include="..\Source\FATFS\ffconf.h">
+      <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\fatFs\src\integer.h">
-      <Filter>源文件\fatFS</Filter>
+    <ClInclude Include="..\Source\FATFS\integer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\LCD1602\lcd_1602a.h">
+      <Filter>源文件\LCD1602</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

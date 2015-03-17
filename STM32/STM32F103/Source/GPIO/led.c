@@ -13,6 +13,11 @@
  * 淘宝    ：http://firestm32.taobao.com
  **********************************************************************************/
 #include "led.h"
+uint32_t LEDTM;
+volatile uint32_t ledtime = 0; // ms 计时变量
+extern void LEDCallback(void);
+void LEDCallbackNull(void){ ; }
+void(*LEDCallback_ISR)(void) = LEDCallbackNull;
 
 /*
  * 函数名：LED_GPIO_Config
@@ -99,6 +104,33 @@ void LED_GPIO_Config(void) {
 	GPIO_Init(LED8_PORT, &GPIO_InitStructure);
 	//LED8(1);	
 #endif
+}
+
+void LEDFlashing(uint32_t ms){
+
+	if (ms)
+	{
+		LEDTM = ms;
+		ledtime = 0;
+		LED_GPIO_Config();
+		LEDCallback_ISR = LEDCallback;		
+	} 
+	else
+	{	
+		LEDCallback_ISR = LEDCallbackNull;		
+	}
+}
+
+void LEDCallback(void){
+
+	if (LEDTM == ledtime ){
+		LED2(1);
+	}
+	else if (LEDTM<<1 == ledtime){
+		LED2(0);
+		ledtime = 0;
+	}
+	ledtime++;
 }
 
 /******************* (C) COPYRIGHT 2012 WildFire Team *****END OF FILE************/
