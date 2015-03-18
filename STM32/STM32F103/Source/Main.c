@@ -8,6 +8,7 @@ char *str = "\r\n This is a USART1_printf demo \r\n";
 extern void nrf_main0(void);
 extern void nrf_main(void);
 extern void wavplay(void);
+extern uint16_t GetKey(void);
 int main() {
 //	uint8_t i;
 	uint32_t Time = 0;
@@ -18,14 +19,14 @@ int main() {
 	TIM4_Start(); //用来做网络延时计时使用
 	//DMA_Config();
 	USART1_Init();
-
-	BeepStart(500);
+	///BeepStart(500);
 	LEDFlashing(500);
 	LED3(1);
-		BeepStart(500);
+		//BeepStart(500);
 	__set_PRIMASK(0);
 //	USART3_Init();
 	LCD1602_Init();
+	while(GetKey());
 	while(1);
 
 	//nrf
