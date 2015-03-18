@@ -115,7 +115,7 @@ void Lcd_Write_Command(unsigned char x,char Busy)
 
 }
 //向液晶里面写入数据  时序：RS=H,RW=L,Data0-Data7=指令码，E=高脉冲
-void Lcd_Write_Data( unsigned char x) //向液晶里面写入数据 
+void Lcd_LCD1206_Write_Data( unsigned char x) //向液晶里面写入数据
 { 
 	Lcd_Busy(); //测忙
     //Delay_us(1);   //延时10us
@@ -149,7 +149,7 @@ void Lcd_Puts(unsigned char x,unsigned char y, unsigned char *string) //向1602�
 	Lcd_SetXY(x,y); 
 	while(*string) 
 	{ 
-		Lcd_Write_Data(*string); 
+		Lcd_LCD1206_Write_Data(*string);
 		string++; 
 	} 
 }
@@ -254,7 +254,7 @@ GPIO_InitTypeDef GPIO_InitStructure;
 void GPIO_Config(void); 
 void Busy_Wait(void); 
 void Write_Cmd(uint8_t Cmd); 
-void Write_Data(uint8_t Data); 
+void LCD1206_Write_Data(uint8_t Data);
 void Write_String(uint8_t cmd,uint8_t* p); 
 void LCD1602_Init(void); 
 
@@ -339,7 +339,7 @@ void Write_Cmd(uint8_t Cmd)
 	Reset_E();
 }
 
-void Write_Data(uint8_t Data)
+void LCD1206_Write_Data(uint8_t Data)
 {
 	Busy_Wait();
 	Set_RS();
@@ -373,7 +373,7 @@ void Write_String(uint8_t cmd,uint8_t* p)
 
 	while(*p!='\0') 
 	{ 
-		Write_Data(*p++); 
+		LCD1206_Write_Data(*p++);
 		// Buffer[i++]=Read_Data(); 
 	} 
 } 

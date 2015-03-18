@@ -40,6 +40,7 @@
     <ClCompile Include="..\Source\FATFS\ff.c" />
     <ClCompile Include="..\Source\FATFS\option\cc936.c" />
     <ClCompile Include="..\Source\GPIO\Beep.c" />
+    <ClCompile Include="..\Source\KEY\key.c" />
     <ClCompile Include="..\Source\LCD1602\lcd_1602a.c" />
     <ClCompile Include="..\Source\Main.c" />
     <ClCompile Include="..\Source\panel\panel.c" />
@@ -99,6 +100,7 @@
     <ClInclude Include="..\Source\FATFS\ff.h" />
     <ClInclude Include="..\Source\FATFS\ffconf.h" />
     <ClInclude Include="..\Source\FATFS\integer.h" />
+    <ClInclude Include="..\Source\KEY\key.h" />
     <ClInclude Include="..\Source\LCD1602\lcd_1602a.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

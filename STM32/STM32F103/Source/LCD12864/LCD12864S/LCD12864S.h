@@ -26,7 +26,7 @@
 void LCD_CLK_Delay(void); //时钟线1/2周期延时
 void Send_Byte(uint8_t Temp); //发送一个字节的数据
 uint8_t Receive_Byte(void); //接收一个字节的数据
-void Write_Data(uint8_t Dat); //写显示数据
+void LCD12864S_Write_Data(uint8_t Dat); //写显示数据
 void Write_Comm(uint8_t Comm); //写控制命令
 void LCD_Init(void); //初始化LCD
 void LCD_Clear(void); //清屏

@@ -55,7 +55,7 @@ uint8_t Receive_Byte(void) {
 	return ((0xf0 & temp1) + (0x0f & temp2));
 }
 //写显示数据 
-void Write_Data(uint8_t Data) {
+void LCD12864S_Write_Data(uint8_t Data) {
 	Check_Busy(); //检测忙碌       
 	Send_Byte(0xfa); //RW=0数据由MCU->LCD;RS=1,表示传的是显示数据		
 	Send_Byte(Data & 0xf0); //串口控制格式[11111（RW=0)（RS）0]
@@ -105,7 +105,7 @@ void Display_String(uint8_t x, uint8_t y, char *s) {
 	Write_Comm(Address_Table[8 * y + x]); //根据XY写入地址
 //	Write_Comm(Address_Table[8*y+x]); //有时要写两次
 	while (*s > 0) {
-		Write_Data(*s);
+		LCD12864S_Write_Data(*s);
 		s++;
 	}
 }
@@ -120,7 +120,7 @@ void Display_Image(unsigned char *DData) {
 			Write_Comm((0x80 + i)); //行地址，下半屏，即第三行地址0X88
 			Write_Comm(0x30);
 			for (y = 0; y < 16; y++)
-				Write_Data(DData[tmp + y]); //读取数据写入LCD
+				LCD12864S_Write_Data(DData[tmp + y]); //读取数据写入LCD
 			tmp += 16;
 		}
 		i += 8;
@@ -142,15 +142,15 @@ void Show_Num(uint8_t x, uint8_t y, uint16_t Num) {
 //	Write_Comm(Address_Table[8*y+x]); //有时要写两次
 
 	if ((Num / 1000)) //千位不为0就显示千位
-		Write_Data(0x30 + Num / 1000);
+		LCD12864S_Write_Data(0x30 + Num / 1000);
 	//	Lcd_WriteData(0x2e);//"."
 	if ((Num / 1000) || (Num % 1000 / 100)) //千位和百位有一个>0就显示百位
-		Write_Data(0x30 + Num % 1000 / 100);
+		LCD12864S_Write_Data(0x30 + Num % 1000 / 100);
 	//	Lcd_WriteData(0x2e);//"."
 	if ((Num % 1000 / 100) || (Num % 100 / 10))
-		Write_Data(0x30 + Num % 100 / 10);
+		LCD12864S_Write_Data(0x30 + Num % 100 / 10);
 	//	Lcd_WriteData(0x2e);//"."
 	if ((Num % 100 / 10) || (0x30 + Num % 10))
-		Write_Data(0x30 + Num % 10);
+		LCD12864S_Write_Data(0x30 + Num % 10);
 }
 
