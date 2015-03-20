@@ -61,39 +61,7 @@ __INLINE void PendSV_Handle(void) {
 //__INLINE void USART1_IRQHandle(void){}
 //__INLINE void USART2_IRQHandle(void){}
 //__INLINE void USART3_IRQHandle(void){}
-__INLINE void USART1_IRQHandle(void) {
-	uint8_t ch;
-	if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET) {
-		ch = USART1->DR;
-//        NET_buf[NET_write++] = c;
-//        if (NET_write == NET_BUFFSIZE)
-//            NET_write = 0;
-		//TO TEST print usart1 == net out
-		//Net_PutChar(c);
-		USART_SendData(USART1, ch);
 
-		//  Loop until the end of transmission
-
-	}
-}
-__INLINE void USART2_IRQHandle(void) {
-}
-__INLINE void USART3_IRQHandle(void) {
-	uint8_t ch;
-	if (USART_GetITStatus(USART3, USART_IT_RXNE) != RESET) {
-		ch = USART3->DR;
-		USART3_REVC_BUF[USART3_write++] = ch;
-//        NET_buf[NET_write++] = c;
-//        if (NET_write == NET_BUFFSIZE)
-//            NET_write = 0;
-		//TO TEST print usart1 == net out
-		//Net_PutChar(c);
-		//USART_SendData(USART1, ch);
-
-		//  Loop until the end of transmission
-
-	}
-}
 extern void EXTI1_IRQHandle(void);
 extern void RTC_IRQHandle(void);
 void EXTI9_5_IRQHandle(void);
@@ -520,7 +488,7 @@ void SPI2_IRQHandler() {
 //在中断服务程序中，由于主机响应中断时并不知道是哪个中断源发出中断请求，
 //因此必须在中断服务程序中对中断源进行判别，然后分别进行处理。
 //当然，如果只涉及到一个中断请求，是不用做上述判别的。但是无论什么情况，做上述判别是个好习惯
-
+/*
 //usart1 === net
 void USART1_IRQHandler(void) {
 #ifdef DEBUG
@@ -543,7 +511,7 @@ void USART3_IRQHandler(void) {
 #endif
 	USART3_IRQHandle();
 }
-
+*/
 void EXTI15_10_IRQHandler() {
 #ifdef DEBUG
 	printf("EXTI15_10_IRQHandler \r\n");

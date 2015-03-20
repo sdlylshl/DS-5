@@ -58,6 +58,9 @@
     <Filter Include="源文件\Key">
       <UniqueIdentifier>{2f5e2416-2b50-46fd-9d7e-72a549333993}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\GPIO\RS485">
+      <UniqueIdentifier>{a10acd3e-9ca9-4ab8-a0b9-ce09055da5c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Main.c">
@@ -231,6 +234,18 @@
     <ClCompile Include="..\Source\KEY\key.c">
       <Filter>源文件\Key</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\System\Usart\usart2.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\GPIO\RS485.c">
+      <Filter>源文件\GPIO\RS485</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Algorithm\BipBuffer\BipBuffer.c">
+      <Filter>源文件\Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Algorithm\BipBuffer\mainBipBuffer.c">
+      <Filter>源文件\Algorithm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Source\LCD12864\LCD12864P\LCD12864P.C">
@@ -264,6 +279,9 @@
     </ClInclude>
     <ClInclude Include="..\Source\KEY\key.h">
       <Filter>源文件\Key</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\GPIO\RS485.h">
+      <Filter>源文件\GPIO\RS485</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

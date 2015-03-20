@@ -227,6 +227,15 @@ void NVIC_Config(void) {
 	NVIC_SetPriority(USART1_IRQn, 3);
 	NVIC_EnableIRQ(USART1_IRQn);
 #endif
+#if USART2_NVIC
+	NVIC_SetPriority(USART2_IRQn, 4);
+	NVIC_EnableIRQ(USART2_IRQn);
+#endif
+#if USART3_NVIC
+	NVIC_SetPriority(USART3_IRQn, 4);
+	NVIC_EnableIRQ(USART3_IRQn);
+#endif
+
 #if 0
 	NVIC_EXTI0_init();	
 	NVIC_SetPriority(EXTI0_IRQn, 4);

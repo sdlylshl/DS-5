@@ -1,10 +1,16 @@
+
+
+#ifdef RTE_DEVICE_STDPERIPH_USART
+
 #include "usart3.h"
 
+#include "stm32f10x_usart.h"
+
 //DMA Buff
-uint8_t Usart3_SendBuff[SENDBUFF_SIZE];
 //中断接收缓冲区
-uint8_t USART3_write=0;
-uint8_t USART3_REVC_BUF[USART3_REVC_BUF_SIZE];
+volatile uint8_t USART3_write=0;
+uint8_t USART3_SendBuff[USART3_BUFF_SIZE];
+uint8_t USART3_ReciveBuff[USART3_BUFF_SIZE];
 
 void USART3_DMA_NVIC_Config(void) {
 	NVIC_InitTypeDef NVIC_InitStructure;
@@ -26,9 +32,9 @@ void USART3_DMA_Config(void) {
 	USART3_DMA_NVIC_Config(); //配置DMA中断
 
 	/*设置DMA源：内存地址&串口数据寄存器地址*/
-	//DMA_InitStructure.DMA_PeripheralBaseAddr = USART3_DR_Base;
+	DMA_InitStructure.DMA_PeripheralBaseAddr = USART3_DR_Base;
 	/*内存地址(要传输的变量的指针)*/
-	//DMA_InitStructure.DMA_MemoryBaseAddr = (u32) SendBuff;
+	DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t) USART3_SendBuff;
 	/*方向：从内存到外设*/
 	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;
 
@@ -125,3 +131,13 @@ void USART3_Init(void) {
 	USART_Cmd(USART3, ENABLE);
 	USART_ClearFlag(USART3, USART_FLAG_TC);
 }
+
+void USART3_IRQHandler(void) {
+	if (USART_GetITStatus(USART3, USART_IT_RXNE) != RESET) {
+		USART3_ReciveBuff[USART3_write++] = USART3->DR;
+		
+		USART_ClearITPendingBit(USART2,USART_IT_RXNE);	
+	}
+}
+
+#endif

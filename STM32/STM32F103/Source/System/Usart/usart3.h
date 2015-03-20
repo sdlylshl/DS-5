@@ -3,13 +3,18 @@
 
 #include "version.h"
 
+
 //中断接收缓冲区
-#define USART3_REVC_BUF_SIZE 256
-extern uint8_t USART3_write;
-extern uint8_t USART3_REVC_BUF[USART3_REVC_BUF_SIZE];
+extern volatile uint8_t USART3_write;
+
+#define USART3_BUFF_SIZE 256
+#define USART3_DMA_RECVBUFF_SIZE 256
+extern uint8_t USART3_ReciveBuff[USART3_BUFF_SIZE];
+#define USART3_DMA_SENDBUFF_SIZE 256
+extern uint8_t USART3_SendBuff[USART3_BUFF_SIZE];
 
 //DMA Mode
-//#define USART3_DR_Base  0x40013804
+#define USART3_DR_Base  (USART3_BASE + 4)
 #define SENDBUFF_SIZE 1000
 //DMA Buff
 extern uint8_t Usart3_SendBuff[SENDBUFF_SIZE];
@@ -60,5 +65,6 @@ extern uint8_t Usart3_SendBuff[SENDBUFF_SIZE];
 
 
 extern void USART3_Init(void);
+extern void USART3_IRQHandler(void);
 
 #endif /* __USART3_H */

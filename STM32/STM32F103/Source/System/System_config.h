@@ -29,7 +29,7 @@
 
 #include ".\Usart\usart.h"
 #include ".\Usart\usart1.h"
-//#include ".\Usart\usart2.h"
+#include ".\Usart\usart2.h"
 #include ".\Usart\usart3.h"
 
 #include ".\Timer\timer1.h"

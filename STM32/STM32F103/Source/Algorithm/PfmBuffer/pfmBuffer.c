@@ -29,7 +29,15 @@ void PfmBuffer_Init(void) {
 	recv_write = 0;
 	recv_read = 0;
 }
-
+//     缓冲区使用情况统计
+//  已用空间           可用空间
+//		0   read  write	 0xff
+//00------------||-------------FF
+//		1   read   write  0xff
+//00------------|*|------------FF
+//	  0xff write   read   1
+//00************|-|************FF
+//
 //1.获取剩余空间大小
 static uint8_t PfmBuffer_getSpace() {
 	if (recv_write == recv_read) {
@@ -38,10 +46,15 @@ static uint8_t PfmBuffer_getSpace() {
 		return (0xFF - recv_write + recv_read + 1);
 	}
 }
+// 注:如果write 写指针=read 读指针 则 缓冲区被重置.获取已接收数据大小为0
+static uint8_t pfmBuffer_getused(void){
+	return (0xFF - recv_read + recv_write + 1);
+}
+
 //2.获取可写空间大小 （TX_RX_MAX_BUF_SIZE-head )|(tail-head) 较小值 【一次可填充大小】
 uint8_t PfmBuffer_getUsable() {
-	uint8_t space = PfmBuffer_getSpace();
 	uint8_t endl;
+	uint8_t space = PfmBuffer_getSpace();
 	if (recv_write) {
 		endl = 0xFF - recv_write + 1;
 	} else {

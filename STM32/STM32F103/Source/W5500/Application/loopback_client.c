@@ -31,13 +31,13 @@ extern uint8_t TX_BUF[]; // TX Buffer for applications
 
 //4.确保读操作不会造成tail 跑到 head的前面
 
-unsigned char calcfcs(unsigned char *pmsg, unsigned char len) {
-	unsigned char result = 0;
-	while (len--) {
-		result ^= *pmsg++;
-	}
-	return result;
-}
+//unsigned char calcfcs(unsigned char *pmsg, unsigned char len) {
+//	unsigned char result = 0;
+//	while (len--) {
+//		result ^= *pmsg++;
+//	}
+//	return result;
+//}
 
 extern uint16_t DEST_PORT; //DST_IP port
 

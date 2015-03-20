@@ -15,9 +15,9 @@
 // TIM4    TIM4_CH1                            TIM4_CH2    TIM4_CH3                TIM4_UP
 
 //DMA Mode
-#define USART1_DR_Base  0x40013804
-#define SPI1_DR_Address    0x4001300C
-#define SPI2_DR_Address    0x4000380C
+//#define USART1_DR_Base  0x40013804
+#define SPI1_DR_Address    (SPI1_BASE + 0x0C)
+#define SPI2_DR_Address    (SPI2_BASE + 0x0C)
 
 #define SENDBUFF_SIZE 1000
 //DMA Buff
@@ -68,7 +68,7 @@ void DMA_Config(DMA_Channel_TypeDef* DMA_CHx, uint32_t PeripheralBaseAddr,
 //开启一次DMA传输 
 void DMA_Enable(DMA_Channel_TypeDef*DMA_CHx) {
 	DMA_Cmd(DMA_CHx, DISABLE);
-	DMA_SetCurrDataCounter(DMA1_Channel4, SENDBUFF_SIZE); //设置  DMA缓存的大小 
+	DMA_SetCurrDataCounter(DMA_CHx, SENDBUFF_SIZE); //设置  DMA缓存的大小 
 	DMA_Cmd(DMA_CHx, ENABLE); //使能DMA 通道   
 }
 
