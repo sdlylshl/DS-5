@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Users">
+      <UniqueIdentifier>{5451bcd3-e68b-408c-b73f-a9ec9fc670c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hardware">
+      <UniqueIdentifier>{e998d1d4-86f8-4d5b-814e-04da5105f0af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RTE">
+      <UniqueIdentifier>{291f4dfe-8ba0-4f1f-8cf5-6ae67abfbc5c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\config.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\delay.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\flash.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\hardware.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\led.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\loopback.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\socket.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\spi.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\SPI2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\stm32f10x_it.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sys.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\timer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Types.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\w5500.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\wigend.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\RTE\RTE_Components.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\RTE\Device\STM32F103VE\RTE_Device.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\RTE\Device\STM32F103VE\stm32f10x_conf.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\usart.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\cardMachine.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\spi_flash.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\i2c_ee.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Users\hardware.c">
+      <Filter>Users</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Users\main.c">
+      <Filter>Users</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Users\stm32f10x_it.c">
+      <Filter>Users</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\hardware\delay.c">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\hardware\flash.c">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\hardware\led.c">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\hardware\loopback.c">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\hardware\socket.c">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\hardware\timer.c">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\hardware\w5500.c">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\hardware\wigend.c">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\hardware\usart.c">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Users\cardMachine.c">
+      <Filter>Users</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\RTE\Device\STM32F103VE\system_stm32f10x.c">
+      <Filter>RTE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\hardware\bar.c">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\hardware\spi_flash.c">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\hardware\i2c_ee.c">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\hardware\SST25_Flash.c">
+      <Filter>Hardware</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\RTE\Device\STM32F103VE\startup_stm32f10x_hd.s">
+      <Filter>RTE</Filter>
+    </None>
+  </ItemGroup>
+</Project>
