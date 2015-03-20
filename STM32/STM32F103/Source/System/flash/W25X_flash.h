@@ -26,9 +26,9 @@
 void SPI_FLASH_Init(void);
 void SPI_FLASH_SectorErase(u32 SectorAddr);
 void SPI_FLASH_BulkErase(void);
-void SPI_FLASH_PageWrite(u8* pBuffer, u32 WriteAddr, u16 NumByteToWrite);
-void SPI_FLASH_BufferWrite(u8* pBuffer, u32 WriteAddr, u16 NumByteToWrite);
-void SPI_FLASH_BufferRead(u8* pBuffer, u32 ReadAddr, u16 NumByteToRead);
+void SPI_FLASH_PageWrite(uint8_t* pBuffer, u32 WriteAddr, u16 NumByteToWrite);
+void SPI_FLASH_BufferWrite(uint8_t* pBuffer, u32 WriteAddr, u16 NumByteToWrite);
+void SPI_FLASH_BufferRead(uint8_t* pBuffer, u32 ReadAddr, u16 NumByteToRead);
 u32 SPI_FLASH_ReadID(void);
 u32 SPI_FLASH_ReadDeviceID(void);
 void SPI_FLASH_StartReadSequence(u32 ReadAddr);
@@ -36,8 +36,8 @@ void SPI_Flash_PowerDown(void);
 void SPI_Flash_WAKEUP(void);
 
 
-u8 SPI_FLASH_ReadByte(void);
-u8 SPI_FLASH_SendByte(u8 byte);
+uint8_t SPI_FLASH_ReadByte(void);
+uint8_t SPI_FLASH_SendByte(uint8_t byte);
 u16 SPI_FLASH_SendHalfWord(u16 HalfWord);
 void SPI_FLASH_WriteEnable(void);
 void SPI_FLASH_WaitForWriteEnd(void);

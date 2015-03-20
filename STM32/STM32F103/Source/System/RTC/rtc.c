@@ -35,10 +35,10 @@ static void RTC_NVIC_Config(void)
 //返回0:正常
 //其他:错误代码
 
-u8 RTC_Init(void)
+uint8_t RTC_Init(void)
 {
 	//检查是不是第一次配置时钟
-	u8 temp=0;
+	uint8_t temp=0;
  
 	if (BKP_ReadBackupRegister(BKP_DR1) != 0x5050)		//从指定的后备寄存器中读出数据:读出了与写入的指定数据不相乎
 		{	 			
@@ -100,7 +100,7 @@ void RTC_IRQHandle(void)
 //非闰年 31 28 31 30 31 30 31 31 30 31 30 31
 //输入:年份
 //输出:该年份是不是闰年.1,是.0,不是
-u8 Is_Leap_Year(u16 year)
+uint8_t Is_Leap_Year(u16 year)
 {			  
 	if(year%4==0) //必须能被4整除
 	{ 
@@ -117,10 +117,10 @@ u8 Is_Leap_Year(u16 year)
 //1970~2099年为合法年份
 //返回值:0,成功;其他:错误代码.
 //月份数据表											 
-u8 const table_week[12]={0,3,3,6,1,4,6,2,5,0,3,5}; //月修正数据表	  
+uint8_t const table_week[12]={0,3,3,6,1,4,6,2,5,0,3,5}; //月修正数据表	  
 //平年的月份日期表
-const u8 mon_table[12]={31,28,31,30,31,30,31,31,30,31,30,31};
-u8 RTC_Set(u16 syear,u8 smon,u8 sday,u8 hour,u8 min,u8 sec)
+const uint8_t mon_table[12]={31,28,31,30,31,30,31,31,30,31,30,31};
+uint8_t RTC_Set(u16 syear,uint8_t smon,uint8_t sday,uint8_t hour,uint8_t min,uint8_t sec)
 {
 	u16 t;
 	u32 seccount=0;
@@ -150,7 +150,7 @@ u8 RTC_Set(u16 syear,u8 smon,u8 sday,u8 hour,u8 min,u8 sec)
 }
 //得到当前的时间
 //返回值:0,成功;其他:错误代码.
-u8 RTC_Get(void)
+uint8_t RTC_Get(void)
 {
 	static u16 daycnt=0;
 	u32 timecount=0; 
@@ -205,10 +205,10 @@ u8 RTC_Get(void)
 //功能描述:输入公历日期得到星期(只允许1901-2099年)
 //输入参数：公历年月日 
 //返回值：星期号																						 
-u8 RTC_Get_Week(u16 year,u8 month,u8 day)
+uint8_t RTC_Get_Week(u16 year,uint8_t month,uint8_t day)
 {	
 	u16 temp2;
-	u8 yearH,yearL;
+	uint8_t yearH,yearL;
 	
 	yearH=year/100;	yearL=year%100; 
 	// 如果为21世纪,年份数加100  

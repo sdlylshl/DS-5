@@ -17,7 +17,7 @@ extern void Delay_ms(__IO uint32_t ms);
 //All rights reserved									  
 //////////////////////////////////////////////////////////////////////////////////
    	 
-u8 MOUSE_ID;//用来标记鼠标ID 
+uint8_t MOUSE_ID;//用来标记鼠标ID 
 PS2_Mouse MouseX;
 //处理MOUSE的数据	 
 void Mouse_Data_Pro(void)
@@ -32,9 +32,9 @@ void Mouse_Data_Pro(void)
 //返回:0,初始化成功
 //其他:错误代码
 //CHECK OK 2010/5/2
-u8 Init_Mouse(void)
+uint8_t Init_Mouse(void)
 {
-	u8 t;		 
+	uint8_t t;		 
 	PS2_Init();							     
 	Delay_ms(800);            //等待上电复位完成
 	PS2_Status=CMDMODE;       //进入命令模式

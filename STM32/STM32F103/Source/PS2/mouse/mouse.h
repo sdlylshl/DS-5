@@ -45,12 +45,12 @@ typedef struct
 	short x_pos;//横坐标
 	short y_pos;//纵坐标
 	short z_pos;//滚轮坐标
-	u8  bt_mask;//按键标识,bit2中间键;bit1,右键;bit0,左键
+	uint8_t  bt_mask;//按键标识,bit2中间键;bit1,右键;bit0,左键
 } PS2_Mouse;
 extern PS2_Mouse MouseX;	   
-extern u8 MOUSE_ID;//鼠标ID,0X00,表示标准鼠标(3字节);0X03表示扩展鼠标(4字节)
+extern uint8_t MOUSE_ID;//鼠标ID,0X00,表示标准鼠标(3字节);0X03表示扩展鼠标(4字节)
 
-u8 Init_Mouse(void); 
+uint8_t Init_Mouse(void); 
 void Mouse_Data_Pro(void);
 	   	 			    
 #endif

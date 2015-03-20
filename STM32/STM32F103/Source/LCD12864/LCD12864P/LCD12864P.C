@@ -1,6 +1,6 @@
 #include "LCD12864P.h"
 
-u8 LCD12864_XY = 0;
+uint8_t LCD12864_XY = 0;
 
 /************************************************************************************************
  @f_name: void LCD12864_InitPort(void)
@@ -44,7 +44,7 @@ u8 LCD12864_XY = 0;
  @return: None
  ************************************************************************************************/
 void NOP(void) {
-	u8 i;
+	uint8_t i;
 	for (i = 0; i < 100; i++)
 		;
 }
@@ -54,8 +54,8 @@ void NOP(void) {
  @param:	 None
  @return: None
  ************************************************************************************************/
-u8 LCD12864_busy(void) {
-	u8 x;
+uint8_t LCD12864_busy(void) {
+	uint8_t x;
 	LCD_EN(0);
 	LCD_RS(0);
 	LCD_RW(1);
@@ -74,7 +74,7 @@ u8 LCD12864_busy(void) {
  @param:	 u8 dat  输入指令
  @return: None
  ************************************************************************************************/
-void LCD12684_Wcmd(u8 dat) {
+void LCD12684_Wcmd(uint8_t dat) {
 	while (LCD12864_busy())
 		; //忙检测
 	LCD_RS(0);
@@ -96,7 +96,7 @@ void LCD12684_Wcmd(u8 dat) {
  @param:	 u8 dat 输入数据
  @return: None
  ************************************************************************************************/
-void LCD12684_Wdat(u8 dat) {
+void LCD12684_Wdat(uint8_t dat) {
 	while (LCD12864_busy())
 		; //忙检测
 	LCD_RS(1);
@@ -160,8 +160,8 @@ void LCD12864_Clr(void) {
  @param:	 u8 x：X轴    u8 y:Y轴  
  @return: None
  ************************************************************************************************/
-void LCD12864_Pos(u8 x, u8 y) {
-	u8 pos;
+void LCD12864_Pos(uint8_t x, uint8_t y) {
+	uint8_t pos;
 	if (x == 0) {
 		x = 0x80;
 	} else if (x == 1) {
@@ -181,8 +181,8 @@ void LCD12864_Pos(u8 x, u8 y) {
  @param:	 u8 *bmp 图形数组
  @return: None
  ************************************************************************************************/
-void LCD12864_PhotoDis(u8 *bmp) {
-	u8 i, j;
+void LCD12864_PhotoDis(uint8_t *bmp) {
+	uint8_t i, j;
 	LCD12684_Wcmd(0x34); //关闭图形显示
 
 	for (i = 0; i < 32; i++) {
@@ -203,7 +203,7 @@ void LCD12864_PhotoDis(u8 *bmp) {
 	LCD12684_Wcmd(0x36); //写完数据,开图形显示 	
 }
 //显示一个字符或汉字
-void LCD_ShowChar(u8 p) //所在地址是上次设置的指针累加
+void LCD_ShowChar(uint8_t p) //所在地址是上次设置的指针累加
 		{
 	LCD12684_Wdat(p);
 	LCD12864_XY++;
@@ -214,8 +214,8 @@ void LCD_ShowChar(u8 p) //所在地址是上次设置的指针累加
  @param:	 u8 *bmp 图形数组
  @return: None
  ************************************************************************************************/
-void LCD_ShowStringXY(u8 x, u8 y, char *p) {
-	u8 temp;
+void LCD_ShowStringXY(uint8_t x, uint8_t y, char *p) {
+	uint8_t temp;
 	if (x > 4) {
 		x = 1;
 	}
@@ -230,9 +230,9 @@ void LCD_ShowStringXY(u8 x, u8 y, char *p) {
 	}
 }
 
-void LCD_ShowString(u8 *p) //所在地址是上次设置的指针累加
+void LCD_ShowString(uint8_t *p) //所在地址是上次设置的指针累加
 		{
-	u8 temp;
+	uint8_t temp;
 	temp = *p;
 	while (temp != '\0') {
 		LCD_ShowChar(temp);

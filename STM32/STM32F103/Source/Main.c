@@ -25,8 +25,10 @@ int main() {
 		//BeepStart(500);
 	__set_PRIMASK(0);
 //	USART3_Init();
-	LCD1602_Init();
-	while(GetKey());
+	ds1302_set_time_test();
+	ds1302_get_time_test();
+	panel();
+	//while(GetKey());
 	while(1);
 
 	//nrf
@@ -97,7 +99,9 @@ int main() {
 	}
 //	return 0;
 }
-
+void CallbackNull(void){ 
+	; 
+}
 #ifdef  USE_FULL_ASSERT
 
 /**

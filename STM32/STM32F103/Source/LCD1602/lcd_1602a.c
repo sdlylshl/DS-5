@@ -1,5 +1,6 @@
 
 #include "lcd_1602a.h"
+#include "../System/Timer/timer4.h"
 extern void Delay_ms(__IO uint32_t ms);
 #if 0
 
@@ -245,24 +246,41 @@ unsigned char *tr_7(unsigned int outData7)
 // 失能
 #define Reset_E() GPIO_ResetBits(GPIOC,L_1602A_E);
 
-u8 arm_string[] = {"arm ok   "};
-u8 disarm_string[] = {"disarm ok"};
-u8 elin[] = {">23456789012345*"};
+uint8_t arm_string[] = {"arm ok   "};
+uint8_t disarm_string[] = {"disarm ok"};
+uint8_t elin[] ={ "     e-Lin      " };
+
+uint8_t elinsharp[] = { "     e-Lin     *" };
+
 
 GPIO_InitTypeDef GPIO_InitStructure;
 
 void GPIO_Config(void); 
 void Busy_Wait(void); 
 void Write_Cmd(uint8_t Cmd); 
-void LCD1206_Write_Data(uint8_t Data);
+void LCD1602_Write_Data(uint8_t Data);
 void Write_String(uint8_t cmd,uint8_t* p); 
 void LCD1602_Init(void); 
 
-void LCD1602_Delay(uint32_t t); 
+void LCD1602_Delay(uint32_t t);
 
+
+uint32_t LCD1602TIM=500, lcd1602time,flag;
+void LCD1602_Flashing(uint32_t ms){
+//LCD1602TIM = ms;
+if (flag&&(LCD1602TIM < TIM4_GetDistanceTime(lcd1602time))){
+	Write_String(0x8f, "*");
+	flag =0;
+}
+else if ((LCD1602TIM * 1.8) < TIM4_GetDistanceTime(lcd1602time)){
+	Write_String(0x8f, " ");
+	flag =1;
+	lcd1602time = TIM4_GetCurrentTime();
+}
+}
 //uint8_t Read_Data(void); 
 
-void lcd1602_GPIO_Init(){
+void LCD1602_GPIO_Init(){
 
 	//RCC_APB2PeriphClockCmd(LCD1602_RCC_PORT, ENABLE);
 	//1602A
@@ -339,7 +357,7 @@ void Write_Cmd(uint8_t Cmd)
 	Reset_E();
 }
 
-void LCD1206_Write_Data(uint8_t Data)
+void LCD1602_Write_Data(uint8_t Data)
 {
 	Busy_Wait();
 	Set_RS();
@@ -373,7 +391,7 @@ void Write_String(uint8_t cmd,uint8_t* p)
 
 	while(*p!='\0') 
 	{ 
-		LCD1206_Write_Data(*p++);
+		LCD1602_Write_Data(*p++);
 		// Buffer[i++]=Read_Data(); 
 	} 
 } 
@@ -403,7 +421,7 @@ void display_disarm()
 */
 void LCD1602_Init(void) 
 { 
-	lcd1602_GPIO_Init();
+	LCD1602_GPIO_Init();
 	Delay_ms(15);
 	Write_Cmd(0x38); 
 	Delay_ms(5);
@@ -414,8 +432,8 @@ void LCD1602_Init(void)
 	Write_Cmd(0x0C);
 	
 	
-	Write_String(0x85,elin);
-	Write_String(0xC5,elin);
+	Write_String(0x80,elin);
+	Write_String(0xC0,elin);
 } 
 
  

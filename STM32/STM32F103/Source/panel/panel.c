@@ -1,8 +1,16 @@
 /*
  * panel.c
  *
- *  Created on: 2015骞�鏈�7鏃�
+ *  Created on: 2015
  *      Author: souls
  */
 
-//#include "../LCD1602/lcd_1602a.h"
+#include "../LCD1602/lcd_1602a.h"
+
+
+void panel(void){
+	
+	LCD1602_Init();
+
+
+}

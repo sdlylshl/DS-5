@@ -7,9 +7,7 @@
 #include "Beep.h"
 #include "../System/Delay/SysTick.h"
 volatile uint32_t beeptime = 0; // ms 计时变量
-extern void BeepCallback(void);
-void BeepCallbackNull(void){;}
-void (*BeepCallback_ISR)(void) =BeepCallbackNull;
+void(*BeepCallback_ISR)(void) = CallbackNull;
 	
 extern void Delay_ms(__IO uint32_t ms);
 void BEEP_GPIO_Config(void) {
@@ -30,18 +28,18 @@ void Beep(uint32_t ms){
 	BEEPOFF();
 }
 
+void BeepCallback(void){
+
+	if(!beeptime){
+		BEEPOFF();
+		BeepCallback_ISR = CallbackNull;
+	}
+		beeptime--;
+}
+
 void BeepStart(uint32_t ms){
 	beeptime = ms;
 	BEEP_GPIO_Config();
 	BEEPON();
 	BeepCallback_ISR=BeepCallback;
-}
-
-void BeepCallback(void){
-
-	if(!beeptime){
-		BEEPOFF();
-		BeepCallback_ISR=BeepCallbackNull;
-	}
-		beeptime--;
 }

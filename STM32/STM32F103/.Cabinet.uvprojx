@@ -751,6 +751,16 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>Panel</GroupName>
+          <Files>
+            <File>
+              <FileName>panel.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\panel\panel.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
         <Group>
