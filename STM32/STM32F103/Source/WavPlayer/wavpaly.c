@@ -191,7 +191,7 @@ void wavplay() {
 	
 	
 	printf("play end ");
-__set_PRIMASK(1);
+//__set_PRIMASK(1);
 }
 uint8_t nu = 0;
 

@@ -61,6 +61,9 @@
     <Filter Include="源文件\GPIO\RS485">
       <UniqueIdentifier>{a10acd3e-9ca9-4ab8-a0b9-ce09055da5c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\DS1302">
+      <UniqueIdentifier>{de6ffb64-9c4b-4b26-a6d6-eff2bd64ff4c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Main.c">
@@ -246,6 +249,9 @@
     <ClCompile Include="..\Source\Algorithm\BipBuffer\mainBipBuffer.c">
       <Filter>源文件\Algorithm</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\DS1302\ds1302.c">
+      <Filter>源文件\DS1302</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Source\LCD12864\LCD12864P\LCD12864P.C">
@@ -282,6 +288,9 @@
     </ClInclude>
     <ClInclude Include="..\Source\GPIO\RS485.h">
       <Filter>源文件\GPIO\RS485</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\DS1302\ds1302.h">
+      <Filter>源文件\DS1302</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

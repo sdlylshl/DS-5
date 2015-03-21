@@ -8,11 +8,16 @@
 #include "../LCD1602/lcd_1602a.h"
 #include "../Algorithm/Buffer/buffer.h"
 #include "../System/Usart/usart2.h"
+#include "../GPIO/RS485.h"
+#include "../KEY/key.h"
 //全局变量 布防状态
 //A 0 布防 B 1 撤防 C 2 取消报警状态 
-volatile uint8_t PanelStatus =0;
-
-
+volatile uint8_t PanelStatus = 0;
+//用来监视 PanelStatus 状态改变是否是用户操作
+// 1.有布撤防状态改变 2.设置通道映射
+uint8_t KeyFlag = 0;
+uint8_t bufangFlag = 0;
+uint8_t tongdaoFlag = 0;
 #define POLL_CMD 				0
 #define SET_USER_PASSWD			0x2
 #define SET_ADMIN_PASSWD		0x3
@@ -28,10 +33,15 @@ volatile uint8_t PanelStatus =0;
 #define PANEL_CMD_HEAD 0xFC
 #define PANEL_CMD_MINLEN 4
 #define PANEL_MAX_LEN 8
+
+uint8_t xintiao[6] = { 0 };
+uint8_t bufang[8] = { 0 };
+uint8_t tongdao[10] = { 0 };
+
 typedef struct panelcmd {
 	//uint8_t HEAD;
-	uint8_t cmd;
 	uint8_t len;
+	uint8_t cmd;
 	uint8_t index;
 	uint8_t data[PANEL_MAX_LEN];
 	uint8_t checksum;
@@ -46,34 +56,117 @@ uint8_t calcfcs(uint8_t *pmsg, uint8_t len) {
 	}
 	return result;
 }
+void answer(uint8_t *pmsg, uint8_t len){
 
+	uint8_t result = 0;
+	RS485_TX();
 
-void buchefang(PANELCMD_t * pan){
+	RS485_SendChar(PANEL_CMD_HEAD);
+	while (len--) {
+		RS485_SendChar(*(pmsg++));
+	}
+	
+	RS485_RX();
+}
 
+static void ansbufang(PANELCMD_t * pan){
+	uint32_t i;
+
+	RS485_TX();
+	//Delay_ms(50);
+	for(i=0;i<0xFFFFFF;i++);
+	pan->checksum = 0;
+	RS485_SendChar(PANEL_CMD_HEAD);
+	pan->checksum ^= pan->len;
+	RS485_SendChar(pan->len);
+	pan->checksum ^= pan->cmd;
+	RS485_SendChar(pan->cmd);
+	pan->checksum ^= pan->index;
+	RS485_SendChar(pan->index);
+	for (i = 0; i < pan->len; i++)
+	{
+		pan->checksum ^= pan->data[i];
+		RS485_SendChar(pan->data[i]);
+	}
+	RS485_SendChar(pan->checksum);
+	for(i=0;i<0xFFFFFF;i++);
+	RS485_RX();
+}
+
+static void recvbuchefang(PANELCMD_t * pan){
+	static uint8_t lastId;
 	switch (pan->data[0])
 	{
 		//布防
 	case 0:
 		PanelStatus = 0;
-		break;
+		//break;
 		//撤防
 	case 1:
 		PanelStatus = 1;
-		break;
+		//break;
 		//取消报警
 	case 2:
 		PanelStatus = 2;
+		KeyFlag &= 0xFE;
+		pan->data[0] = 0xff;
+		ansbufang(pan);
+		//wavplay(yuanchengbufang);
 		break;
 	default:
+		//0xFF	
 
+		if ((bufangFlag == lastId) && lastId)
+		{
+			//布防失败
+			KeyFlag &= 0xFE;
+			pan->data[0] = PanelStatus;
+			ansbufang(pan);
+		}
+		else if ((tongdaoFlag == lastId) && lastId)
+		{
+			//通道设置失败
+			KeyFlag &= 0xFD;
+
+
+		}
+		else
+		{
+			if((bufangFlag == lastId) && lastId){
+			//布防成功
+			bufangFlag = 0;
+			}	else	if((tongdaoFlag == lastId) && lastId){
+			tongdaoFlag = 0;
+			}
+			//因为ID 改变了 所以 一定是数据接收成功了
+			lastId = pan->index;
+			
+			//新指令
+			if ((KeyFlag & 0x01) && lastId){
+				KeyFlag &= 0xFE;
+				pan->data[0] = PanelStatus;
+				ansbufang(pan);
+				bufangFlag = lastId;
+			}
+			else if ((KeyFlag & 0x02) && lastId){
+				//通道设置
+				KeyFlag &= 0xFD;
+				tongdaoFlag = lastId;
+			}
+			else{
+				//普通应答 心跳
+				pan->data[0] = 0xFF;
+				ansbufang(pan);
+			}
+		}
 		break;
 	}
 }
-void panel_parsedata(PANELCMD_t * pan){
+static void panel_parsedata(PANELCMD_t * pan){
 	switch (pan->cmd)
 	{
 	case POLL_CMD:
-		buchefang(pan);
+		recvbuchefang(pan);
 		break;
 	case SET_USER_PASSWD:
 
@@ -85,46 +178,71 @@ void panel_parsedata(PANELCMD_t * pan){
 		break;
 	}
 }
-	int tmp;
+
+uint16_t panel_getbufang(){
+	uint16_t ckey;
+	ckey = KeySacn();
+	switch (ckey)
+	{
+	case KEY_A:
+		PanelStatus = 0;
+		KeyFlag = 1;
+		break;
+	case KEY_B:
+		PanelStatus = 1;
+		KeyFlag = 1;
+		break;
+	case KEY_C:
+		PanelStatus = 2;
+		KeyFlag = 1;
+		break;
+	default:
+		break;
+	}
+}
+int tmp;
 void panel(void) {
 	uint8_t go = 0;
-
 	Ebuffer_Init((uint8_t *)&USART2_read, (uint8_t *)&USART2_write, USART2_ReciveBuff);
 	RS485_init();
+	KeyInit();
 	LCD1602_Init();
-	while (1) {
 
+	while (1) {
+		panel_getbufang();
 		if (go) {
 			goto GOON;
-		} else {
-			if (Ebuffer_getused() > PANEL_CMD_MINLEN) {
-					tmp = Ebuffer_getused();//test
+		}
+		else {
+			if (Ebuffer_getused() >= PANEL_CMD_MINLEN) {
+				tmp = Ebuffer_getused();//test
 				if (Ebuffer_read() == PANEL_CMD_HEAD) {
 					panelcmd.len = Ebuffer_read();
-					if(panelcmd.len<PANEL_MAX_LEN){
-						
-					GOON:
-					//接收到完整的指令
-					tmp = Ebuffer_getused();//test
-					if (Ebuffer_getused() > panelcmd.len + 3) {
+					if (panelcmd.len < PANEL_MAX_LEN){
 
-						//数据校验
-						if (calcfcs(Ebuffer_getpbufer(), panelcmd.len + 3)) {
-							panelcmd.cmd = Ebuffer_read();
-							panelcmd.index = Ebuffer_read();
-							Ebuffer_reads(panelcmd.data,panelcmd.len);
-							panelcmd.checksum =Ebuffer_read();
-							
-							//数据解析
-							panel_parsedata(panelcmd);
+					GOON:
+						//接收到完整的指令
+						tmp = Ebuffer_getused();//test
+						if (Ebuffer_getused() >= panelcmd.len + 3) {
+
+							//数据校验
+							if (!calcfcs(Ebuffer_getpbufer(), panelcmd.len + 4)) {
+								panelcmd.cmd = Ebuffer_read();
+								panelcmd.index = Ebuffer_read();
+								Ebuffer_reads(panelcmd.data, panelcmd.len);
+								panelcmd.checksum = Ebuffer_read();
+
+								//数据解析
+								panel_parsedata(&panelcmd);
+							}
+							go = 0;
 						}
-						go = 0;
-					}else{
-					//未接收到完整指令
-					go = 1;
+						else{
+							//未接收到完整指令
+							go = 1;
+						}
 					}
 				}
-			}
 			}
 		}
 	}

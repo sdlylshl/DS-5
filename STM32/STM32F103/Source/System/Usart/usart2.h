@@ -72,7 +72,7 @@ extern uint8_t USART2_SendBuff[USART2_BUFF_SIZE];
 #define USART2_CK_MODE			GPIO_Mode_AF_PP
 #endif
 
-
+uint8_t USART2_SendChar(uint8_t ch);
 extern void USART2_Init(void);
 extern void USART2_IRQHandler(void);
 #endif /* __USART2_H */

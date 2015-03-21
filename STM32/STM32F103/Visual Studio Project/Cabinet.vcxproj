@@ -38,6 +38,7 @@
   <ItemGroup>
     <ClCompile Include="..\Source\Algorithm\BipBuffer\BipBuffer.c" />
     <ClCompile Include="..\Source\Algorithm\BipBuffer\mainBipBuffer.c" />
+    <ClCompile Include="..\Source\DS1302\ds1302.c" />
     <ClCompile Include="..\Source\FATFS\diskio.c" />
     <ClCompile Include="..\Source\FATFS\ff.c" />
     <ClCompile Include="..\Source\FATFS\option\cc936.c" />
@@ -100,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Libraries\CMSIS\CM3\CoreSupport\core_cm3.h" />
+    <ClInclude Include="..\Source\DS1302\ds1302.h" />
     <ClInclude Include="..\Source\FATFS\diskio.h" />
     <ClInclude Include="..\Source\FATFS\ff.h" />
     <ClInclude Include="..\Source\FATFS\ffconf.h" />

@@ -35,7 +35,7 @@
 #define KEY_PRESSED 0
 extern uint8_t isKeyRelease(void);
 extern uint8_t isKeyPress(void);
+extern void KeyInit(void);
+extern  uint16_t KeySacn(void);
 extern uint16_t GetKey(void);
-
-
 #endif /* KEY_H_ */

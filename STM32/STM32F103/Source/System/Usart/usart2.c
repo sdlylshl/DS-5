@@ -151,6 +151,15 @@ void USART2_Init(void) {
 	USART_ClearFlag(USART2, USART_FLAG_TC);
 }
 
+
+uint8_t USART2_SendChar(uint8_t ch) {
+
+	USART_SendData(USART2, (uint8_t)ch);
+	while (USART_GetFlagStatus(USART2, USART_FLAG_TC) == RESET);
+	return ch;
+
+}
+
 //接收中断
 void USART2_IRQHandler(void) {
 	
