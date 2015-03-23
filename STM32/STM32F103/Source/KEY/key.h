@@ -38,4 +38,5 @@ extern uint8_t isKeyPress(void);
 extern void KeyInit(void);
 extern  uint16_t KeySacn(void);
 extern uint16_t GetKey(void);
+extern uint8_t isKey(uint16_t key);
 #endif /* KEY_H_ */

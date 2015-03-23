@@ -67,6 +67,30 @@ uint8_t isKeyPress(){
 
 	return (!isKeyRelease());
 }
+uint8_t isKey(uint16_t key){
+	return (
+	key == KEY_A||
+	key == KEY_B||
+	key == KEY_C||
+	key == KEY_1||
+	key == KEY_2||
+	key == KEY_3||
+	key == KEY_4||
+	key == KEY_5||
+	key == KEY_6||
+	key == KEY_7||
+	key == KEY_8||
+	key == KEY_9||
+	key == KEY_0||
+	key == KEY_F1||
+	key == KEY_F2||
+	key == KEY_F3||
+	key == KEY_F4||
+	key == KEY_STAR||
+	key == KEY_SHARP
+	);
+
+}
 uint16_t KeySacn(){
 	uint8_t i;
 	key = 0;
@@ -84,15 +108,18 @@ uint16_t KeySacn(){
 			key |= GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11) << 7;
 			key |= GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0) << 8;
 			KeyInit();
-
-			BeepStart(50);
+			if(isKey(key)){
+				BeepStart(50);
+			}else{
+				key =0;
+			}
 		}
 	}
 	return key;
 }
 uint16_t GetKey(){
 	KeyInit();
-	while (isKeyRelease());
+	while (isKeyPress());
 	KeySacn();
 	return key;
 }

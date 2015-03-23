@@ -24,7 +24,8 @@ int main() {
 	///BeepStart(500);
 	LEDFlashing(500);
 	LED3(1);
-		//BeepStart(500);
+	printf("helo!");
+	//BeepStart(500);
 	__set_PRIMASK(0);
 //	USART3_Init();
 	panel();
