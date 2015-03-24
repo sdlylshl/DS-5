@@ -23,8 +23,10 @@ void BEEP_GPIO_Config(void) {
 }
 
 void Beep(uint32_t ms){
+
+	BEEP_GPIO_Config();
 	BEEPON();
-	Delay_ms(ms);
+	Delay_ms(60);
 	BEEPOFF();
 }
 

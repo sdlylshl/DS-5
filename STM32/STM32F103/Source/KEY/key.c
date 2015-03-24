@@ -95,7 +95,7 @@ uint16_t KeySacn(){
 	uint8_t i;
 	key = 0;
 	if (isKeyPress()){
-		for (i = 100; i > 0; i--){ ; }
+		for (i = 0xff; i > 0; i--){ ; }
 		if (isKeyPress()){
 			key = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_15);
 			key |= GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_14) << 1;
@@ -109,7 +109,8 @@ uint16_t KeySacn(){
 			key |= GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0) << 8;
 			KeyInit();
 			if(isKey(key)){
-				BeepStart(50);
+				//BeepStart(50);
+				Beep(500);
 			}else{
 				key =0;
 			}

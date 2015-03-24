@@ -16,7 +16,8 @@
 #define L_1602A_E				GPIO_Pin_12
 
 void Lcd_Write_Command(unsigned char x,char Busy) ;
-
+void LCD1602_Write_Data(uint8_t Data);
+void Write_String(uint8_t cmd, uint8_t* p);
 extern void LCD1602_Update(void);
 extern void LCD1602_Init(void);
 extern void LCD1602_Flashing(uint32_t ms);
