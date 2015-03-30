@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C1DFD455-D401-4833-8E78-5DE05F0119C5}</ProjectGuid>
+    <RootNamespace>internal_can_VS</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\Keil_v5\ARM\ARMCC\include;C:\Keil_v5\ARM\Pack\ARM\CMSIS\4.1.1\CMSIS\Include;C:\Keil_v5\ARM\Pack\Keil\STM32F1xx_DFP\1.0.5\Device\Include;C:\Keil_v5\ARM\Pack\Keil\STM32F1xx_DFP\1.0.5\Device\StdPeriph_Driver\inc;..\..\..\RTE;..\..\..\RTE\Device\STM32F103VE;..\..\..\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>STM32F10X_HD;USE_STDPERIPH_DRIVER;__CC_ARM;USE_STM32100B_EVAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\include\can.h" />
+    <ClInclude Include="..\..\..\include\can_dual.h" />
+    <ClInclude Include="..\..\..\include\can_zj.h" />
+    <ClInclude Include="..\..\..\include\config.h" />
+    <ClInclude Include="..\..\..\include\delay.h" />
+    <ClInclude Include="..\..\..\include\ds1302.h" />
+    <ClInclude Include="..\..\..\include\flash.h" />
+    <ClInclude Include="..\..\..\include\hardware.h" />
+    <ClInclude Include="..\..\..\include\led.h" />
+    <ClInclude Include="..\..\..\include\pt2262.h" />
+    <ClInclude Include="..\..\..\include\RS485.h" />
+    <ClInclude Include="..\..\..\include\stm32f10x_it.h" />
+    <ClInclude Include="..\..\..\include\sys.h" />
+    <ClInclude Include="..\..\..\include\timer.h" />
+    <ClInclude Include="..\..\..\include\Types.h" />
+    <ClInclude Include="..\..\..\include\usart.h" />
+    <ClInclude Include="..\..\..\include\util.h" />
+    <ClInclude Include="..\..\..\RTE\Device\STM32F103VE\RTE_Device.h" />
+    <ClInclude Include="..\..\..\RTE\Device\STM32F103VE\stm32f10x_conf.h" />
+    <ClInclude Include="..\..\..\RTE\RTE_Components.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\hareware\can.c" />
+    <ClCompile Include="..\..\..\hareware\delay.c" />
+    <ClCompile Include="..\..\..\hareware\DS1302.c" />
+    <ClCompile Include="..\..\..\hareware\flash.c" />
+    <ClCompile Include="..\..\..\hareware\hardware.c" />
+    <ClCompile Include="..\..\..\hareware\led.c" />
+    <ClCompile Include="..\..\..\hareware\RS485.c" />
+    <ClCompile Include="..\..\..\hareware\timer.c" />
+    <ClCompile Include="..\..\..\hareware\usart.c" />
+    <ClCompile Include="..\..\..\users\main.c" />
+    <ClCompile Include="..\..\..\users\pt2262.c" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
