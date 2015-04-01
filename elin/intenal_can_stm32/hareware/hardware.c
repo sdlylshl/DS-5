@@ -10,7 +10,7 @@ uint8_t flag_down_state = 0;
 Boolean flag_check_card_been_got_away_state = FALSE;
 
 Boolean check_test_card_state = FALSE;
-Boolean flag_send_heart_signal = FALSE;
+Boolean flag_send_heart_signal = 1;
 uint8_t times_heart_signal_lost = 0;
 uint16_t heart_signal_inteval = 20;
 Stu_Can_Msg  can_msg_lst[CAN_MSG_LEN];
@@ -112,6 +112,7 @@ void scan_alarm_state(void)
 void heart_signal_send(void)
 {
 	if(flag_send_heart_signal)//·¢ËÍÐÄÌø
+	if(1)
 	{
 			Stu_Can_Msg * msg = get_a_msg();
 			if(msg != NULL)
@@ -125,6 +126,7 @@ void heart_signal_send(void)
 			{
 				printf("[heart_signal_send]Can Msg Lst is full !\r\n");
 			}
+			msg->data[0]=10;
 			flag_send_heart_signal = FALSE;
 			can_send_Msg(msg);
 	}

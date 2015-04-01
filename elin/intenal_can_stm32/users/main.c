@@ -26,12 +26,15 @@ printf( "\r\n***** 这是一个双CAN通讯实验******** \r\n");
 	 for(tmp = 0;tmp < 3;tmp++)
 	 printf("%2x ",Default_Conf_Dat.arr_dat[tmp]);
 	 printf("\r\n");
+	Default_Conf_Dat.Stu_Dat.tm_online_signal_inteval =0x100; 
 	while (1)
 	{
-		decode_rs232_buf();
-		scan_alarm_state();
-		heart_signal_send();
-		decode_can_rx_msg();
+		CAN_SetMsg();
+		
+		//decode_rs232_buf();
+		//scan_alarm_state();
+		//heart_signal_send();
+		//decode_can_rx_msg();
 		//delay_ms(500);
 //		delay_ms(500);
 		LED2 = !LED2;
@@ -44,7 +47,7 @@ printf( "\r\n***** 这是一个双CAN通讯实验******** \r\n");
 
 //		/*发送消息 “CDAB”**/
 //		CAN_Transmit(CAN1, &TxMessage);		
-		delay_ms(500);
+		delay_ms(1000);
 
 	}  
 }

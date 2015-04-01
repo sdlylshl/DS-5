@@ -8,7 +8,7 @@
 #define  Rx_Polling	1
 #define Test_Tx
 #define Test_Rx
-#define CAN_BTR  500
+#define CAN_BTR  800
 
 #ifndef Rx_Polling
 #define  Rx_Interrupt	1
@@ -23,10 +23,10 @@ typedef enum {KeyPressed=0,KeyRelease = !KeyPressed}KeyStatus;
 #define TJA1054AT_STB  GPIO_Pin_8
 #define TJA1054AT_EN   GPIO_Pin_9
 
-#define CAN1_NVIC	1
+#define CAN1_NVIC
 
-#define CAN1_NONREMAP
-//#define CAN1_PARTIALREMAP
+//#define CAN1_NONREMAP
+#define CAN1_PARTIALREMAP
 //#define CAN1_FULLREMAP
 //复用功能
 //PA11  PB8  PD0  CAN1_RX 或 AN_RX
@@ -70,7 +70,7 @@ TestStatus CAN_Polling(void);
 void CAN_Interrupt(void);
 void Can_Init(void);
 void CAN_main(void);
-
+void CAN1_Config(void) ;
 void USB_HP_CAN_TX_IRQHandle(void);
 void USB_LP_CAN_RX0_IRQHandle(void);
 void CAN_RX1_IRQHandle(void);

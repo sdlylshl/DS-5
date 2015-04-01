@@ -96,14 +96,17 @@ static void CAN_Filter_Config(void)
 
 	/*CAN过滤器初始化*/
 	CAN_FilterInitStructure.CAN_FilterNumber=0;						//过滤器组0
-    CAN_FilterInitStructure.CAN_FilterMode=CAN_FilterMode_IdMask;	//工作在标识符屏蔽位模式
+	//过滤器模式设置:(1) 1个32位的屏蔽位模式的过滤器. (2) 2个32位的列表模式的过滤器. (3) 2个16位的屏蔽位模式的过滤器. (4) 4个16位的列表模式的过滤器
+  CAN_FilterInitStructure.CAN_FilterMode=CAN_FilterMode_IdMask;	//工作在标识符屏蔽位模式
 	CAN_FilterInitStructure.CAN_FilterScale=CAN_FilterScale_32bit;	//过滤器位宽为单个32位。
 	/* 使能报文标示符过滤器按照标示符的内容进行比对过滤，扩展ID不是如下的就抛弃掉，是的话，会存入FIFO0。 */
 
 	CAN_FilterInitStructure.CAN_FilterIdHigh = ( ( ( u32 ) Default_Conf_Dat.Stu_Dat.filter_id << 3 ) & 0xFFFF0000 ) >> 16;				//要过滤的ID高位 
 	CAN_FilterInitStructure.CAN_FilterIdLow = ( ( ( u32 ) Default_Conf_Dat.Stu_Dat.filter_id << 3 ) | CAN_ID_EXT | CAN_RTR_DATA ) & 0xFFFF; //要过滤的ID低位 
-    CAN_FilterInitStructure.CAN_FilterMaskIdHigh= 0xFFFF;			//过滤器高16位每位必须匹配
-    CAN_FilterInitStructure.CAN_FilterMaskIdLow= 0xFFFF;			//过滤器低16位每位必须匹配
+  //屏蔽模式 为1的位必须匹配 ,为0的位 不进行匹配
+	CAN_FilterInitStructure.CAN_FilterMaskIdHigh= 0;			//过滤器高16位每位必须匹配
+  CAN_FilterInitStructure.CAN_FilterMaskIdLow= 0;			//过滤器低16位每位必须匹配
+	
 	CAN_FilterInitStructure.CAN_FilterFIFOAssignment=CAN_Filter_FIFO0 ;				//过滤器被关联到FIFO0
 	CAN_FilterInitStructure.CAN_FilterActivation=ENABLE;			//使能过滤器
 	CAN_FilterInit(&CAN_FilterInitStructure);
@@ -145,6 +148,7 @@ void CAN_SetMsg(void)
   TxMessage.Data[0]=(Default_Conf_Dat.Stu_Dat.dest_std_id>>8) & 0xff;
   TxMessage.Data[1]=Default_Conf_Dat.Stu_Dat.dest_std_id & 0xff;
 	TxMessage.Data[7]=can_sn++;
+CAN_Transmit(CAN1, &TxMessage);
 }
 
 void can_send_Msg(Stu_Can_Msg * msg)
@@ -168,8 +172,9 @@ void USB_LP_CAN1_RX0_IRQHandler(void)
   CAN_Receive(CAN1, CAN_FIFO0, &RxMessage);
 
   /* 比较ID和数据是否为0x1314及DCBA */
-  if((RxMessage.ExtId==Default_Conf_Dat.Stu_Dat.filter_id) && (RxMessage.IDE==CAN_ID_EXT) )
-  {
+  //if((RxMessage.ExtId==Default_Conf_Dat.Stu_Dat.filter_id) && (RxMessage.IDE==CAN_ID_EXT) )
+  if(1)
+	{
 		int i = 0;
 		for(;i < RxMessage.DLC;i++)
 		{

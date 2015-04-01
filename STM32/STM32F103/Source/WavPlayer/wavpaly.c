@@ -8,9 +8,10 @@
 #include "stdio.h"
 //#include "ms.h"
 //#include "dear.h"
+#include "wavplay.h"
 #include "stm32f10x_dac.h"
 #include "stm32f10x_tim.h"
-uint8_t * dear="12345";
+extern void TIMx_IRQHandle(void);
 #if Big-Endian
 // 大端模式
 const uint32_t DWWAV_RIFF = 0x52494646;
@@ -66,12 +67,12 @@ uint8_t CHanalnum;
 uint8_t Bitnum;
 uint8_t DACdone;
 WAVE_info_u wavinfo;
-
+void(*WaveCallback_ISR)(void) = CallbackNull;
 uint8_t Check_Ifo(uint8_t* pbuf1, uint8_t* pbuf2) {
 	uint8_t i;
 	for (i = 0; i < 4; i++)
-		if (pbuf1[i] != pbuf2[i])
-			return 1;
+	if (pbuf1[i] != pbuf2[i])
+		return 1;
 	return 0;
 }
 
@@ -85,25 +86,25 @@ uint8_t WAV_Init(uint8_t* pbuf) //初始化并显示文件信息	注: 仅适用�
 
 	if (wavinfo.wavhead.chriff != DWWAV_RIFF) {
 		printf("RIFF标志错误\n");
-//		return 1;	//RIFF标志错误
+		//		return 1;	//RIFF标志错误
 	}
 	//wav1.wavlen = Get_num(pbuf + 4, 4);		//文件长度，数据偏移4byte
 	if (wavinfo.wavhead.chwav != DWWAV_WAVE) {
 		printf("WAVE标志错误\n");
-//		return 2;		//WAVE标志错误
+		//		return 2;		//WAVE标志错误
 	}
 	if (wavinfo.wavhead.chfmt != DWWAV_FMT) {
 		printf("FMT标志错误\n");
-//		return 3;		//fmt标志错误
+		//		return 3;		//fmt标志错误
 	}
 	if (wavinfo.wavhead.chdata != DWWAV_DATA) {
 		printf("data标志错误\n");
-//		return 4;		//data标志错误
+		//		return 4;		//data标志错误
 	}
 	//offset 必须等于0x2c
 	printf("offset:0x%x %d\n",
-			wavinfo.wavhead.wavlen - wavinfo.wavhead.DATAlen + 8,
-			wavinfo.wavhead.wavlen - wavinfo.wavhead.DATAlen + 8);
+		wavinfo.wavhead.wavlen - wavinfo.wavhead.DATAlen + 8,
+		wavinfo.wavhead.wavlen - wavinfo.wavhead.DATAlen + 8);
 
 	printf("filesize: %d\n", wavinfo.wavhead.wavlen + 8);
 	printf("wavlen:   %d\n", wavinfo.wavhead.wavlen);
@@ -113,7 +114,7 @@ uint8_t WAV_Init(uint8_t* pbuf) //初始化并显示文件信息	注: 仅适用�
 	printf("采样位数BitsPerSample: %d\n", wavinfo.wavhead.BitsPerSample);
 	printf("采样频率SamplesPerSec: %d\n", wavinfo.wavhead.SamplesPerSec);
 	printf("比特率AvgBytesPerSec: %dkps\n",
-			wavinfo.wavhead.AvgBytesPerSec * 8 / 1000);
+		wavinfo.wavhead.AvgBytesPerSec * 8 / 1000);
 
 	return 0;
 }
@@ -126,21 +127,21 @@ uint32_t pos;
 uint8_t volume = 100; //音量
 uint8_t wav_buf[1024];
 uint32_t DApc;
-void wavplay() {
-	uint32_t times, i,j;
-	uint8_t * music = (uint8_t *)dear;
+void wavplay(uint8_t * music) {
+	uint32_t times, i, j;
+	//uint8_t * music = (uint8_t *)dear;
 	WAV_Init(music);
-//	配置分频系数
-	switch (wavinfo.wavhead.SamplesPerSec) {	
-		case 8000:
+	//	配置分频系数
+	switch (wavinfo.wavhead.SamplesPerSec) {
+	case 8000:
 		timeseting.Period = 125;
 		timeseting.Prescaler = 71;
 		break;
-		case 11025:
+	case 11025:
 		timeseting.Period = 181;
 		timeseting.Prescaler = 35;
 		break;
-		case 22050:
+	case 22050:
 		timeseting.Period = 136;
 		timeseting.Prescaler = 23;
 		break;
@@ -166,17 +167,18 @@ void wavplay() {
 	TIM_SetCounter(TIM2, 0);
 	TIM_SetAutoreload(TIM2, timeseting.Period);
 	TIM_PrescalerConfig(TIM2, timeseting.Prescaler, TIM_PSCReloadMode_Immediate);
-	
-		music+=0x2c;
-		for (j = 0; j < 512; j++) {
-			wav_buf[j] = *(music++);
-		}
-		DApc =0;
+
+	music += 0x2c;
+	for (j = 0; j < 512; j++) {
+		wav_buf[j] = *(music++);
+	}
+	DApc = 0;
+	WaveCallback_ISR = TIMx_IRQHandle;
 	__set_PRIMASK(0);
 	times = (wavinfo.wavhead.DATAlen >> 10) - 1;
-//	music = (uint8_t *)dear;
+	//	music = (uint8_t *)dear;
 	for (i = 0; i < times; i++) {
-		
+
 		while (!DACdone);
 		DACdone = 0;
 		for (; j < 1024; j++) {
@@ -188,39 +190,42 @@ void wavplay() {
 			wav_buf[j] = *(music++);
 		}
 	}
-	
-	
+
+	WaveCallback_ISR = CallbackNull;
+
 	printf("play end ");
-//__set_PRIMASK(1);
+	//__set_PRIMASK(1);
 }
 uint8_t nu = 0;
-
 void TIMx_IRQHandle() {
-	
+
 	uint16_t DACL_Value, DACR_Value;
-	
+
 	if (wavinfo.wavhead.BitsPerSample == 8) { //8位精度
 		if (wavinfo.wavhead.Channels == 1) {	//单声道
-			DACL_Value = ((uint16_t) wav_buf[DApc++]<<4 )* volume / 100 ;
+			DACL_Value = ((uint16_t)wav_buf[DApc++] << 4)* volume / 100;
 			DACR_Value = DACL_Value;
-		} else {	//立体声
-			DACL_Value = ((uint16_t) wav_buf[DApc++] << 4) * volume / 100;
-			DACR_Value = ((uint16_t) wav_buf[DApc++] << 4) * volume / 100;
+		}
+		else {	//立体声
+			DACL_Value = ((uint16_t)wav_buf[DApc++] << 4) * volume / 100;
+			DACR_Value = ((uint16_t)wav_buf[DApc++] << 4) * volume / 100;
 		}
 
-	} else if (wavinfo.wavhead.BitsPerSample == 16) {	//16位精度(先低位后高位)
+	}
+	else if (wavinfo.wavhead.BitsPerSample == 16) {	//16位精度(先低位后高位)
 		if (wavinfo.wavhead.Channels == 1) {	//单声道
 			//DACL_Value = (((uint8_t) (wav_buf[DApc + 1] - 0x80) << 4) | (wav_buf[DApc] >> 4))* volume / 100 ;
-			
-			DACL_Value = (((uint8_t) (wav_buf[DApc + 1] -0x80)<<4) )* volume / 100 ;
-			DApc+=2;
-			DACR_Value = DACL_Value;
-		} else {	//立体声
 
-			DACL_Value = (((uint8_t) (wav_buf[DApc + 1] - 0x80) << 4)	| (wav_buf[DApc] >> 4))* volume / 100;
-			DApc+=2;
-			DACR_Value = (((uint8_t) (wav_buf[DApc + 1] - 0x80) << 4)	| (wav_buf[DApc] >> 4))* volume / 100;
-			DApc+=2;
+			DACL_Value = (((uint8_t)(wav_buf[DApc + 1] - 0x80) << 4))* volume / 100;
+			DApc += 2;
+			DACR_Value = DACL_Value;
+		}
+		else {	//立体声
+
+			DACL_Value = (((uint8_t)(wav_buf[DApc + 1] - 0x80) << 4) | (wav_buf[DApc] >> 4))* volume / 100;
+			DApc += 2;
+			DACR_Value = (((uint8_t)(wav_buf[DApc + 1] - 0x80) << 4) | (wav_buf[DApc] >> 4))* volume / 100;
+			DApc += 2;
 		}
 	}
 	DAC_SetChannel1Data(DAC_Align_12b_R, DACL_Value);
@@ -229,11 +234,11 @@ void TIMx_IRQHandle() {
 		DAC_SetChannel2Data(DAC_Align_12b_R, DACR_Value);
 		DAC_SoftwareTriggerCmd(DAC_Channel_2, ENABLE);
 	}
-//	实现双缓冲
+	//	实现双缓冲
 	if (DApc == 512)
 		DACdone = 1;
 	if (DApc == 1024) {
-//		printf("%d \n",((nu++)*100)/((wavinfo.wavhead.DATAlen >> 10)));
+		//		printf("%d \n",((nu++)*100)/((wavinfo.wavhead.DATAlen >> 10)));
 		DApc = 0;
 		DACdone = 1;
 	}

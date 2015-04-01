@@ -22,12 +22,12 @@
 //#define  LED2_PIN      GPIO_Pin_1			// PD1  社会安防V1.0 --朱文飞
 //#define  LED2_PIN      GPIO_Pin_5			// PD5  PARKINGV2.0  
 #define  LED2_PIN      GPIO_Pin_2			// PD2  panel
-
+//#define  LED2_PIN      GPIO_Pin_14			// //	储物柜 host 13 14 15
 #define  LED3_USE					 1
 #define  LED3_PORT     GPIOC
 //#define  LED3_PIN      GPIO_Pin_11
 #define  LED3_PIN      GPIO_Pin_15		//panel 键盘按键登
-
+//#define  LED3_PIN      GPIO_Pin_6		 //	储物柜 host
 #define  LED4_USE					 0
 #define  LED4_PORT     GPIOD
 #define  LED4_PIN      GPIO_Pin_3  		//zhuwenfei

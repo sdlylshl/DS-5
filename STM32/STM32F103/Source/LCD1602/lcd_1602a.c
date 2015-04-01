@@ -431,7 +431,7 @@ void LCD1602_Init(void)
 	Write_Cmd(0x06); 
 	Write_Cmd(0x0C);
 	
-	
+ 
 	Write_String(0x80,elin);
 	Write_String(0xC0,elin);
 } 

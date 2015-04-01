@@ -2,6 +2,5 @@
 #define __WAV_H	
 #include "version.h"
 
-void wavplay(void);
-void TIMx_IRQHandle();
+void wavplay(uint8_t * music);
 #endif

@@ -33,7 +33,8 @@ uint8_t xintiao[6] = { 0 };
 uint8_t bufang[8] = { 0 };
 uint8_t tongdao[10] = { 0 };
 
-
+//首次开机标志，同步状态后失效
+uint8_t firststart = 1;
 //撤防 灯灭  正在布防 快闪   布防成功 常量
 //布防状态
 //A 0 布防 B 1 撤防 C 2 取消报警状态 
@@ -86,6 +87,7 @@ static void ansbufang(PANELCMD_t * pan){
 
 	RS485_TX();
 	Delay_ms(1);
+		pan->cmd = POLL_ARM_RSP;
 	//for(i=0;i<0x4FFFF;i++);
 	pan->checksum = 0;
 	RS485_SendChar(PANEL_CMD_HEAD);
@@ -121,11 +123,27 @@ static void recvbuchefang(PANELCMD_t * pan){
 	case 2:
 		PanelStatus = 2;
 		KeyFlag &= 0xFE;
+	
 		pan->data[0] = 0xff;
+	
 		ansbufang(pan);
 		//wavplay(yuanchengbufang);
 		break;
-	default:
+		case 0xFE:
+		//判断是否是首次开机 同步布撤防状态
+		if(firststart){
+				PanelStatus = 1;
+			firststart =0;
+		}
+			
+		
+		case 0xFF:
+				if(firststart){
+				PanelStatus = 0;
+				firststart =0;
+				}
+				
+
 		//0xFF	
 		printf("sendTimes%03x\n", pan->index);
 		if ((bufangFlag == pan->index) && pan->index)
@@ -171,7 +189,9 @@ static void recvbuchefang(PANELCMD_t * pan){
 				pan->data[0] = 0xFF;
 				ansbufang(pan);
 			}
-		}
+		}	
+		break;
+	default:
 		break;
 	}
 }
@@ -183,7 +203,6 @@ static void panel_parsedcmd(PANELCMD_t * pan){
 		recvbuchefang(pan);
 		break;
 	case SET_USER_PASSWD:
-
 		break;
 	case SET_ADMIN_PASSWD:
 

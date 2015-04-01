@@ -5,6 +5,7 @@
 #include "./GPIO/Beep.h"
 #include "./GPIO/led.h"
 #include "./GPIO/RS485.h"
+#include "./System/can/can1.h"
 char *str = "\r\n This is a USART1_printf demo \r\n";
 extern void nrf_main0(void);
 extern void nrf_main(void);
@@ -16,21 +17,23 @@ int main() {
 	//RCC_Config();
 	NVIC_Config();
 	LED_GPIO_Config();
+	//LED3(0);	//0 开灯 1关灯
 	TIM2_Start();	//通用定时器
 	TIM4_Start(); //用来做网络延时计时使用
 	//DMA_Config();
 	USART1_Init();
+	CAN1_Config();
 	//USART2_Init();
 	///BeepStart(500);
 	LEDFlashing(500);
-	LED3(1);
+	__set_PRIMASK(0);
 	printf("helo!");
 	//BeepStart(500);
-	__set_PRIMASK(0);
 //	USART3_Init();
 	panel();
 	//RS485_init();
 	//while(GetKey());
+	
 	while(1);
 
 	//nrf

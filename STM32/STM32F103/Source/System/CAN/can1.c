@@ -87,12 +87,33 @@ static void CAN1_IT_Config(void) {
 	CAN_ITConfig(CAN1, CAN_IT_FF1 | CAN_IT_FMP1 | CAN_IT_FOV1 | CAN_IT_FMP1
 	, ENABLE);
 
-	/*CAN ESR INTERRUPT,ERROR PROCESS*/
+	/*CAN ESR  ,ERROR PROCESS*/
 	CAN_ITConfig(CAN1,CAN_IT_SLK | CAN_IT_WKU | CAN_IT_ERR | CAN_IT_LEC | CAN_IT_BOF
 					| CAN_IT_EPV | CAN_IT_EWG, ENABLE);
 
 }
+ void CAN_Filter_Config(void)
+{
+	CAN_FilterInitTypeDef  CAN_FilterInitStructure;
 
+	/*CAN过滤器初始化*/
+	CAN_FilterInitStructure.CAN_FilterNumber = 0;						//过滤器组0
+	//过滤器模式设置:(1) 1个32位的屏蔽位模式的过滤器. (2) 2个32位的列表模式的过滤器. (3) 2个16位的屏蔽位模式的过滤器. (4) 4个16位的列表模式的过滤器
+	CAN_FilterInitStructure.CAN_FilterMode = CAN_FilterMode_IdMask;	//工作在标识符屏蔽位模式
+	CAN_FilterInitStructure.CAN_FilterScale = CAN_FilterScale_32bit;	//过滤器位宽为单个32位。
+	/* 使能报文标示符过滤器按照标示符的内容进行比对过滤，扩展ID不是如下的就抛弃掉，是的话，会存入FIFO0。 */
+
+	CAN_FilterInitStructure.CAN_FilterIdHigh = (((uint32_t) 0xF0 << 3) & 0xFFFF0000) >> 16;				//要过滤的ID高位 
+	CAN_FilterInitStructure.CAN_FilterIdLow = (((uint32_t)0x0f << 3) | CAN_ID_EXT | CAN_RTR_DATA) & 0xFFFF; //要过滤的ID低位 
+	//屏蔽模式 为1的位必须匹配 ,为0的位 不进行匹配
+	CAN_FilterInitStructure.CAN_FilterMaskIdHigh = 0;			//过滤器高16位每位必须匹配
+	CAN_FilterInitStructure.CAN_FilterMaskIdLow = 0;			//过滤器低16位每位必须匹配
+
+	CAN_FilterInitStructure.CAN_FilterFIFOAssignment = CAN_Filter_FIFO0;				//过滤器被关联到FIFO0
+	CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;			//使能过滤器
+	CAN_FilterInit(&CAN_FilterInitStructure);
+
+}
 void CAN1_Config(void) {
 	CAN_InitTypeDef CAN_InitStructure;
 	CAN_FilterInitTypeDef CAN_FilterInitStructure;
@@ -106,13 +127,13 @@ void CAN1_Config(void) {
 	/* CAN cell init */
 	CAN_InitStructure.CAN_TTCM = DISABLE;	/*禁止时间触发通讯模式*/
 	CAN_InitStructure.CAN_ABOM = ENABLE;	/*自动退出离线状态方式	0-相当于有条件手动离线，1-相当于自动离线*/
-	CAN_InitStructure.CAN_AWUM = DISABLE;	/*自动唤醒模式	 0-由软件通过清0唤醒，1-检测到报文时，自动唤醒*/
+	CAN_InitStructure.CAN_AWUM = ENABLE;	/*自动唤醒模式	 0-由软件通过清0唤醒，1-检测到报文时，自动唤醒*/
 	CAN_InitStructure.CAN_NART = DISABLE;	/*报文自动重传	 0-一直重复发送直到成功，1-不论成功以否只发送一次*/
-	CAN_InitStructure.CAN_RFLM = ENABLE;	/*接收FIFO 锁定模式	0-溢出时未锁定，新报文盖掉掉报文，1-FIFO锁定，溢出后新报文直接丢失*/
+	CAN_InitStructure.CAN_RFLM = DISABLE;	/*接收FIFO 锁定模式	0-溢出时未锁定，新报文盖掉掉报文，1-FIFO锁定，溢出后新报文直接丢失*/
 	CAN_InitStructure.CAN_TXFP = DISABLE;	/*发送FIFO优先级		0-报文发送优先级由标志符决定，1-报文发送优先级由请求先后顺序决定*/
 	/*模式-测试模式-正常模式*/
-	//CAN_InitStructure.CAN_Mode = CAN_Mode_Normal;
-	CAN_InitStructure.CAN_Mode=CAN_MODE;
+	CAN_InitStructure.CAN_Mode = CAN_Mode_Normal;
+	//CAN_InitStructure.CAN_Mode=CAN_MODE;
 
 	/*=======================
 	 BTR=1/(Tbit)=1/(1+Tbs1+Tbs2)*Tq)=1/((1+8+7)*Tq)=1/16Tq
@@ -120,7 +141,12 @@ void CAN1_Config(void) {
 	 BTR=1/(16*(prescale+1)/Fpclk1)=Fpclk1/(16*(prescale+1))
 	 Precalse=(Fpclk1/(16*BTR))-1
 	 ========================*/
-#if (CAN_BTR==500)
+#if (CAN_BTR==800)
+	CAN_InitStructure.CAN_SJW=CAN_SJW_2tq;
+	CAN_InitStructure.CAN_BS1=CAN_BS1_6tq;
+	CAN_InitStructure.CAN_BS2=CAN_BS2_3tq;
+	CAN_InitStructure.CAN_Prescaler=4; 
+#elif (CAN_BTR==500)
 #if 0
 	CAN_InitStructure.CAN_SJW=CAN_SJW_1tq;
 	CAN_InitStructure.CAN_BS1=CAN_BS1_9tq;
@@ -152,20 +178,14 @@ void CAN1_Config(void) {
 #endif
 	CAN_Init(CAN1, &CAN_InitStructure);
 
-	/* CAN filter init */
-	CAN_FilterInitStructure.CAN_FilterNumber = 0;
-	CAN_FilterInitStructure.CAN_FilterMode = CAN_FilterMode_IdMask;
-	CAN_FilterInitStructure.CAN_FilterScale = CAN_FilterScale_32bit;
-	CAN_FilterInitStructure.CAN_FilterIdHigh = 0x0000;
-	CAN_FilterInitStructure.CAN_FilterIdLow = 0x0000;
-	CAN_FilterInitStructure.CAN_FilterMaskIdHigh = 0x0000;
-	CAN_FilterInitStructure.CAN_FilterMaskIdLow = 0x0000;
-	CAN_FilterInitStructure.CAN_FilterFIFOAssignment = 0;
-	CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;
-	CAN_FilterInit(&CAN_FilterInitStructure);
-	CAN_CellResetFlag = RESET;
+	CAN_Filter_Config();
 
 #ifdef CAN1_NVIC
+	/*CAN通信中断使能*/
+	NVIC_SetPriority(USB_LP_CAN1_RX0_IRQn, 6);
+	NVIC_EnableIRQ(USB_LP_CAN1_RX0_IRQn);
+	CAN_ITConfig(CAN1, CAN_IT_FMP0, ENABLE);
+
 	CAN1_NVIC_Config();
 	CAN1_IT_Config();
 #endif	
@@ -356,7 +376,7 @@ void USB_LP_CAN_RX0_IRQHandle(void) {
 	} else {
 		ret = 0;
 	}
-	//printf("USB_LP_CAN_RX0_IRQHandler (Interrupt Recv 1 Message)");
+	printf("USB_LP_CAN_RX0_IRQHandler (Interrupt Recv 1 Message)");
 }
 
 /*******************************************************************************
@@ -394,11 +414,11 @@ void CAN_RX1_IRQHandle(void) {
 void CAN_SCE_IRQHandle(void) {
 	/* 唤醒中断挂号*/
 	if (CAN_GetITStatus(CAN1, CAN_IT_WKU)) {
-		//CAN_ClearITPendingBit(CAN_IT_WKU);
+		CAN_ClearITPendingBit(CAN1,CAN_IT_WKU);
 	}
 	/*睡眠确认中断状态*/
 	if (CAN_GetITStatus(CAN1, CAN_IT_SLK)) {
-		//CAN_ClearITPendingBit(CAN_IT_SLK);
+		CAN_ClearITPendingBit(CAN1,CAN_IT_SLK);
 	}
 	/*离线中断*/
 	if (CAN_GetITStatus(CAN1, CAN_IT_BOF)) {

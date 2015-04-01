@@ -1,0 +1,4 @@
+---- ColorLightCtrl Matches (3 in 3 files) ----
+Game.C (user\src):void ColorLightCtrl(T_IOEvent event)
+Game.H (user\inc):GAME_EXT void ColorLightCtrl(T_IOEvent event);
+IOInput.c (user\src):	{IOIN_CenterSensor, VOL_High, &GPIOC->IDR, BIT( 7), 2, 5, ColorLightCtrl },	// 使其常态电平5ms推迟于颜色检测线(以检测), 有效电平2ms提早于颜色线

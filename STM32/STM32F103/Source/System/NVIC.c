@@ -283,11 +283,11 @@ void NVIC_Info(IRQn_Type IRQn) {
 	printf("pSubPriority_IRQn:%d\n", pSubPriority_IRQn);
 
 }
-extern void TIMx_IRQHandle(void);
+extern void(*WaveCallback_ISR)(void);
 void TIM2_IRQHandle(void) {
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
 //		TIM2_ISR();
-		TIMx_IRQHandle();
+		WaveCallback_ISR();
 		TIM_ClearITPendingBit(TIM2, TIM_FLAG_Update);
 	}
 }	
