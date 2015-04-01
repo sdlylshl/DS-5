@@ -1,0 +1,17 @@
+TIMER-1 : 定时器上溢。
+TIMER-2 : 强置输出模式。
+TIMER-3 : 输出比较模式。
+TIMER-4 : PWM1模式。
+TIMER-5 : 输入捕获模式(结果硬件仿真观察)。
+TIMER-6 : PWM输入模式。
+TIMER-7 : 单脉冲模式。
+TIMER-8 : TIMER2作为TIMER3的分频器,即TIMER3的时钟由TIMER2提供。
+TIMER-9 : TIMER2使能TIMER3(时钟都用内部时钟，两个非同步)。
+TIMER-10: TIMER2启动TIMER3(时钟都用内部时钟，两个非同步)。
+TIMER-11: TIMER4的通道1同时出发TIMER4和TIMER3两个定时器。
+
+
+
+
+
+注意：除注明外，时钟都为内部时钟。
