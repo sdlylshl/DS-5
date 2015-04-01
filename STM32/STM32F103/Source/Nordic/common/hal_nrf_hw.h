@@ -26,7 +26,7 @@
 #include "version.h"
 #include "hal_nrf_reg.h"
 // SPI2
-#include "../../System/System_config.h"
+#include "../../System/SPI/spi2.h"
 
 #define NRF_ADDRESS_WIDTH 		5
 #define NRF_PLOAD_WIDTH  		5
@@ -157,4 +157,4 @@ extern _nrf_chip_t nrf_chip;
 typedef enum {
 	SPI, SPI_1, SPI_2, SPI_3
 } SPIx_t;
-#endif // __HAL_NRF_HW_H_
+#endif // __HAL_NRF_HW_H_

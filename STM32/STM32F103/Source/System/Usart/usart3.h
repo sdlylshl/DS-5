@@ -1,7 +1,7 @@
 #ifndef __USART3_H
 #define	__USART3_H
 
-#include "version.h"
+#include "stm32f10x.h"
 
 
 //中断接收缓冲区

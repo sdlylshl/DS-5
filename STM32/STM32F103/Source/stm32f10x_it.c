@@ -26,7 +26,6 @@
 #include "stm32f10x_it.h"
 
 #include <stdio.h>
-#include ".\System\System_config.h"
 /** @addtogroup STM32F10x_StdPeriph_Template
  * @{
  */
@@ -254,98 +253,7 @@ void RCC_IRQHandler() {
 		NVIC_SystemReset();
 	}
 }
-void EXTI0_IRQHandler() {
-#ifdef DEBUG
-	printf("EXTI0_IRQHandler \r\n");
-#endif
-	EXTI0_IRQHandle();
-}
-void EXTI1_IRQHandler() {
-#ifdef DEBUG
-	printf("EXTI1_IRQHandler \r\n");
-#endif
-	EXTI1_IRQHandle();
-}
-void EXTI2_IRQHandler() {
-#ifdef DEBUG
-	printf("EXTI2_IRQHandler \r\n");
-#endif
-	while (1) {
-		NVIC_SystemReset();
-	}
-}
-void EXTI3_IRQHandler() {
-#ifdef DEBUG
-	printf("EXTI3_IRQHandler \r\n");
-#endif
-	while (1) {
-		NVIC_SystemReset();
-	}
-}
-void EXTI4_IRQHandler() {
-#ifdef DEBUG
-	printf("EXTI4_IRQHandler \r\n");
-#endif
-	while (1) {
-		NVIC_SystemReset();
-	}
-}
-void DMA1_Channel1_IRQHandler() {
-#ifdef DEBUG
-	printf("DMA1_Channel1_IRQHandler \r\n");
-#endif
-	while (1) {
-		NVIC_SystemReset();
-	}
-}
-void DMA1_Channel2_IRQHandler() {
-#ifdef DEBUG
-	printf("DMA1_Channel2_IRQHandler \r\n");
-#endif
-	while (1) {
-		NVIC_SystemReset();
-	}
-}
-void DMA1_Channel3_IRQHandler() {
-#ifdef DEBUG
-	printf("DMA1_Channel3_IRQHandler \r\n");
-#endif
-	while (1) {
-		NVIC_SystemReset();
-	}
-}
-void DMA1_Channel4_IRQHandler() {
-#ifdef DEBUG
-	printf("DMA1_Channel4_IRQHandler \r\n");
-#endif
-	while (1) {
-		NVIC_SystemReset();
-	}
-}
-void DMA1_Channel5_IRQHandler() {
-#ifdef DEBUG
-	printf("DMA1_Channel5_IRQHandler \r\n");
-#endif
-	while (1) {
-		NVIC_SystemReset();
-	}
-}
-void DMA1_Channel6_IRQHandler() {
-#ifdef DEBUG
-	printf("DMA1_Channel6_IRQHandler \r\n");
-#endif
-	while (1) {
-		NVIC_SystemReset();
-	}
-}
-void DMA1_Channel7_IRQHandler() {
-#ifdef DEBUG
-	printf("DMA1_Channel7_IRQHandler \r\n");
-#endif
-	while (1) {
-		NVIC_SystemReset();
-	}
-}
+
 
 void ADC1_2_IRQHandler() {
 #ifdef DEBUG
@@ -354,88 +262,6 @@ void ADC1_2_IRQHandler() {
 	while (1) {
 		NVIC_SystemReset();
 	}
-}
-void USB_HP_CAN1_TX_IRQHandler() {
-#ifdef DEBUG
-	printf("USB_HP_CAN1_TX_IRQHandler \r\n");
-#endif
-	USB_HP_CAN_TX_IRQHandle();
-}
-void USB_LP_CAN1_RX0_IRQHandler() {
-#ifdef DEBUG
-	printf("USB_LP_CAN1_RX0_IRQHandler \r\n");
-#endif
-	USB_LP_CAN_RX0_IRQHandle();
-
-}
-void CAN1_RX1_IRQHandler() {
-#ifdef DEBUG
-	printf("CAN1_RX1_IRQHandler \r\n");
-#endif
-	CAN_RX1_IRQHandle();
-}
-void CAN1_SCE_IRQHandler() {
-#ifdef DEBUG
-	printf("CAN1_SCE_IRQHandler \r\n");
-#endif
-	CAN_SCE_IRQHandle();
-}
-void EXTI9_5_IRQHandler() {
-#ifdef DEBUG
-	printf("EXTI9_5_IRQHandler \r\n");
-#endif
-	EXTI9_5_IRQHandle();
-}
-void TIM1_BRK_IRQHandler() {
-#ifdef DEBUG
-	printf("TIM1_BRK_IRQHandler \r\n");
-#endif
-	while (1) {
-		NVIC_SystemReset();
-	}
-}
-void TIM1_UP_IRQHandler() {
-#ifdef DEBUG
-	printf("TIM1_UP_IRQHandler \r\n");
-#endif
-	while (1) {
-		NVIC_SystemReset();
-	}
-}
-void TIM1_TRG_COM_IRQHandler() {
-#ifdef DEBUG
-	printf("TIM1_TRG_COM_IRQHandler \r\n");
-#endif
-	while (1) {
-		NVIC_SystemReset();
-	}
-}
-void TIM1_CC_IRQHandler() {
-#ifdef DEBUG
-	printf("TIM1_CC_IRQHandler \r\n");
-#endif
-	while (1) {
-		NVIC_SystemReset();
-	}
-}
-
-void TIM2_IRQHandler(void) {
-#ifdef DEBUG
-	printf("TIM2_IRQHandler \r\n");
-#endif
-	TIM2_IRQHandle();
-}
-void TIM3_IRQHandler() {
-#ifdef DEBUG
-	printf("TIM3_IRQHandler \r\n");
-#endif
-	TIM3_IRQHandle();
-}
-void TIM4_IRQHandler() {
-#ifdef DEBUG
-	printf("TIM4_IRQHandler \r\n");
-#endif
-	TIM4_IRQHandle();
 }
 void I2C1_EV_IRQHandler() {
 #ifdef DEBUG
@@ -469,22 +295,7 @@ void I2C2_ER_IRQHandler() {
 		NVIC_SystemReset();
 	}
 }
-void SPI1_IRQHandler() {
-#ifdef DEBUG
-	printf("SPI1_IRQHandler \r\n");
-#endif
-	while (1) {
-		NVIC_SystemReset();
-	}
-}
-void SPI2_IRQHandler() {
-#ifdef DEBUG
-	printf("SPI2_IRQHandler \r\n");
-#endif
-	while (1) {
-		NVIC_SystemReset();
-	}
-}
+
 //在中断服务程序中，由于主机响应中断时并不知道是哪个中断源发出中断请求，
 //因此必须在中断服务程序中对中断源进行判别，然后分别进行处理。
 //当然，如果只涉及到一个中断请求，是不用做上述判别的。但是无论什么情况，做上述判别是个好习惯
@@ -512,14 +323,7 @@ void USART3_IRQHandler(void) {
 	USART3_IRQHandle();
 }
 */
-void EXTI15_10_IRQHandler() {
-#ifdef DEBUG
-	printf("EXTI15_10_IRQHandler \r\n");
-#endif
-	while (1) {
-		NVIC_SystemReset();
-	}
-}
+
 void RTCAlarm_IRQHandler() {
 #ifdef DEBUG
 	printf("RTCAlarm_IRQHandler \r\n");

@@ -1,7 +1,7 @@
 #ifndef _CAN_H_
 #define _CAN_H_
 
-#include "version.h"
+#include "stm32f10x.h"
 
 
 /*采用查询方式还是中断方式接收数据开关，屏闭为中断方式*/

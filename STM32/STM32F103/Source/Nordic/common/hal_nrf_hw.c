@@ -19,9 +19,9 @@
  */
 
 #include <stdint.h>
-#include "./System/System_config.h"
 #include "hal_nrf_hw.h"
-
+#include "../../System/SPI/spi.h"
+#include "../../System/SPI/spi1.h"
 
 // Global variables
 //uint8_t payload[RX_PLOAD_WIDTH];

@@ -451,4 +451,30 @@ void CAN_SCE_IRQHandle(void) {
 	//printf("CAN_SCE_IRQHandler,Try to Reset Can Cell");
 }
 
+void USB_HP_CAN1_TX_IRQHandler() {
+#ifdef DEBUG
+	printf("USB_HP_CAN1_TX_IRQHandler \r\n");
+#endif
+	USB_HP_CAN_TX_IRQHandle();
+}
+void USB_LP_CAN1_RX0_IRQHandler() {
+#ifdef DEBUG
+	printf("USB_LP_CAN1_RX0_IRQHandler \r\n");
+#endif
+	USB_LP_CAN_RX0_IRQHandle();
+
+}
+void CAN1_RX1_IRQHandler() {
+#ifdef DEBUG
+	printf("CAN1_RX1_IRQHandler \r\n");
+#endif
+	CAN_RX1_IRQHandle();
+}
+void CAN1_SCE_IRQHandler() {
+#ifdef DEBUG
+	printf("CAN1_SCE_IRQHandler \r\n");
+#endif
+	CAN_SCE_IRQHandle();
+}
+
 /******************* (C) COPYRIGHT 2008 STMicroelectronics *****END OF FILE****/

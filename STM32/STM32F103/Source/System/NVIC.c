@@ -82,8 +82,92 @@
 //   NVIC_PriorityGroup_4  |                0-15               |            0                |   4 bits for pre-emption priority
 //                         |                                   |                             |   0 bits for subpriority                       
 //  ============================================================================================================================
+void NVIC_Config(void) {
+//		NVIC_InitTypeDef NVIC_InitStructure;
+
+//1.在有bootloader的时候，APP函数要重新定义这个地址，偏移量一般不是0了。
+//2.调试模式下要加
+#ifdef  VECT_TAB_RAM  
+	/* Set the Vector Table base location at 0x20000000 */
+	NVIC_SetVectorTable(NVIC_VectTab_RAM, 0x0);
+#else  /* VECT_TAB_FLASH  */
+	/* Set the Vector Table base location at 0x08000000 */
+	NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0);
+#endif
+	//关中断
+		__set_PRIMASK(1);
+	/* Configure one bit for preemption priority */
+	//NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
+	NVIC_SetPriorityGrouping(4);
+	
+#if 1
+	NVIC_SetPriority(USART1_IRQn, 3);
+	NVIC_EnableIRQ(USART1_IRQn);
+#endif
+#if USART2_NVIC
+	NVIC_SetPriority(USART2_IRQn, 4);
+	NVIC_EnableIRQ(USART2_IRQn);
+#endif
+#if USART3_NVIC
+	NVIC_SetPriority(USART3_IRQn, 4);
+	NVIC_EnableIRQ(USART3_IRQn);
+#endif
+
+#if 0
+	NVIC_EXTI0_init();	
+	NVIC_SetPriority(EXTI0_IRQn, 4);
+//	NVIC_EnableIRQ(EXTI0_IRQn);
+#endif 
+#if 0		//PS2
+	NVIC_EXTI1_init();	
+	NVIC_SetPriority(EXTI1_IRQn, 4);
+//	NVIC_EnableIRQ(EXTI1_IRQn);
+#endif
+#if 0
+	#ifdef NVIC_SPI2_IRQ
+		//SPI2_IRQ
+		NVIC_EXTI5_init();
+		NVIC_EXTI8_init();
+		NVIC_SetPriority(EXTI9_5_IRQn, 10);
+		NVIC_EnableIRQ(EXTI9_5_IRQn);
+	#endif
+#endif
+#if	1
+	NVIC_SetPriority(TIM2_IRQn, 8);
+	NVIC_EnableIRQ(TIM2_IRQn);
+#endif	
+#if 0
+	NVIC_SetPriority(TIM3_IRQn, 9);
+	NVIC_EnableIRQ(TIM3_IRQn);
+#endif
+#if 1
+	NVIC_SetPriority(TIM4_IRQn, 10);
+	NVIC_EnableIRQ(TIM4_IRQn);
+#endif
+#if STM32F10X_HD
+#if 0  
+	NVIC_SetPriority(TIM5_IRQn, 10);
+	NVIC_EnableIRQ(TIM5_IRQn);
+#endif
+#if 1  
+	NVIC_SetPriority(TIM6_IRQn, 10);
+	NVIC_EnableIRQ(TIM6_IRQn);
+#endif
+#if 0  
+	NVIC_SetPriority(TIM7_IRQn, 10);
+	NVIC_EnableIRQ(TIM7_IRQn);
+#endif
+#if 1 
+	NVIC_SetPriority(TIM8_UP_IRQn, 10);
+	NVIC_EnableIRQ(TIM8_UP_IRQn);
+#endif
+#endif
+	//开总中断
+	__set_PRIMASK(0);
+}
+
 uint8_t EXTIn;
- void NVIC_EXTI0_init(void) {
+void NVIC_EXTI0_init(void) {
 	
 	EXTI_InitTypeDef EXTI_InitStructure;
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
@@ -95,7 +179,7 @@ uint8_t EXTIn;
 	EXTI_InitStructure.EXTI_LineCmd = ENABLE; 
 	EXTI_Init(&EXTI_InitStructure); 
 }
- void NVIC_EXTI1_init(void) {
+void NVIC_EXTI1_init(void) {
 	
 	EXTI_InitTypeDef EXTI_InitStructure;
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
@@ -119,7 +203,7 @@ void NVIC_EXTI2_init(void) {
 	EXTI_InitStructure.EXTI_LineCmd = ENABLE; 
 	EXTI_Init(&EXTI_InitStructure); 
 }
- void NVIC_EXTI3_init(void) {
+void NVIC_EXTI3_init(void) {
 	
 	EXTI_InitTypeDef EXTI_InitStructure;
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
@@ -131,7 +215,7 @@ void NVIC_EXTI2_init(void) {
 	EXTI_InitStructure.EXTI_LineCmd = ENABLE; 
 	EXTI_Init(&EXTI_InitStructure); 
 }
- void NVIC_EXTI4_init(void) {
+void NVIC_EXTI4_init(void) {
 	
 	EXTI_InitTypeDef EXTI_InitStructure;
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
@@ -205,71 +289,7 @@ void NVIC_EXTI9_init(void) {
 }
 
 
-void NVIC_Config(void) {
-//		NVIC_InitTypeDef NVIC_InitStructure;
 
-//1.在有bootloader的时候，APP函数要重新定义这个地址，偏移量一般不是0了。
-//2.调试模式下要加
-#ifdef  VECT_TAB_RAM  
-	/* Set the Vector Table base location at 0x20000000 */
-	NVIC_SetVectorTable(NVIC_VectTab_RAM, 0x0);
-#else  /* VECT_TAB_FLASH  */
-	/* Set the Vector Table base location at 0x08000000 */
-	NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x0);
-#endif
-	//关中断
-		__set_PRIMASK(1);
-	/* Configure one bit for preemption priority */
-	//NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);
-	NVIC_SetPriorityGrouping(4);
-	
-#if 1
-	NVIC_SetPriority(USART1_IRQn, 3);
-	NVIC_EnableIRQ(USART1_IRQn);
-#endif
-#if USART2_NVIC
-	NVIC_SetPriority(USART2_IRQn, 4);
-	NVIC_EnableIRQ(USART2_IRQn);
-#endif
-#if USART3_NVIC
-	NVIC_SetPriority(USART3_IRQn, 4);
-	NVIC_EnableIRQ(USART3_IRQn);
-#endif
-
-#if 0
-	NVIC_EXTI0_init();	
-	NVIC_SetPriority(EXTI0_IRQn, 4);
-//	NVIC_EnableIRQ(EXTI0_IRQn);
-#endif 
-#if 0		//PS2
-	NVIC_EXTI1_init();	
-	NVIC_SetPriority(EXTI1_IRQn, 4);
-//	NVIC_EnableIRQ(EXTI1_IRQn);
-#endif
-#if 0
-#ifdef NVIC_SPI2_IRQ
-	//SPI2_IRQ
-	NVIC_EXTI5_init();
-	NVIC_EXTI8_init();
-	NVIC_SetPriority(EXTI9_5_IRQn, 10);
-	NVIC_EnableIRQ(EXTI9_5_IRQn);
-#endif
-#endif
-#if	1
-	NVIC_SetPriority(TIM2_IRQn, 8);
-	NVIC_EnableIRQ(TIM2_IRQn);
-#endif	
-#if 0
-	NVIC_SetPriority(TIM3_IRQn, 9);
-	NVIC_EnableIRQ(TIM3_IRQn);
-#endif
-#if 1
-	NVIC_SetPriority(TIM4_IRQn, 10);
-	NVIC_EnableIRQ(TIM4_IRQn);
-#endif
-	//开总中断
-	//__set_PRIMASK(0);
-}
 
 void NVIC_Info(IRQn_Type IRQn) {
 	uint32_t PriorityGrouping;
@@ -283,33 +303,9 @@ void NVIC_Info(IRQn_Type IRQn) {
 	printf("pSubPriority_IRQn:%d\n", pSubPriority_IRQn);
 
 }
-extern void(*WaveCallback_ISR)(void);
-void TIM2_IRQHandle(void) {
-	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
-//		TIM2_ISR();
-		WaveCallback_ISR();
-		TIM_ClearITPendingBit(TIM2, TIM_FLAG_Update);
-	}
-}	
-extern void TIM3_IRQ(void);
-void TIM3_IRQHandle(void) {
-	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) {
-		
-		TIM3_IRQ();
-		TIM_ClearITPendingBit(TIM3, TIM_FLAG_Update);
-	}
-}
-extern void (*BeepCallback_ISR)(void);
-extern void(*LEDCallback_ISR)(void);
-extern volatile uint32_t time4;
-void TIM4_IRQHandle(void) {
-	if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET) {
-		time4++;
-		BeepCallback_ISR();
-		LEDCallback_ISR();
-		TIM_ClearITPendingBit(TIM4, TIM_FLAG_Update);
-	}
-}
+
+
+
 void EXTI0_IRQHandle(void){
 	//中断1产生了相应的中断
 	if (EXTI_GetITStatus(EXTI_Line0) == SET) {		
@@ -364,5 +360,58 @@ void EXTI9_5_IRQHandle(void){
 		EXTI_ClearFlag(EXTI_Line9);
 		EXTI_ClearITPendingBit(EXTI_Line9);
 			
+	}
+}
+
+void EXTI0_IRQHandler() {
+#ifdef DEBUG
+	printf("EXTI0_IRQHandler \r\n");
+#endif
+	EXTI0_IRQHandle();
+}
+
+
+void EXTI1_IRQHandler() {
+#ifdef DEBUG
+	printf("EXTI1_IRQHandler \r\n");
+#endif
+	EXTI1_IRQHandle();
+}
+void EXTI2_IRQHandler() {
+#ifdef DEBUG
+	printf("EXTI2_IRQHandler \r\n");
+#endif
+	while (1) {
+		NVIC_SystemReset();
+	}
+}
+void EXTI3_IRQHandler() {
+#ifdef DEBUG
+	printf("EXTI3_IRQHandler \r\n");
+#endif
+	while (1) {
+		NVIC_SystemReset();
+	}
+}
+void EXTI4_IRQHandler() {
+#ifdef DEBUG
+	printf("EXTI4_IRQHandler \r\n");
+#endif
+	while (1) {
+		NVIC_SystemReset();
+	}
+}
+void EXTI9_5_IRQHandler() {
+#ifdef DEBUG
+	printf("EXTI9_5_IRQHandler \r\n");
+#endif
+	EXTI9_5_IRQHandle();
+}
+void EXTI15_10_IRQHandler() {
+#ifdef DEBUG
+	printf("EXTI15_10_IRQHandler \r\n");
+#endif
+	while (1) {
+		NVIC_SystemReset();
 	}
 }

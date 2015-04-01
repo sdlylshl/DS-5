@@ -13,8 +13,7 @@
 //All rights reserved									  
 //////////////////////////////////////////////////////////////////////////////////
 
-#include "version.h"
-//#include "..\System_config.h"
+#include "stm32f10x.h"
 
 //typedef unsigned long  uint32_t;
 //typedef unsigned short uint16_t;

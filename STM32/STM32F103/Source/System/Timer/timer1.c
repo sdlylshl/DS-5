@@ -76,3 +76,36 @@ void TIM1_CC_IRQHandle(void) {
 		//TIM_SetCounter(TIM2,0x0000);
 	}
 }
+void TIM1_BRK_IRQHandler() {
+#ifdef DEBUG
+	printf("TIM1_BRK_IRQHandler \r\n");
+#endif
+	while (1) {
+		NVIC_SystemReset();
+	}
+}
+
+void TIM1_UP_IRQHandler() {
+#ifdef DEBUG
+	printf("TIM1_UP_IRQHandler \r\n");
+#endif
+	while (1) {
+		NVIC_SystemReset();
+	}
+}
+void TIM1_TRG_COM_IRQHandler() {
+#ifdef DEBUG
+	printf("TIM1_TRG_COM_IRQHandler \r\n");
+#endif
+	while (1) {
+		NVIC_SystemReset();
+	}
+}
+void TIM1_CC_IRQHandler() {
+#ifdef DEBUG
+	printf("TIM1_CC_IRQHandler \r\n");
+#endif
+	while (1) {
+		NVIC_SystemReset();
+	}
+}

@@ -7,6 +7,7 @@
 #include "Beep.h"
 #include "../System/Delay/SysTick.h"
 volatile uint32_t beeptime = 0; // ms 计时变量
+extern void CallbackNull(void);
 void(*BeepCallback_ISR)(void) = CallbackNull;
 	
 extern void Delay_ms(__IO uint32_t ms);

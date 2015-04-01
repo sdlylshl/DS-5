@@ -1,7 +1,7 @@
 #ifndef __W25X_FLASH_H
 #define __W25X_FLASH_H
 
-#include "version.h"
+#include "stm32f10x.h"
 
 #define SPI_FLASH_SPI                           SPI2
 #define SPI_FLASH_SPI_CLK                       RCC_APB1Periph_SPI2

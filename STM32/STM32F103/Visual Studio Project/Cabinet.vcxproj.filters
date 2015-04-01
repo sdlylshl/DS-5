@@ -252,6 +252,18 @@
     <ClCompile Include="..\Source\DS1302\ds1302.c">
       <Filter>源文件\DS1302</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\System\Timer\timer5.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\Timer\timer6.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\Timer\timer7.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\System\Timer\timer8.c">
+      <Filter>源文件\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Source\LCD12864\LCD12864P\LCD12864P.C">
@@ -262,6 +274,9 @@
     </None>
     <None Include="Readme.txt">
       <Filter>项目说明</Filter>
+    </None>
+    <None Include="..\RTE\Device\STM32F103VE\startup_stm32f10x_hd.s">
+      <Filter>源文件\::CMSIS</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -291,6 +306,30 @@
     </ClInclude>
     <ClInclude Include="..\Source\DS1302\ds1302.h">
       <Filter>源文件\DS1302</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\System\Timer\timer1.h">
+      <Filter>源文件\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\System\Timer\timer2.h">
+      <Filter>源文件\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\System\Timer\timer3.h">
+      <Filter>源文件\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\System\Timer\timer4.h">
+      <Filter>源文件\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\System\Timer\timer5.h">
+      <Filter>源文件\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\System\Timer\timer6.h">
+      <Filter>源文件\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\System\Timer\timer7.h">
+      <Filter>源文件\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\System\Timer\timer8.h">
+      <Filter>源文件\System</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

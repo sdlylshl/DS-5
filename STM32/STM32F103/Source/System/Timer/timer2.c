@@ -94,3 +94,11 @@ void TIM2_ISR(void){
 
 }
 
+extern void(*WaveCallback_ISR)(void);
+void TIM2_IRQHandler(void) {
+	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
+//		TIM2_ISR();
+		WaveCallback_ISR();
+		TIM_ClearITPendingBit(TIM2, TIM_FLAG_Update);
+	}
+}	

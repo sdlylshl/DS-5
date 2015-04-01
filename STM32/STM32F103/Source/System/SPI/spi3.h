@@ -1,7 +1,7 @@
 #ifndef __SPI3_H
 #define __SPI3_H
 
-#include "version.h"
+#include "stm32f10x.h"
 
 #define SPI3_NONREMAP
 

@@ -1,7 +1,7 @@
 #ifndef __CRC_H
 #define	__CRC_H
 
-#include "version.h"
+#include "stm32f10x.h"
 
 #define CRC_BUFFER_SIZE    114
 

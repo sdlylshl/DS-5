@@ -122,3 +122,13 @@ void SPI1_SetRST(void) {
 uint8_t SPI1_readIRQ(void){
 	return SPI1_READ_IRQ();
 }
+
+
+void SPI1_IRQHandler() {
+#ifdef DEBUG
+	printf("SPI1_IRQHandler \r\n");
+#endif
+	while (1) {
+		NVIC_SystemReset();
+	}
+}

@@ -1,7 +1,7 @@
 #ifndef __USART2_H
 #define	__USART2_H
 
-#include "version.h"
+#include "stm32f10x.h"
 
 
 

@@ -1,6 +1,6 @@
 //#include "System_config.h"
 
-#include "version.h"
+#include "stm32f10x.h"
 void RCC_Config(void) {
 	RCC_DeInit();
 

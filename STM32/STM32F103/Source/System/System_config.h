@@ -5,28 +5,12 @@
 // #include "..\System_config.h"
 // #include "config.h"
 
-#include "version.h"
-
-//#include "stm32f10x.h"
-#include ".\Malloc\malloc.h"
-//#include ".\Delay\delay.h"
-#include ".\Delay\SysTick.h"
-
-#include ".\CRC\crc.h"
-
-#ifdef CABINET_DEVICE 
-#include ".\GPIO\in.h"
-#include ".\GPIO\out.h"
-#endif // CABINET_DEVICE 
-
-#include "./NVIC.h"
+#include "stm32f10x.h"
+#include ".\NVIC.h"
 #include ".\SPI\spi.h"
 #include ".\SPI\spi1.h"
 #include ".\SPI\spi2.h"
 #include ".\SPI\spi3.h"
-
-#include ".\flash\SST25_Flash.h"
-
 #include ".\Usart\usart.h"
 #include ".\Usart\usart1.h"
 #include ".\Usart\usart2.h"
@@ -36,9 +20,26 @@
 #include ".\Timer\timer2.h"
 #include ".\Timer\timer3.h"
 #include ".\Timer\timer4.h"
+#include ".\Timer\timer5.h"
+#include ".\Timer\timer6.h"
+#include ".\Timer\timer7.h"
+#include ".\Timer\timer8.h"
+
+//#include "stm32f10x.h"
+#include ".\Malloc\malloc.h"
+//#include ".\Delay\delay.h"
+#include ".\Delay\SysTick.h"
+#include ".\CRC\crc.h"
+
+#ifdef CABINET_DEVICE 
+#include ".\GPIO\in.h"
+#include ".\GPIO\out.h"
+#endif // CABINET_DEVICE 
+
+
 #include ".\DAC\DAC.h"
 #include ".\RTC\rtc.h"
-
+#include ".\flash\SST25_Flash.h"
 #include ".\CAN\can1.h"
 
 typedef enum {

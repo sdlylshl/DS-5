@@ -5,8 +5,7 @@
 #include "./W5500/Ethernet_config.h"
 
 //CRC_Enable();
-#include "./System/System_config.h"
-
+#include "../../System/CRC/crc.h"
 //缓冲区长度
 //#define TX_RX_MAX_BUF_SIZE	255
 //单条指令最大长度

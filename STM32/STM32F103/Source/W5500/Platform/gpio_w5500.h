@@ -1,7 +1,6 @@
 #ifndef _GPIO_HANDLER_H_
 #define _GPIO_HANDLER_H_
 #include "version.h"
-//#include "../System/System_config.h"
 //#include "../Ethernet_Config.h"
 #define  W5500_RCC_AHB_PORT	 (RCC_AHBPeriph_DMA1)
 //#define  W5500_RCC_APB1_PORT (RCC_APB1Periph_SPI2)

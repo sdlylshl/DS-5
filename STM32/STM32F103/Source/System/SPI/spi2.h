@@ -1,7 +1,7 @@
 #ifndef __SPI2_H
 #define __SPI2_H
 
-#include "version.h"
+#include "stm32f10x.h"
 //#include "stm32f10x.h"
 //#define SPI2_DMA
 #if 1		//Societ 

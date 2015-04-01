@@ -1,7 +1,7 @@
 #ifndef __SPI1_H
 #define __SPI1_H
 
-#include "version.h"
+#include "stm32f10x.h"
 
 //#define SPI1_DMA
 #ifdef CABINET_DEVICE

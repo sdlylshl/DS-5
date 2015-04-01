@@ -6,12 +6,14 @@
 /* This is an example of glue functions to attach various exsisting      */
 /* storage control modules to the FatFs module with a defined API.       */
 /*-----------------------------------------------------------------------*/
-
+#include "stm32f10x.h"
+#include "stdio.h"
+#include "../System/flash/SST25_flash.h"
 #include "diskio.h"		/* FatFs lower layer API */
 //#include "usbdisk.h"	/* Example: Header file of existing USB MSD control module */
 //#include "atadrive.h"	/* Example: Header file of existing ATA harddisk control module */
 //#include "sdcard.h"		/* Example: Header file of existing MMC/SDC contorl module */
-#include "../System/System_config.h"
+
 /* Definitions of physical drive number for each drive */
 #define ATA		0	/* Example: Map ATA harddisk to physical drive 0 */
 #define MMC		1	/* Example: Map MMC/SD card to physical drive 1 */

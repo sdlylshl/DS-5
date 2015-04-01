@@ -1,7 +1,7 @@
 #ifndef TIME_2_H
 #define TIME_2_H
 
-#include "version.h"
+#include "stm32f10x.h"
 
 extern volatile uint32_t time2;
 extern volatile uint32_t Zigbee_time;

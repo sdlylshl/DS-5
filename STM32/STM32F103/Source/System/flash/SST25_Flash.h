@@ -2,7 +2,7 @@
 #define __SST25_FLASH_H
 
 #include "stdint.h"
-#include "version.h"
+#include "stm32f10x.h"
 #include "../SPI/spi2.h"
 #define Dummy_Byte 0
 

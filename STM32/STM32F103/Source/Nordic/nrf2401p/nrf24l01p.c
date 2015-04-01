@@ -3,6 +3,7 @@
 #include "stdlib.h"
 #include "hal_nrf2401p.h"
 #include "../../Algorithm/Queue/Queue.h"
+#include "../../System/Timer/timer4.h"
 //工作模式的配置
 //Mode		 PWR_UP			 PRIM_RX(1) 		CE
 //发送模式 		 1 			0 				1
@@ -131,7 +132,7 @@ uint8_t nrf_chip_tx_data(_nrf_chip_t *nrf_chip, const uint8_t *addr,
 		}
 	}
 #else
-	while(NRF_Read_IRQ())
+	while(nrf_chip->NRF_Read_IRQ())
 	{
 		//if (TIM4_GetDistanceTime(nrf_time) > 10)
 		if(!(nrf_time--))

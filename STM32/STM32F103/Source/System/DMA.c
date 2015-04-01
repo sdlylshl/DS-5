@@ -1,5 +1,5 @@
-//#include "System_config.h"
-#include "version.h"
+
+#include "stm32f10x.h"
 // 外设    通道1     		通道2     	通道3     	通道4       通道5       通道6        通道7 
 // ADC     ADC1       
 // SPI                 SPI1_RX     SPI1_TX     SPI2_RX     SPI2_TX   
@@ -80,4 +80,59 @@ void DMA_NVIC_Enable(DMA_Channel_TypeDef*DMA_CHx) {
 
 	DMA_ITConfig(DMA_CHx, DMA_IT_TC, ENABLE); //配置DMA发送完成后产生中断
 }
-
+void DMA1_Channel1_IRQHandler() {
+#ifdef DEBUG
+	printf("DMA1_Channel1_IRQHandler \r\n");
+#endif
+	while (1) {
+		NVIC_SystemReset();
+	}
+}
+void DMA1_Channel2_IRQHandler() {
+#ifdef DEBUG
+	printf("DMA1_Channel2_IRQHandler \r\n");
+#endif
+	while (1) {
+		NVIC_SystemReset();
+	}
+}
+void DMA1_Channel3_IRQHandler() {
+#ifdef DEBUG
+	printf("DMA1_Channel3_IRQHandler \r\n");
+#endif
+	while (1) {
+		NVIC_SystemReset();
+	}
+}
+void DMA1_Channel4_IRQHandler() {
+#ifdef DEBUG
+	printf("DMA1_Channel4_IRQHandler \r\n");
+#endif
+	while (1) {
+		NVIC_SystemReset();
+	}
+}
+void DMA1_Channel5_IRQHandler() {
+#ifdef DEBUG
+	printf("DMA1_Channel5_IRQHandler \r\n");
+#endif
+	while (1) {
+		NVIC_SystemReset();
+	}
+}
+void DMA1_Channel6_IRQHandler() {
+#ifdef DEBUG
+	printf("DMA1_Channel6_IRQHandler \r\n");
+#endif
+	while (1) {
+		NVIC_SystemReset();
+	}
+}
+void DMA1_Channel7_IRQHandler() {
+#ifdef DEBUG
+	printf("DMA1_Channel7_IRQHandler \r\n");
+#endif
+	while (1) {
+		NVIC_SystemReset();
+	}
+}

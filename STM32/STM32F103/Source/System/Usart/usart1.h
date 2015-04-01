@@ -2,7 +2,7 @@
 #define	__USART1_H
 
 //#include "..\System_config.h"
-#include "version.h"
+#include "stm32f10x.h"
 
 #define USART1_BUFF_SIZE 256
 #define USART1_RECVBUFF_SIZE 256

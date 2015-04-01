@@ -1,7 +1,7 @@
 #ifndef __FLASH_H
 #define __FLASH_H
 #include "stdint.h"
-#include "version.h"
+#include "stm32f10x.h"
 
 //#define  STARTADDR  0x08010000  //STM32F103
 #define		STARTADDR 0x0800C000

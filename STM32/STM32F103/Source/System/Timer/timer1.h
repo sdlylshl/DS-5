@@ -3,7 +3,7 @@
 
 //#include "stm32f10x.h"
 
-#include "version.h"
+#include "stm32f10x.h"
 //#define TIM1_NVIC	1
 
 extern volatile uint32_t time1;

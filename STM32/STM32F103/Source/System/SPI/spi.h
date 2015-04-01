@@ -1,7 +1,7 @@
 #ifndef __SPI_H
 #define __SPI_H
 
-#include "version.h"
+#include "stm32f10x.h"
 
 #define DELAY_TIME      10
 

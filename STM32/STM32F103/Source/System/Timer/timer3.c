@@ -48,4 +48,11 @@ void TIM3_IRQ(void) {
 		}
 
 }
-
+extern void TIM3_IRQ(void);
+void TIM3_IRQHandler(void) {
+	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) {
+		
+		TIM3_IRQ();
+		TIM_ClearITPendingBit(TIM3, TIM_FLAG_Update);
+	}
+}

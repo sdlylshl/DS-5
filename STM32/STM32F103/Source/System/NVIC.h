@@ -1,6 +1,6 @@
 #ifndef _NVIC_H_
 #define _NVIC_H_
-#include "version.h"
+#include "stm32f10x.h"
 extern uint8_t EXTIn;
 #define NVIC_SPI2_IRQ
 

@@ -147,7 +147,7 @@
             <RestoreSysVw>1</RestoreSysVw>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>6</TargetSelection>
+          <TargetSelection>1</TargetSelection>
           <SimDlls>
             <CpuDll></CpuDll>
             <CpuDllArguments></CpuDllArguments>
@@ -161,7 +161,7 @@
             <PeripheralDll></PeripheralDll>
             <PeripheralDllArguments></PeripheralDllArguments>
             <InitializationFile></InitializationFile>
-            <Driver>Segger\JL2CM3.dll</Driver>
+            <Driver>BIN\UL2CM3.DLL</Driver>
           </TargetDlls>
         </DebugOption>
         <Utilities>
@@ -175,7 +175,7 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3>"" ()</Flash3>
+          <Flash3></Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -514,6 +514,11 @@
               <FilePath>.\Source\System\Malloc\malloc.c</FilePath>
             </File>
             <File>
+              <FileName>spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\System\SPI\spi.c</FilePath>
+            </File>
+            <File>
               <FileName>spi1.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\System\SPI\spi1.c</FilePath>
@@ -549,19 +554,44 @@
               <FilePath>.\Source\System\Timer\timer4.c</FilePath>
             </File>
             <File>
-              <FileName>usart1.c</FileName>
+              <FileName>timer5.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Source\System\Usart\usart1.c</FilePath>
+              <FilePath>.\Source\System\Timer\timer5.c</FilePath>
             </File>
             <File>
-              <FileName>usart3.c</FileName>
+              <FileName>timer6.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Source\System\Usart\usart3.c</FilePath>
+              <FilePath>.\Source\System\Timer\timer6.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer7.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\System\Timer\timer7.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer8.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\System\Timer\timer8.c</FilePath>
             </File>
             <File>
               <FileName>usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\System\Usart\usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\System\Usart\usart1.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\System\Usart\usart2.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart3.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\System\Usart\usart3.c</FilePath>
             </File>
             <File>
               <FileName>flash.c</FileName>
@@ -584,19 +614,9 @@
               <FilePath>.\Source\System\RTC\rtc.c</FilePath>
             </File>
             <File>
-              <FileName>spi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\System\SPI\spi.c</FilePath>
-            </File>
-            <File>
               <FileName>DAC.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\System\DAC\DAC.c</FilePath>
-            </File>
-            <File>
-              <FileName>usart2.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Source\System\Usart\usart2.c</FilePath>
             </File>
           </Files>
         </Group>

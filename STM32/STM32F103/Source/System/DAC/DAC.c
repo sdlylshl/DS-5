@@ -145,7 +145,6 @@ void DAC_Config(void) {
 
 	//DMA_DAC_Config(&DAC_InitStructure );
 	TIM_Cmd(TIM2, ENABLE);
-	
 
 }
 

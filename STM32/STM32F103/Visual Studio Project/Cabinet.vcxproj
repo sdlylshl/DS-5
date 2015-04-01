@@ -31,6 +31,7 @@
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="..\RTE\Device\STM32F103VE\startup_stm32f10x_hd.s" />
     <None Include="..\Source\LCD12864\LCD12864P\LCD12864P.C" />
     <None Include="..\Source\LCD12864\LCD12864P\LCD12864P_main.C" />
     <None Include="Readme.txt" />
@@ -50,6 +51,10 @@
     <ClCompile Include="..\Source\panel\panel.c" />
     <ClCompile Include="..\Source\Retarget.c" />
     <ClCompile Include="..\Source\stm32f10x_it.c" />
+    <ClCompile Include="..\Source\System\Timer\timer5.c" />
+    <ClCompile Include="..\Source\System\Timer\timer6.c" />
+    <ClCompile Include="..\Source\System\Timer\timer7.c" />
+    <ClCompile Include="..\Source\System\Timer\timer8.c" />
     <ClCompile Include="..\Source\System\Usart\usart2.c" />
     <ClCompile Include="..\Source\W5500\Application\Application.c" />
     <ClCompile Include="..\Source\W5500\Application\loopback_client.c" />
@@ -109,6 +114,14 @@
     <ClInclude Include="..\Source\GPIO\RS485.h" />
     <ClInclude Include="..\Source\KEY\key.h" />
     <ClInclude Include="..\Source\LCD1602\lcd_1602a.h" />
+    <ClInclude Include="..\Source\System\Timer\timer1.h" />
+    <ClInclude Include="..\Source\System\Timer\timer2.h" />
+    <ClInclude Include="..\Source\System\Timer\timer3.h" />
+    <ClInclude Include="..\Source\System\Timer\timer4.h" />
+    <ClInclude Include="..\Source\System\Timer\timer5.h" />
+    <ClInclude Include="..\Source\System\Timer\timer6.h" />
+    <ClInclude Include="..\Source\System\Timer\timer7.h" />
+    <ClInclude Include="..\Source\System\Timer\timer8.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

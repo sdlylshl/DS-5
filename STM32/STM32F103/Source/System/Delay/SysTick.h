@@ -3,7 +3,7 @@
 
 //#include "stm32f10x.h"
 
-#include "version.h"
+#include "stm32f10x.h"
 
 #define  SYSTICK_1US    1000000
 #define  SYSTICK_10US   100000
