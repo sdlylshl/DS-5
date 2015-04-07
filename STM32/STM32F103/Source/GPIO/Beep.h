@@ -19,6 +19,7 @@
 #define    BEEPOFF()  GPIO_ResetBits(BEEP_PORT,BEEP_PIN)
 
 extern void Beep(uint32_t ms);
+extern void BeepStop(void);
 extern void BeepStart(uint32_t ms);
 extern void (*BeepCallback_ISR)(void); //回调函数
 #endif /* BEEP_H_ */

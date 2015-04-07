@@ -9,11 +9,16 @@
 typedef struct _KEY{
 	uint8_t ispress;	//
 	uint8_t iskey;		//按键来源
-	uint16_t keyvalue;
+	uint16_t curkey;
+	uint16_t lastkey;
+	uint16_t trigkey;
+	uint16_t presskey;
 	uint32_t timeout;
 }KEY_t;
 
-volatile uint16_t key;
+
+
+
 void KeySwap(void){
 	GPIO_InitTypeDef GPIO_InitStructure; //定义结构体
 
@@ -69,31 +74,32 @@ uint8_t isKeyPress(){
 }
 uint8_t isKey(uint16_t key){
 	return (
-	key == KEY_A||
-	key == KEY_B||
-	key == KEY_C||
-	key == KEY_1||
-	key == KEY_2||
-	key == KEY_3||
-	key == KEY_4||
-	key == KEY_5||
-	key == KEY_6||
-	key == KEY_7||
-	key == KEY_8||
-	key == KEY_9||
-	key == KEY_0||
-	key == KEY_F1||
-	key == KEY_F2||
-	key == KEY_F3||
-	key == KEY_F4||
-	key == KEY_STAR||
-	key == KEY_SHARP
-	);
+		key == KEY_A ||
+		key == KEY_B ||
+		key == KEY_C ||
+		key == KEY_1 ||
+		key == KEY_2 ||
+		key == KEY_3 ||
+		key == KEY_4 ||
+		key == KEY_5 ||
+		key == KEY_6 ||
+		key == KEY_7 ||
+		key == KEY_8 ||
+		key == KEY_9 ||
+		key == KEY_0 ||
+		key == KEY_F1 ||
+		key == KEY_F2 ||
+		key == KEY_F3 ||
+		key == KEY_F4 ||
+		key == KEY_STAR ||
+		key == KEY_SHARP
+		);
 
 }
-uint16_t KeySacn(){
+
+uint16_t KeyScan(){
 	uint8_t i;
-	key = 0;
+	uint16_t key = 0;
 	if (isKeyPress()){
 		for (i = 0xff; i > 0; i--){ ; }
 		if (isKeyPress()){
@@ -108,23 +114,102 @@ uint16_t KeySacn(){
 			key |= GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11) << 7;
 			key |= GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0) << 8;
 			KeyInit();
-			if(isKey(key)){
+			if (isKey(key)){
 				//BeepStart(50);
 				Beep(500);
-			}else{
-				key =0;
+			}
+			else{
+				key = 0;
 			}
 		}
 	}
 	return key;
 }
-uint16_t GetKey(){
+
+volatile uint16_t key = 0;		//键值	
+volatile uint8_t  trigkey = 0;	//连续触发标志
+volatile uint32_t keytime = 0;	//按键按下持续时间
+// 返回值0x00  没有按键按下
+// 返回值0x01  相同按键连续按下 
+// 返回值0xFF  不同按键按下
+uint8_t  GetKey(){
+	uint8_t i;
+
+	static volatile uint16_t tmpkey = 0;
+	//KeyInit();
+	if (isKeyRelease()){
+		//tmpkey = 0;
+		trigkey = 0;
+	}
+	else
+	{
+		key = GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_15);
+		key |= GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_14) << 1;
+		key |= GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_13) << 2;
+		key |= GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_12) << 3;
+		KeySwap(); for (i = 100; i > 0; i--){ ; }
+		key |= GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_0) << 4;
+		key |= GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_1) << 5;
+		key |= GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_10) << 6;
+		key |= GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11) << 7;
+		key |= GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0) << 8;
+		KeyInit();
+		if (isKey(key)){
+
+			if (tmpkey == key){
+				trigkey = 1; //连续触发标志
+		
+				if(keytime == 0){					
+					BeepStart(100);
+				}		
+				keytime++;
+			}
+			else
+			{
+				tmpkey = key;
+				trigkey = 0xff; //非连续触发
+				keytime = 0;
+				BeepStart(100);
+			}
+			//Beep(500);
+
+		}
+		else{
+			key = 0;
+		}
+	}
+	return trigkey;
+}
+
+uint16_t WaitKey(){
 	KeyInit();
 	while (isKeyPress());
-	KeySacn();
+	KeyScan();
 	return key;
 }
 
-uint16_t KeyScan(){
-	return 0;
+void  keyEvent(void(*keyhandler)(),void (*timeouthandler)(),uint32_t timeout){
+	if (timeout<10)
+	{
+		timeout = 10;
+	}
+
+	if (trigkey == 0xFF){
+		//单次触发事件
+		if (keyhandler)
+		{
+			keyhandler();
+		}
+	}else{
+		//长按触发事件
+		if (keytime>timeout)
+		{
+			keytime = 0;	
+			if (timeouthandler)
+			{
+				timeouthandler();
+			}
+		}
+
+	}
 }

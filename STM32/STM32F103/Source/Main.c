@@ -29,13 +29,15 @@ int main() {
 	LEDFlashing(500);
 	//__set_PRIMASK(0);
 	printf("helo!");
+	NVIC_Config();
 	//BeepStart(500);
 //	USART3_Init();
-	//panel();
+	//
 	//RS485_init();
 	//while(GetKey());
 	
-	NVIC_Config();
+
+	panel();
 	while(1);
 
 	//nrf

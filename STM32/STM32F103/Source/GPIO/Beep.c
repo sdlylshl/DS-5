@@ -30,7 +30,10 @@ void Beep(uint32_t ms){
 	Delay_ms(60);
 	BEEPOFF();
 }
-
+void BeepStop(void){
+		BeepCallback_ISR = CallbackNull;	
+		BEEPOFF();
+}
 void BeepCallback(void){
 
 	if(!beeptime){

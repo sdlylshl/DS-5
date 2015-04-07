@@ -39,6 +39,8 @@
   <ItemGroup>
     <ClCompile Include="..\Source\Algorithm\BipBuffer\BipBuffer.c" />
     <ClCompile Include="..\Source\Algorithm\BipBuffer\mainBipBuffer.c" />
+    <ClCompile Include="..\Source\Algorithm\StateMessage\sm.c" />
+    <ClCompile Include="..\Source\Algorithm\StateMessage\state.c" />
     <ClCompile Include="..\Source\DS1302\ds1302.c" />
     <ClCompile Include="..\Source\FATFS\diskio.c" />
     <ClCompile Include="..\Source\FATFS\ff.c" />

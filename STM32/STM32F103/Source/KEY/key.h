@@ -36,7 +36,12 @@
 extern uint8_t isKeyRelease(void);
 extern uint8_t isKeyPress(void);
 extern void KeyInit(void);
-extern  uint16_t KeySacn(void);
-extern uint16_t GetKey(void);
+extern uint16_t KeyScan(void);
 extern uint8_t isKey(uint16_t key);
+
+extern volatile uint16_t key;		//键值
+extern volatile uint8_t  trigkey;	//连续触发标志
+extern volatile uint32_t keytime;	//按键按下持续时间
+extern uint8_t GetKey(void);
+void  keyEvent(void(*keyhandler)(), void(*timeouthandler)(), uint32_t timeout);
 #endif /* KEY_H_ */

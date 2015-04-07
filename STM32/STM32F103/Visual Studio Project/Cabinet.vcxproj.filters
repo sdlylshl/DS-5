@@ -264,6 +264,12 @@
     <ClCompile Include="..\Source\System\Timer\timer8.c">
       <Filter>源文件\System</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\Algorithm\StateMessage\sm.c">
+      <Filter>源文件\Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Algorithm\StateMessage\state.c">
+      <Filter>源文件\Algorithm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Source\LCD12864\LCD12864P\LCD12864P.C">
