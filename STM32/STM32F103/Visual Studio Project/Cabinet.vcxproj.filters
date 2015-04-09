@@ -270,6 +270,9 @@
     <ClCompile Include="..\Source\Algorithm\StateMessage\state.c">
       <Filter>源文件\Algorithm</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\panel\panel_can.c">
+      <Filter>源文件\panel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Source\LCD12864\LCD12864P\LCD12864P.C">

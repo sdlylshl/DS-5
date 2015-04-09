@@ -23,7 +23,7 @@ int main() {
 	TIM8_Config();
 	//DMA_Config();
 	USART1_Init();
-	//CAN1_Config();
+	CAN1_Config();
 	//USART2_Init();
 	///BeepStart(500);
 	LEDFlashing(500);
@@ -36,8 +36,14 @@ int main() {
 	//RS485_init();
 	//while(GetKey());
 	
+	//看门狗设置
+	IWDG_WriteAccessCmd(0x5555);
+	IWDG_SetPrescaler(IWDG_Prescaler_256);
+	IWDG_Enable();//启用独立看门狗	
+	IWDG_ReloadCounter();//喂狗
+	
+	//panel();
 
-	panel();
 	while(1);
 
 	//nrf

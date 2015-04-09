@@ -87,7 +87,7 @@ void Delay_ms(__IO uint32_t ms) {
  * 输出  ：无
  * 调用  ：在 SysTick 中断函数 SysTick_Handler()调用
  */
-void SysTick_Handle(void) {
+void SysTick_Handler(void) {
 	if (TimingDelay != 0x00) {
 		TimingDelay--;
 	}

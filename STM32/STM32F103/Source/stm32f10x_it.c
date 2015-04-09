@@ -189,18 +189,6 @@ void PendSV_Handler(void) {
 	}
 }
 
-/**
- * @brief  This function handles SysTick Handler.
- * @param  None
- * @retval None
- */
-void SysTick_Handler(void) {
-#ifdef DEBUG
-	printf("SysTick_Handler \r\n");
-#endif
-
-	SysTick_Handle();
-}
 
 /*                 STM32F10x Peripherals Interrupt Handlers                   */
 /*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */

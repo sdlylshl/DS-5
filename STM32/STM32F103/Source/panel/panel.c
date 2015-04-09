@@ -425,10 +425,10 @@ void panel(void) {
 	LCD1602_Init();
 
 	while (1) {
+		IWDG_ReloadCounter();//喂狗
 		panel_ShowStatus();
 		panel_keyHandle();
 		panel_paredata();
-
 	}
 }
 
