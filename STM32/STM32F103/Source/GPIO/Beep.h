@@ -22,4 +22,5 @@ extern void Beep(uint32_t ms);
 extern void BeepStop(void);
 extern void BeepStart(uint32_t ms);
 extern void (*BeepCallback_ISR)(void); //回调函数
+extern void BeepDiDiStart(uint32_t on,uint32_t off);
 #endif /* BEEP_H_ */

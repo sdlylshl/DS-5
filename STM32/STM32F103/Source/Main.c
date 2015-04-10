@@ -23,7 +23,7 @@ int main() {
 	TIM8_Config();
 	//DMA_Config();
 	USART1_Init();
-	CAN1_Config();
+	//CAN1_Config();
 	//USART2_Init();
 	///BeepStart(500);
 	LEDFlashing(500);
@@ -42,7 +42,7 @@ int main() {
 	IWDG_Enable();//启用独立看门狗	
 	IWDG_ReloadCounter();//喂狗
 	
-	//panel();
+	panel();
 
 	while(1);
 

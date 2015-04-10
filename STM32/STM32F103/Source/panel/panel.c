@@ -9,9 +9,10 @@
 #include "../Algorithm/Buffer/buffer.h"
 #include "../System/Usart/usart2.h"
 #include "../GPIO/RS485.h"
+#include "../GPIO/Beep.h"
 #include "../KEY/key.h"
 #include "../GPIO/led.h"
-
+#include "../System/Timer/timer4.h"
 
 #define POLL_CMD 				0
 #define SET_USER_PASSWD			0x2
@@ -55,6 +56,9 @@ uint16_t passwd[16] = { 0 };
 uint16_t userpasswd[8] = { KEY_1, KEY_2, KEY_3, KEY_4, 0, 0 };
 uint16_t syspasswd[8] = { KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, 0, 0, 0 };
 
+//布防延迟时间
+#define BFDELAYTIME 60000  
+uint32_t panelcurtime;
 
 typedef struct panelcmd {
 	//uint8_t HEAD;
@@ -283,6 +287,15 @@ void panel_paredata(){
 	}
 }
 //////////////////按键处理//////////////////////////////
+
+void startdidi(){
+		BeepDiDiStart(100,900);
+}
+void stopdidi(){
+		BeepStop();
+
+}
+
 uint8_t keyindex;
 uint8_t checkpasswd(){
 	if (keyindex == 4)
@@ -298,15 +311,23 @@ uint8_t checkpasswd(){
 	}
 	return 0;
 }
-void keyAevent(void){
-
+uint8_t bufangdelay;
+uint32_t bufangdelaytime;
+void Delaybufang(){
 	SyncFlag |= 1;
 	PanelStatus = 0;
+}
+void keyAevent(void){
+
+
+	//一分钟后布防
+	bufangdelay =1;
+	panelcurtime=TIM4_GetCurrentTime();
 	keyindex = 0;
 }
 void keyATimeoutevent(void){
-	SyncFlag |= 1;
-	PanelStatus = 0;
+	bufangdelay =1;
+	panelcurtime=TIM4_GetCurrentTime();
 	keyindex = 0;
 }
 void keyBevent(void){
@@ -355,6 +376,7 @@ uint16_t panel_keyHandle(){
 		switch (key)
 		{
 		case KEY_A:
+			startdidi();
 			normalhandler = keyAevent;
 			timehandler = keyATimeoutevent;
 			timescan = 1000;
@@ -390,23 +412,23 @@ void panel_ShowStatus(){
 		{
 		case 0://布防
 
-			Write_String(0xc0, "bu fang         ");
+			Write_String(0xc0, "Arming         ");
 			LEDFlashing(0);
 			LED2(0);
 			break;
 		case 1://撤防
-			Write_String(0xc0, "che fang        ");
+			Write_String(0xc0, "Disarm          ");
 			LEDFlashing(0);
 			LED2(1);
 			break;
 		case 2://取消报警状态
 
-			Write_String(0xc0, "qu xiao bao jing");
+			Write_String(0xc0, "Cancel alarm    ");
 			LEDFlashing(500);
 			break;
 		case 3://取消
 
-			Write_String(0xc0, "elin            ");
+			Write_String(0xc0, "Cancel alarms   ");
 			LEDFlashing(500);
 			break;
 		default:
@@ -428,6 +450,14 @@ void panel(void) {
 		IWDG_ReloadCounter();//喂狗
 		panel_ShowStatus();
 		panel_keyHandle();
+		if(bufangdelay){
+			if(TIM4_GetDistanceTime(panelcurtime)>BFDELAYTIME){
+			
+			bufangdelay=0;
+			Delaybufang();
+			stopdidi();
+			}
+		}
 		panel_paredata();
 	}
 }
