@@ -90,6 +90,8 @@ static void CAN1_IT_Config(void) {
 	//CAN_ITConfig(CAN1,CAN_IT_SLK | CAN_IT_WKU | CAN_IT_ERR | CAN_IT_LEC | CAN_IT_BOF | CAN_IT_EPV | CAN_IT_EWG, ENABLE);
 
 }
+uint32_t FilterID=0xE011;
+uint32_t FilterMask=0xFFFFFFFC;
  void CAN_Filter_Config(void)
 {
 	CAN_FilterInitTypeDef  CAN_FilterInitStructure;
@@ -101,26 +103,42 @@ static void CAN1_IT_Config(void) {
 	CAN_FilterInitStructure.CAN_FilterScale = CAN_FilterScale_32bit;	//过滤器位宽为单个32位。
 	/* 使能报文标示符过滤器按照标示符的内容进行比对过滤，扩展ID不是如下的就抛弃掉，是的话，会存入FIFO0。 */
 
-	CAN_FilterInitStructure.CAN_FilterIdHigh = (((uint32_t) 0xF0 << 3) & 0xFFFF0000) >> 16;				//要过滤的ID高位 
-	CAN_FilterInitStructure.CAN_FilterIdLow = (((uint32_t)0x0f << 3) | CAN_ID_EXT | CAN_RTR_DATA) & 0xFFFF; //要过滤的ID低位 
+	CAN_FilterInitStructure.CAN_FilterIdHigh = (((uint32_t) (FilterID) << 3) & 0xFFFF0000) >> 16;				//要过滤的ID高位 
+	CAN_FilterInitStructure.CAN_FilterIdLow = (((uint32_t) (FilterID+1) << 3) | CAN_ID_EXT | CAN_RTR_DATA) & 0xFFFF; //要过滤的ID低位 只接收扩展数据帧
 	//屏蔽模式 为1的位必须匹配 ,为0的位 不进行匹配
-	CAN_FilterInitStructure.CAN_FilterMaskIdHigh = 0;			//过滤器高16位每位必须匹配
-	CAN_FilterInitStructure.CAN_FilterMaskIdLow = 0;			//过滤器低16位每位必须匹配
+	CAN_FilterInitStructure.CAN_FilterMaskIdHigh = (((uint32_t) (FilterMask) << 3) & 0xFFFF0000) >> 16;;			//过滤器高16位每位必须匹配
+	CAN_FilterInitStructure.CAN_FilterMaskIdLow = (((uint32_t) (FilterMask) << 3) | CAN_ID_EXT | CAN_RTR_DATA) & 0xFFFF;			//过滤器低16位每位必须匹配
+
+	CAN_FilterInitStructure.CAN_FilterFIFOAssignment = CAN_Filter_FIFO0;				//过滤器被关联到FIFO0
+	CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;			//使能过滤器
+	CAN_FilterInit(&CAN_FilterInitStructure);
+	
+		CAN_FilterInitStructure.CAN_FilterNumber = 7;						//过滤器组0
+	//过滤器模式设置:(1) 1个32位的屏蔽位模式的过滤器. (2) 2个32位的列表模式的过滤器. (3) 2个16位的屏蔽位模式的过滤器. (4) 4个16位的列表模式的过滤器
+	CAN_FilterInitStructure.CAN_FilterMode = CAN_FilterMode_IdMask;	//工作在标识符屏蔽位模式
+	CAN_FilterInitStructure.CAN_FilterScale = CAN_FilterScale_32bit;	//过滤器位宽为单个32位。
+	/* 使能报文标示符过滤器按照标示符的内容进行比对过滤，扩展ID不是如下的就抛弃掉，是的话，会存入FIFO0。 */
+
+	CAN_FilterInitStructure.CAN_FilterIdHigh = (((uint32_t) (FilterID) << 3) & 0xFFFF0000) >> 16;				//要过滤的ID高位 
+	CAN_FilterInitStructure.CAN_FilterIdLow = (((uint32_t) (FilterID) << 3) | CAN_ID_EXT | CAN_RTR_DATA) & 0xFFFF; //要过滤的ID低位 只接收扩展数据帧
+	//屏蔽模式 为1的位必须匹配 ,为0的位 不进行匹配
+	CAN_FilterInitStructure.CAN_FilterMaskIdHigh = 0xFFFF;			//过滤器高16位每位必须匹配
+	CAN_FilterInitStructure.CAN_FilterMaskIdLow = 0xFFFF;			//过滤器低16位每位必须匹配
 
 	CAN_FilterInitStructure.CAN_FilterFIFOAssignment = CAN_Filter_FIFO0;				//过滤器被关联到FIFO0
 	CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;			//使能过滤器
 	CAN_FilterInit(&CAN_FilterInitStructure);
 	
 	/*CAN过滤器初始化*/
-	CAN_FilterInitStructure.CAN_FilterNumber = 1;	
+	CAN_FilterInitStructure.CAN_FilterNumber = 5;	
 	CAN_FilterInitStructure.CAN_FilterMode = CAN_FilterMode_IdMask;	//工作在标识符屏蔽位模式
 	CAN_FilterInitStructure.CAN_FilterScale = CAN_FilterScale_32bit;	//过滤器位宽为单个32位。
 	/* 使能报文标示符过滤器按照标示符的内容进行比对过滤，扩展ID不是如下的就抛弃掉，是的话，会存入FIFO1。 */
-	CAN_FilterInitStructure.CAN_FilterIdHigh = (((uint32_t) 0xF0 << 3) & 0xFFFF0000) >> 16;				//要过滤的ID高位 
-	CAN_FilterInitStructure.CAN_FilterIdLow = (((uint32_t)0x0f << 3) | CAN_ID_EXT | CAN_RTR_DATA) & 0xFFFF; //要过滤的ID低位 
+	CAN_FilterInitStructure.CAN_FilterIdHigh = (((uint32_t)FilterID << 3) & 0xFFFF0000) >> 16;				//要过滤的ID高位 
+	CAN_FilterInitStructure.CAN_FilterIdLow = (((uint32_t)FilterID << 3) | CAN_ID_EXT | CAN_RTR_DATA) & 0xFFFF; //要过滤的ID低位  
 	//屏蔽模式 为1的位必须匹配 ,为0的位 不进行匹配
-	CAN_FilterInitStructure.CAN_FilterMaskIdHigh = 0;			//过滤器高16位每位必须匹配
-	CAN_FilterInitStructure.CAN_FilterMaskIdLow = 0;			//过滤器低16位每位必须匹配
+	CAN_FilterInitStructure.CAN_FilterMaskIdHigh = 0xFFFF;			//过滤器高16位每位必须匹配
+	CAN_FilterInitStructure.CAN_FilterMaskIdLow = 0xFFFF;			//过滤器低16位每位必须匹配
 
 	CAN_FilterInitStructure.CAN_FilterFIFOAssignment = CAN_Filter_FIFO1;				//过滤器被关联到FIFO0
 	CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;			//使能过滤器
@@ -360,8 +378,9 @@ void USB_HP_CAN1_TX_IRQHandler(void) {
  * Output         : None
  * Return         : None
  *******************************************************************************/
+CanRxMsg RxMessage;
 void USB_LP_CAN1_RX0_IRQHandler(void) {
-	CanRxMsg RxMessage;
+
 	/*receive FIFO0 Message */
 	if (CAN_GetITStatus(CAN1, CAN_IT_FOV0)) {
 		//缓冲区溢出		
@@ -379,16 +398,32 @@ void USB_LP_CAN1_RX0_IRQHandler(void) {
 
 	}
 	
-	CAN_Receive(CAN1, CAN_FIFO0, &RxMessage);
-
-	if ((RxMessage.ExtId == 0x1234) && (RxMessage.IDE == CAN_ID_EXT)
-			&& (RxMessage.DLC == 2)
-			&& ((RxMessage.Data[1] | RxMessage.Data[0] << 8) == 0xDECA)) {
-		ret = 1;
-	} else {
-		ret = 0;
-	}
-	printf("USB_LP_CAN_RX0_IRQHandler (Interrupt Recv 1 Message)");
+	RxMessage.IDE = (uint8_t)0x04 & CAN1->sFIFOMailBox[CAN_FIFO0].RIR;
+  if (RxMessage.IDE == CAN_Id_Standard)
+  {
+    RxMessage.StdId = (uint32_t)0x000007FF & (CAN1->sFIFOMailBox[CAN_FIFO0].RIR >> 21);
+  }
+  else
+  {
+    RxMessage.ExtId = (uint32_t)0x1FFFFFFF & (CAN1->sFIFOMailBox[CAN_FIFO0].RIR >> 3);
+  }
+  
+  /* Get the FMI */
+  RxMessage.FMI = (uint8_t)0xFF & (CAN1->sFIFOMailBox[CAN_FIFO0].RDTR >> 8);
+  /* Get the data field */
+  RxMessage.Data[0] = (uint8_t)0xFF & CAN1->sFIFOMailBox[CAN_FIFO0].RDLR;
+  RxMessage.Data[1] = (uint8_t)0xFF & (CAN1->sFIFOMailBox[CAN_FIFO0].RDLR >> 8);
+  RxMessage.Data[2] = (uint8_t)0xFF & (CAN1->sFIFOMailBox[CAN_FIFO0].RDLR >> 16);
+  RxMessage.Data[3] = (uint8_t)0xFF & (CAN1->sFIFOMailBox[CAN_FIFO0].RDLR >> 24);
+  RxMessage.Data[4] = (uint8_t)0xFF & CAN1->sFIFOMailBox[CAN_FIFO0].RDHR;
+  RxMessage.Data[5] = (uint8_t)0xFF & (CAN1->sFIFOMailBox[CAN_FIFO0].RDHR >> 8);
+  RxMessage.Data[6] = (uint8_t)0xFF & (CAN1->sFIFOMailBox[CAN_FIFO0].RDHR >> 16);
+  RxMessage.Data[7] = (uint8_t)0xFF & (CAN1->sFIFOMailBox[CAN_FIFO0].RDHR >> 24);
+  
+	/* Release the FIFO0 */
+	CAN1->RF0R |= CAN_RF0R_RFOM0;
+	
+	//printf("USB_LP_CAN_RX0_IRQHandler (Interrupt Recv 1 Message)");
 }
 
 /*******************************************************************************
@@ -399,7 +434,7 @@ void USB_LP_CAN1_RX0_IRQHandler(void) {
  * Return         : None
  *******************************************************************************/
 void CAN1_RX1_IRQHandler(void) {
-		CanRxMsg RxMessage;
+//		CanRxMsg RxMessage;
 	if (CAN_GetITStatus(CAN1, CAN_IT_FOV1)) {
 		CAN_ClearITPendingBit(CAN1, CAN_IT_FOV1);
 	}
@@ -411,7 +446,33 @@ void CAN1_RX1_IRQHandler(void) {
 	}
 	/*To DO: receive FIFO1 Message */
 	{
-		CAN_Receive(CAN1, CAN_FIFO1, &RxMessage);
+		//CAN_Receive(CAN1, CAN_FIFO1, &RxMessage);
+		
+		
+		RxMessage.IDE = (uint8_t)0x04 & CAN1->sFIFOMailBox[CAN_FIFO1].RIR;
+  if (RxMessage.IDE == CAN_Id_Standard)
+  {
+    RxMessage.StdId = (uint32_t)0x000007FF & (CAN1->sFIFOMailBox[CAN_FIFO1].RIR >> 21);
+  }
+  else
+  {
+    RxMessage.ExtId = (uint32_t)0x1FFFFFFF & (CAN1->sFIFOMailBox[CAN_FIFO1].RIR >> 3);
+  }
+  
+  /* Get the FMI */
+  RxMessage.FMI = (uint8_t)0xFF & (CAN1->sFIFOMailBox[CAN_FIFO1].RDTR >> 8);
+  /* Get the data field */
+  RxMessage.Data[0] = (uint8_t)0xFF & CAN1->sFIFOMailBox[CAN_FIFO1].RDLR;
+  RxMessage.Data[1] = (uint8_t)0xFF & (CAN1->sFIFOMailBox[CAN_FIFO1].RDLR >> 8);
+  RxMessage.Data[2] = (uint8_t)0xFF & (CAN1->sFIFOMailBox[CAN_FIFO1].RDLR >> 16);
+  RxMessage.Data[3] = (uint8_t)0xFF & (CAN1->sFIFOMailBox[CAN_FIFO1].RDLR >> 24);
+  RxMessage.Data[4] = (uint8_t)0xFF & CAN1->sFIFOMailBox[CAN_FIFO1].RDHR;
+  RxMessage.Data[5] = (uint8_t)0xFF & (CAN1->sFIFOMailBox[CAN_FIFO1].RDHR >> 8);
+  RxMessage.Data[6] = (uint8_t)0xFF & (CAN1->sFIFOMailBox[CAN_FIFO1].RDHR >> 16);
+  RxMessage.Data[7] = (uint8_t)0xFF & (CAN1->sFIFOMailBox[CAN_FIFO1].RDHR >> 24);
+		
+		/* Release the FIFO1 */
+		CAN1->RF1R |= CAN_RF1R_RFOM1;
 	}
 
 	//printf("CAN1_RX1_IRQHandler");
