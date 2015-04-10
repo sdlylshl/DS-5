@@ -43,11 +43,15 @@ void BeepCallback(void){
 		beeptime--;
 }
 
-void BeepStart(uint32_t ms){
-	beeptime = ms;
+void BeepInit(){
+
 	BEEP_GPIO_Config();
-	BEEPON();
+	BEEPOFF();
+}
+void BeepStart(uint32_t ms){
+	beeptime = ms;	
 	BeepCallback_ISR=BeepCallback;
+	BEEPON();
 }
 ////didi
 void BeepDiDiCallback(){

@@ -159,8 +159,8 @@ uint8_t  GetKey(){
 			if (tmpkey == key){
 				trigkey = 1; //连续触发标志
 		
-				if(keytime == 0){					
-					BeepStart(100);
+				if(keytime == 0){	
+					Beep(100);
 				}		
 				keytime++;
 			}
@@ -169,10 +169,8 @@ uint8_t  GetKey(){
 				tmpkey = key;
 				trigkey = 0xff; //非连续触发
 				keytime = 0;
-				BeepStart(100);
+				Beep(100);
 			}
-			//Beep(500);
-
 		}
 		else{
 			key = 0;

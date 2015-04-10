@@ -57,8 +57,10 @@ uint16_t userpasswd[8] = { KEY_1, KEY_2, KEY_3, KEY_4, 0, 0 };
 uint16_t syspasswd[8] = { KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, 0, 0, 0 };
 
 //布防延迟时间
-#define BFDELAYTIME 60000  
+uint32_t BFDELAYTIME = 30000;
 uint32_t panelcurtime;
+uint8_t bufangdelay;
+uint32_t bufangdelaytime;
 
 typedef struct panelcmd {
 	//uint8_t HEAD;
@@ -70,6 +72,15 @@ typedef struct panelcmd {
 } PANELCMD_t;
 
 PANELCMD_t panelcmd;
+
+void startdidi(){
+	BeepDiDiStart(100, 900);
+}
+void stopdidi(){
+	bufangdelay = 0;
+	BeepStop();
+
+}
 /////////////////////数据处理////////////////////////////////
 uint8_t calcfcs(uint8_t *pmsg, uint8_t len) {
 	uint8_t result = 0;
@@ -197,7 +208,7 @@ static void recvbuchefang(PANELCMD_t * pan){
 		last_key = 0;
 		//SyncFlag &= 0xFE;	//1.服务器布撤防状态改变,取消上传
 		PanelStatus = pan->data[0];
-
+		stopdidi();
 		//收到应答
 		pan->data[0] = 0xff;
 		ansbufang(pan);
@@ -288,13 +299,7 @@ void panel_paredata(){
 }
 //////////////////按键处理//////////////////////////////
 
-void startdidi(){
-		BeepDiDiStart(100,900);
-}
-void stopdidi(){
-		BeepStop();
 
-}
 
 uint8_t keyindex;
 uint8_t checkpasswd(){
@@ -311,23 +316,16 @@ uint8_t checkpasswd(){
 	}
 	return 0;
 }
-uint8_t bufangdelay;
-uint32_t bufangdelaytime;
+
 void Delaybufang(){
 	SyncFlag |= 1;
 	PanelStatus = 0;
 }
 void keyAevent(void){
 
-
-	//一分钟后布防
-	bufangdelay =1;
-	panelcurtime=TIM4_GetCurrentTime();
 	keyindex = 0;
 }
 void keyATimeoutevent(void){
-	bufangdelay =1;
-	panelcurtime=TIM4_GetCurrentTime();
 	keyindex = 0;
 }
 void keyBevent(void){
@@ -336,6 +334,7 @@ void keyBevent(void){
 
 		SyncFlag |= 1;
 		PanelStatus = 1;
+		stopdidi();
 	}
 
 	keyindex = 0;
@@ -344,15 +343,60 @@ void keyBTimeoutevent(void){
 	keyindex = 0;
 }
 void keyCevent(void){
-
-	SyncFlag |= 1;
-	lastpanelstatus = PanelStatus;
-	PanelStatus = 2;
+	if (checkpasswd())
+	{
+		SyncFlag |= 1;
+		lastpanelstatus = PanelStatus;
+		PanelStatus = 2;
+		stopdidi();
+	}
 	keyindex = 0;
 }
 void keyCTimeoutevent(void){
-	SyncFlag |= 1;
-	PanelStatus = 2;
+
+	keyindex = 0;
+}
+const uint16_t numindex[] = { KEY_0, KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9 };
+void changebufangdelaytime(){
+	int8_t i, j;
+	uint32_t num = 0;
+	if (keyindex > 3){
+		keyindex = 3;
+	}
+	for (i = 0; i < keyindex; i++){
+		for (j = 0; j < 10; j++){
+			if (passwd[i] == numindex[j]){
+
+				switch (keyindex - i){
+				case 1:
+					num += j;
+					break;
+				case 2:
+					num += j * 10;
+					break;
+				case 3:
+					num += j * 100;
+					break;
+
+				}
+				break;
+			}
+		}
+	}
+
+	if (num > 300 || num < 5){
+		num = 30;
+	}
+	BFDELAYTIME = num * 1000;
+}
+void keyF1event(void){
+	changebufangdelaytime();
+	keyindex = 0;
+}
+void keyF1Timeoutevent(void){
+
+
+	//changebufangdelaytime();
 	keyindex = 0;
 }
 void keyNevent(void){
@@ -376,9 +420,14 @@ uint16_t panel_keyHandle(){
 		switch (key)
 		{
 		case KEY_A:
-			startdidi();
 			normalhandler = keyAevent;
 			timehandler = keyATimeoutevent;
+			//一分钟后布防
+			panelcurtime = TIM4_GetCurrentTime();
+			if(PanelStatus){
+			bufangdelay = 1;
+			startdidi();
+			}
 			timescan = 1000;
 			break;
 		case KEY_B:
@@ -389,6 +438,12 @@ uint16_t panel_keyHandle(){
 		case KEY_C:
 			normalhandler = keyCevent;
 			timehandler = keyCTimeoutevent;
+			timescan = 1000;
+			break;
+		case KEY_F1:
+			//修改延时 报警时间
+			normalhandler = keyF1event;
+			timehandler = keyF1Timeoutevent;
 			timescan = 1000;
 			break;
 		default:
@@ -450,12 +505,17 @@ void panel(void) {
 		IWDG_ReloadCounter();//喂狗
 		panel_ShowStatus();
 		panel_keyHandle();
-		if(bufangdelay){
-			if(TIM4_GetDistanceTime(panelcurtime)>BFDELAYTIME){
-			
-			bufangdelay=0;
-			Delaybufang();
-			stopdidi();
+		if (bufangdelay){
+			if (PanelStatus){
+				//不在布防模式
+				if (TIM4_GetDistanceTime(panelcurtime) > BFDELAYTIME){
+					Delaybufang();
+					stopdidi();
+					BeepStart(1000);
+				}
+			}
+			else{
+				stopdidi();
 			}
 		}
 		panel_paredata();

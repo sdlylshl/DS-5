@@ -15,6 +15,7 @@ int main() {
 //	uint8_t i;
 	uint32_t Time = 0;
 	//RCC_Config();
+	BeepInit();
 	LED_GPIO_Config();
 	//LED3(0);	//0 开灯 1关灯
 	TIM2_Start();	//通用定时器
