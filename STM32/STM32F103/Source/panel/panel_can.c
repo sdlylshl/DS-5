@@ -177,11 +177,76 @@ panel_policy_t * panel_init_policy(uint8_t sn,uint8_t an){
 	}
 }
 
-panel_policy_t * panel_add_policy(panel_config_t *pconfig, uint32_t userID, uint8_t sceneID, uint8_t modeID, panel_policy_t * policy){
+void  panel_chg_policy(){
+	//1.get policy
+
+}
+typedef struct panel_id_s
+{
+	uint32_t userID;
+	uint8_t sceneID;
+	uint8_t  modeID;
+	uint8_t  policyID;
+}panel_id_t;
+
+//1.根据策略ID获取 一个config  
+//2.如果没有 则创建一个新的策略
+//3.成功返回 panel_config_t 失败返回NULL 属性送入user_current
+panel_config_t * panel_get_policy(panel_config_t *pconfig, panel_id_t id){
 	uint8_t i;
 	panel_user_t *u;
+	if (pconfig->user_current->scene_current->mode_current->policy_current->policyID == id.policyID)
+	{
+		return pconfig;
+	}
+	else if (pconfig->user_current->scene_current->mode_current->modeID == id.modeID)
+	{
+		//查找策略表
+
+		//未找到创建新策略
+		panel_policy_t * p = callc(sizeof(panel_policy_t));
+		if (p)
+		{
+			pconfig->user_current->scene_current->mode_current->policy_end->policy_next = p;
+			pconfig->user_current->scene_current->mode_current->policy_end = p;
+
+			pconfig->user_current->scene_current->mode_current->policy_current = p;
+			pconfig->user_current->scene_current->mode_current->policy_current->policyID = p;
+			pconfig->user_current->scene_current->mode_current->policy_current->sensorNUM = 0;
+			pconfig->user_current->scene_current->mode_current->policy_current->actuatorNUM = 0;
+			return pconfig;
+		}
+		else{
+			return NULL;
+		}
+	}
+	else if (pconfig->user_current->scene_current->sceneID == id.sceneID)
+	{
+		//1.查找mode 
+
+		//2.创建mode
+		panel_mode_t * m = callc(sizeof(panel_node_t));
+		if (m)
+		{
+
+			return pconfig;
+		}
+		else
+		{
+			return NULL;
+		}
+	}
+	else if (pconfig->user_current->userID == id.userID)
+	{
+	
+	}
+	else
+	{
+
+	}
+//******************************************************
 	//1. 检索 pconfig 中是否存在 user 没有则创建
-	if (pconfig->user_current->userID == userID)
+	if (pconfig->user_current->userID == id.userID)
 	{
 		goto second;
 	}
@@ -191,7 +256,7 @@ panel_policy_t * panel_add_policy(panel_config_t *pconfig, uint32_t userID, uint
 	}
 	for (i = 0; i < pconfig->userNUM; i++)
 	{
-		if (pconfig->user.userID == userID)
+		if (pconfig->user.userID == id.userID)
 		{
 			goto second;
 		}
@@ -209,7 +274,7 @@ panel_policy_t * panel_add_policy(panel_config_t *pconfig, uint32_t userID, uint
 		pconfig->user_end->user_next = u;
 		pconfig->user_end = u;
 		pconfig->userNUM++;
-		pconfig->user_end->userID = userID;
+		pconfig->user_end->userID = id.userID;
 		pconfig->user_current = u;
 	}
 	else
@@ -219,7 +284,7 @@ panel_policy_t * panel_add_policy(panel_config_t *pconfig, uint32_t userID, uint
 
 	//2. 检索 场景
 second:
-	if (pconfig->user_current->scene_current->sceneID == sceneID)
+	if (pconfig->user_current->scene_current->sceneID == id.sceneID)
 	{
 		goto third;
 	}
@@ -230,7 +295,7 @@ second:
 
 	for (i = 0; i < pconfig->user_current->sceneNUM; i++)
 	{
-		if (pconfig->user_current->scene.sceneID == sceneID)
+		if (pconfig->user_current->scene.sceneID == id.sceneID)
 		{
 			goto third;
 		}
@@ -244,7 +309,7 @@ second:
 		pconfig->user_current->scene_end = s;
 		pconfig->user_current->scene_current = s;
 		pconfig->user_current->sceneNUM++;
-		pconfig->user_current->scene_current->sceneID = sceneID;
+		pconfig->user_current->scene_current->sceneID = id.sceneID;
 	}
 	else
 	{
@@ -252,7 +317,7 @@ second:
 	}
 	//3. 模式配置
 third:
-	if (pconfig->user_current->scene_current->mode_current->modeID == modeID)
+	if (pconfig->user_current->scene_current->mode_current->modeID == id.modeID)
 	{
 		goto forth;
 	}
@@ -263,7 +328,7 @@ third:
 
 	for (i = 0; i < pconfig->user_current->scene_current->modeNUM; i++)
 	{
-		if (pconfig->user_current->scene_current->mode_current == modeID)
+		if (pconfig->user_current->scene_current->mode_current == id.modeID)
 		{
 			goto forth;
 		}
@@ -280,7 +345,7 @@ third:
 		pconfig->user_current->scene_end = s;
 		pconfig->user_current->scene_current = s;
 		pconfig->user_current->sceneNUM++;
-		pconfig->user_current->scene_current->sceneID = modeID;
+		pconfig->user_current->scene_current->sceneID = id.modeID;
 	}
 	else
 	{
@@ -288,7 +353,7 @@ third:
 	}
 	// 策略
 forth:
-	if (pconfig->user_current->scene_current->mode_current->policy_current->policyID == policyID)
+	if (pconfig->user_current->scene_current->mode_current->policy_current->policyID == id.policyID)
 	{
 		goto forth;
 	}
@@ -299,7 +364,7 @@ forth:
 
 	for (i = 0; i < pconfig->user_current->scene_current->modeNUM; i++)
 	{
-		if (pconfig->user_current->scene_current->mode_current == sceneID)
+		if (pconfig->user_current->scene_current->mode_current == id.sceneID)
 		{
 			goto forth;
 		}
@@ -316,7 +381,7 @@ forth:
 		pconfig->user_current->scene_end = s;
 		pconfig->user_current->scene_current = s;
 		pconfig->user_current->sceneNUM++;
-		pconfig->user_current->scene_current->sceneID = sceneID;
+		pconfig->user_current->scene_current->sceneID = id.sceneID;
 	}
 	else
 	{
