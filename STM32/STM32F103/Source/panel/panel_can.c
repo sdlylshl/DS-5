@@ -1,6 +1,7 @@
 #include "stm32f10x.h"
 #include "stdio.h"
-
+#include "stdlib.h"
+#include "panel_queue.h"
 //[
 //	userNUM
 //	userID1[
@@ -8,8 +9,8 @@
 //			envID1[
 //				modeNUM
 //					mode1[
-//						modeUsed   //Ö¸Ê¾µ±Ç°Ä£Ê½ÊÇ·ñÆôÓÃ
-//							policyNUM    //²ßÂÔÊı
+//						modeUsed   //æŒ‡ç¤ºå½“å‰æ¨¡å¼æ˜¯å¦å¯ç”¨
+//							policyNUM    //ç­–ç•¥æ•°
 //							policyID1[
 //								size
 //									relation
@@ -39,352 +40,474 @@
 //	userID2[]
 //]
 
+#define panel_free free
+#define panel_mallc malloc
+
+#define  PANEL_READ			0x01
+#define  PANEL_WRITE_ENABLE		0x02
+
 //***************************************************
 typedef struct panel_node_s{
 	uint32_t nodeID;
 	uint16_t value;
-	uint8_t nodeVID;	//´«¸ĞÆ÷¹ØÁªµÄÍø¹Ø ĞéÄâID
-	uint8_t nodeOP;		//±¸ÓÃ´«¸ĞÆ÷ÊôĞÔ
-	struct panel_node_s *node_next;
+	uint8_t nodeVID;	//ä¼ æ„Ÿå™¨å…³è”çš„ç½‘å…³ è™šæ‹ŸID
+	uint8_t nodeOP;		//ä¼ æ„Ÿå™¨>=< //æ‰§è¡Œå™¨è¡¨ç¤º
+	//struct panel_node_s *next;
 }panel_node_t;
 
+
+//è™šæ‹Ÿæœ‰æ•ˆä¼ æ„Ÿè®¾å¤‡è¡¨
+// æ¨¡å¼åˆ‡æ¢çš„æ—¶å€™ é‡æ–° åˆå§‹åŒ– 
+typedef struct panel_sensor_device_s{
+
+	struct panel_node_s  sensor;
+	struct panel_sensor_device_s * next;
+	//struct panel_sensor_device_s * prev;
+}panel_sensor_device_t;
+panel_sensor_device_t *psensor_device_head;
+
+//è™šæ‹Ÿæ‰§è¡Œè®¾å¤‡è¡¨
+typedef struct panel_actuator_device_s{
+
+	struct panel_node_s  actuator;
+	void(*run)(uint8_t value);
+	struct panel_actuator_device_s * next;
+	//struct panel_actuator_device_s * prev;
+}panel_actuator_device_t;
+
+typedef struct panel_actuator_s{
+	struct panel_node_s  actuator;
+	panel_actuator_device_t *actuator_device;
+	struct panel_actuator_s *next;
+}panel_actuator_t;
+typedef struct panel_sensor_s{
+	struct panel_node_s  sensor;
+	panel_sensor_device_t *sensor_device;
+	//uint8_t nodeVID;	//ä¼ æ„Ÿå™¨å…³è”çš„ç½‘å…³ è™šæ‹ŸID
+	struct panel_sensor_s *next;
+}panel_sensor_t;
 typedef struct panel_policy_s{
-	uint8_t  relation;	//²ßÂÔ¹ØÏµ Óë»ò·Ç	
-	uint8_t  policyID; //²ßÂÔID
+	uint8_t  relation;						//ç­–ç•¥å…³ç³»
+	uint8_t  policyID;						//ç­–ç•¥ID
+	uint8_t sensorNUM;						//ä¼ æ„Ÿå™¨æ•°é‡
+	uint8_t actuatorNUM;					//æ‰§è¡Œå™¨æ•°é‡
+	struct panel_node_s *sensor_head;		//ä¼ æ„Ÿå™¨å¤´æŒ‡é’ˆ
+	struct panel_node_s *actuator_head;		//æ‰§è¡Œå™¨å¤´æŒ‡é’ˆ
+	struct panel_mode_s *parent;			//[çˆ¶æ¨¡å¼]<--ç­–ç•¥
+	struct panel_policy_s *prev;			//ä¸Šä¸€ä¸ªç­–ç•¥
+	struct panel_policy_s *next;			//ä¸‹ä¸€ä¸ªç­–ç•¥
+}panel_policy_t;	
+
+typedef struct panel_mode_s{
+	uint8_t  modeID;						//æ¨¡å¼ID
+	uint8_t  modeUSED;						//æ¨¡å¼å¯ç”¨çŠ¶æ€	
+	uint8_t  policyNUM;						//ç­–ç•¥æ•°é‡
+	//struct panel_policy_s  policy;
+	struct panel_policy_s  *child_current;	//æ¨¡å¼-->[å­ç­–ç•¥]
+	struct panel_scene_s *parent;			//[çˆ¶åœºæ™¯]<--æ¨¡å¼
+	struct panel_mode_s *prev;				//ä¸Šä¸€ä¸ªæ¨¡å¼
+	struct panel_mode_s *next;				//ä¸‹ä¸€ä¸ªæ¨¡å¼
+}panel_mode_t;	
+
+typedef struct panel_scene_s{
+
+	uint8_t  sceneID;						//åœºæ™¯ID
+	uint8_t  modeNUM;						//æ¨¡å¼æ•°é‡
+	//struct panel_mode_s mode;				//æ¨¡å¼é“¾è¡¨å¤´
+	struct panel_mode_s *child_current;		//åœºæ™¯-->[å­æ¨¡å¼]
+	struct panel_user_s *parent;			//[çˆ¶ç”¨æˆ·]<--åœºæ™¯
+	struct panel_scene_s *prev;				//åœºæ™¯
+	struct panel_scene_s *next;				//åœºæ™¯
+}panel_scene_t;	
+
+typedef struct panel_user_s{
+	uint32_t userID;						//ç”¨æˆ·ID
+	uint32_t userPASS;						//ç”¨æˆ·å¯†ç 
+	uint8_t login;							//ç™»å½•æ ‡å¿—
+	uint8_t  sceneNUM;						//åœºæ™¯æ•°é‡
+	//struct panel_scene_s scene;			//
+	struct panel_scene_s *child_current;	//ç”¨æˆ·-->[å­åœºæ™¯]	
+	//struct panel_config_t *parent;		//[çˆ¶é…ç½®]<--ç”¨æˆ·
+	struct panel_user_s *prev;				//ç”¨æˆ·
+	struct panel_user_s *next;				//ç”¨æˆ·
+}panel_user_t;	
+
+typedef struct panel_config_s{
+	uint8_t  writeback;						//é…ç½®æ”¹åŠ¨,å›å†™ä¿å­˜åç½®0
+	uint8_t  userNUM;						//å¯æ“ä½œç”¨æˆ·æ•°
+	//struct panel_user_s user;				//ç”¨æˆ·
+	struct panel_user_s *child_current;		//é…ç½®-->[å­ç”¨æˆ·]
+}panel_config_t;
+
+
+//
+panel_config_t config; //åªæœ‰ä¸€ä¸ªé…ç½®
+//panel_user_t cur_user;
+//panel_scene_t cur_scene;
+//panel_mode_t cur_mode;
+//panel_policy_t cur_policy;
+
+void panel_config_init(){
+	//ç­–ç•¥
+	//policy.policyID = 0;
+	//policy.relation = 0;
+	//policy.sensorNUM = 0;
+	//policy.actuatorNUM = 0;
+	//policy.actuator_head = NULL;
+	//policy.sensor_head = NULL;
+	////policy.prev = &policy;
+	////policy.next = &policy;
+	//panel_queue_init(&policy);
+	////æ¨¡å¼
+	//mode.policyNUM = 0;
+	//mode.child_current = &policy;
+	//mode.modeID = 0;
+	//mode.modeUSED = 0;
+	////mode.prev = &mode;
+	////mode.next = &mode;
+	//panel_queue_init(&mode);
+	////åœºæ™¯
+	//scene.modeNUM = 0;
+	//scene.child_current = &mode;
+	//scene.sceneID = 0;
+	////scene.prev = &scene;
+	////scene.next = &scene;
+	//panel_queue_init(&scene);
+	////ç”¨æˆ·
+	//user.sceneNUM = 0;
+	//user.child_current = &scene;
+	//user.userID = 0;
+	//user.userPASS = 0;
+	//user.login = 0;
+	////user.prev = &user;
+	////user.next = &user;
+	//panel_queue_init(&user);
+	//é…ç½®
+	config.userNUM = 0;
+	config.writeback = 0;
+	config.child_current = NULL;
+}
+
+
+
+// 0 æ²¡æœ‰æ‰¾åˆ° ä¸”åˆ›å»ºå¤±è´¥ 1 æ‰¾åˆ°  2 åˆ›å»º   
+uint8_t panel_get_user(uint8_t flag,uint32_t userID){
+	//1.éå†å½“å‰é…ç½® æ²¡æœ‰åˆ™åˆ›å»º æœ‰åˆ™åæ‚” cur_usr
+	uint8_t num = config.userNUM;
+	panel_user_t * pu = config.child_current;
+
+	for (; num;num--)
+	{ 
+		if (pu->userID == userID)
+		{
+			config.child_current = pu;
+			return 1;
+		}
+		pu=pu->next;
+	}
+	if (flag&PANEL_WRITE_ENABLE){	
+		//2.åˆ›å»ºç”¨æˆ·
+		pu = (panel_user_t*)panel_mallc(sizeof(panel_user_t));
+		if (pu)
+		{
+			pu->userPASS = 0;
+			pu->login = 0;
+			pu->sceneNUM = 0;
+			pu->child_current = NULL;
+		
+			pu->userID = userID;
+			config.userNUM++;
+			panel_queue_insert_head(config.child_current, pu);
+			config.child_current = pu;
+			return 2;
+		}
+	}
+	return 0;
+}
+uint8_t panel_get_scene(uint8_t flag, uint32_t userID, uint8_t sceneID){
+	uint8_t num;
+	panel_scene_t *ps ;
+	if (panel_get_user(flag, userID))
+	{ 
+		ps = config.child_current->child_current;
+		num =config.child_current->sceneNUM;
+		for (;num; num--)
+		{
+			if (ps->sceneID == sceneID)
+			{
+				config.child_current->child_current = ps;
+				return 1;
+			}
+			ps = ps->next;
+		}
+
+		if (flag&PANEL_WRITE_ENABLE){
+		
+			//åˆ›å»ºåœºæ™¯
+			ps = (panel_scene_t*)panel_mallc(sizeof(panel_scene_t));
+			if (ps)
+			{			
+				ps->modeNUM = 0;
+				ps->child_current = NULL;
+
+				ps->sceneID = sceneID;
+				ps->parent = config.child_current;
+				config.child_current->sceneNUM++;
+				panel_queue_insert_head(config.child_current->child_current, ps);
+				config.child_current->child_current = ps;
+				return 2;
+			}		
+		}
+	}
+	return 0;
+}
+uint8_t panel_get_mode(uint8_t flag, uint32_t userID, uint8_t sceneID, uint8_t modeID){
+	uint8_t num;
+	panel_mode_t * pm;
+	if (panel_get_scene(flag, userID, sceneID))
+	{
+		num = config.child_current->child_current->modeNUM;
+		pm = config.child_current->child_current->child_current;
+		for (;num;num--)
+		{
+			if (pm->modeID == modeID)
+			{
+				config.child_current->child_current->child_current = pm;
+				return 1;
+			}
+			pm = pm->next;
+		}
+		if (flag&PANEL_WRITE_ENABLE){
+			//åˆ›å»ºæ¨¡å¼
+			pm = (panel_mode_t*)panel_mallc(sizeof(panel_mode_t));
+			if (pm)
+			{
+				pm->modeUSED = 0;
+				pm->policyNUM = 0;
+				pm->child_current = NULL;
+
+				pm->modeID = modeID;
+				pm->parent = config.child_current->child_current;
+				config.child_current->child_current->modeNUM++;
+				panel_queue_insert_head(config.child_current->child_current->child_current, pm);
+				config.child_current->child_current->child_current = pm;
+				return 2;
+			}
+		}
+	}
+	return 0;
+}
+uint8_t panel_get_policy(uint8_t flag, uint32_t userID, uint8_t sceneID, uint8_t modeID, uint8_t policyID){
+	uint8_t num;
+	panel_policy_t * pp;
+	if (panel_get_mode(flag, userID, sceneID, modeID)){
+		num = config.child_current->child_current->child_current->policyNUM;
+		pp = config.child_current->child_current->child_current->child_current;
+		for (; num; num--)
+		{
+			if (pp->policyID == policyID)
+			{
+				config.child_current->child_current->child_current->child_current = pp;
+				return 1;
+			}
+			pp = pp->next;
+		}
+		if (flag&PANEL_WRITE_ENABLE){
+			//åˆ›å»ºç­–ç•¥
+			pp = (panel_policy_t*)panel_mallc(sizeof(panel_policy_t));
+			if (pp)
+			{
+				pp->relation = 0;
+				pp->actuatorNUM = 0;
+				pp->actuator_head = NULL;
+				pp->sensorNUM = 0;
+				pp->sensor_head = NULL;
+
+				pp->policyID = policyID;
+				pp->parent = config.child_current->child_current->child_current;
+				config.child_current->child_current->child_current->policyNUM++;
+				panel_queue_insert_head(config.child_current->child_current->child_current->child_current, pp);
+				config.child_current->child_current->child_current->child_current = pp;
+				return 2;
+			}
+		}
+	}
+	return 0;
+}
+
+//***********************æ¥å£********************************************
+typedef struct panel_policy_data_s{
+	uint8_t complete;
+	uint32_t userID;
+	uint8_t sceneID;
+	uint8_t modeID;
+	uint8_t policyID;
+	uint8_t relation;
 	uint8_t sensorNUM;
 	uint8_t actuatorNUM;
 	struct panel_node_s *sensor_head;
 	struct panel_node_s *actuator_head;
 
-	struct panel_policy_s *policy_next;
-}panel_policy_t;	//²ßÂÔ
+}panel_policy_data_t;
+panel_policy_data_t policy_data;
 
-typedef struct panel_mode_s{
-	uint8_t  modeID;		//Ä£Ê½ID
-	uint8_t  modeUSED;		//ÆôÓÃ×´Ì¬	
-	uint8_t  policyNUM;		//²ßÂÔÊıÁ¿
-	struct panel_policy_s  policy;
-	struct panel_policy_s  *policy_end;
-	struct panel_policy_s  *policy_current;
-	struct panel_mode_s *mode_next;
-}panel_mode_t;	//Ä£Ê½
+uint8_t panel_add_policy( panel_policy_data_t * policy_data){
+	uint8_t num;
+	panel_node_t *pn;
+	panel_node_t *ppn;
+	panel_policy_t * pp;
+	num = panel_get_policy(PANEL_WRITE_ENABLE, policy_data->userID, policy_data->sceneID, policy_data->modeID, policy_data->policyID);
+	if (num){
+		pp = config.child_current->child_current->child_current->child_current;
+		if (num == 1)
+		{
+			//è¡¨ä¸­å·²å­˜åœ¨ï¼Œä¿®æ”¹å½“å‰æ¨¡å¼
+			pn = config.child_current->child_current->child_current->child_current->sensor_head;
+			for (ppn=pn ; ppn;ppn = pn->next)
+			{
+				panel_free(pn);
+				pn = ppn;
+			}
+			
+			pn = config.child_current->child_current->child_current->child_current->actuator_head;
+			for (ppn=pn ; ppn;ppn = pn->next)
+			{
+				panel_free(pn);
+				pn = ppn;
+			}
+			
+		}
 
-typedef struct panel_scene_s{
+		pp->relation = policy_data->relation;
+		pp->actuatorNUM = policy_data->actuatorNUM;
+		pp->actuator_head = policy_data->actuator_head;
+		pp->sensorNUM = policy_data->sensorNUM;
+		pp->sensor_head = policy_data->sensor_head;
 
-	uint8_t  sceneID;					//³¡¾°ID
-	uint8_t  modeNUM;					//Ä£Ê½ÊıÁ¿
-	struct panel_mode_s mode;			//Ä£Ê½Á´±íÍ·
-	struct panel_mode_s *mode_end;			
-	struct panel_mode_s *mode_current;		
-	struct panel_scene_s *scene_next;
-}panel_scene_t;	//³¡¾°
-
-typedef struct panel_user_s{
-	uint32_t userID;		//ÓÃ»§ID
-	uint32_t userPASS;		//ÓÃ»§ÃÜÂë
-	uint8_t login;			//µÇÂ¼±êÖ¾
-	uint8_t  sceneNUM;		//³¡¾°ÊıÁ¿
-	struct panel_scene_s scene;			//
-	struct panel_scene_s *scene_end;	//
-	struct panel_scene_s *scene_current;//µ±Ç°Ê¹ÓÃµÄ³¡¾°	
-	struct panel_user_s *user_next;
-}panel_user_t;	//ÓÃ»§
-
-typedef struct panel_config_s{
-	uint8_t  writeback;				//ÅäÖÃ¸Ä¶¯,»ØĞ´±£´æºóÖÃ0
-	uint8_t  userNUM;				//¿É²Ù×÷ÓÃ»§Êı
-	struct panel_user_s user;		//ÓÃ»§
-	struct panel_user_s *user_end;		//×îºóÒ»¸öÓÃ»§
-	struct panel_user_s *user_current;	//µ±Ç°µÇÂ¼ÓÃ»§
-}panel_config_t;
-
-//
-panel_config_t config;
-
-int8_t panel_config_init(){	
-	//ÅäÖÃ
-	config.writeback = 0;
-	config.userNUM = 0;
-	config.user_current = &config.user;
-	config.user_end = config.user_current;
-	//ÓÃ»§
-	config.user.user_next = NULL;
-	config.user.userID = 0;
-	config.user.userPASS = 0;
-	config.user.login = 0;
-	
-	config.user.sceneNUM = 0;
-	config.user.scene_current = &config.user.scene;
-	config.user.scene_end = config.user.scene_current;
-	//³¡¾°
-	config.user.scene.scene_next = NULL;
-	config.user.scene.sceneID = 0;
-
-	config.user.scene.modeNUM = 0;
-	config.user.scene.mode_current = &config.user.scene.mode;
-	config.user.scene.mode_end = config.user.scene.mode_current;
-	//Ä£Ê½
-	config.user.scene.mode.mode_next = NULL;
-	config.user.scene.mode.modeID = 0;
-	config.user.scene.mode.modeUSED = 0;
-
-	config.user.scene.mode.policyNUM = 0;
-	config.user.scene.mode.policy_current = &config.user.scene.mode.policy;
-	config.user.scene.mode.policy_end = config.user.scene.mode.policy_current;
-	//²ßÂÔ
-	config.user.scene.mode.policy.policy_next = NULL;
-	config.user.scene.mode.policy.policyID = 0;
-	config.user.scene.mode.policy.relation = 0;
-	config.user.scene.mode.policy.sensorNUM = 0;
-	config.user.scene.mode.policy.actuatorNUM = 0;
-
-	config.user.scene.mode.policy.sensor_head = NULL;
-	config.user.scene.mode.policy.actuator_head = NULL;
-
-	//Ã¿Ìõ²ßÂÔ ×îÉÙÓĞÒ»¸ö´«¸ĞÆ÷ºÍÒ»¸öÖ´ĞĞÆ÷
-	/*config.user.scene.mode.policy.sensor.nodeID = 0;
-	config.user.scene.mode.policy.sensor.nodeVID = 0;
-	config.user.scene.mode.policy.sensor.nodeOP = 0;
-	config.user.scene.mode.policy.sensor.value = 0;
-	config.user.scene.mode.policy.sensor.node_next = NULL;
-
-	config.user.scene.mode.policy.actuator.nodeID = 0;
-	config.user.scene.mode.policy.actuator.nodeVID = 0;
-	config.user.scene.mode.policy.actuator.nodeOP = 0;
-	config.user.scene.mode.policy.actuator.value = 0;
-	config.user.scene.mode.policy.actuator.node_next = NULL;*/
+		policy_data->relation = 0;
+		policy_data->actuatorNUM = 0;
+		policy_data->actuator_head = NULL;
+		policy_data->sensorNUM = 0;
+		policy_data->sensor_head = NULL;
+		policy_data->complete = 0;
+	}
+	return num;
 }
-//******************************************************
+void panel_parse_policy_data(){
 
-panel_user_t * panel_create_user(panel_config_t *pconfig){
-	panel_user_t *u = callc(sizeof(panel_user_t));
-	if (u)
+
+}
+void panel_create_policy_data(){
+	//panel_policy_data_t *policy_data = (panel_policy_data_t *)panel_mallc(sizeof());
+	if (policy_data.complete)
 	{
-		pconfig->user.user_next = u;
-		
+		panel_add_policy(&policy_data);
 	}
-	return u;
-}
-
-
-//
-panel_policy_t * panel_init_policy(uint8_t sn,uint8_t an){	
-	//1.´´½¨´«¸ĞÆ÷½Úµã
-	panel_node_t *node = collc(sizeof(panel_node_t)* (sn + an));
-
-	if (node){
-		//¸ø½Úµã¸³Öµ
+	else{
+	
+		panel_parse_policy_data();
+	
 	}
-}
-
-void  panel_chg_policy(){
-	//1.get policy
 
 }
-typedef struct panel_id_s
-{
-	uint32_t userID;
-	uint8_t sceneID;
-	uint8_t  modeID;
-	uint8_t  policyID;
-}panel_id_t;
 
-//1.¸ù¾İ²ßÂÔID»ñÈ¡ Ò»¸öconfig  
-//2.Èç¹ûÃ»ÓĞ Ôò´´½¨Ò»¸öĞÂµÄ²ßÂÔ
-//3.³É¹¦·µ»Ø panel_config_t Ê§°Ü·µ»ØNULL ÊôĞÔËÍÈëuser_current
-panel_config_t * panel_get_policy(panel_config_t *pconfig, panel_id_t id){
+
+
+panel_actuator_device_t *pactuator_device_head;
+
+panel_sensor_device_t * find_sensor_device_by_id(uint32_t sensorID ){
+	panel_sensor_device_t * psd = psensor_device_head;
+	for (; psd; psd->next)
+	{
+		if (psd->devID == sensorID)
+		{
+			return psd;
+		}
+	}
+	return NULL;
+}
+panel_actuator_device_t * find_actuator_device_by_id(uint32_t actuatorID){
+	panel_actuator_device_t * pad = pactuator_device_head;
+	for (; pad; pad->next)
+	{
+		if (pad->devID == actuatorID)
+		{
+			return pad;
+		}
+	}
+	return NULL;
+}
+
+void policy_operate(){
 	uint8_t i;
-	panel_user_t *u;
-	if (pconfig->user_current->scene_current->mode_current->policy_current->policyID == id.policyID)
+	panel_user_t * puser;
+	panel_scene_t * pscene;
+	panel_mode_t * pmode;
+	panel_policy_t * ppolicy;
+	panel_node_t *pnode;
+	panel_sensor_device_t * psd;
+	for (puser = config.child_current; puser; )
 	{
-		return pconfig;
-	}
-	else if (pconfig->user_current->scene_current->mode_current->modeID == id.modeID)
-	{
-		//²éÕÒ²ßÂÔ±í
-
-		//Î´ÕÒµ½´´½¨ĞÂ²ßÂÔ
-		panel_policy_t * p = callc(sizeof(panel_policy_t));
-		if (p)
+		for (pscene = config.child_current->child_current; pscene;)
 		{
-			pconfig->user_current->scene_current->mode_current->policy_end->policy_next = p;
-			pconfig->user_current->scene_current->mode_current->policy_end = p;
+			for (pmode = config.child_current->child_current->child_current; pmode;)
+			{
 
-			pconfig->user_current->scene_current->mode_current->policy_current = p;
-			pconfig->user_current->scene_current->mode_current->policy_current->policyID = p;
-			pconfig->user_current->scene_current->mode_current->policy_current->sensorNUM = 0;
-			pconfig->user_current->scene_current->mode_current->policy_current->actuatorNUM = 0;
-			return pconfig;
-		}
-		else{
-			return NULL;
-		}
-	}
-	else if (pconfig->user_current->scene_current->sceneID == id.sceneID)
-	{
-		//1.²éÕÒmode 
+				for (ppolicy = config.child_current->child_current->child_current->child_current; ppolicy;)
+				{
+					//ç­–ç•¥æ‰§è¡Œ
+					pnode = ppolicy->sensor_head;
+					if (ppolicy->relation){
+					//æˆ–æ‰§è¡Œ
+						for (i= 0; i < ppolicy->sensorNUM; i++)
+						{
+							
+							psd = find_sensor_device_by_id(pnode->nodeID);
+							if (psd)
+							{
+								if (psd->value == pnode->value)
+								{
+									//
+									
 
-		//2.´´½¨mode
-		panel_mode_t * m = callc(sizeof(panel_node_t));
-		if (m)
-		{
 
-			return pconfig;
-		}
-		else
-		{
-			return NULL;
-		}
-	}
-	else if (pconfig->user_current->userID == id.userID)
-	{
-	
-	}
-	else
-	{
+								}
+							}
+							pnode = pnode->next;
+						}
+					}
+					else{
+					
+					
+					}
 
-	}
-//******************************************************
-	//1. ¼ìË÷ pconfig ÖĞÊÇ·ñ´æÔÚ user Ã»ÓĞÔò´´½¨
-	if (pconfig->user_current->userID == id.userID)
-	{
-		goto second;
-	}
-	else
-	{
-		pconfig->user_current = &pconfig->user;
-	}
-	for (i = 0; i < pconfig->userNUM; i++)
-	{
-		if (pconfig->user.userID == id.userID)
-		{
-			goto second;
-		}
-		else
-		{
-			pconfig->user_current = pconfig->user.user_next;
-		}
+					ppolicy = ppolicy->next;
+					if (config.child_current->child_current->child_current->child_current == ppolicy)
+					{
+						break;
+					}
+				}
 
-	}
-	//Ã»ÓĞÕÒµ½Ôò ´´½¨user
-	 u = callc(sizeof(panel_user_t));
-	if (u)
-	{
-		
-		pconfig->user_end->user_next = u;
-		pconfig->user_end = u;
-		pconfig->userNUM++;
-		pconfig->user_end->userID = id.userID;
-		pconfig->user_current = u;
-	}
-	else
-	{
-		return;
-	}
+				pmode = pmode->next;
+				if (config.child_current->child_current->child_current == pmode)
+				{
+					break;
+				}
 
-	//2. ¼ìË÷ ³¡¾°
-second:
-	if (pconfig->user_current->scene_current->sceneID == id.sceneID)
-	{
-		goto third;
-	}
-	else
-	{
-		pconfig->user_current->scene_current = &pconfig->user_current->scene;
-	}
+			}
+			pscene = pscene->next;
+			if (config.child_current->child_current == pscene)
+			{
+				break;
+			}
 
-	for (i = 0; i < pconfig->user_current->sceneNUM; i++)
-	{
-		if (pconfig->user_current->scene.sceneID == id.sceneID)
-		{
-			goto third;
 		}
-		pconfig->user_current->scene_current = pconfig->user_current->scene_current->scene_next;
-	}
-	
-	panel_scene_t *s = callc(sizeof(panel_scene_t));
-	if (s)
-	{
-		pconfig->user_current->scene_end->scene_next = s;
-		pconfig->user_current->scene_end = s;
-		pconfig->user_current->scene_current = s;
-		pconfig->user_current->sceneNUM++;
-		pconfig->user_current->scene_current->sceneID = id.sceneID;
-	}
-	else
-	{
-		return;
-	}
-	//3. Ä£Ê½ÅäÖÃ
-third:
-	if (pconfig->user_current->scene_current->mode_current->modeID == id.modeID)
-	{
-		goto forth;
-	}
-	else
-	{
-		pconfig->user_current->scene_current->mode_current = &pconfig->user_current->scene_current->mode;
-	}
-
-	for (i = 0; i < pconfig->user_current->scene_current->modeNUM; i++)
-	{
-		if (pconfig->user_current->scene_current->mode_current == id.modeID)
-		{
-			goto forth;
-		}
-		else
-		{
-			pconfig->user_current->scene_current->mode_current = pconfig->user_current->scene_current->mode_current->mode_next;
+		puser = puser->next;
+		if (config.child_current == puser){
+			break;
 		}
 	}
 
-	panel_scene_t *s = callc(sizeof(panel_scene_t));
-	if (s)
-	{
-		pconfig->user_current->scene_end->scene_next = s;
-		pconfig->user_current->scene_end = s;
-		pconfig->user_current->scene_current = s;
-		pconfig->user_current->sceneNUM++;
-		pconfig->user_current->scene_current->sceneID = id.modeID;
-	}
-	else
-	{
-		return;
-	}
-	// ²ßÂÔ
-forth:
-	if (pconfig->user_current->scene_current->mode_current->policy_current->policyID == id.policyID)
-	{
-		goto forth;
-	}
-	else
-	{
-		pconfig->user_current->scene_current->mode_current = &pconfig->user_current->scene_current->mode;
-	}
 
-	for (i = 0; i < pconfig->user_current->scene_current->modeNUM; i++)
-	{
-		if (pconfig->user_current->scene_current->mode_current == id.sceneID)
-		{
-			goto forth;
-		}
-		else
-		{
-			pconfig->user_current->scene_current->mode_current = pconfig->user_current->scene_current->mode_current->mode_next;
-		}
-	}
 
-	panel_scene_t *s = callc(sizeof(panel_scene_t));
-	if (s)
-	{
-		pconfig->user_current->scene_end->scene_next = s;
-		pconfig->user_current->scene_end = s;
-		pconfig->user_current->scene_current = s;
-		pconfig->user_current->sceneNUM++;
-		pconfig->user_current->scene_current->sceneID = id.sceneID;
-	}
-	else
-	{
-		return;
-	}
 }
