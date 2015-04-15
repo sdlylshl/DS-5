@@ -2,6 +2,11 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "panel_queue.h"
+// UID1 1 2 3
+// UID2 4 5 6模式
+
+
+
 //[
 //	userNUM
 //	userID1[
@@ -47,20 +52,24 @@
 #define  PANEL_WRITE_ENABLE		0x02
 
 //***************************************************
-typedef struct panel_node_s{
-	uint32_t nodeID;
-	uint16_t value;
-	uint8_t nodeVID;	//传感器关联的网关 虚拟ID
-	uint8_t nodeOP;		//传感器>=< //执行器表示
-	//struct panel_node_s *next;
-}panel_node_t;
 
+//发送传感器状态信息 ,
+typedef struct panel_send_list_s{
+	uint32_t nodeID;	//发送值
+	uint16_t value;		//Value 高两位 表 大小等于
+	uint8_t VID;		//发送到设备的虚拟ID
+	uint8_t ID;			//发送id标识,用于发送成功标志
+	struct panel_send_list_s *next;
+}panel_send_list_t;
 
-//虚拟有效传感设备表
+//虚拟有效传感设备表 无重复nodeID
 // 模式切换的时候 重新 初始化 
 typedef struct panel_sensor_device_s{
 
-	struct panel_node_s  sensor;
+	uint32_t nodeID;
+	uint16_t value;		//Value 高两位 表 大小等于
+	uint8_t  VID;	//传感器关联的网关 虚拟ID
+	uint8_t condition;	//传感器> = < || 执行器
 	struct panel_sensor_device_s * next;
 	//struct panel_sensor_device_s * prev;
 }panel_sensor_device_t;
@@ -86,17 +95,31 @@ typedef struct panel_sensor_s{
 	//uint8_t nodeVID;	//传感器关联的网关 虚拟ID
 	struct panel_sensor_s *next;
 }panel_sensor_t;
+////*****************************************************
+//可重复nodeID
+typedef struct panel_node_s{
+	uint32_t nodeID;
+	uint16_t value;		//Value 高两位 表 大小等于
+	uint8_t nodeVID;	//传感器关联的网关 虚拟ID
+	uint8_t condition;	//传感器> = < || 执行器
+	struct panel_node_s *next;
+}panel_node_t;
+
 typedef struct panel_policy_s{
-	uint8_t  relation;						//策略关系
+	uint32_t timeout;						//策略重发周期(s)
+	uint32_t config_timeout;				//配置超时时间(S)	
+	uint8_t  operate;						//该策略执行器允许执行标志,做为报警除非切换状态 否则不在执行 默认为1
 	uint8_t  policyID;						//策略ID
-	uint8_t sensorNUM;						//传感器数量
-	uint8_t actuatorNUM;					//执行器数量
+	uint8_t  sensorNUM;						//传感器数量
+	uint8_t  actuatorNUM;					//执行器数量
+	//uint8_t  config_relation;				//策略关系
+	//uint8_t  config_style;				//策略类型[1.立即执行 2.执行延时 3.反转执行 ]
 	struct panel_node_s *sensor_head;		//传感器头指针
 	struct panel_node_s *actuator_head;		//执行器头指针
 	struct panel_mode_s *parent;			//[父模式]<--策略
 	struct panel_policy_s *prev;			//上一个策略
 	struct panel_policy_s *next;			//下一个策略
-}panel_policy_t;	
+}panel_policy_t;
 
 typedef struct panel_mode_s{
 	uint8_t  modeID;						//模式ID
@@ -107,7 +130,7 @@ typedef struct panel_mode_s{
 	struct panel_scene_s *parent;			//[父场景]<--模式
 	struct panel_mode_s *prev;				//上一个模式
 	struct panel_mode_s *next;				//下一个模式
-}panel_mode_t;	
+}panel_mode_t;
 
 typedef struct panel_scene_s{
 
@@ -118,7 +141,7 @@ typedef struct panel_scene_s{
 	struct panel_user_s *parent;			//[父用户]<--场景
 	struct panel_scene_s *prev;				//场景
 	struct panel_scene_s *next;				//场景
-}panel_scene_t;	
+}panel_scene_t;
 
 typedef struct panel_user_s{
 	uint32_t userID;						//用户ID
@@ -130,11 +153,12 @@ typedef struct panel_user_s{
 	//struct panel_config_t *parent;		//[父配置]<--用户
 	struct panel_user_s *prev;				//用户
 	struct panel_user_s *next;				//用户
-}panel_user_t;	
+}panel_user_t;
 
 typedef struct panel_config_s{
 	uint8_t  writeback;						//配置改动,回写保存后置0
 	uint8_t  userNUM;						//可操作用户数
+	uint8_t VID;							//平台分配VID
 	//struct panel_user_s user;				//用户
 	struct panel_user_s *child_current;		//配置-->[子用户]
 }panel_config_t;
@@ -191,21 +215,21 @@ void panel_config_init(){
 
 
 // 0 没有找到 且创建失败 1 找到  2 创建   
-uint8_t panel_get_user(uint8_t flag,uint32_t userID){
+uint8_t panel_get_user(uint8_t flag, uint32_t userID){
 	//1.遍历当前配置 没有则创建 有则反悔 cur_usr
 	uint8_t num = config.userNUM;
 	panel_user_t * pu = config.child_current;
 
-	for (; num;num--)
-	{ 
+	for (; num; num--)
+	{
 		if (pu->userID == userID)
 		{
 			config.child_current = pu;
 			return 1;
 		}
-		pu=pu->next;
+		pu = pu->next;
 	}
-	if (flag&PANEL_WRITE_ENABLE){	
+	if (flag&PANEL_WRITE_ENABLE){
 		//2.创建用户
 		pu = (panel_user_t*)panel_mallc(sizeof(panel_user_t));
 		if (pu)
@@ -214,7 +238,7 @@ uint8_t panel_get_user(uint8_t flag,uint32_t userID){
 			pu->login = 0;
 			pu->sceneNUM = 0;
 			pu->child_current = NULL;
-		
+
 			pu->userID = userID;
 			config.userNUM++;
 			panel_queue_insert_head(config.child_current, pu);
@@ -226,12 +250,12 @@ uint8_t panel_get_user(uint8_t flag,uint32_t userID){
 }
 uint8_t panel_get_scene(uint8_t flag, uint32_t userID, uint8_t sceneID){
 	uint8_t num;
-	panel_scene_t *ps ;
+	panel_scene_t *ps;
 	if (panel_get_user(flag, userID))
-	{ 
+	{
 		ps = config.child_current->child_current;
-		num =config.child_current->sceneNUM;
-		for (;num; num--)
+		num = config.child_current->sceneNUM;
+		for (; num; num--)
 		{
 			if (ps->sceneID == sceneID)
 			{
@@ -242,11 +266,11 @@ uint8_t panel_get_scene(uint8_t flag, uint32_t userID, uint8_t sceneID){
 		}
 
 		if (flag&PANEL_WRITE_ENABLE){
-		
+
 			//创建场景
 			ps = (panel_scene_t*)panel_mallc(sizeof(panel_scene_t));
 			if (ps)
-			{			
+			{
 				ps->modeNUM = 0;
 				ps->child_current = NULL;
 
@@ -256,7 +280,7 @@ uint8_t panel_get_scene(uint8_t flag, uint32_t userID, uint8_t sceneID){
 				panel_queue_insert_head(config.child_current->child_current, ps);
 				config.child_current->child_current = ps;
 				return 2;
-			}		
+			}
 		}
 	}
 	return 0;
@@ -268,7 +292,7 @@ uint8_t panel_get_mode(uint8_t flag, uint32_t userID, uint8_t sceneID, uint8_t m
 	{
 		num = config.child_current->child_current->modeNUM;
 		pm = config.child_current->child_current->child_current;
-		for (;num;num--)
+		for (; num; num--)
 		{
 			if (pm->modeID == modeID)
 			{
@@ -317,7 +341,7 @@ uint8_t panel_get_policy(uint8_t flag, uint32_t userID, uint8_t sceneID, uint8_t
 			pp = (panel_policy_t*)panel_mallc(sizeof(panel_policy_t));
 			if (pp)
 			{
-				pp->relation = 0;
+				///pp->relation = 0;
 				pp->actuatorNUM = 0;
 				pp->actuator_head = NULL;
 				pp->sensorNUM = 0;
@@ -351,7 +375,7 @@ typedef struct panel_policy_data_s{
 }panel_policy_data_t;
 panel_policy_data_t policy_data;
 
-uint8_t panel_add_policy( panel_policy_data_t * policy_data){
+uint8_t panel_add_policy(panel_policy_data_t * policy_data){
 	uint8_t num;
 	panel_node_t *pn;
 	panel_node_t *ppn;
@@ -363,19 +387,19 @@ uint8_t panel_add_policy( panel_policy_data_t * policy_data){
 		{
 			//表中已存在，修改当前模式
 			pn = config.child_current->child_current->child_current->child_current->sensor_head;
-			for (ppn=pn ; ppn;ppn = pn->next)
+			for (ppn = pn; ppn; ppn = pn->next)
 			{
 				panel_free(pn);
 				pn = ppn;
 			}
-			
+
 			pn = config.child_current->child_current->child_current->child_current->actuator_head;
-			for (ppn=pn ; ppn;ppn = pn->next)
+			for (ppn = pn; ppn; ppn = pn->next)
 			{
 				panel_free(pn);
 				pn = ppn;
 			}
-			
+
 		}
 
 		pp->relation = policy_data->relation;
@@ -404,9 +428,9 @@ void panel_create_policy_data(){
 		panel_add_policy(&policy_data);
 	}
 	else{
-	
+
 		panel_parse_policy_data();
-	
+
 	}
 
 }
@@ -415,7 +439,7 @@ void panel_create_policy_data(){
 
 panel_actuator_device_t *pactuator_device_head;
 
-panel_sensor_device_t * find_sensor_device_by_id(uint32_t sensorID ){
+panel_sensor_device_t * find_sensor_device_by_id(uint32_t sensorID){
 	panel_sensor_device_t * psd = psensor_device_head;
 	for (; psd; psd->next)
 	{
@@ -439,14 +463,15 @@ panel_actuator_device_t * find_actuator_device_by_id(uint32_t actuatorID){
 }
 
 void policy_operate(){
-	uint8_t i;
+	uint8_t i, success, send;
 	panel_user_t * puser;
 	panel_scene_t * pscene;
 	panel_mode_t * pmode;
 	panel_policy_t * ppolicy;
 	panel_node_t *pnode;
 	panel_sensor_device_t * psd;
-	for (puser = config.child_current; puser; )
+	panel_actuator_device_t * pad;
+	for (puser = config.child_current; puser;)
 	{
 		for (pscene = config.child_current->child_current; pscene;)
 		{
@@ -455,57 +480,108 @@ void policy_operate(){
 
 				for (ppolicy = config.child_current->child_current->child_current->child_current; ppolicy;)
 				{
-					//策略执行
+					//策略执行  全部是与的关系 或关系拆为多条策略
 					pnode = ppolicy->sensor_head;
-					if (ppolicy->relation){
-					//或执行
-						for (i= 0; i < ppolicy->sensorNUM; i++)
+					//success = 1;
+					for (i = 0; i < ppolicy->sensorNUM; i++)
+					{
+						psd = find_sensor_device_by_id(pnode->nodeID);
+						if (psd)
 						{
-							
-							psd = find_sensor_device_by_id(pnode->nodeID);
-							if (psd)
+							if (pnode->condition == cmp(psd->value, pnode->value))
 							{
-								if (psd->value == pnode->value)
+								//本机报警器报警
+								if (pnode->nodeVID)
 								{
-									//
-									
+									send = 1;	//发送
+									//创建发送队列
+								}
+								success = 1;
+							}
+							else
+							{
+								success = 0;
+								break;
+							}
+						}
+						else
+						{
+							success = 0;
+							break;
+						}
+
+						pnode = pnode->next;
+					}
+
+					if (success)
+					{
+						//发送本机报警状态
+						if (send){
+
+							//送入 节点发送队列
+						}
+						if (ppolicy->timeout > ppolicy->config_timeout){
+							//策略匹配成功
+							//启动禁止重复执行
+							if (ppolicy->operate)
+							{
+								ppolicy->operate = 0;
+
+								pnode = ppolicy->actuator_head;
+								for (i = 0; i < ppolicy->actuatorNUM; i++)
+								{
+									pad = find_actuator_device_by_id(pnode->nodeID);
 
 
 								}
 							}
-							pnode = pnode->next;
+							//定时上报报警状态 送入平台发送队列 
+
+							//ppolicy->timeout =0;
 						}
-					}
-					else{
-					
-					
-					}
 
-					ppolicy = ppolicy->next;
-					if (config.child_current->child_current->child_current->child_current == ppolicy)
+					}
+					else
 					{
-						break;
-					}
-				}
+						//发送本机报警状态
+						if (send){
 
-				pmode = pmode->next;
-				if (config.child_current->child_current->child_current == pmode)
-				{
-					break;
+
+						}
+						//此策略失效 timeout =0; 
+						//检测超时时间到？ 到了清除超时，超时定时器停止
+					}
+
 				}
 
 			}
-			pscene = pscene->next;
-			if (config.child_current->child_current == pscene)
+
+
+			ppolicy = ppolicy->next;
+			if (config.child_current->child_current->child_current->child_current == ppolicy)
 			{
 				break;
 			}
-
 		}
-		puser = puser->next;
-		if (config.child_current == puser){
+
+		pmode = pmode->next;
+		if (config.child_current->child_current->child_current == pmode)
+		{
 			break;
 		}
+
+	}
+	pscene = pscene->next;
+	if (config.child_current->child_current == pscene)
+	{
+		break;
+	}
+
+}
+puser = puser->next;
+if (config.child_current == puser){
+	break;
+}
 	}
 
 
