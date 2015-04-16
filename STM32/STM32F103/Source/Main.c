@@ -27,7 +27,7 @@ int main() {
 	CAN1_Config();
 	//USART2_Init();
 	///BeepStart(500);
-	LEDFlashing(500);
+	//LEDFlashing(500);
 	//__set_PRIMASK(0);
 	printf("helo!");
 	NVIC_Config();
@@ -45,7 +45,11 @@ int main() {
 	
 	//panel();
 
-	while(1);
+	while(1)
+	{
+		Delay_ms(1000);
+	CAN1_Transmit();
+	};
 
 	//nrf
 	SPI1_Init();

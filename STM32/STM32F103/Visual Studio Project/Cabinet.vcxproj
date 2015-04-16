@@ -52,6 +52,7 @@
     <ClCompile Include="..\Source\Main.c" />
     <ClCompile Include="..\Source\panel\panel.c" />
     <ClCompile Include="..\Source\panel\panel_can.c" />
+    <ClCompile Include="..\Source\panel\panel_view.c" />
     <ClCompile Include="..\Source\Retarget.c" />
     <ClCompile Include="..\Source\stm32f10x_it.c" />
     <ClCompile Include="..\Source\System\Timer\timer5.c" />

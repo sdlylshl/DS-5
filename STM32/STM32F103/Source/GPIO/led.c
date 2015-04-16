@@ -88,7 +88,7 @@ void LED_GPIO_Config(void) {
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; //推挽输出   
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
 	GPIO_Init(LED6_PORT , &GPIO_InitStructure);
-	//LED6(1);	
+	LED6(1);	
 #endif
 #if LED7_USE	
 	GPIO_InitStructure.GPIO_Pin = LED7_PIN;

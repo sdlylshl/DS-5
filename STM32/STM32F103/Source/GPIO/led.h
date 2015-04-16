@@ -35,8 +35,8 @@
 #define  LED5_USE					 0
 #define  LED5_PORT     GPIOD  
 #define  LED5_PIN      GPIO_Pin_15  
-#define  LED6_USE					 0
-#define  LED6_PORT     GPIOB  			//C8
+#define  LED6_USE					 1
+#define  LED6_PORT     GPIOA  			//C8
 #define  LED6_PIN      GPIO_Pin_8  
 #define  LED7_USE					 0
 #define  LED7_PORT     GPIOA				

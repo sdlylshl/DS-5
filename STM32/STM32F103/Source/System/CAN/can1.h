@@ -25,8 +25,8 @@ typedef enum {KeyPressed=0,KeyRelease = !KeyPressed}KeyStatus;
 
 #define CAN1_NVIC
 
-//#define CAN1_NONREMAP
-#define CAN1_PARTIALREMAP
+#define CAN1_NONREMAP
+//#define CAN1_PARTIALREMAP
 //#define CAN1_FULLREMAP
 //复用功能
 //PA11  PB8  PD0  CAN1_RX 或 AN_RX

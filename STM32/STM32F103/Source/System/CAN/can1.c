@@ -59,8 +59,8 @@ static void CAN1_NVIC_Config(void) {
 
 
 	/* Enable CAN Tx interrupt IRQ channel USB_HP_CAN_TX_IRQChannel */
-	//NVIC_SetPriority(USB_HP_CAN1_TX_IRQn, 5);
-	//NVIC_EnableIRQ(USB_HP_CAN1_TX_IRQn);
+	NVIC_SetPriority(USB_HP_CAN1_TX_IRQn, 5);
+	NVIC_EnableIRQ(USB_HP_CAN1_TX_IRQn);
 
 	/* Enable CAN RX0 FIFO0 interrupt IRQ channel USB_LP_CAN1_RX0_IRQn*/
 	NVIC_SetPriority(USB_LP_CAN1_RX0_IRQn, 6);
@@ -78,7 +78,7 @@ static void CAN1_IT_Config(void) {
 	/*打开所有CAN相关的中断,如果你需要处理各种情况*/
 
 	/*CAN TX INTERRUPT*/
-	//CAN_ITConfig(CAN1, CAN_IT_TME | CAN_IT_RQCP0 | CAN_IT_RQCP1 | CAN_IT_RQCP2 , ENABLE);
+	CAN_ITConfig(CAN1, CAN_IT_TME | CAN_IT_RQCP0 | CAN_IT_RQCP1 | CAN_IT_RQCP2 , ENABLE);
 
 	/*CAN FIFO0 INTERRUPT*/
 	CAN_ITConfig(CAN1, CAN_IT_FF0 | CAN_IT_FMP0 | CAN_IT_FOV0 | CAN_IT_FMP0	, ENABLE);
@@ -90,8 +90,8 @@ static void CAN1_IT_Config(void) {
 	//CAN_ITConfig(CAN1,CAN_IT_SLK | CAN_IT_WKU | CAN_IT_ERR | CAN_IT_LEC | CAN_IT_BOF | CAN_IT_EPV | CAN_IT_EWG, ENABLE);
 
 }
-uint32_t FilterID=0xE011;
-uint32_t FilterMask=0xFFFFFFFC;
+uint32_t FilterID  =0x0000E010;
+uint32_t FilterMask=0x0;
  void CAN_Filter_Config(void)
 {
 	CAN_FilterInitTypeDef  CAN_FilterInitStructure;
@@ -217,7 +217,20 @@ void CAN1_Config(void) {
 #endif	
 
 }
-
+uint8_t TransmitMailbox;
+void CAN1_Transmit(){
+	CanTxMsg TxMessage;
+	//TxMessage.StdId = 0x11;
+			TxMessage.ExtId = 11212;
+			TxMessage.RTR = CAN_RTR_DATA;
+			TxMessage.IDE = CAN_ID_EXT;
+			TxMessage.DLC = 8;
+			TxMessage.Data[0] = 0xaa;
+			TxMessage.Data[1] = 0xbb;
+			TxMessage.Data[2] = 0xcc;
+			TxMessage.Data[3] = 0xdd;
+			TransmitMailbox = CAN_Transmit(CAN1, &TxMessage);
+}
 void CAN_main(void) {
 	KeyStatus NewKeyStaus, OldKeyStatus;
 	CanTxMsg TxMessage;
@@ -351,23 +364,32 @@ TestStatus CAN_Polling(void) {
  * Output         : None
  * Return         : None
  *******************************************************************************/
+//─ 发送邮箱0变为空，CAN_TSR寄存器的RQCP0位被置’1’。
+//─ 发送邮箱1变为空，CAN_TSR寄存器的RQCP1位被置’1’。
+//─ 发送邮箱2变为空，CAN_TSR寄存器的RQCP2位被置’1’。
 void USB_HP_CAN1_TX_IRQHandler(void) {
 	if (CAN_GetITStatus(CAN1, CAN_IT_RQCP0)) {
-
 		CAN_ClearITPendingBit(CAN1, CAN_IT_RQCP0);
-	}
+		
+	printf("USB_HP_CAN_TX_IRQHandler TransmitMailbox 0\n");
+	}else
 	if (CAN_GetITStatus(CAN1, CAN_IT_RQCP1)) {
 		CAN_ClearITPendingBit(CAN1, CAN_IT_RQCP1);
-	}
+		
+	printf("USB_HP_CAN_TX_IRQHandler TransmitMailbox 1\n");
+	}else
 	if (CAN_GetITStatus(CAN1, CAN_IT_RQCP2)) {
 		CAN_ClearITPendingBit(CAN1, CAN_IT_RQCP2);
-	}
+		
+	printf("USB_HP_CAN_TX_IRQHandler TransmitMailbox 2\n");
+	}else
 	if (CAN_GetITStatus(CAN1, CAN_IT_TME)) {
 		CAN_ClearITPendingBit(CAN1, CAN_IT_TME);
+		
+	printf("USB_HP_CAN_TX_IRQHandler CAN_IT_TME");
 	}
 
-	//printf("USB_HP_CAN_TX_IRQHandler");
-
+	//printf("USB_HP_CAN_TX_IRQHandler \n");
 }
 
 /*******************************************************************************
@@ -423,7 +445,7 @@ void USB_LP_CAN1_RX0_IRQHandler(void) {
 	/* Release the FIFO0 */
 	CAN1->RF0R |= CAN_RF0R_RFOM0;
 	
-	//printf("USB_LP_CAN_RX0_IRQHandler (Interrupt Recv 1 Message)");
+	printf("USB_LP_CAN_RX0_IRQHandler 0x%x\n",RxMessage.ExtId);
 }
 
 /*******************************************************************************
@@ -475,7 +497,7 @@ void CAN1_RX1_IRQHandler(void) {
 		CAN1->RF1R |= CAN_RF1R_RFOM1;
 	}
 
-	//printf("CAN1_RX1_IRQHandler");
+	printf("CAN1_RX1_IRQHandler 0x%x\n",RxMessage.ExtId);
 
 }
 

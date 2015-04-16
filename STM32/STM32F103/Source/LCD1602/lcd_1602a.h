@@ -10,7 +10,7 @@
 #define L_1602A_D2				GPIO_Pin_5
 #define L_1602A_D1				GPIO_Pin_6
 #define L_1602A_D0				GPIO_Pin_7
-#define L_1602A_LCD			GPIO_Pin_8
+#define L_1602A_LCD				GPIO_Pin_8
 #define L_1602A_RS				GPIO_Pin_10
 #define L_1602A_RW				GPIO_Pin_11
 #define L_1602A_E				GPIO_Pin_12
