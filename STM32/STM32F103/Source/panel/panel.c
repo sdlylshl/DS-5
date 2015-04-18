@@ -221,18 +221,27 @@ static void recvbuchefang(PANELCMD_t * pan){
 		if (firststart){
 			PanelStatus = 3;
 			firststart = 0;
+			pan->data[0] = 0xff;
+			ansbufang(pan);
+			break;
 		}
 	case 0xFE:
 		//判断是否是首次开机 同步布撤防状态
 		if (firststart){
 			PanelStatus = 1;
 			firststart = 0;
+			pan->data[0] = 0xff;
+			ansbufang(pan);
+			break;
 		}
 
 	case 0xFF://布防
 		if (firststart){
 			PanelStatus = 0;
 			firststart = 0;
+			pan->data[0] = 0xff;
+			ansbufang(pan);
+			break;
 		}
 		panelcmdpoll(pan);
 		//printf("sendId%03x\n", pan->id);
@@ -483,7 +492,7 @@ void panel_ShowStatus(){
 			break;
 		case 3://取消
 
-			Write_String(0xc0, "Cancel alarms   ");
+			Write_String(0xc0, "elin            ");
 			LEDFlashing(500);
 			break;
 		default:

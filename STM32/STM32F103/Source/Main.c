@@ -40,10 +40,10 @@ int main() {
 	//看门狗设置
 	IWDG_WriteAccessCmd(0x5555);
 	IWDG_SetPrescaler(IWDG_Prescaler_256);
-//	IWDG_Enable();//启用独立看门狗	
+	IWDG_Enable();//启用独立看门狗	
 	IWDG_ReloadCounter();//喂狗
 	
-	//panel();
+	panel();
 
 	DAC_Config();
 //	wavplay((uint8_t *)dear);
