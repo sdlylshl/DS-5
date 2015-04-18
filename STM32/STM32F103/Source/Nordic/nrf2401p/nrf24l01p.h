@@ -3,7 +3,7 @@
 #ifndef __NRF2401_H
 #define __NRF2401_H
 
-#include "version.h"
+#include "stm32f10x.h"
 
 #include "../common/hal_nrf_hw.h"
 

@@ -4,8 +4,7 @@
 //#define USE_STDPERIPH_DRIVER 1
 
 //#include "stdint.h"
-#include "version.h"
-//#include "stm32f10x.h"
+#include "stm32f10x.h"
 //#include "stm32f4xx.h"
 
 #include "Ethernet\socket.h"

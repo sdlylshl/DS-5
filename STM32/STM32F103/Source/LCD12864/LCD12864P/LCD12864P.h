@@ -3,7 +3,7 @@
 
 #include "..\LCD12864_config.h"
 
-#include "version.h"
+#include "stm32f10x.h"
 
 void LCD12864_InitPort(void); //硬件端口初始化
 void NOP(void); //延时函数

@@ -44,6 +44,7 @@ extern uint8_t USART1_SendBuff[USART1_BUFF_SIZE];
 #endif
 
 
+extern void USART1_NVIC_Config(uint8_t priority);
 extern void USART1_Init(void);
 extern void USART1_printf(char *Data, ...);
 extern void USART1_IRQHandler(void);

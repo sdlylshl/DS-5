@@ -243,7 +243,7 @@ void SST25_WriteAutoAddrIncrease(uint32_t addr, uint8_t *readbuff, uint16_t size
 }
 
 uint8_t SST25_disk_status(void){
-
+	return 0;
 }
 uint8_t SST25_disk_initialize(void){
 	SPI2_Init();
@@ -270,6 +270,7 @@ uint8_t SST25_disk_write(uint8_t *pbuff,		/* Data buffer to store read data */
 			//FlashSectorErase(sector);
 			SST25_WriteAutoAddrIncrease(sector << 12, pbuff, SST25_SECTOR_SIZE );
 		}
+		return 0;
 }
 
 

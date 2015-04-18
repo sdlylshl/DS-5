@@ -1,7 +1,6 @@
 #include "timer3.h"
 
 //LED3();
-#include "config.h"
 volatile uint32_t time3 = 0; // ms 计时变量
 
 /*TIM_Period--1000   TIM_Prescaler--71 -->中断周期为1ms*/
@@ -38,11 +37,11 @@ void TIM3_IRQ(void) {
 		time3++;
 
 		if (time3 > 500) {
-			LED3(1);
+			//LED3(1);
 		}
 		if (time3 > 1000) {
 
-			LED3(0);
+			//LED3(0);
 			time3 = 0;
 
 		}
@@ -52,7 +51,7 @@ extern void TIM3_IRQ(void);
 void TIM3_IRQHandler(void) {
 	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) {
 		
-		TIM3_IRQ();
+		//TIM3_IRQ();
 		TIM_ClearITPendingBit(TIM3, TIM_FLAG_Update);
 	}
 }

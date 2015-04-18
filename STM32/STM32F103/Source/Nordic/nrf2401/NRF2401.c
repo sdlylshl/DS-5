@@ -27,7 +27,7 @@
 #include "../common/hal_nrf_hw.h"
 // SPI2
 
-#include "./System/SPI/spi.h"
+#include "../../System/SPI/spi.h"
 
 
 _nrf_chip_t nrf_chip = {0};

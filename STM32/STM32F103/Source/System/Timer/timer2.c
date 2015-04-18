@@ -1,7 +1,7 @@
 #include "timer2.h"
 
 //LED();
-#include "config.h"
+//#include "config.h"
 
 uint32_t (*GetCurrentTime)(void) =TIM2_GetCurrentTime;
 uint32_t (*GetDistanceTime)(uint32_t ) = TIM2_GetDistanceTime;
@@ -20,7 +20,11 @@ volatile uint32_t timer_Zigbee_ClearRequest;
 volatile uint32_t timer_Zigbee_operate_default;
 volatile uint32_t timer_curtain_stop;
 volatile uint32_t timer_Zigbee_reset_default;
-
+void TIM2_NVIC_Config(uint8_t priority)
+{
+	NVIC_SetPriority(TIM2_IRQn, priority);
+	NVIC_EnableIRQ(TIM2_IRQn);
+}
 /*
  * 函数名：TIM2_NVIC_Configuration
  * 描述  ：TIM2中断优先级配置

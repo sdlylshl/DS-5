@@ -8,7 +8,7 @@ volatile uint8_t USART1_write=0;
 uint8_t USART1_SendBuff[USART1_BUFF_SIZE];
 uint8_t USART1_ReciveBuff[USART1_BUFF_SIZE];
 
-static void USART1_NVIC_Config(void) {
+void USART1_NVIC_Config(uint8_t priority) {
 	/* Configure the NVIC Preemption Priority Bits */
 	//NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);
 	//NVIC_SetPriorityGrouping(0);
@@ -19,7 +19,7 @@ static void USART1_NVIC_Config(void) {
 	//    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
 	//    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	//    NVIC_Init(&NVIC_InitStructure);
-	NVIC_SetPriority(USART1_IRQn, 3);
+	NVIC_SetPriority(USART1_IRQn, priority);
 	NVIC_EnableIRQ(USART1_IRQn);
 }
 
@@ -65,7 +65,7 @@ void USART1_Init(void) {
 	
 #ifdef USART1_NVIC
 	//使能USART1接收中断
-	USART1_NVIC_Config();
+	USART1_NVIC_Config(9);
 	USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
 #endif
 

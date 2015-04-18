@@ -14,7 +14,7 @@
  *----------------------------------------------------------------------------*/
 
 #include <stdio.h>
-#include "version.h"
+#include "stm32f10x.h"
 //#include "stm32f10x_usart.h"
 #include "stm32f10x_conf.h"
 #pragma import(__use_no_semihosting_swi)
@@ -68,3 +68,16 @@ void _sys_exit(int return_code) {
 	label: goto label;
 	/* endless loop */
 }
+
+
+void CallbackNull(void){ 
+	; 
+}
+
+void disable_irq(){
+__set_PRIMASK(1);
+}
+void enable_irq(){
+__set_PRIMASK(0);
+}
+

@@ -23,7 +23,7 @@
 #ifndef __HAL_NRF_HW_H_
 #define __HAL_NRF_HW_H_
 //#include "nrf24lu1p.h"
-#include "version.h"
+#include "stm32f10x.h"
 #include "hal_nrf_reg.h"
 // SPI2
 #include "../../System/SPI/spi2.h"

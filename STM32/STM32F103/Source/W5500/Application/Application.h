@@ -31,7 +31,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 //#include "stm32f4xx.h"
-#include "version.h"
+#include "stm32f10x.h"
 //#include "Ethernet_Config.h"
 
 /* Exported types ------------------------------------------------------------*/

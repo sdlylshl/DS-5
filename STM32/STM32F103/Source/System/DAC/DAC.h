@@ -12,10 +12,9 @@
 /* Private variables ---------------------------------------------------------*/
 
 
-void RCC_DAC_Config(void);
-void GPIO_DAC_Config(void);
-void DAC_Config(void);
-void DA_Wave(void);
+extern void DAC_DC(uint32_t DCvalue);
+extern void DAC_Config(void);
+extern void DA_Wave(void);
 
 #endif 
 

@@ -1,7 +1,7 @@
 
 #include "gpio_w5500.h"
 //Delay_ms();
-#include "./System/System_config.h"
+//#include "./System/System_config.h"
 
 /*
  typedef enum

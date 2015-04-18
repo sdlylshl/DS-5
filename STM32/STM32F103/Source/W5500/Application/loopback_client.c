@@ -2,10 +2,11 @@
 
 #include "loopback_client.h"
 // 宏定义
-#include "./W5500/Ethernet_config.h"
+#include "../../W5500/Ethernet_config.h"
 // TIM4_GetCurrentTime()
-#include "./System/System_config.h"
+//#include "./System/System_config.h"
 
+#include "../../System/Timer/timer4.h"
 #define tick_second 100
 
 uint32_t my_time;

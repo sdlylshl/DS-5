@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<ProjectWorkspace xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_mpw.xsd">
+
+  <SchemaVersion>1.0</SchemaVersion>
+
+  <Header>### uVision Project, (C) Keil Software</Header>
+
+  <WorkspaceName>WorkSpace</WorkspaceName>
+
+  <project>
+    <PathAndName>.\main\main.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\flash\flash.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\flash &amp; FatFs\flash&amp;FatFs.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\wavplay\wavplay.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
+  </project>
+
+</ProjectWorkspace>

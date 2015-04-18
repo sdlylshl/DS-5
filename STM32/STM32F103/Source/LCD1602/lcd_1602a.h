@@ -1,6 +1,6 @@
 #ifndef __LCD_1602A_H
 #define __LCD_1602A_H
-#include "version.h"
+#include "stm32f10x.h"
 #define LCD1602_RCC_PORT		GPIOC
 #define L_1602A_D7				GPIO_Pin_0
 #define L_1602A_D6				GPIO_Pin_1

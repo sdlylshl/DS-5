@@ -50,14 +50,39 @@ void RCC_DAC_Config(void) {
  ** output       : null
  ** return       : null
  *******************************************************************************/
-void GPIO_DAC_Config(void) {
+void DAC_GPIO_Config(void) {	
 	GPIO_InitTypeDef GPIO_InitStructure;
+	
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_DAC, ENABLE);	
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;// | GPIO_Pin_5;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;	
+	//GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
+	//GPIO_SetBits(GPIOA,GPIO_Pin_4);
+	//GPIO_ResetBits(GPIOA,GPIO_Pin_4);
 }
 
+//直流输出
+void DAC_DC(uint32_t DCvalue){
+	
+	DAC_InitTypeDef DAC_InitStructure;
+	
+	DAC_GPIO_Config();
+	
+	DAC_InitStructure.DAC_Trigger = DAC_Trigger_None;
+	DAC_InitStructure.DAC_WaveGeneration = DAC_WaveGeneration_None;
+	DAC_InitStructure.DAC_OutputBuffer = DAC_OutputBuffer_Disable; //输出不用缓冲
+	DAC_Init(DAC_Channel_1, &DAC_InitStructure);
+	//DAC_Init(DAC_Channel_2, &DAC_InitStructure);
+	
+	DAC_Cmd(DAC_Channel_1, ENABLE); //使能DAC1 通道
+	DAC_SetChannel1Data(DAC_Align_12b_R,DCvalue);	
+	DAC_SoftwareTriggerCmd(DAC_Channel_1,ENABLE);
+	
+}
 void DMA_DAC_Config(DAC_InitTypeDef * DAC_InitStructure ){
 
 	DMA_InitTypeDef DMA_InitStructure;
@@ -126,14 +151,14 @@ void DAC_Config(void) {
 		DAC1_Value[i] = SineData[i] * 0.606; //Vpp =2.0V
 	}
 	RCC_DAC_Config();
-	GPIO_DAC_Config();
+	DAC_GPIO_Config();
 
 	TIM_PrescalerConfig(TIM2, 23, TIM_PSCReloadMode_Update);
 
 	TIM_SetAutoreload(TIM2, 125);
 	TIM_SelectOutputTrigger(TIM2, TIM_TRGOSource_Update);
-
-	DAC_InitStructure.DAC_Trigger = DAC_Trigger_T2_TRGO; //选择TIM2触发器作为DAC的触发事件
+	DAC_InitStructure.DAC_Trigger = DAC_Trigger_None;
+	//DAC_InitStructure.DAC_Trigger = DAC_Trigger_T2_TRGO; //选择TIM2触发器作为DAC的触发事件
 	DAC_InitStructure.DAC_WaveGeneration = DAC_WaveGeneration_None;
 	DAC_InitStructure.DAC_OutputBuffer = DAC_OutputBuffer_Disable; //输出不用缓冲
 	DAC_Init(DAC_Channel_1, &DAC_InitStructure);	
@@ -141,10 +166,11 @@ void DAC_Config(void) {
 	DAC_SetChannel1Data(DAC_Align_12b_R,0);
 	DAC_SoftwareTriggerCmd(DAC_Channel_1,ENABLE);
 	DAC_Cmd(DAC_Channel_1, ENABLE);	
-	
 
 	//DMA_DAC_Config(&DAC_InitStructure );
 	TIM_Cmd(TIM2, ENABLE);
 
+	//
+	DAC_SetChannel1Data(DAC_Align_12b_R,4095);//我的板子实际输出的是3.265v
 }
 

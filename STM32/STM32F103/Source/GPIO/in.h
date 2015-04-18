@@ -1,7 +1,7 @@
 #ifndef __IN_H
 #define	__IN_H
 
-#include "version.h"
+#include "stm32f10x.h"
 
 /* the macro definition to trigger the led on or off
  * 1 - off

@@ -1,7 +1,7 @@
 #ifndef __PFMBUFFER_H
 #define __PFMBUFFER_H
 
-#include "version.h"
+#include "stm32f10x.h"
 
 extern uint8_t recv_head;
 extern uint8_t recv_tail;

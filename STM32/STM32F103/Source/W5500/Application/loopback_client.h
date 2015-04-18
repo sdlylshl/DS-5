@@ -1,7 +1,7 @@
 #ifndef _LOOPBACK_CLIENT_H_
 #define _LOOPBACK_CLIENT_H_
 
-#include "version.h"
+#include "stm32f10x.h"
 
 //#include "..\Ethernet_Config.h"
 

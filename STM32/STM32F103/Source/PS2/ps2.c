@@ -1,5 +1,5 @@
 #include "ps2.h" 
-#include "sys.h"
+#include "../sys.h"
 #include "stdio.h"
 #include "stm32f10x_exti.h"
 extern void Delay_us(__IO uint32_t us);

@@ -6,10 +6,10 @@
 #include "./GPIO/led.h"
 #include "./GPIO/RS485.h"
 #include "./System/can/can1.h"
+
 char *str = "\r\n This is a USART1_printf demo \r\n";
 extern void nrf_main0(void);
 extern void nrf_main(void);
-extern void wavplay(void);
 extern uint16_t GetKey(void);
 int main() {
 //	uint8_t i;
@@ -45,6 +45,9 @@ int main() {
 	
 	//panel();
 
+	DAC_Config();
+//	wavplay((uint8_t *)dear);
+	
 	while(1)
 	{
 		Delay_ms(1000);
@@ -62,8 +65,7 @@ int main() {
 	testFlash();
 	//开总中断
 	__set_PRIMASK(0);
-	DAC_Config();
-	wavplay();
+
 	nrf_main();
 //		NRF_device_main();
 //NRF_master_main();
@@ -119,9 +121,7 @@ int main() {
 	}
 //	return 0;
 }
-void CallbackNull(void){ 
-	; 
-}
+
 #ifdef  USE_FULL_ASSERT
 
 /**

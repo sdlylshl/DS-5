@@ -2,7 +2,7 @@
 #define __DS1302_H
 
 
-#include "version.h"
+#include "stm32f10x.h"
 
 #if 0
 #define   RdSec  0x81

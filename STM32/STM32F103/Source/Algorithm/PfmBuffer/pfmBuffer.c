@@ -1,8 +1,8 @@
 #include <stdio.h>
-
+#include <stdbool.h>
 #include "pfmBuffer.h"
 
-#include "./W5500/Ethernet_config.h"
+#include "../../W5500/Ethernet_config.h"
 
 //CRC_Enable();
 #include "../../System/CRC/crc.h"

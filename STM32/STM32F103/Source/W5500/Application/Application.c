@@ -6,8 +6,8 @@
 
 #include "../Ethernet_Config.h"
 // SPI1
-#include "./System/System_config.h"
-
+//#include "../System/System_config.h"
+#include "../../System/SPI/spi1.h"
 //*************使用说明*****************
 // 1.配置要使用的SPI
 // 2.将SPI函数注册到此函数
