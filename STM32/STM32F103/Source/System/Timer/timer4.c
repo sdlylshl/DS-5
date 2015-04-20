@@ -44,8 +44,8 @@ extern void(*LEDCallback_ISR)(void);
 void TIM4_IRQHandler(void) {
 	if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET) {
 		time4++;
-		BeepCallback_ISR();
-		LEDCallback_ISR();
+		//BeepCallback_ISR();
+		//LEDCallback_ISR();
 		TIM_ClearITPendingBit(TIM4, TIM_FLAG_Update);
 	}
 }

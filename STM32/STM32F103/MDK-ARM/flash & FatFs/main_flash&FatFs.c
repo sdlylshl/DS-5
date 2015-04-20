@@ -2,11 +2,14 @@
 
 #include "../../Source/FatFs/R0.11/diskio.h"
 #include "../../Source/System/Flash/SST25_flash.h"
+#include "../../Source/System/USART/usart1.h"
 extern void filesysinit(void);
 int main(){
-	//SPI2
-	//SPI_Flash_Init();
-	filesysinit();
+	USART1_NVIC_Config(7);
+	USART1_Init();	
+	//SPI2	
+	SST25_Flash_init();
+//	filesysinit();
 	testFlash();
 }
 

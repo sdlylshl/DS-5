@@ -7,6 +7,7 @@
 //#include "./System/System_config.h"
 
 #include "../../System/Timer/timer4.h"
+#define WIZ_GetCurrentTime TIM4_GetCurrentTime
 #define tick_second 100
 
 uint32_t my_time;
@@ -16,7 +17,7 @@ uint32_t cruise_interval;
 uint32_t received_len;
 
 uint32_t time_return(void) {
-	return TIM4_GetCurrentTime();
+	return WIZ_GetCurrentTime();
 }
 
 //#define TX_RX_MAX_BUF_SIZE	300

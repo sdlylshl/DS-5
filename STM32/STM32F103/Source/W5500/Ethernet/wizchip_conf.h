@@ -170,14 +170,14 @@ typedef struct __WIZCHIP {
 		 */
 		struct {
 			uint8_t (*_read_byte)(uint32_t AddrSel);
-			void (*_write_byte)(uint32_t AddrSel, uint8_t wb);
+			uint8_t (*_write_byte)(uint32_t AddrSel, uint8_t wb);
 		} BUS;
 		/**
 		 * For SPI interface IO
 		 */
 		struct {
 			uint8_t (*_read_byte)(void);
-			void (*_write_byte)(uint8_t wb);
+			uint8_t (*_write_byte)(uint8_t wb);
 //         void    (*_read_burst)  (uint8_t* pBuf, uint16_t len);
 //         void    (*_write_burst)  (uint8_t* pBuf, uint16_t len);
 		} SPI;
@@ -370,7 +370,7 @@ void reg_wizchip_cs_cbfunc(void(*cs_sel)(void), void(*cs_desel)(void));
  *@note If you do not describe or register, null function is called.
  */
 void reg_wizchip_bus_cbfunc(uint8_t(*bus_rb)(uint32_t addr),
-		void(*bus_wb)(uint32_t addr, uint8_t wb));
+		uint8_t(*bus_wb)(uint32_t addr, uint8_t wb));
 
 /**
  *@brief Registers call back function for SPI interface.
@@ -380,7 +380,7 @@ void reg_wizchip_bus_cbfunc(uint8_t(*bus_rb)(uint32_t addr),
  *or register your functions.
  *@note If you do not describe or register, null function is called.
  */
-void reg_wizchip_spi_cbfunc(uint8_t(*spi_rb)(void), void(*spi_wb)(uint8_t wb));
+void reg_wizchip_spi_cbfunc(uint8_t(*spi_rb)(void), uint8_t (*spi_wb)(uint8_t wb));
 
 /**
  *@brief Registers call back function for SPI interface.

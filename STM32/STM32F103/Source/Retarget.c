@@ -18,6 +18,10 @@
 //#include "stm32f10x_usart.h"
 #include "stm32f10x_conf.h"
 #pragma import(__use_no_semihosting_swi)
+
+
+const uint32_t MAX_UINT32 = (uint32_t) -1;
+
 //voeride
 int SER_GetChar(void) {
 	int ch;

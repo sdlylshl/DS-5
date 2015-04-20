@@ -4,58 +4,61 @@
 #include "stm32f10x.h"
 
 //#define SPI1_DMA
-#ifdef CABINET_DEVICE
-#define SPI1_REMAP
-#else
-#define SPI1_NONREMAP
-#endif
+//#ifdef CABINET_DEVICE
+//#define SPI1_REMAP
+//#else
+//#define SPI1_NONREMAP
+//#endif
 
-#ifdef CABINET_DEVICE
-//Cabinet Device SPI1|SPI3
-#define  SPI1_RCC_APB2_PORT (RCC_APB2Periph_GPIOB)
+//PARKING V2.0
+#define SPI1_NONREMAP 
 
-#define SPI1_IRQ_PORT           GPIOB
-#define SPI1_IRQ_PIN            GPIO_Pin_0
-#define SPI1_IRQ_MODE           GPIO_Mode_IPU
+//#ifdef CABINET_DEVICE
+////Cabinet Device SPI1|SPI3
+//#define  SPI1_RCC_APB2_PORT (RCC_APB2Periph_GPIOB)
 
-#define SPI1_RST_PORT           GPIOB
-#define SPI1_RST_PIN            GPIO_Pin_1
-#define SPI1_RST_MODE           GPIO_Mode_Out_PP
-#endif
-#ifdef  CABINET_HOST    //Cabinet Host SPI1
-#define SPI1_RCC_APB2_PORT (RCC_APB2Periph_GPIOA)
+//#define SPI1_IRQ_PORT           GPIOB
+//#define SPI1_IRQ_PIN            GPIO_Pin_0
+//#define SPI1_IRQ_MODE           GPIO_Mode_IPU
 
-#define SPI1_IRQ_PORT           GPIOA
-#define SPI1_IRQ_PIN            GPIO_Pin_1
-#define SPI1_IRQ_MODE           GPIO_Mode_IPU
+//#define SPI1_RST_PORT           GPIOB
+//#define SPI1_RST_PIN            GPIO_Pin_1
+//#define SPI1_RST_MODE           GPIO_Mode_Out_PP
+//#endif
+//#ifdef  CABINET_HOST    //Cabinet Host SPI1
+//#define SPI1_RCC_APB2_PORT (RCC_APB2Periph_GPIOA)
 
-#define SPI1_RST_PORT           GPIOA
-#define SPI1_RST_PIN            GPIO_Pin_0
-#define SPI1_RST_MODE           GPIO_Mode_Out_PP
-#endif
+//#define SPI1_IRQ_PORT           GPIOA
+//#define SPI1_IRQ_PIN            GPIO_Pin_1
+//#define SPI1_IRQ_MODE           GPIO_Mode_IPU
 
-#if 0       //Societ 
-#define SPI1_RCC_APB2_PORT (RCC_APB2Periph_GPIOD)
+//#define SPI1_RST_PORT           GPIOA
+//#define SPI1_RST_PIN            GPIO_Pin_0
+//#define SPI1_RST_MODE           GPIO_Mode_Out_PP
+//#endif
 
-#define SPI1_IRQ_PORT           GPIOD
-#define SPI1_IRQ_PIN            GPIO_Pin_8
-#define SPI1_IRQ_MODE           GPIO_Mode_IPU
+//#if 0       //Societ 
+//#define SPI1_RCC_APB2_PORT (RCC_APB2Periph_GPIOD)
 
-#define SPI1_RST_PORT           GPIOD
-#define SPI1_RST_PIN            GPIO_Pin_9
-#define SPI1_RST_MODE           GPIO_Mode_Out_PP
-#endif
-#if 1       //Societ nrf2401
-#define SPI1_RCC_APB2_PORT (RCC_APB2Periph_GPIOC)
+//#define SPI1_IRQ_PORT           GPIOD
+//#define SPI1_IRQ_PIN            GPIO_Pin_8
+//#define SPI1_IRQ_MODE           GPIO_Mode_IPU
 
-#define SPI1_IRQ_PORT           GPIOC
-#define SPI1_IRQ_PIN            GPIO_Pin_5
-#define SPI1_IRQ_MODE           GPIO_Mode_IPU
+//#define SPI1_RST_PORT           GPIOD
+//#define SPI1_RST_PIN            GPIO_Pin_9
+//#define SPI1_RST_MODE           GPIO_Mode_Out_PP
+//#endif
+//#if 1       //Societ nrf2401
+//#define SPI1_RCC_APB2_PORT (RCC_APB2Periph_GPIOC)
 
-#define SPI1_RST_PORT           GPIOC
-#define SPI1_RST_PIN            GPIO_Pin_4
-#define SPI1_RST_MODE           GPIO_Mode_Out_PP
-#endif
+//#define SPI1_IRQ_PORT           GPIOC
+//#define SPI1_IRQ_PIN            GPIO_Pin_5
+//#define SPI1_IRQ_MODE           GPIO_Mode_IPU
+
+//#define SPI1_RST_PORT           GPIOC
+//#define SPI1_RST_PIN            GPIO_Pin_4
+//#define SPI1_RST_MODE           GPIO_Mode_Out_PP
+//#endif
 
 #ifdef SPI1_NONREMAP
 // SPI1 PA 4 5 6 7
@@ -97,11 +100,11 @@
 #define SPI1_SCS_LOW()          GPIO_ResetBits(SPI1_SCS_PORT, SPI1_SCS_PIN)
 #define SPI1_SCS(x)             x ? GPIO_SetBits(SPI1_SCS_PORT,SPI1_SCS_PIN): GPIO_ResetBits(SPI1_SCS_PORT,SPI1_SCS_PIN)
 
-#define SPI1_RST_HIGH()         GPIO_SetBits(SPI1_RST_PORT, SPI1_RST_PIN)
-#define SPI1_RST_LOW()          GPIO_ResetBits(SPI1_RST_PORT, SPI1_RST_PIN)
-#define SPI1_RST(x)             x ? GPIO_SetBits(SPI1_RST_PORT,SPI1_RST_PIN): GPIO_ResetBits(SPI1_RST_PORT,SPI1_RST_PIN)
-
-#define SPI1_READ_IRQ()         GPIO_ReadInputDataBit(SPI1_IRQ_PORT, SPI1_IRQ_PIN)
+//#define SPI1_RST_HIGH()         GPIO_SetBits(SPI1_RST_PORT, SPI1_RST_PIN)
+//#define SPI1_RST_LOW()          GPIO_ResetBits(SPI1_RST_PORT, SPI1_RST_PIN)
+//#define SPI1_RST(x)             x ? GPIO_SetBits(SPI1_RST_PORT,SPI1_RST_PIN): GPIO_ResetBits(SPI1_RST_PORT,SPI1_RST_PIN)
+//#define SPI1_IRQ_READ()         GPIO_ReadInputDataBit(SPI1_IRQ_PORT, SPI1_IRQ_PIN)
+//#define SPI1_READ_IRQ()         GPIO_ReadInputDataBit(SPI1_IRQ_PORT, SPI1_IRQ_PIN)
 
 void SPI1_Init(void);
 
@@ -110,8 +113,8 @@ uint8_t SPI1_SendByte(uint8_t byte);
 uint8_t SPI1_ReceiveByte(void);
 void SPI1_SetNSS(void);
 void SPI1_ResetNSS(void);
-void SPI1_SetRST(void);
-void SPI1_ResetRST(void);
-uint8_t SPI1_readIRQ(void);
+//void SPI1_SetRST(void);
+//void SPI1_ResetRST(void);
+//uint8_t SPI1_readIRQ(void);
 #endif
 

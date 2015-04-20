@@ -17,7 +17,7 @@
 #include "Application\loopback_client.h"
 
 //#include "Platform\rcc_handler.h"
-#include "Platform\gpio_w5500.h"
+//#include "Platform\gpio_w5500.h"
 //#include "Platform\timer_w5500.h"
 //#include "Platformrt_w5500.h"
 //#include "Platform\spi_w5500.h"

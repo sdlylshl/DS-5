@@ -100,8 +100,9 @@ uint8_t wizchip_bus_readbyte(uint32_t AddrSel) {
 
 //M20140501 : Explict pointer type casting
 //void 	wizchip_bus_writebyte(uint32_t AddrSel, uint8_t wb)  { *((volatile uint8_t*) AddrSel) = wb; };
-void wizchip_bus_writebyte(uint32_t AddrSel, uint8_t wb) {
+uint8_t wizchip_bus_writebyte(uint32_t AddrSel, uint8_t wb) {
 	*((volatile uint8_t*) ((ptrdiff_t) AddrSel)) = wb;
+	return 0;
 }
 ;
 
@@ -119,7 +120,8 @@ uint8_t wizchip_spi_readbyte(void) {
  * @note This function help not to access wrong address. If you do not describe this function or register any functions,
  * null function is called.
  */
-void wizchip_spi_writebyte(uint8_t wb) {
+uint8_t wizchip_spi_writebyte(uint8_t wb) {
+	return 0;
 }
 ;
 
@@ -185,7 +187,7 @@ void reg_wizchip_cs_cbfunc(void(*cs_sel)(void), void(*cs_desel)(void)) {
 }
 
 void reg_wizchip_bus_cbfunc(uint8_t(*bus_rb)(uint32_t addr),
-		void(*bus_wb)(uint32_t addr, uint8_t wb)) {
+		uint8_t(*bus_wb)(uint32_t addr, uint8_t wb)) {
 	while (!(WIZCHIP.if_mode & _WIZCHIP_IO_MODE_BUS_))
 		;
 
@@ -198,7 +200,7 @@ void reg_wizchip_bus_cbfunc(uint8_t(*bus_rb)(uint32_t addr),
 	}
 }
 
-void reg_wizchip_spi_cbfunc(uint8_t(*spi_rb)(void), void(*spi_wb)(uint8_t wb)) {
+void reg_wizchip_spi_cbfunc(uint8_t(*spi_rb)(void), uint8_t (*spi_wb)(uint8_t wb)) {
 	while (!(WIZCHIP.if_mode & _WIZCHIP_IO_MODE_SPI_))
 		;
 

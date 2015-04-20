@@ -1,4 +1,8 @@
+
 #include "SST25_Flash.h"
+#include "stm32f10x_bkp.h"
+#include "stm32f10x_rcc.h"
+
 //uint8_t * flashTestData = "1234567890";
 uint8_t SST25_buffer[4096] = {0};
 uint16_t logNr = 2; //当前记录编号 
@@ -9,6 +13,31 @@ uint16_t logNr = 2; //当前记录编号
 #define SST25_BLOCK_SIZE (4096/SST25_SECTOR_SIZE)
 #define SST25_CLUSTOR_SIZE SST25_BLOCK_SIZE
 
+//Flash片选初始化
+void SST25_Flash_Select_init(){
+	GPIO_InitTypeDef GPIO_InitStructure; 	
+		RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC|RCC_APB2Periph_AFIO, ENABLE);
+	RCC_LSEConfig(RCC_LSE_OFF); //关闭外部低速外部时钟信号功能 后，PC13 PC14 PC15 才可以当普通IO用。
+	BKP_TamperPinCmd(DISABLE); //关闭入侵检测功能，也就是 PC13，也可以当普通IO 使用	
+
+	
+	GPIO_InitStructure.GPIO_Pin = SST25_SCS_PIN;
+	GPIO_InitStructure.GPIO_Mode = SST25_SCS_MODE;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+	GPIO_Init(SST25_SCS_PORT, &GPIO_InitStructure);
+	
+
+
+	SST25_Select();
+//	SST25_DeSelect();
+	
+}
+
+void SST25_Flash_init(void){
+	
+		SST25_Flash_Select_init();
+		SST25_SPI_init();
+}
 /****************************************************************************
 * 名    称：unsigned char rdsr(void)
 * 功    能：读状态寄存器
@@ -19,10 +48,10 @@ uint16_t logNr = 2; //当前记录编号
 ****************************************************************************/
 uint8_t FlashReadStatus(void){
 	unsigned char busy;
-	Select_Flash();
-	SPI_Flash_SendByte(0x05);
-	busy = SPI_Flash_ReadByte();
-	DeSelect_Flash();
+	SST25_Select();
+	SST25_SendByte(0x05);
+	busy = SST25_ReadByte();
+	SST25_DeSelect();
 	return(busy);
 
 }
@@ -48,9 +77,9 @@ void FlashWaitBusy(void){
 * 调用方法：无 
 ****************************************************************************/ 
 void FlashWriteEnable(void){
-	Select_Flash();
-	SPI_Flash_SendByte(0x06);
-	DeSelect_Flash();
+	SST25_Select();
+	SST25_SendByte(0x06);
+	SST25_DeSelect();
 }
 /****************************************************************************
 * 名    称：void wdis(void)
@@ -62,9 +91,9 @@ void FlashWriteEnable(void){
 ****************************************************************************/ 
 void FlashWriteDisable(void){
 
-	Select_Flash();
-	SPI_Flash_SendByte(0x04); 
-	DeSelect_Flash();
+	SST25_Select();
+	SST25_SendByte(0x04); 
+	SST25_DeSelect();
 	FlashWaitBusy();
 	
 }	
@@ -77,13 +106,13 @@ void FlashWriteDisable(void){
 * 调用方法：无 
 ****************************************************************************/ 
 void FlashWriteStatus(void){	
-	Select_Flash();
-	SPI_Flash_SendByte(0x50);
-	DeSelect_Flash(); 
-	Select_Flash();
-	SPI_Flash_SendByte(0x01);
-	SPI_Flash_SendByte(0x00); 
-	DeSelect_Flash();
+	SST25_Select();
+	SST25_SendByte(0x50);
+	SST25_DeSelect(); 
+	SST25_Select();
+	SST25_SendByte(0x01);
+	SST25_SendByte(0x00); 
+	SST25_DeSelect();
     FlashWaitBusy();
 }
 /****************************************************************************
@@ -97,12 +126,12 @@ void FlashWriteStatus(void){
 void FlashSectorErase(uint32_t sector){
 	FlashWriteStatus();
 	FlashWriteEnable();
-	Select_Flash();
-	SPI_Flash_SendByte(0x20);
-	SPI_Flash_SendByte((sector & 0xffffff) >> 16);          //addh
-	SPI_Flash_SendByte((sector & 0xffff) >> 8);          //addl 
-	SPI_Flash_SendByte(sector & 0xff);                 //wtt
-	DeSelect_Flash();
+	SST25_Select();
+	SST25_SendByte(0x20);
+	SST25_SendByte((sector & 0xffffff) >> 16);          //addh
+	SST25_SendByte((sector & 0xffff) >> 8);          //addl 
+	SST25_SendByte(sector & 0xff);                 //wtt
+	SST25_DeSelect();
 	FlashWaitBusy();
 
 }
@@ -117,12 +146,12 @@ void FlashSectorErase(uint32_t sector){
 void FlashBlockErase(uint32_t block){
 	FlashWriteStatus();
 	FlashWriteEnable();
-	Select_Flash();
-	SPI_Flash_SendByte(0x52);
-	SPI_Flash_SendByte((block & 0xffffff) >> 16);          //addh
-	SPI_Flash_SendByte((block & 0xffff) >> 8);          //addl 
-	SPI_Flash_SendByte(block & 0xff);                 //wtt
-	DeSelect_Flash();
+	SST25_Select();
+	SST25_SendByte(0x52);
+	SST25_SendByte((block & 0xffffff) >> 16);          //addh
+	SST25_SendByte((block & 0xffff) >> 8);          //addl 
+	SST25_SendByte(block & 0xff);                 //wtt
+	SST25_DeSelect();
 	FlashWaitBusy();
 
 }
@@ -137,9 +166,9 @@ void FlashBlockErase(uint32_t block){
 void FlashChipErase(){
 	FlashWriteStatus();
 	FlashWriteEnable();
-	Select_Flash();
-	SPI_Flash_SendByte(0xc7);
-	DeSelect_Flash();
+	SST25_Select();
+	SST25_SendByte(0xc7);
+	SST25_DeSelect();
 	FlashWaitBusy();
 
 }
@@ -155,14 +184,14 @@ uint16_t FlashReadID(void)
 {
 	uint8_t fac_id;
 	uint8_t dev_id;
-	Select_Flash();
-	SPI_Flash_SendByte(0x90);
-	SPI_Flash_SendByte(0x00);
-	SPI_Flash_SendByte(0x00);
-	SPI_Flash_SendByte(0x00);
-	fac_id = SPI_Flash_ReadByte();		          //BFH: 工程码SST
-	dev_id = SPI_Flash_ReadByte();	              //41H: 器件型号SST25VF016B     
-	DeSelect_Flash();
+	SST25_Select();
+	SST25_SendByte(0x90);
+	SST25_SendByte(0x00);
+	SST25_SendByte(0x00);
+	SST25_SendByte(0x00);
+	fac_id = SST25_ReadByte();		          //BFH: 工程码SST
+	dev_id = SST25_ReadByte();	              //41H: 器件型号SST25VF016B     
+	SST25_DeSelect();
 	return (fac_id << 8 | dev_id);
 }
 /****************************************************************************
@@ -175,32 +204,32 @@ uint16_t FlashReadID(void)
 ****************************************************************************/  
 void SST25_ReadHighSpeed(uint32_t addr, uint8_t *readbuff, uint16_t BlockSize){
 	unsigned int i=0; 	
-	Select_Flash();
-	SPI_Flash_SendByte(0x0b);
-	SPI_Flash_SendByte((addr&0xffffff)>>16);
-	SPI_Flash_SendByte((addr&0xffff)>>8);
-	SPI_Flash_SendByte(addr&0xff);
-	SPI_Flash_SendByte(0);
+	SST25_Select();
+	SST25_SendByte(0x0b);
+	SST25_SendByte((addr&0xffffff)>>16);
+	SST25_SendByte((addr&0xffff)>>8);
+	SST25_SendByte(addr&0xff);
+	SST25_SendByte(0);
 	while(i<BlockSize){	
-		readbuff[i]=0xFF^SPI_Flash_ReadByte();
+		readbuff[i]=0xFF^SST25_ReadByte();
 		
 		i++;
 	}
-	DeSelect_Flash();	 	
+	SST25_DeSelect();	 	
 }
 
 void SST25_WriteByte(uint32_t addr, uint8_t data){
 
 	FlashWriteEnable();
-	Select_Flash();
-	SPI_Flash_SendByte(0x02);
-	SPI_Flash_SendByte((addr & 0xffffff) >> 16);
-	SPI_Flash_SendByte((addr & 0xffff) >> 8);
-	SPI_Flash_SendByte(addr & 0xff);
-	SPI_Flash_SendByte(0xFF^data);
-	DeSelect_Flash();
+	SST25_Select();
+	SST25_SendByte(0x02);
+	SST25_SendByte((addr & 0xffffff) >> 16);
+	SST25_SendByte((addr & 0xffff) >> 8);
+	SST25_SendByte(addr & 0xff);
+	SST25_SendByte(0xFF^data);
+	SST25_DeSelect();
 	FlashWriteDisable();
-//	Select_Flash();
+//	SST25_Select();
 //	FlashWaitBusy();
 }
 /****************************************************************************
@@ -216,29 +245,29 @@ void SST25_WriteAutoAddrIncrease(uint32_t addr, uint8_t *readbuff, uint16_t size
 	//sect_clr(addr);   								  //删除页		  
 	FlashWriteStatus();
   	FlashWriteEnable();	
-	Select_Flash();    
-	SPI_Flash_SendByte(0xad);
-	SPI_Flash_SendByte((addr&0xffffff)>>16);
-	SPI_Flash_SendByte((addr&0xffff)>>8);
-	SPI_Flash_SendByte(addr&0xff);
-  	SPI_Flash_SendByte(0xFF^readbuff[0]);
-	SPI_Flash_SendByte(0xFF^readbuff[1]);
-	DeSelect_Flash();
+	SST25_Select();    
+	SST25_SendByte(0xad);
+	SST25_SendByte((addr&0xffffff)>>16);
+	SST25_SendByte((addr&0xffff)>>8);
+	SST25_SendByte(addr&0xff);
+  SST25_SendByte(0xFF^readbuff[0]);
+	SST25_SendByte(0xFF^readbuff[1]);
+	SST25_DeSelect();
 	i=2;
 	while(i<size){
 		a2=120;
 		while(a2>0) a2--;
-		Select_Flash();
-		SPI_Flash_SendByte(0xad);
-		SPI_Flash_SendByte(0xFF^readbuff[i++]);
-		SPI_Flash_SendByte(0xFF^readbuff[i++]);
-		DeSelect_Flash();
+		SST25_Select();
+		SST25_SendByte(0xad);
+		SST25_SendByte(0xFF^readbuff[i++]);
+		SST25_SendByte(0xFF^readbuff[i++]);
+		SST25_DeSelect();
 	}
 	
 	a2=100;
 	while(a2>0) a2--;
 	FlashWriteDisable();	
-	Select_Flash();	
+	SST25_Select();	
 	FlashWaitBusy();
 }
 

@@ -6,7 +6,7 @@
 uint32_t (*GetCurrentTime)(void) =TIM2_GetCurrentTime;
 uint32_t (*GetDistanceTime)(uint32_t ) = TIM2_GetDistanceTime;
 
-const uint32_t MAX_UINT32 = (uint32_t) -1;
+//const uint32_t MAX_UINT32 = (uint32_t) -1;
 
 volatile uint32_t time2 = 0; // ms 计时变量
 volatile uint32_t Zigbee_time; // ms 计时变量

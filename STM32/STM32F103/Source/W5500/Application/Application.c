@@ -5,9 +5,13 @@
 #include "Application.h"
 
 #include "../Ethernet_Config.h"
+#include "../Platform/w5500_gpio.h"
+
 // SPI1
-//#include "../System/System_config.h"
 #include "../../System/SPI/spi1.h"
+#include "../../System/Delay/systick.h"
+#include "../../System/Timer/timer4.h"
+#define WIZ_GetCurrentTime TIM4_GetCurrentTime
 //*************使用说明*****************
 // 1.配置要使用的SPI
 // 2.将SPI函数注册到此函数
@@ -70,7 +74,7 @@ uint8_t RX_BUFF_SRV[8][256];
 //FOR TCP Client
 //Configuration Network Information of TEST PC
 uint8_t DEST_IP[4] = { 192, 168, 88, 12 }; //DST_IP Address
-uint8_t DEST_IP1[4] = { 192, 168, 88, 91 }; //DST_IP Address
+uint8_t DEST_IP1[4] = { 192, 168, 88, 112 }; //DST_IP Address
 uint16_t DEST_PORT = 8081; //DST_IP port
 uint16_t LISTION_PORT = 8081;
 
@@ -94,28 +98,28 @@ wiz_NetTimeout gWIZNETTIMEOUT = { 3, //< retry count
 		};
 
 //外部接口函数
-void wizchip_spi_init(void) {
-	SPI1_Init();
-}
-void wizchip_select(void) {
-	//WIZ_SCS(0);		//低电平有效
-	//SPI1_select();
-	SPI1_ResetNSS();
-}
+//void wizchip_spi_init(void) {
+//	SPI1_Init();
+//}
+//void wizchip_select(void) {
+//	//WIZ_SCS(0);		//低电平有效
+//	//SPI1_select();
+//	SPI1_ResetNSS();
+//}
 
-void wizchip_deselect(void) {
-	//WIZ_SCS(1);
-	//SPI1_deselect();
-	SPI1_SetNSS();
-}
+//void wizchip_deselect(void) {
+//	//WIZ_SCS(1);
+//	//SPI1_deselect();
+//	SPI1_SetNSS();
+//}
 
-void wizchip_write_byte(uint8_t wb) {
-	SPI1_SendByte(wb);
-}
+//void wizchip_write_byte(uint8_t wb) {
+//	SPI1_SendByte(wb);
+//}
 
-uint8_t wizchip_read_byte() {
-	return SPI1_ReceiveByte();
-}
+//uint8_t wizchip_read_byte() {
+//	return SPI1_ReceiveByte();
+//}
 
 void wizchip_gpio_init() {
 
@@ -219,7 +223,7 @@ int Ethernet_Init(void) {
 	do {
 		if (ctlwizchip(CW_GET_PHYLINK, (void*) &tmp) == -1)
 			printf("Unknown PHY Link status.\r\n");
-		if (TIM4_GetCurrentTime() > 0xFFFFFF)
+		if (WIZ_GetCurrentTime() > 0xFFFFFF)
 			return -1;
 	} while (tmp == PHY_LINK_OFF);
 

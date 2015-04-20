@@ -1,5 +1,5 @@
 
-#include "gpio_w5500.h"
+#include "w5500_gpio.h"
 //Delay_ms();
 //#include "./System/System_config.h"
 
@@ -23,7 +23,17 @@
 }GPIOSpeed_TypeDef;
  */
 
+//外部接口函数
 
+void wizchip_select(void) {
+
+	WIZ_SCS_LOW();
+}
+
+void wizchip_deselect(void) {
+
+	WIZ_SCS_HIGH();
+}
 void WIZ_GPIO_Configuration(void)
 {
 			GPIO_InitTypeDef GPIO_InitStructure;
@@ -40,5 +50,9 @@ void WIZ_GPIO_Configuration(void)
         GPIO_InitStructure.GPIO_Mode = WIZ_nRST_MODE;
         GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	
         GPIO_Init(WIZ_nRST_PORT, &GPIO_InitStructure);
-
+	
+        GPIO_InitStructure.GPIO_Pin = WIZ_SCS_PIN;
+        GPIO_InitStructure.GPIO_Mode = WIZ_SCS_MODE;
+        GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	
+        GPIO_Init(WIZ_SCS_PORT, &GPIO_InitStructure);
 }

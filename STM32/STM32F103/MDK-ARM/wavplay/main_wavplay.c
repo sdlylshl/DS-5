@@ -16,9 +16,9 @@ int main(){
 	USART1_Init();
 	printf("sss");
 	DAC_DC(4095);
-	//DAC_Config();
-	//wavplay((uint8_t *)dear);
-	DAC_DC(3095);
+	DAC_Config();
+	wavplay((uint8_t *)dear);
+	//DAC_DC(3095);
 	while(1);
 }
 

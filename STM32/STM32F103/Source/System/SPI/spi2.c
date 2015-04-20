@@ -4,18 +4,18 @@ static void SPI2_GPIO_Config(void) {
 	GPIO_InitTypeDef GPIO_InitStructure;
 
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
-	RCC_APB2PeriphClockCmd(SPI2_RCC_APB2_PORT|RCC_APB2Periph_GPIOB, ENABLE);
-#if 1
-	GPIO_InitStructure.GPIO_Pin = SPI2_IRQ_PIN;
-	GPIO_InitStructure.GPIO_Mode = SPI2_IRQ_MODE;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(SPI2_IRQ_PORT, &GPIO_InitStructure);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+//#if 1
+//	GPIO_InitStructure.GPIO_Pin = SPI2_IRQ_PIN;
+//	GPIO_InitStructure.GPIO_Mode = SPI2_IRQ_MODE;
+//	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+//	GPIO_Init(SPI2_IRQ_PORT, &GPIO_InitStructure);
 
-	GPIO_InitStructure.GPIO_Pin = SPI2_RST_PIN;
-	GPIO_InitStructure.GPIO_Mode = SPI2_RST_MODE;
-	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(SPI2_RST_PORT, &GPIO_InitStructure);
-#endif
+//	GPIO_InitStructure.GPIO_Pin = SPI2_RST_PIN;
+//	GPIO_InitStructure.GPIO_Mode = SPI2_RST_MODE;
+//	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+//	GPIO_Init(SPI2_RST_PORT, &GPIO_InitStructure);
+//#endif
 	GPIO_InitStructure.GPIO_Pin = SPI2_SCS_PIN;
 	GPIO_InitStructure.GPIO_Mode = SPI2_SCS_MODE;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -88,28 +88,28 @@ uint8_t SPI2_ReceiveByte(void) {
 	return SPI_I2S_ReceiveData(SPI2);
 }
 
-void SPI2_ResetNSS(void) {
-	SPI2_SCS_LOW();
-}
-void SPI2_SetNSS(void) {
-	SPI2_SCS_HIGH();	
-}
+//void SPI2_ResetNSS(void) {
+//	SPI2_SCS_LOW();
+//}
+//void SPI2_SetNSS(void) {
+//	SPI2_SCS_HIGH();	
+//}
 
-void SPI2_ResetRST(void) {
-	SPI2_RST_LOW();
-}
-void SPI2_SetRST(void) {	
-	SPI2_RST_HIGH();
-}
-uint8_t SPI2_readIRQ(void){
-	return SPI2_READ_IRQ();
-}
+//void SPI2_ResetRST(void) {
+//	SPI2_RST_LOW();
+//}
+//void SPI2_SetRST(void) {	
+//	SPI2_RST_HIGH();
+//}
+//uint8_t SPI2_readIRQ(void){
+//	return SPI2_READ_IRQ();
+//}
 
-void SPI2_IRQHandler() {
-#ifdef DEBUG
-	printf("SPI2_IRQHandler \r\n");
-#endif
-	while (1) {
-		NVIC_SystemReset();
-	}
-}
+//void SPI2_IRQHandler() {
+//#ifdef DEBUG
+//	printf("SPI2_IRQHandler \r\n");
+//#endif
+//	while (1) {
+//		NVIC_SystemReset();
+//	}
+//}
