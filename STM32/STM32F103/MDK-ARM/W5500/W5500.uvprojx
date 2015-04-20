@@ -449,9 +449,9 @@
               <FilePath>..\..\Source\System\CRC\crc.c</FilePath>
             </File>
             <File>
-              <FileName>delay.c</FileName>
+              <FileName>systick.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\Source\System\Delay\delay.c</FilePath>
+              <FilePath>..\..\Source\System\Delay\systick.c</FilePath>
             </File>
           </Files>
         </Group>

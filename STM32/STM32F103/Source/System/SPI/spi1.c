@@ -1,3 +1,4 @@
+
 #include "spi1.h"
 
 static void SPI1_GPIO_Config(void) {
@@ -18,7 +19,7 @@ static void SPI1_GPIO_Config(void) {
 //	GPIO_InitStructure.GPIO_Mode = SPI1_IRQ_MODE;
 //	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 //	GPIO_Init(SPI1_IRQ_PORT, &GPIO_InitStructure);
-//		
+
 //	GPIO_InitStructure.GPIO_Pin = SPI1_RST_PIN;
 //	GPIO_InitStructure.GPIO_Mode = SPI1_RST_MODE;
 //	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;

@@ -73,7 +73,7 @@ uint8_t RX_BUFF_SRV[8][256];
 //uint8_t SubNet[4] = {255, 255, 255, 0};//SubnetMask Address
 //FOR TCP Client
 //Configuration Network Information of TEST PC
-uint8_t DEST_IP[4] = { 192, 168, 88, 12 }; //DST_IP Address
+uint8_t DEST_IP[4] = { 192, 168, 88, 112 }; //DST_IP Address
 uint8_t DEST_IP1[4] = { 192, 168, 88, 112 }; //DST_IP Address
 uint16_t DEST_PORT = 8081; //DST_IP port
 uint16_t LISTION_PORT = 8081;
@@ -86,7 +86,7 @@ wiz_PhyConf gWIZPHYCONF = { PHY_CONFBY_SW, PHY_MODE_AUTONEGO, PHY_SPEED_100,
 		PHY_DUPLEX_FULL };
 
 wiz_NetInfo gWIZNETINFO = { { 0x55, 0x08, 0xdc, 0x00, 0xab, 0xc5 }, ///< Source Mac Address
-		{ 192, 168, 88, 16 }, ///< Source IP Address
+		{ 192, 168, 88, 98 }, ///< Source IP Address
 		{ 255, 255, 255, 0 }, ///< Subnet Mask
 		{ 192, 168, 88, 1 }, ///< Gateway IP Address
 		{ 202, 102, 152, 3 }, ///< DNS server IP Address
@@ -305,6 +305,7 @@ void Application(void) {
 //  ID = CRC();
 void Application(void) {
 //	uint8_t i = 1;
+	
 	loopback_tcps(2, RX_BUFF_SRV[2], LISTION_PORT);
 //	for (i = 2; i < 8; i++) {
 //		loopback_tcps(i, RX_BUFF_SRV[i], LISTION_PORT);

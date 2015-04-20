@@ -4,6 +4,7 @@
 #include "../../Source/System/Flash/SST25_flash.h"
 #include "../../Source/System/USART/usart1.h"
 #include "../../Source/System/Timer/timer4.h"
+#include "../../Source/W5500/Application/Application.h"
 extern void filesysinit(void);
 int main(){
 	uint32_t Time = 0;
