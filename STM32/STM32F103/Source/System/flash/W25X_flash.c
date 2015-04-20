@@ -30,7 +30,7 @@
 
 #define WIP_Flag                  0x01  /* Write In Progress (WIP) flag */
 
-#define Dummy_Byte                0x0
+#define Dummy_Byte                0x00
 
 /*******************************************************************************
 * Function Name  : SPI_FLASH_Init
@@ -39,59 +39,23 @@
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void SPI_FLASH_Init(void)
+void W25X_FLASH_Init(void)
 {
-  SPI_InitTypeDef  SPI_InitStructure;
-  GPIO_InitTypeDef GPIO_InitStructure;
-
-  /* Enable SPI2 and GPIO clocks */
-  /*!< SPI_FLASH_SPI_CS_GPIO, SPI_FLASH_SPI_MOSI_GPIO,
-       SPI_FLASH_SPI_MISO_GPIO, SPI_FLASH_SPI_DETECT_GPIO
-       and SPI_FLASH_SPI_SCK_GPIO Periph clock enable */
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB , ENABLE);
-
-  /*!< SPI_FLASH_SPI Periph clock enable */
-  RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
-
-
-  /*!< Configure SPI_FLASH_SPI pins: SCK */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-  /*!< Configure SPI_FLASH_SPI pins: MISO */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_14;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-  /*!< Configure SPI_FLASH_SPI pins: MOSI */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-  /*!< Configure SPI_FLASH_SPI_CS_PIN pin: SPI_FLASH Card CS pin */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-  GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-  /* Deselect the FLASH: Chip Select high */
-  SPI_FLASH_CS_HIGH();
-
-  /* SPI2 configuration */
-  // W25X16: data input on the DIO pin is sampled on the rising edge of the CLK.
-  // Data on the DO and DIO pins are clocked out on the falling edge of CLK.
-  SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
-  SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
-  SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;
-  SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;
-  SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;
-  SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;
-  SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_4;
-  SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
-  SPI_InitStructure.SPI_CRCPolynomial = 7;
-  SPI_Init(SPI2, &SPI_InitStructure);
-
-  /* Enable SPI2  */
-  SPI_Cmd(SPI2, ENABLE);
+  #ifdef  SPI_NSS_REMAP
+  GPIO_InitTypeDef GPIO_InitStructure;		
+	
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC|RCC_APB2Periph_AFIO, ENABLE);
+	RCC_LSEConfig(RCC_LSE_OFF); //关闭外部低速外部时钟信号功能 后，PC13 PC14 PC15 才可以当普通IO用。
+	BKP_TamperPinCmd(DISABLE); //关闭入侵检测功能，也就是 PC13，也可以当普通IO 使用	
+	
+  GPIO_InitStructure.GPIO_Pin = W25X_SCS_PIN;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;	//作为PC13使用时速度一定为2MHz 否则程序不正常
+  GPIO_InitStructure.GPIO_Mode = W25X_SCS_MODE;
+  GPIO_Init(W25X_SCS_PORT, &GPIO_InitStructure);
+	#endif 
+	SPI_FLASH_Init();
+	SPI_FLASH_ReadID();
+	SPI_FLASH_ReadDeviceID();
 }
 /*******************************************************************************
 * Function Name  : SPI_FLASH_SectorErase
@@ -100,7 +64,7 @@ void SPI_FLASH_Init(void)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void SPI_FLASH_SectorErase(u32 SectorAddr)
+void SPI_FLASH_SectorErase(uint32_t SectorAddr)
 {
   /* Send write enable instruction */
   SPI_FLASH_WriteEnable();
@@ -159,7 +123,7 @@ void SPI_FLASH_BulkErase(void)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void SPI_FLASH_PageWrite(uint8_t* pBuffer, u32 WriteAddr, u16 NumByteToWrite)
+void SPI_FLASH_PageWrite(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteToWrite)
 {
   /* Enable the write access to the FLASH */
   SPI_FLASH_WriteEnable();
@@ -210,7 +174,7 @@ void SPI_FLASH_PageWrite(uint8_t* pBuffer, u32 WriteAddr, u16 NumByteToWrite)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void SPI_FLASH_BufferWrite(uint8_t* pBuffer, u32 WriteAddr, u16 NumByteToWrite)
+void SPI_FLASH_BufferWrite(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteToWrite)
 {
   uint8_t NumOfPage = 0, NumOfSingle = 0, Addr = 0, count = 0, temp = 0;
 
@@ -291,7 +255,7 @@ void SPI_FLASH_BufferWrite(uint8_t* pBuffer, u32 WriteAddr, u16 NumByteToWrite)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void SPI_FLASH_BufferRead(uint8_t* pBuffer, u32 ReadAddr, u16 NumByteToRead)
+void SPI_FLASH_BufferRead(uint8_t* pBuffer, uint32_t ReadAddr, uint16_t NumByteToRead)
 {
   /* Select the FLASH: Chip Select low */
   SPI_FLASH_CS_LOW();
@@ -327,8 +291,8 @@ void SPI_FLASH_BufferRead(uint8_t* pBuffer, u32 ReadAddr, u16 NumByteToRead)
 *******************************************************************************/
 uint32_t SPI_FLASH_ReadID(void)
 {
-  u32 Temp = 0, Temp0 = 0, Temp1 = 0, Temp2 = 0;
-
+  uint32_t Temp = 0;
+	uint8_t Manufacturer_id,MemoryType,Device_id;
   /* Select the FLASH: Chip Select low */
   SPI_FLASH_CS_LOW();
 
@@ -336,18 +300,18 @@ uint32_t SPI_FLASH_ReadID(void)
   SPI_FLASH_SendByte(W25X_JedecDeviceID);
 
   /* Read a byte from the FLASH */
-  Temp0 = SPI_FLASH_SendByte(Dummy_Byte);
+  Manufacturer_id = SPI_FLASH_SendByte(Dummy_Byte);
 
   /* Read a byte from the FLASH */
-  Temp1 = SPI_FLASH_SendByte(Dummy_Byte);
+  MemoryType = SPI_FLASH_SendByte(Dummy_Byte);
 
   /* Read a byte from the FLASH */
-  Temp2 = SPI_FLASH_SendByte(Dummy_Byte);
+  Device_id = SPI_FLASH_SendByte(Dummy_Byte);
 
   /* Deselect the FLASH: Chip Select high */
   SPI_FLASH_CS_HIGH();
 
-  Temp = (Temp0 << 16) | (Temp1 << 8) | Temp2;
+  Temp = (Manufacturer_id << 16) | (MemoryType << 8) | Device_id;
 
   return Temp;
 }
@@ -360,8 +324,8 @@ uint32_t SPI_FLASH_ReadID(void)
 *******************************************************************************/
 uint32_t SPI_FLASH_ReadDeviceID(void)
 {
-  u32 Temp = 0;
-
+ // uint32_t Temp = 0;
+  uint8_t Manufacturer_id,Device_id;
   /* Select the FLASH: Chip Select low */
   SPI_FLASH_CS_LOW();
 
@@ -372,12 +336,12 @@ uint32_t SPI_FLASH_ReadDeviceID(void)
   SPI_FLASH_SendByte(Dummy_Byte);
 
   /* Read a byte from the FLASH */
-  Temp = SPI_FLASH_SendByte(Dummy_Byte);
-
+  Manufacturer_id = SPI_FLASH_SendByte(Dummy_Byte);
+	Device_id = SPI_FLASH_SendByte(Dummy_Byte);
   /* Deselect the FLASH: Chip Select high */
   SPI_FLASH_CS_HIGH();
 
-  return Temp;
+  return (Manufacturer_id<<8)|Device_id;
 }
 /*******************************************************************************
 * Function Name  : SPI_FLASH_StartReadSequence
@@ -391,7 +355,7 @@ uint32_t SPI_FLASH_ReadDeviceID(void)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void SPI_FLASH_StartReadSequence(u32 ReadAddr)
+void SPI_FLASH_StartReadSequence(uint32_t ReadAddr)
 {
   /* Select the FLASH: Chip Select low */
   SPI_FLASH_CS_LOW();
@@ -408,65 +372,7 @@ void SPI_FLASH_StartReadSequence(u32 ReadAddr)
   SPI_FLASH_SendByte(ReadAddr & 0xFF);
 }
 
-/*******************************************************************************
-* Function Name  : SPI_FLASH_ReadByte
-* Description    : Reads a byte from the SPI Flash.
-*                  This function must be used only if the Start_Read_Sequence
-*                  function has been previously called.
-* Input          : None
-* Output         : None
-* Return         : Byte Read from the SPI Flash.
-*******************************************************************************/
-uint8_t SPI_FLASH_ReadByte(void)
-{
-  return (SPI_FLASH_SendByte(Dummy_Byte));
-}
 
-/*******************************************************************************
-* Function Name  : SPI_FLASH_SendByte
-* Description    : Sends a byte through the SPI interface and return the byte
-*                  received from the SPI bus.
-* Input          : byte : byte to send.
-* Output         : None
-* Return         : The value of the received byte.
-*******************************************************************************/
-uint8_t SPI_FLASH_SendByte(uint8_t byte)
-{
-  /* Loop while DR register in not emplty */
-  while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
-
-  /* Send byte through the SPI2 peripheral */
-  SPI_I2S_SendData(SPI2, byte);
-
-  /* Wait to receive a byte */
-  while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE) == RESET);
-
-  /* Return the byte read from the SPI bus */
-  return SPI_I2S_ReceiveData(SPI2);
-}
-
-/*******************************************************************************
-* Function Name  : SPI_FLASH_SendHalfWord
-* Description    : Sends a Half Word through the SPI interface and return the
-*                  Half Word received from the SPI bus.
-* Input          : Half Word : Half Word to send.
-* Output         : None
-* Return         : The value of the received Half Word.
-*******************************************************************************/
-u16 SPI_FLASH_SendHalfWord(u16 HalfWord)
-{
-  /* Loop while DR register in not emplty */
-  while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET);
-
-  /* Send Half Word through the SPI2 peripheral */
-  SPI_I2S_SendData(SPI2, HalfWord);
-
-  /* Wait to receive a Half Word */
-  while (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_RXNE) == RESET);
-
-  /* Return the Half Word read from the SPI bus */
-  return SPI_I2S_ReceiveData(SPI2);
-}
 
 /*******************************************************************************
 * Function Name  : SPI_FLASH_WriteEnable

@@ -37,6 +37,7 @@ void SST25_Flash_init(void){
 	
 		SST25_Flash_Select_init();
 		SST25_SPI_init();
+		FlashReadID();
 }
 /****************************************************************************
 * 名    称：unsigned char rdsr(void)

@@ -448,6 +448,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\Source\System\SPI\spi2.c</FilePath>
             </File>
+            <File>
+              <FileName>spi1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Source\System\SPI\spi1.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -470,6 +475,12 @@
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="1.0.0" condition="STM32F1xx CMSIS Device">
+        <package name="STM32F1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.0.5"/>
+        <targetInfos>
+          <targetInfo name="Flash"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="StdPeriph Drivers" Csub="BKP" Cvendor="Keil" Cversion="3.5.0" condition="STM32F1 STDPERIPH">
         <package name="STM32F1xx_DFP" schemaVersion="1.2" url="http://www.keil.com/pack/" vendor="Keil" version="1.0.5"/>
         <targetInfos>
           <targetInfo name="Flash"/>

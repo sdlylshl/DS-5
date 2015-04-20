@@ -456,17 +456,37 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>FatFsR0.11</GroupName>
+          <GroupName>FatFsR0.10b</GroupName>
           <Files>
             <File>
               <FileName>diskio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\Source\FatFs\R0.11\diskio.c</FilePath>
+              <FilePath>..\..\Source\FatFs\R0.10b\diskio.c</FilePath>
             </File>
             <File>
               <FileName>ff.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\Source\FatFs\R0.11\ff.c</FilePath>
+              <FilePath>..\..\Source\FatFs\R0.10b\ff.c</FilePath>
+            </File>
+            <File>
+              <FileName>ff_gen_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Source\FatFs\R0.10b\ff_gen_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>syscall.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Source\FatFs\R0.10b\option\syscall.c</FilePath>
+            </File>
+            <File>
+              <FileName>ccsbcs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Source\FatFs\R0.10b\option\ccsbcs.c</FilePath>
+            </File>
+            <File>
+              <FileName>spi_diskio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Source\FatFs\R0.10b\drivers\spi_diskio.c</FilePath>
             </File>
           </Files>
         </Group>

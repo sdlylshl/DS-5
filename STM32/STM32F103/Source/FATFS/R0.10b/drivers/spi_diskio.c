@@ -1,10 +1,10 @@
 /**
   ******************************************************************************
-  * @file    sram_diskio.c
+  * @file    sd_diskio.c
   * @author  MCD Application Team
   * @version V1.2.1
   * @date    20-November-2014
-  * @brief   SRAM Disk I/O driver
+  * @brief   SPI Disk I/O driver
   ******************************************************************************
   * @attention
   *
@@ -28,7 +28,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include <string.h>
 #include "../ff_gen_drv.h"
-
+#include "spi_diskio.h"
+#include "../../../Source/System/Flash/W25x_flash.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Block Size in Bytes */
@@ -39,26 +40,27 @@
 static volatile DSTATUS Stat = STA_NOINIT;
 
 /* Private function prototypes -----------------------------------------------*/
-DSTATUS SRAMDISK_initialize (void);
-DSTATUS SRAMDISK_status (void);
-DRESULT SRAMDISK_read (BYTE*, DWORD, UINT);
+DSTATUS SPI_initialize (void);
+DSTATUS SPI_status (void);
+DRESULT SPI_read (BYTE*, DWORD, UINT);
 #if _USE_WRITE == 1
-  DRESULT SRAMDISK_write (const BYTE*, DWORD, UINT);
+  DRESULT SPI_write (const BYTE*, DWORD, UINT);
 #endif /* _USE_WRITE == 1 */
 #if _USE_IOCTL == 1
-  DRESULT SRAMDISK_ioctl (BYTE, void*);
-#endif /* _USE_IOCTL == 1 */
+  DRESULT SPI_ioctl (BYTE, void*);
+#endif  /* _USE_IOCTL == 1 */
   
-Diskio_drvTypeDef  SRAMDISK_Driver =
+Diskio_drvTypeDef  SPI_Driver =
 {
-  SRAMDISK_initialize,
-  SRAMDISK_status,
-  SRAMDISK_read, 
+  SPI_initialize,
+  SPI_status,
+  SPI_read, 
 #if  _USE_WRITE == 1
-  SRAMDISK_write,
-#endif /* _USE_WRITE == 1 */  
+  SPI_write,
+#endif /* _USE_WRITE == 1 */
+  
 #if  _USE_IOCTL == 1
-  SRAMDISK_ioctl,
+  SPI_ioctl,
 #endif /* _USE_IOCTL == 1 */
 };
 
@@ -69,14 +71,17 @@ Diskio_drvTypeDef  SRAMDISK_Driver =
   * @param  None
   * @retval DSTATUS: Operation status
   */
-DSTATUS SRAMDISK_initialize(void)
+DSTATUS SPI_initialize(void)
 {
   Stat = STA_NOINIT;
   
-  /* Configure the SRAM device */
-  BSP_SRAM_Init();
-  
-  Stat &= ~STA_NOINIT;
+  /* Configure the uSPI device */
+//  if(BSP_SPI_Init() == MSPI_OK)
+//  {
+//    Stat &= ~STA_NOINIT;
+//  }
+	W25X_FLASH_Init();
+	Stat &= ~STA_NOINIT;
   return Stat;
 }
 
@@ -85,33 +90,40 @@ DSTATUS SRAMDISK_initialize(void)
   * @param  None
   * @retval DSTATUS: Operation status
   */
-DSTATUS SRAMDISK_status(void)
+DSTATUS SPI_status(void)
 {
   Stat = STA_NOINIT;
-  
-  Stat &= ~STA_NOINIT;
 
+//  if(BSP_SPI_GetStatus() == MSPI_OK)
+//  {
+//    Stat &= ~STA_NOINIT;
+//  }
+  
   return Stat;
 }
 
 /**
-  * @brief  Reads Sector(s) 
+  * @brief  Reads Sector(s)
   * @param  *buff: Data buffer to store read data
   * @param  sector: Sector address (LBA)
   * @param  count: Number of sectors to read (1..128)
   * @retval DRESULT: Operation result
   */
-DRESULT SRAMDISK_read(BYTE *buff, DWORD sector, UINT count)
+DRESULT SPI_read(BYTE *buff, DWORD sector, UINT count)
 {
-  uint32_t BufferSize = (BLOCK_SIZE * count); 
-  uint8_t *pSramAddress = (uint8_t *) (SRAM_DEVICE_ADDR + (sector * BLOCK_SIZE)); 
+  DRESULT res = RES_OK;
+  SPI_FLASH_BufferRead((uint8_t*)buff, 
+                       (uint64_t) (sector * BLOCK_SIZE),                     
+                       count);
+//  if(BSP_SPI_ReadBlocks((uint32_t*)buff, 
+//                       (uint64_t) (sector * BLOCK_SIZE), 
+//                       BLOCK_SIZE, 
+//                       count) != MSPI_OK)
+//  {
+//    res = RES_ERROR;
+//  }
   
-  for(; BufferSize != 0; BufferSize--)
-  {
-    *buff++ = *(__IO uint8_t *)pSramAddress++;  
-  } 
-  
-  return RES_OK;
+  return res;
 }
 
 /**
@@ -122,17 +134,18 @@ DRESULT SRAMDISK_read(BYTE *buff, DWORD sector, UINT count)
   * @retval DRESULT: Operation result
   */
 #if _USE_WRITE == 1
-DRESULT SRAMDISK_write(const BYTE *buff, DWORD sector, UINT count)
+DRESULT SPI_write(const BYTE *buff, DWORD sector, UINT count)
 {
-  uint32_t BufferSize = (BLOCK_SIZE * count) + count; 
-  uint8_t *pSramAddress = (uint8_t *) (SRAM_DEVICE_ADDR + (sector * BLOCK_SIZE)); 
-  
-  for(; BufferSize != 0; BufferSize--)
-  {
-    *(__IO uint8_t *)pSramAddress++ = *buff++;    
-  } 
-  
-  return RES_OK;
+  DRESULT res = RES_OK;
+  SPI_FLASH_PageWrite((uint8_t*)buff, 
+                        (uint64_t)(sector * BLOCK_SIZE), count);
+//  if(0 )
+//  {
+//		
+//    res = RES_ERROR;
+//  }
+//  
+  return res;
 }
 #endif /* _USE_WRITE == 1 */
 
@@ -143,7 +156,7 @@ DRESULT SRAMDISK_write(const BYTE *buff, DWORD sector, UINT count)
   * @retval DRESULT: Operation result
   */
 #if _USE_IOCTL == 1
-DRESULT SRAMDISK_ioctl(BYTE cmd, void *buff)
+DRESULT SPI_ioctl(BYTE cmd, void *buff)
 {
   DRESULT res = RES_ERROR;
   
@@ -158,7 +171,8 @@ DRESULT SRAMDISK_ioctl(BYTE cmd, void *buff)
   
   /* Get number of sectors on the disk (DWORD) */
   case GET_SECTOR_COUNT :
-    *(DWORD*)buff = SRAM_DEVICE_SIZE / BLOCK_SIZE;
+    //BSP_SPI_GetCardInfo(&CardInfo);
+    *(DWORD*)buff = ((16/8)*1024*1024)/BLOCK_SIZE;//CardInfo.CardCapacity / BLOCK_SIZE;
     res = RES_OK;
     break;
   
