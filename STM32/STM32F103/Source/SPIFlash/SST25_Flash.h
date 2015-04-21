@@ -44,39 +44,41 @@
 #define SST25_EnableSOBY		  			0x70 /*AAI programming*/
 #define SST25_DisableSOBY		  			0x80 /*AAI programming*/
 //#define Dummy_Byte 0
-//*********************** 接口实现 1************************************
+//是否修改SPI默认 NSS
 
-////	停车场ParkinV2.0  SPI2
-#define SST25_SCS_PORT			GPIOB
-#define SST25_SCS_PIN				GPIO_Pin_12
+
+
+//*********************** 接口实现 1************************************
+//	终端面板 SPI1 + GPC13           security terminal V1.3 
+#define SST25_NSS_REMAP	
+
+#define SST25_SPI_init 			SPI1_Init
+#define SST25_SPI_SendByte 	SPI1_SendByte
+#define SST25_SPI_ReadByte 	SPI1_ReceiveByte
+
+//*********************** 接口实现 2************************************
+
+////	停车场 SPI2                    ParkinV2.0
+
+//#define SST25_SPI_init 			SPI2_Init
+//#define SST25_SPI_SendByte 	SPI2_SendByte
+//#define SST25_SPI_ReadByte 	SPI2_ReceiveByte
+
+//*************************************************************************************
+#ifdef  SST25_NSS_REMAP
+#define SST25_SCS_PORT			GPIOC
+#define SST25_SCS_PIN				GPIO_Pin_13
 #define SST25_SCS_MODE			GPIO_Mode_Out_PP	//此处一定要PP输出否则程序不正常
 #define SST25_SCS_HIGH()    GPIO_SetBits(SST25_SCS_PORT, SST25_SCS_PIN)
 #define SST25_SCS_LOW()			GPIO_ResetBits(SST25_SCS_PORT, SST25_SCS_PIN)
-//FLASH: ChipSelect  
-#define SST25_Select SST25_SCS_LOW
-#define SST25_DeSelect SST25_SCS_HIGH
-
-#define SST25_SPI_init SPI2_Init
-#define SST25_SPI_SendByte SPI2_SendByte
-#define SST25_SPI_ReadByte SPI2_ReceiveByte
-
-//*********************** 接口实现 2************************************
-//	security terminal V1.3 SPI1 + GPC13
-//PARKING V2.0
-//#define SPI1_NONREMAP	
-
-//#define SST25_SCS_PORT			GPIOC
-//#define SST25_SCS_PIN				GPIO_Pin_13
-//#define SST25_SCS_MODE			GPIO_Mode_Out_PP	//此处一定要PP输出否则程序不正常
-//#define SST25_SCS_HIGH()    GPIO_SetBits(SST25_SCS_PORT, SST25_SCS_PIN)
-//#define SST25_SCS_LOW()			GPIO_ResetBits(SST25_SCS_PORT, SST25_SCS_PIN)
-////FLASH: ChipSelect  
-//#define SST25_Select SST25_SCS_LOW
-//#define SST25_DeSelect SST25_SCS_HIGH
-
-//#define SST25_SPI_init SPI1_Init
-//#define SST25_SPI_SendByte SPI1_SendByte
-//#define SST25_SPI_ReadByte SPI1_ReceiveByte
+#define SST25_Select 				SST25_SCS_LOW
+#define SST25_DeSelect 			SST25_SCS_HIGH
+#else
+#define SST25_Select 				SPI1_SCS_LOW
+#define SST25_DeSelect 			SPI1_SCS_LOW
+//#define SST25_Select 				SPI2_SCS_LOW
+//#define SST25_DeSelect 			SPI2_SCS_LOW
+#endif
 
 //*************************************************************************************
 extern void SST25_Flash_init(void);

@@ -91,7 +91,7 @@ void SPI_FLASH_BufferRead(uint8_t* pBuffer, uint32_t ReadAddr, uint16_t NumByteT
   while (NumByteToRead--) /* while there is data to be read */
   {
     /* Read a byte from the FLASH */
-    *pBuffer = SPI_FLASH_SendByte(Dummy_Byte)^0xFF;
+    *pBuffer = SPI_FLASH_SendByte(Dummy_Byte);
     /* Point to the next location where the byte read will be saved */
     pBuffer++;
   }
@@ -128,7 +128,7 @@ void SPI_FLASH_BufferRead_Fast(uint8_t* pBuffer, uint32_t ReadAddr, uint16_t Num
   while (NumByteToRead--) /* while there is data to be read */
   {
     /* Read a byte from the FLASH */
-    *pBuffer = SPI_FLASH_SendByte(Dummy_Byte)^0xFF;
+    *pBuffer = SPI_FLASH_SendByte(Dummy_Byte);
     /* Point to the next location where the byte read will be saved */
     pBuffer++;
   }
@@ -166,7 +166,7 @@ void SPI_FLASH_ByteWrite(uint32_t WriteAddr ,uint8_t data)
   /* Send WriteAddr low nibble address byte to write to */
   SPI_FLASH_SendByte(WriteAddr & 0xFF);
   /* Send the current byte */
-  SPI_FLASH_SendByte(data^0xFF);
+  SPI_FLASH_SendByte(data);
   /* Deselect the FLASH: Chip Select high */
   SPI_FLASH_CS_HIGH();
   /* Wait the end of Flash writing */
@@ -212,7 +212,7 @@ void SPI_FLASH_PageWrite(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteT
   {
 		int tmp = 120;
     /* Send the current byte */
-    SPI_FLASH_SendByte(*pBuffer^0xFF);
+    SPI_FLASH_SendByte(*pBuffer);
     /* Point on the next byte to be written */
     pBuffer++;
 		while(tmp > 0) tmp--;

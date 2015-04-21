@@ -438,15 +438,20 @@
               <FileType>1</FileType>
               <FilePath>..\..\Source\System\SPI\spi1.c</FilePath>
             </File>
-            <File>
-              <FileName>SST25_Flash.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Source\SPIFlash\SST25_Flash.c</FilePath>
-            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>SPIFlah</GroupName>
+          <Files>
             <File>
               <FileName>W25X_flash.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Source\SPIFlash\W25X_flash.c</FilePath>
+            </File>
+            <File>
+              <FileName>SST25_Flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Source\SPIFlash\SST25_Flash.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -7,8 +7,11 @@
 uint8_t SST25_buffer[4096] = { 0 };
 uint16_t logNr = 2; //当前记录编号 
 //2048K/4=512 page
-//Flash片选初始化
-void SST25_Flash_Select_init(){
+
+
+void SST25_Flash_init(void){
+	
+	#ifdef SST25_NSS_REMAP
 	GPIO_InitTypeDef GPIO_InitStructure;
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC | RCC_APB2Periph_AFIO, ENABLE);
 	RCC_LSEConfig(RCC_LSE_OFF); //关闭外部低速外部时钟信号功能 后，PC13 PC14 PC15 才可以当普通IO用。
@@ -19,17 +22,8 @@ void SST25_Flash_Select_init(){
 	GPIO_InitStructure.GPIO_Mode = SST25_SCS_MODE;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
 	GPIO_Init(SST25_SCS_PORT, &GPIO_InitStructure);
-
-
-
-	SST25_Select();
-	//	SST25_DeSelect();
-
-}
-
-void SST25_Flash_init(void){
-
-	SST25_Flash_Select_init();
+#endif
+	
 	SST25_SPI_init();
 	FlashReadID();
 }
@@ -198,7 +192,7 @@ void SST25_BufferRead(uint8_t *readbuff, uint32_t addr, uint16_t NumByteToRead){
 	SST25_SPI_SendByte((addr & 0xffff) >> 8);
 	SST25_SPI_SendByte(addr & 0xff);
 	while (i < NumByteToRead){
-		readbuff[i] = 0xFF^SST25_SPI_ReadByte();
+		readbuff[i] = SST25_SPI_ReadByte();
 
 		i++;
 	}
@@ -215,7 +209,7 @@ void SST25_BufferRead_HighSpeed(uint8_t *readbuff, uint32_t addr, uint16_t NumBy
 	SST25_SPI_SendByte(addr & 0xff);
 	SST25_SPI_SendByte(0);
 	while (i < NumByteToRead){
-		readbuff[i] = SST25_SPI_ReadByte() ^ 0xFF;
+		readbuff[i] = SST25_SPI_ReadByte() ;
 		i++;
 	}
 	SST25_DeSelect();
@@ -231,7 +225,7 @@ void SST25_ByteWrite(uint32_t addr, uint8_t data)
 	SST25_SPI_SendByte((addr & 0xffffff) >> 16);
 	SST25_SPI_SendByte((addr & 0xffff) >> 8);
 	SST25_SPI_SendByte(addr & 0xff);
-	SST25_SPI_SendByte(data ^ 0xFF);	
+	SST25_SPI_SendByte(data );	
 	SST25_DeSelect();
 	FlashWriteDisable();
 	//	SST25_Select();
@@ -249,16 +243,16 @@ void SST25_BufferWrite(uint8_t *pbuff, uint32_t addr, uint16_t NumByteToWrite)
 	SST25_SPI_SendByte((addr & 0xffffff) >> 16);
 	SST25_SPI_SendByte((addr & 0xffff) >> 8);
 	SST25_SPI_SendByte(addr & 0xff);
-	SST25_SPI_SendByte(pbuff[0] ^ 0xFF);
-	SST25_SPI_SendByte(0xFF ^ pbuff[1] ^ 0xFF);
+	SST25_SPI_SendByte(pbuff[0] );
+	SST25_SPI_SendByte( pbuff[1] );
 	SST25_DeSelect();
 	i = 2;
 	while (i < NumByteToWrite){
 		for (a2 = 0; a2 < 120; a2++);
 		SST25_Select();
 		SST25_SPI_SendByte(SST25_PageProgram);
-		SST25_SPI_SendByte(pbuff[i++] ^ 0xFF);
-		SST25_SPI_SendByte(pbuff[i++] ^ 0xFF);
+		SST25_SPI_SendByte(pbuff[i++] );
+		SST25_SPI_SendByte(pbuff[i++] );
 		SST25_DeSelect();
 	}
 	for (a2 = 0; a2 < 120; a2++);
