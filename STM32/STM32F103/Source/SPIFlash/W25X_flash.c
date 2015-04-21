@@ -6,31 +6,7 @@
 #include "W25X_flash.h"
 
 /* Private typedef -----------------------------------------------------------*/
-//#define SPI_FLASH_PageSize      4096
-#define SPI_FLASH_PageSize      256
-#define SPI_FLASH_PerWritePageSize      256
 
-/* Private define ------------------------------------------------------------*/
-#define W25X_WriteEnable		      0x06 //写使能
-#define W25X_WriteDisable		      0x04 //写禁止
-#define W25X_ReadStatusReg		    0x05 //读取状态寄存器 
-#define W25X_WriteStatusReg		    0x01 //写状态寄存器
-#define W25X_ReadData			        0x03 //读
-#define W25X_FastReadData		      0x0B //高度读
-#define W25X_FastReadDual		      0x3B
-#define W25X_PageProgram		      0x02 //编程一个数据字节
-#define W25X_BlockErase			      0xD8 //擦除64K 块的存储器阵列
-#define W25X_SectorErase		      0x20 //擦除4K 块的存储器阵列
-#define W25X_ChipErase			      0xC7 //或者0x60 擦除全部存储器阵列
-#define W25X_PowerDown			      0xB9
-#define W25X_ReleasePowerDown	    0xAB //读ID 或者0x90
-#define W25X_DeviceID			        0xAB
-#define W25X_ManufactDeviceID   	0x90 //读ID
-#define W25X_JedecDeviceID		    0x9F //JEDEC ID 读
-
-#define WIP_Flag                  0x01  /* Write In Progress (WIP) flag */
-
-#define Dummy_Byte                0x00
 
 /*******************************************************************************
 * Function Name  : SPI_FLASH_Init
@@ -57,59 +33,145 @@ void W25X_FLASH_Init(void)
 	SPI_FLASH_ReadID();
 	SPI_FLASH_ReadDeviceID();
 }
+
 /*******************************************************************************
-* Function Name  : SPI_FLASH_SectorErase
-* Description    : Erases the specified FLASH sector.
-* Input          : SectorAddr: address of the sector to erase.
+* Function Name  : SPI_FLASH_StartReadSequence
+* Description    : Initiates a read data byte (READ) sequence from the Flash.
+*                  This is done by driving the /CS line low to select the device,
+*                  then the READ instruction is transmitted followed by 3 bytes
+*                  address. This function exit and keep the /CS line low, so the
+*                  Flash still being selected. With this technique the whole
+*                  content of the Flash is read with a single READ instruction.
+* Input          : - ReadAddr : FLASH's internal address to read from.
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void SPI_FLASH_SectorErase(uint32_t SectorAddr)
+void SPI_FLASH_StartReadSequence(uint32_t ReadAddr)
 {
-  /* Send write enable instruction */
-  SPI_FLASH_WriteEnable();
-  SPI_FLASH_WaitForWriteEnd();
-  /* Sector Erase */
   /* Select the FLASH: Chip Select low */
   SPI_FLASH_CS_LOW();
-  /* Send Sector Erase instruction */
-  SPI_FLASH_SendByte(W25X_SectorErase);
-  /* Send SectorAddr high nibble address byte */
-  SPI_FLASH_SendByte((SectorAddr & 0xFF0000) >> 16);
-  /* Send SectorAddr medium nibble address byte */
-  SPI_FLASH_SendByte((SectorAddr & 0xFF00) >> 8);
-  /* Send SectorAddr low nibble address byte */
-  SPI_FLASH_SendByte(SectorAddr & 0xFF);
+
+  /* Send "Read from Memory " instruction */
+  SPI_FLASH_SendByte(W25X_ReadData);
+
+  /* Send the 24-bit address of the address to read from -----------------------*/
+  /* Send ReadAddr high nibble address byte */
+  SPI_FLASH_SendByte((ReadAddr & 0xFF0000) >> 16);
+  /* Send ReadAddr medium nibble address byte */
+  SPI_FLASH_SendByte((ReadAddr& 0xFF00) >> 8);
+  /* Send ReadAddr low nibble address byte */
+  SPI_FLASH_SendByte(ReadAddr & 0xFF);
+}
+
+/*******************************************************************************
+* Function Name  : SPI_FLASH_BufferRead
+* Description    : Reads a block of data from the FLASH.
+* Input          : - pBuffer : pointer to the buffer that receives the data read
+*                    from the FLASH.
+*                  - ReadAddr : FLASH's internal address to read from.
+*                  - NumByteToRead : number of bytes to read from the FLASH.
+* Output         : None
+* Return         : None
+*******************************************************************************/
+void SPI_FLASH_BufferRead(uint8_t* pBuffer, uint32_t ReadAddr, uint16_t NumByteToRead)
+{
+  /* Select the FLASH: Chip Select low */
+  SPI_FLASH_CS_LOW();
+
+  /* Send "Read from Memory " instruction */
+  SPI_FLASH_SendByte(W25X_ReadData);
+
+  /* Send ReadAddr high nibble address byte to read from */
+  SPI_FLASH_SendByte((ReadAddr & 0xFF0000) >> 16);
+  /* Send ReadAddr medium nibble address byte to read from */
+  SPI_FLASH_SendByte((ReadAddr& 0xFF00) >> 8);
+  /* Send ReadAddr low nibble address byte to read from */
+  SPI_FLASH_SendByte(ReadAddr & 0xFF);
+
+  while (NumByteToRead--) /* while there is data to be read */
+  {
+    /* Read a byte from the FLASH */
+    *pBuffer = SPI_FLASH_SendByte(Dummy_Byte)^0xFF;
+    /* Point to the next location where the byte read will be saved */
+    pBuffer++;
+  }
+
+  /* Deselect the FLASH: Chip Select high */
+  SPI_FLASH_CS_HIGH();
+}
+/*******************************************************************************
+* Function Name  : SPI_FLASH_Fast_BufferRead
+* Description    : Reads a block of data from the FLASH.
+* Input          : - pBuffer : pointer to the buffer that receives the data read
+*                    from the FLASH.
+*                  - ReadAddr : FLASH's internal address to read from.
+*                  - NumByteToRead : number of bytes to read from the FLASH.
+* Output         : None
+* Return         : None
+*******************************************************************************/
+void SPI_FLASH_BufferRead_Fast(uint8_t* pBuffer, uint32_t ReadAddr, uint16_t NumByteToRead)
+{
+  /* Select the FLASH: Chip Select low */
+  SPI_FLASH_CS_LOW();
+
+  /* Send "Read from Memory " instruction */
+  SPI_FLASH_SendByte(W25X_FastReadData);
+
+  /* Send ReadAddr high nibble address byte to read from */
+  SPI_FLASH_SendByte((ReadAddr & 0xFF0000) >> 16);
+  /* Send ReadAddr medium nibble address byte to read from */
+  SPI_FLASH_SendByte((ReadAddr& 0xFF00) >> 8);
+  /* Send ReadAddr low nibble address byte to read from */  
+  SPI_FLASH_SendByte(Dummy_Byte);
+	
+	SPI_FLASH_SendByte(ReadAddr & 0xFF);
+  while (NumByteToRead--) /* while there is data to be read */
+  {
+    /* Read a byte from the FLASH */
+    *pBuffer = SPI_FLASH_SendByte(Dummy_Byte)^0xFF;
+    /* Point to the next location where the byte read will be saved */
+    pBuffer++;
+  }
+
+  /* Deselect the FLASH: Chip Select high */
+  SPI_FLASH_CS_HIGH();
+}
+
+/*******************************************************************************
+* Function Name  : SPI_FLASH_ByteWrite
+* Description    : Writes more than one byte to the FLASH with a single WRITE
+*                  cycle(Page WRITE sequence). The number of byte can't exceed
+*                  the FLASH page size.
+* Input          : - pBuffer : pointer to the buffer  containing the data to be
+*                    written to the FLASH.
+*                  - WriteAddr : FLASH's internal address to write to.
+*                  - NumByteToWrite : number of bytes to write to the FLASH,
+*                    must be equal or less than "SPI_FLASH_PageSize" value.
+* Output         : None
+* Return         : None
+*******************************************************************************/
+void SPI_FLASH_ByteWrite(uint32_t WriteAddr ,uint8_t data)
+{
+  /* Enable the write access to the FLASH */
+  SPI_FLASH_WriteEnable();
+
+  /* Select the FLASH: Chip Select low */
+  SPI_FLASH_CS_LOW();
+  /* Send "Write to Memory " instruction */
+  SPI_FLASH_SendByte(W25X_ByteProgram);
+  /* Send WriteAddr high nibble address byte to write to */
+  SPI_FLASH_SendByte((WriteAddr & 0xFF0000) >> 16);
+  /* Send WriteAddr medium nibble address byte to write to */
+  SPI_FLASH_SendByte((WriteAddr & 0xFF00) >> 8);
+  /* Send WriteAddr low nibble address byte to write to */
+  SPI_FLASH_SendByte(WriteAddr & 0xFF);
+  /* Send the current byte */
+  SPI_FLASH_SendByte(data^0xFF);
   /* Deselect the FLASH: Chip Select high */
   SPI_FLASH_CS_HIGH();
   /* Wait the end of Flash writing */
   SPI_FLASH_WaitForWriteEnd();
 }
-
-/*******************************************************************************
-* Function Name  : SPI_FLASH_BulkErase
-* Description    : Erases the entire FLASH.
-* Input          : None
-* Output         : None
-* Return         : None
-*******************************************************************************/
-void SPI_FLASH_BulkErase(void)
-{
-  /* Send write enable instruction */
-  SPI_FLASH_WriteEnable();
-
-  /* Bulk Erase */
-  /* Select the FLASH: Chip Select low */
-  SPI_FLASH_CS_LOW();
-  /* Send Bulk Erase instruction  */
-  SPI_FLASH_SendByte(W25X_ChipErase);
-  /* Deselect the FLASH: Chip Select high */
-  SPI_FLASH_CS_HIGH();
-
-  /* Wait the end of Flash writing */
-  SPI_FLASH_WaitForWriteEnd();
-}
-
 /*******************************************************************************
 * Function Name  : SPI_FLASH_PageWrite
 * Description    : Writes more than one byte to the FLASH with a single WRITE
@@ -131,7 +193,7 @@ void SPI_FLASH_PageWrite(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteT
   /* Select the FLASH: Chip Select low */
   SPI_FLASH_CS_LOW();
   /* Send "Write to Memory " instruction */
-  SPI_FLASH_SendByte(W25X_PageProgram);
+  SPI_FLASH_SendByte(W25X_PageProgram_256);
   /* Send WriteAddr high nibble address byte to write to */
   SPI_FLASH_SendByte((WriteAddr & 0xFF0000) >> 16);
   /* Send WriteAddr medium nibble address byte to write to */
@@ -150,7 +212,7 @@ void SPI_FLASH_PageWrite(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByteT
   {
 		int tmp = 120;
     /* Send the current byte */
-    SPI_FLASH_SendByte(*pBuffer);
+    SPI_FLASH_SendByte(*pBuffer^0xFF);
     /* Point on the next byte to be written */
     pBuffer++;
 		while(tmp > 0) tmp--;
@@ -244,42 +306,83 @@ void SPI_FLASH_BufferWrite(uint8_t* pBuffer, uint32_t WriteAddr, uint16_t NumByt
     }
   }
 }
-
 /*******************************************************************************
-* Function Name  : SPI_FLASH_BufferRead
-* Description    : Reads a block of data from the FLASH.
-* Input          : - pBuffer : pointer to the buffer that receives the data read
-*                    from the FLASH.
-*                  - ReadAddr : FLASH's internal address to read from.
-*                  - NumByteToRead : number of bytes to read from the FLASH.
+* Function Name  : SPI_FLASH_SectorErase
+* Description    : Erases the specified FLASH sector.
+* Input          : SectorAddr: address of the sector to erase.
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void SPI_FLASH_BufferRead(uint8_t* pBuffer, uint32_t ReadAddr, uint16_t NumByteToRead)
+void SPI_FLASH_SectorErase(uint32_t SectorAddr)
 {
+  /* Send write enable instruction */
+  SPI_FLASH_WriteEnable();
+  SPI_FLASH_WaitForWriteEnd();
+  /* Sector Erase */
   /* Select the FLASH: Chip Select low */
   SPI_FLASH_CS_LOW();
-
-  /* Send "Read from Memory " instruction */
-  SPI_FLASH_SendByte(W25X_ReadData);
-
-  /* Send ReadAddr high nibble address byte to read from */
-  SPI_FLASH_SendByte((ReadAddr & 0xFF0000) >> 16);
-  /* Send ReadAddr medium nibble address byte to read from */
-  SPI_FLASH_SendByte((ReadAddr& 0xFF00) >> 8);
-  /* Send ReadAddr low nibble address byte to read from */
-  SPI_FLASH_SendByte(ReadAddr & 0xFF);
-
-  while (NumByteToRead--) /* while there is data to be read */
-  {
-    /* Read a byte from the FLASH */
-    *pBuffer = SPI_FLASH_SendByte(Dummy_Byte);
-    /* Point to the next location where the byte read will be saved */
-    pBuffer++;
-  }
-
+  /* Send Sector Erase instruction */
+  SPI_FLASH_SendByte(W25X_SectorErase_4K);
+  /* Send SectorAddr high nibble address byte */
+  SPI_FLASH_SendByte((SectorAddr & 0xFF0000) >> 16);
+  /* Send SectorAddr medium nibble address byte */
+  SPI_FLASH_SendByte((SectorAddr & 0xFF00) >> 8);
+  /* Send SectorAddr low nibble address byte */
+  SPI_FLASH_SendByte(SectorAddr & 0xFF);
   /* Deselect the FLASH: Chip Select high */
   SPI_FLASH_CS_HIGH();
+  /* Wait the end of Flash writing */
+  SPI_FLASH_WaitForWriteEnd();
+}
+/*******************************************************************************
+* Function Name  : SPI_FLASH_BlockErase
+* Description    : Erases the specified FLASH Block.
+* Input          : BlockAddr: address of the Block to erase.
+* Output         : None
+* Return         : None
+*******************************************************************************/
+void SPI_FLASH_BlockErase(uint32_t BlockAddr)
+{
+  /* Send write enable instruction */
+  SPI_FLASH_WriteEnable();
+  SPI_FLASH_WaitForWriteEnd();
+  /* Sector Erase */
+  /* Select the FLASH: Chip Select low */
+  SPI_FLASH_CS_LOW();
+  /* Send Sector Erase instruction */
+  SPI_FLASH_SendByte(W25X_BlockErase_64K);
+  /* Send SectorAddr high nibble address byte */
+  SPI_FLASH_SendByte((BlockAddr & 0xFF0000) >> 16);
+  /* Send SectorAddr medium nibble address byte */
+  SPI_FLASH_SendByte((BlockAddr & 0xFF00) >> 8);
+  /* Send SectorAddr low nibble address byte */
+  SPI_FLASH_SendByte(BlockAddr & 0xFF);
+  /* Deselect the FLASH: Chip Select high */
+  SPI_FLASH_CS_HIGH();
+  /* Wait the end of Flash writing */
+  SPI_FLASH_WaitForWriteEnd();
+}
+/*******************************************************************************
+* Function Name  : SPI_FLASH_BulkErase
+* Description    : Erases the entire FLASH.
+* Input          : None
+* Output         : None
+* Return         : None
+*******************************************************************************/
+void SPI_FLASH_BulkErase(void)
+{
+  /* Send write enable instruction */
+  SPI_FLASH_WriteEnable();
+
+  /* Bulk Erase */
+  /* Select the FLASH: Chip Select low */
+  SPI_FLASH_CS_LOW();
+  /* Send Bulk Erase instruction  */
+  SPI_FLASH_SendByte(W25X_ChipErase);
+  /* Deselect the FLASH: Chip Select high */
+  SPI_FLASH_CS_HIGH();
+  /* Wait the end of Flash writing */
+  SPI_FLASH_WaitForWriteEnd();
 }
 
 /*******************************************************************************
@@ -343,36 +446,6 @@ uint32_t SPI_FLASH_ReadDeviceID(void)
 
   return (Manufacturer_id<<8)|Device_id;
 }
-/*******************************************************************************
-* Function Name  : SPI_FLASH_StartReadSequence
-* Description    : Initiates a read data byte (READ) sequence from the Flash.
-*                  This is done by driving the /CS line low to select the device,
-*                  then the READ instruction is transmitted followed by 3 bytes
-*                  address. This function exit and keep the /CS line low, so the
-*                  Flash still being selected. With this technique the whole
-*                  content of the Flash is read with a single READ instruction.
-* Input          : - ReadAddr : FLASH's internal address to read from.
-* Output         : None
-* Return         : None
-*******************************************************************************/
-void SPI_FLASH_StartReadSequence(uint32_t ReadAddr)
-{
-  /* Select the FLASH: Chip Select low */
-  SPI_FLASH_CS_LOW();
-
-  /* Send "Read from Memory " instruction */
-  SPI_FLASH_SendByte(W25X_ReadData);
-
-  /* Send the 24-bit address of the address to read from -----------------------*/
-  /* Send ReadAddr high nibble address byte */
-  SPI_FLASH_SendByte((ReadAddr & 0xFF0000) >> 16);
-  /* Send ReadAddr medium nibble address byte */
-  SPI_FLASH_SendByte((ReadAddr& 0xFF00) >> 8);
-  /* Send ReadAddr low nibble address byte */
-  SPI_FLASH_SendByte(ReadAddr & 0xFF);
-}
-
-
 
 /*******************************************************************************
 * Function Name  : SPI_FLASH_WriteEnable
@@ -388,6 +461,24 @@ void SPI_FLASH_WriteEnable(void)
 
   /* Send "Write Enable" instruction */
   SPI_FLASH_SendByte(W25X_WriteEnable);
+
+  /* Deselect the FLASH: Chip Select high */
+  SPI_FLASH_CS_HIGH();
+}
+/*******************************************************************************
+* Function Name  : SPI_FLASH_WriteDisable
+* Description    : Disables the write access to the FLASH.
+* Input          : None
+* Output         : None
+* Return         : None
+*******************************************************************************/
+void SPI_FLASH_WriteDisable(void)
+{
+  /* Select the FLASH: Chip Select low */
+  SPI_FLASH_CS_LOW();
+
+  /* Send "Write Disable" instruction */
+  SPI_FLASH_SendByte(W25X_WriteDisable);
 
   /* Deselect the FLASH: Chip Select high */
   SPI_FLASH_CS_HIGH();
@@ -451,5 +542,10 @@ void SPI_Flash_WAKEUP(void)
   /* Deselect the FLASH: Chip Select high */
   SPI_FLASH_CS_HIGH();                   //等待TRES1
 }
-
+void  W25X_Flash_Test(void){
+uint8_t bufftest[1024];
+SPI_FLASH_ByteWrite(10,10);
+SPI_FLASH_BufferRead(bufftest, 0, 512);
+SPI_FLASH_BufferRead_Fast(bufftest, 0, 512);
+}
 /******************************END OF FILE*****************************/

@@ -64,6 +64,9 @@
     <Filter Include="源文件\DS1302">
       <UniqueIdentifier>{de6ffb64-9c4b-4b26-a6d6-eff2bd64ff4c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\SPIFlash">
+      <UniqueIdentifier>{cd03c313-983d-451d-8213-3bfa2d0664f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Main.c">
@@ -154,12 +157,6 @@
       <Filter>源文件\System</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\System\flash\flash.c">
-      <Filter>源文件\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\System\flash\SST25_Flash.c">
-      <Filter>源文件\System</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\System\flash\W25X_flash.c">
       <Filter>源文件\System</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\System\RTC\rtc.c">
@@ -276,6 +273,12 @@
     <ClCompile Include="..\Source\panel\panel_view.c">
       <Filter>源文件\panel</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\SPIFlash\SST25_Flash.c">
+      <Filter>源文件\SPIFlash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\SPIFlash\W25X_flash.c">
+      <Filter>源文件\SPIFlash</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Source\LCD12864\LCD12864P\LCD12864P.C">
@@ -345,6 +348,12 @@
     </ClInclude>
     <ClInclude Include="..\Source\panel\panel_queue.h">
       <Filter>源文件\panel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\SPIFlash\SST25_Flash.h">
+      <Filter>源文件\SPIFlash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\SPIFlash\W25X_flash.h">
+      <Filter>源文件\SPIFlash</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

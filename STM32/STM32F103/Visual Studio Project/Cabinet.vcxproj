@@ -54,6 +54,8 @@
     <ClCompile Include="..\Source\panel\panel_can.c" />
     <ClCompile Include="..\Source\panel\panel_view.c" />
     <ClCompile Include="..\Source\Retarget.c" />
+    <ClCompile Include="..\Source\SPIFlash\SST25_Flash.c" />
+    <ClCompile Include="..\Source\SPIFlash\W25X_flash.c" />
     <ClCompile Include="..\Source\stm32f10x_it.c" />
     <ClCompile Include="..\Source\System\Timer\timer5.c" />
     <ClCompile Include="..\Source\System\Timer\timer6.c" />
@@ -87,8 +89,6 @@
     <ClCompile Include="..\Source\System\Usart\usart3.c" />
     <ClCompile Include="..\Source\System\Usart\usart.c" />
     <ClCompile Include="..\Source\System\flash\flash.c" />
-    <ClCompile Include="..\Source\System\flash\SST25_Flash.c" />
-    <ClCompile Include="..\Source\System\flash\W25X_flash.c" />
     <ClCompile Include="..\Source\System\RTC\rtc.c" />
     <ClCompile Include="..\Source\System\SPI\spi.c" />
     <ClCompile Include="..\Source\System\DAC\DAC.c" />
@@ -119,6 +119,8 @@
     <ClInclude Include="..\Source\KEY\key.h" />
     <ClInclude Include="..\Source\LCD1602\lcd_1602a.h" />
     <ClInclude Include="..\Source\panel\panel_queue.h" />
+    <ClInclude Include="..\Source\SPIFlash\SST25_Flash.h" />
+    <ClInclude Include="..\Source\SPIFlash\W25X_flash.h" />
     <ClInclude Include="..\Source\System\Timer\timer1.h" />
     <ClInclude Include="..\Source\System\Timer\timer2.h" />
     <ClInclude Include="..\Source\System\Timer\timer3.h" />

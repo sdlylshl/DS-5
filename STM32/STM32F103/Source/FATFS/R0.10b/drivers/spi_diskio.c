@@ -29,11 +29,11 @@
 #include <string.h>
 #include "../ff_gen_drv.h"
 #include "spi_diskio.h"
-#include "../../../Source/System/Flash/W25x_flash.h"
+#include "../../../Source/SPIFlash/SST25_flash.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Block Size in Bytes */
-#define BLOCK_SIZE                512
+#define SECTOR_SIZE                4096
 
 /* Private variables ---------------------------------------------------------*/
 /* Disk status */
@@ -75,13 +75,13 @@ DSTATUS SPI_initialize(void)
 {
   Stat = STA_NOINIT;
   
+	SST25_Flash_init();
   /* Configure the uSPI device */
-//  if(BSP_SPI_Init() == MSPI_OK)
-//  {
-//    Stat &= ~STA_NOINIT;
-//  }
-	W25X_FLASH_Init();
-	Stat &= ~STA_NOINIT;
+  if(FlashReadID()== 0xBF41)
+  {
+    Stat &= ~STA_NOINIT;
+  }
+	
   return Stat;
 }
 
@@ -111,10 +111,14 @@ DSTATUS SPI_status(void)
   */
 DRESULT SPI_read(BYTE *buff, DWORD sector, UINT count)
 {
+	uint8_t num=0;
   DRESULT res = RES_OK;
-  SPI_FLASH_BufferRead((uint8_t*)buff, 
-                       (uint64_t) (sector * BLOCK_SIZE),                     
-                       count);
+	while(count--){
+		num++;
+  SST25_BufferRead_HighSpeed((uint8_t*) buff,   
+														 (uint32_t)(num*sector*SECTOR_SIZE),                   
+																			 SECTOR_SIZE);
+	}
 //  if(BSP_SPI_ReadBlocks((uint32_t*)buff, 
 //                       (uint64_t) (sector * BLOCK_SIZE), 
 //                       BLOCK_SIZE, 
@@ -136,9 +140,14 @@ DRESULT SPI_read(BYTE *buff, DWORD sector, UINT count)
 #if _USE_WRITE == 1
 DRESULT SPI_write(const BYTE *buff, DWORD sector, UINT count)
 {
+	uint8_t num=0;
   DRESULT res = RES_OK;
-  SPI_FLASH_PageWrite((uint8_t*)buff, 
-                        (uint64_t)(sector * BLOCK_SIZE), count);
+	while(count--){
+		num++;
+  SST25_BufferWrite( (uint8_t*)buff, 
+												(uint64_t)(num*sector *SECTOR_SIZE ),
+                        SECTOR_SIZE);
+	}
 //  if(0 )
 //  {
 //		
@@ -172,19 +181,19 @@ DRESULT SPI_ioctl(BYTE cmd, void *buff)
   /* Get number of sectors on the disk (DWORD) */
   case GET_SECTOR_COUNT :
     //BSP_SPI_GetCardInfo(&CardInfo);
-    *(DWORD*)buff = ((16/8)*1024*1024)/BLOCK_SIZE;//CardInfo.CardCapacity / BLOCK_SIZE;
+    *(DWORD*)buff = ((16/8)*1024*1024)/SECTOR_SIZE;//CardInfo.CardCapacity / BLOCK_SIZE;
     res = RES_OK;
     break;
   
   /* Get R/W sector size (WORD) */
   case GET_SECTOR_SIZE :
-    *(WORD*)buff = BLOCK_SIZE;
+    *(WORD*)buff = SECTOR_SIZE;
     res = RES_OK;
     break;
   
   /* Get erase block size in unit of sector (DWORD) */
   case GET_BLOCK_SIZE :
-    *(DWORD*)buff = BLOCK_SIZE;
+    *(DWORD*)buff = (SECTOR_SIZE/16);
     break;
   
   default:

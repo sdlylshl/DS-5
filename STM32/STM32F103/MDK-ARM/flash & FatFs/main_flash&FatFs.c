@@ -1,8 +1,8 @@
 #include "stm32f10x.h"
 
 #include "../../Source/System/USART/usart1.h"
-#include "../../Source/System/Flash/SST25_flash.h"
-#include "../../Source/System/Flash/W25x_flash.h"
+#include "../../Source/SPIFlash/SST25_flash.h"
+#include "../../Source/SPIFlash/W25x_flash.h"
 //#include "../../Source/FatFs/R0.11/diskio.h"
 #include "../../Source/FatFs/R0.10b/diskio.h"
 #include "../../Source/FatFs/R0.10b/ff.h"
