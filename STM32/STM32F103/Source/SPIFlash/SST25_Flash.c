@@ -288,7 +288,7 @@ uint8_t SST25_disk_write(uint8_t *pbuff,		/* Data buffer to store read data */
 
 
 
-	#define BUFFSIZE 0x100
+	#define BUFFSIZE 512
 void testFlash(void)
 {
 	int i = 0;

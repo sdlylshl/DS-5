@@ -33,7 +33,8 @@
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Block Size in Bytes */
-#define SECTOR_SIZE                4096
+#define PAGE_SIZE                512
+#define SECTOR_SIZE              PAGE_SIZE
 
 /* Private variables ---------------------------------------------------------*/
 /* Disk status */
@@ -75,7 +76,7 @@ DSTATUS SPI_initialize(void)
 {
   Stat = STA_NOINIT;
   
-	SST25_Flash_init();
+	//SST25_Flash_init();
   /* Configure the uSPI device */
   if(FlashReadID()== 0xBF41)
   {

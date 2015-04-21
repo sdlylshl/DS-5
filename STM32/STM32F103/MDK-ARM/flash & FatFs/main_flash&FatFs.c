@@ -39,7 +39,7 @@ res = f_mount(&SPIFatFs, (TCHAR const*)SPIpath, 0);
 res = f_getfree((TCHAR const*)SPIpath,&clast,&Fs);
 
 
-res = f_open(&SPIfile, "0:STM000.c", FA_OPEN_ALWAYS | FA_WRITE);
+res = f_open(&SPIfile, "0:/STM000.c", FA_OPEN_ALWAYS | FA_WRITE);
 
 //if(res != FR_OK)
 //	Error_Handler();
@@ -54,7 +54,7 @@ res = f_open(&SPIfile, "0:STM000.c", FA_OPEN_ALWAYS | FA_WRITE);
 		//f_sync(&SPIfile);
             
 f_close(&SPIfile);
-res = f_open(&SPIfile, "0:STM000.c", FA_OPEN_ALWAYS);
+res = f_open(&SPIfile, "0:/STM000.c", FA_OPEN_ALWAYS);
 f_read (&SPIfile,read,sizeof(read),&readbytes); 
 f_close(&SPIfile);
 FATFS_UnLinkDriver(SPIpath);
@@ -72,11 +72,9 @@ int main(){
 	USART1_NVIC_Config(7);
 	USART1_Init();	
 	//SPI2	
-	//SST25_Flash_init();
-	W25X_FLASH_Init();
-	//SPI_FLASH_BufferRead(read, 0, 512);
-	//SPI_FLASH_BulkErase();
-	//SPI_FLASH_BufferRead(read, 0, 512);
+	SST25_Flash_init();
+	//FlashChipErase();
+	//W25X_FLASH_Init();
 //	filesysinit();
 
 	FatFs_Demo();
