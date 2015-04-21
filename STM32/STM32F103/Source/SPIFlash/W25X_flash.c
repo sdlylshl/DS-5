@@ -7,7 +7,6 @@
 
 /* Private typedef -----------------------------------------------------------*/
 
-
 /*******************************************************************************
 * Function Name  : SPI_FLASH_Init
 * Description    : Initializes the peripherals used by the SPI FLASH driver.
@@ -17,7 +16,7 @@
 *******************************************************************************/
 void W25X_FLASH_Init(void)
 {
-  #ifdef  SPI_NSS_REMAP
+  #ifdef  W25X_NSS_REMAP
   GPIO_InitTypeDef GPIO_InitStructure;		
 	
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC|RCC_APB2Periph_AFIO, ENABLE);
@@ -543,9 +542,18 @@ void SPI_Flash_WAKEUP(void)
   SPI_FLASH_CS_HIGH();                   //等待TRES1
 }
 void  W25X_Flash_Test(void){
+		int i = 0;
+	int BUFFSIZE=0x100;
 uint8_t bufftest[1024];
-SPI_FLASH_ByteWrite(10,10);
-SPI_FLASH_BufferRead(bufftest, 0, 512);
-SPI_FLASH_BufferRead_Fast(bufftest, 0, 512);
+W25X_FLASH_Init();
+//SPI_FLASH_ByteWrite(11,11);	
+for (i = 0; i < BUFFSIZE; i++)bufftest[i] = 0;
+SPI_FLASH_SectorErase(0);
+for (i = 0; i < BUFFSIZE; i++)bufftest[i] = 0;
+SPI_FLASH_BufferRead(bufftest, 0, 1024);
+for (i = 0; i < BUFFSIZE; i++)bufftest[i] = (uint8_t)i;
+SPI_FLASH_BufferWrite(bufftest,0,1024);
+for (i = 0; i < BUFFSIZE; i++)bufftest[i] = 0;
+SPI_FLASH_BufferRead_Fast(bufftest, 0, 1024);
 }
 /******************************END OF FILE*****************************/

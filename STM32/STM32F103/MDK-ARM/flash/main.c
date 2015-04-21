@@ -8,10 +8,10 @@ int main(){
 	USART1_Init();	
 	//SPI2	
 	//W25X_FLASH_Init();
-	SST25_Flash_init();
+	//SST25_Flash_init();
 	//FlashReadID();
-	//W25X_Flash_Test();
-	testFlash();
+	W25X_Flash_Test();
+//	testFlash();
 }
 
 void Delay_ms(uint32_t ms){

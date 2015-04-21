@@ -3,12 +3,6 @@
 #include "stm32f10x_bkp.h"
 #include "stm32f10x_rcc.h"
 
-//uint8_t * flashTestData = "1234567890";
-uint8_t SST25_buffer[4096] = { 0 };
-uint16_t logNr = 2; //当前记录编号 
-//2048K/4=512 page
-
-
 void SST25_Flash_init(void){
 	
 	#ifdef SST25_NSS_REMAP
@@ -96,7 +90,7 @@ void FlashWriteDisable(void){
 ****************************************************************************/
 void FlashWriteStatus(void){
 	SST25_Select();
-	SST25_SPI_SendByte(SST25_ReadStatusReg);
+	SST25_SPI_SendByte(SST25_EnableWriteStatusReg);
 	SST25_DeSelect();
 	SST25_Select();
 	SST25_SPI_SendByte(SST25_WriteStatusReg);
@@ -294,21 +288,26 @@ uint8_t SST25_disk_write(uint8_t *pbuff,		/* Data buffer to store read data */
 
 
 
-	#define BUFFSIZE 0x10
+	#define BUFFSIZE 0x100
 void testFlash(void)
 {
 	int i = 0;
 	uint8_t flashTestData[BUFFSIZE] = { 0 };
+	SST25_Flash_init();
 	for (i = 0; i < BUFFSIZE; i++)flashTestData[i] = (uint8_t)i;
 	FlashReadID();
-
 	//FlashChipErase();
+	//FlashSectorErase(0);
+	SST25_BufferRead(flashTestData, 0 , BUFFSIZE);
+	//SST25_ByteWrite(0x10, 100);
+	SST25_BufferRead(flashTestData, 0 , BUFFSIZE);
+	return ;
 	SST25_BufferWrite(flashTestData,0,BUFFSIZE);
 	
-	SST25_ByteWrite(0x0, 0);
+
 	for (i = 0; i < BUFFSIZE; i++)flashTestData[i] = 0;
 	
-	SST25_BufferRead(flashTestData, 0 , BUFFSIZE);
+	
 	SST25_BufferRead_HighSpeed(flashTestData, 0 , BUFFSIZE);
 	//FlashSectorErase(0);
 	
@@ -316,13 +315,9 @@ void testFlash(void)
 	
 	SST25_BufferRead_HighSpeed(flashTestData, 0 , BUFFSIZE);
 	
-	for (i = 0; i < 100; i++)
-	{
-		SST25_buffer[i] = 0;
-	}
+
 	SST25_ByteWrite(0x0, 0xFF);
 	//SST25_WriteAutoAddrIncrease(0, flashTestData,64);
-	SST25_BufferRead_HighSpeed(SST25_buffer, 0 * 64, 64);
 	//printf("%d",flashTestData[0]);
 	//sect_clr(0);
 	//Bulk_clr();

@@ -21,10 +21,10 @@
 //W25X_16 BLOCK块数量 32
 #define W25X_BLOCK_COUNT (W25X_16_SIZE/W25X_BLOCK_SIZE)
 
-//***********SST25 W25X 区别*******************************************
-//对于W25X 和SST25 最大的区别在页写上面
-//1.SST25 0x02 字节写入 每次只能写入一个字节的数据
-//2.SST25 0xAD SST25如果想页写需要使用单独的指令AAI 页大小没有限制
+//***********W25X W25X 区别*******************************************
+//对于W25X 和W25X 最大的区别在页写上面
+//1.W25X 0x02 字节写入 每次只能写入一个字节的数据
+//2.W25X 0xAD W25X如果想页写需要使用单独的指令AAI 页大小没有限制
 //3.W25X  0x02 页写   每次既可以写入一个自己亦可以写入一页，页大小为固定256
 //*********************************************************************
 
@@ -50,46 +50,37 @@
 #define WIP_Flag                  0x01  /* Write In Progress (WIP) flag */
 
 #define Dummy_Byte                0x00
+
 //*********************** 接口实现 1************************************
+//	终端面板 SPI1 + GPC13 security terminal V1.3 
+#define W25X_NSS_REMAP	
 
-////	停车场ParkinV2.0  SPI2
-#ifdef  SPI_NSS_REMAP
-#define W25X_SCS_PORT			GPIOC
-#define W25X_SCS_PIN			GPIO_Pin_13
-#define W25X_SCS_MODE			GPIO_Mode_Out_PP	
-#define W25X_SCS_HIGH()   GPIO_SetBits(W25X_SCS_PORT, W25X_SCS_PIN)
-#define W25X_SCS_LOW()		GPIO_ResetBits(W25X_SCS_PORT, W25X_SCS_PIN)
-#define SPI_FLASH_CS_LOW()	GPIO_ResetBits(W25X_SCS_PORT, W25X_SCS_PIN)
-#define SPI_FLASH_CS_HIGH()	GPIO_SetBits(W25X_SCS_PORT, W25X_SCS_PIN)
+#define SPI_FLASH_Init					SPI1_Init
+#define SPI_FLASH_SendByte 			SPI1_SendByte
+#define SPI_FLASH_ReadByte 			SPI1_ReceiveByte
+
+//*********************** 接口实现 2************************************
+////	停车场 SPI2         ParkinV2.0
+
+//#define SPI_FLASH_Init					SPI2_Init
+//#define SPI_FLASH_SendByte 			SPI2_SendByte
+//#define SPI_FLASH_ReadByte 			SPI2_ReceiveByte
+
+//*************************************************************************************
+#ifdef  W25X_NSS_REMAP
+#define W25X_SCS_PORT				GPIOC
+#define W25X_SCS_PIN				GPIO_Pin_13
+#define W25X_SCS_MODE				GPIO_Mode_Out_PP	//此处一定要PP输出否则程序不正常
+#define W25X_SCS_HIGH()    	GPIO_SetBits(W25X_SCS_PORT, W25X_SCS_PIN)
+#define W25X_SCS_LOW()			GPIO_ResetBits(W25X_SCS_PORT, W25X_SCS_PIN)
+#define SPI_FLASH_CS_LOW 		W25X_SCS_LOW
+#define SPI_FLASH_CS_HIGH 	W25X_SCS_HIGH
 #else
-#define SPI_FLASH_CS_LOW()      SPI2_SCS_LOW()
-#define SPI_FLASH_CS_HIGH()     SPI2_SCS_HIGH()
+//#define SPI_FLASH_CS_LOW 		SPI1_SCS_LOW
+//#define SPI_FLASH_CS_HIGH 	SPI1_SCS_HIGH
+#define SPI_FLASH_CS_LOW 		SPI2_SCS_LOW
+#define SPI_FLASH_CS_HIGH 	SPI2_SCS_HIGH
 #endif
-
-#define SPI_FLASH_Init					SPI2_Init
-#define SPI_FLASH_SendByte 			SPI2_SendByte
-#define SPI_FLASH_ReadByte 			SPI2_ReceiveByte
-//**********************接口 2****************************************
-//片选不是SPI_NSS 开启NSS映射 PC13
-//#define SPI_NSS_REMAP
-
-//#ifdef  SPI_NSS_REMAP
-//#define W25X_SCS_PORT			GPIOC
-//#define W25X_SCS_PIN			GPIO_Pin_13
-//#define W25X_SCS_MODE			GPIO_Mode_Out_PP	
-//#define W25X_SCS_HIGH()   GPIO_SetBits(W25X_SCS_PORT, W25X_SCS_PIN)
-//#define W25X_SCS_LOW()		GPIO_ResetBits(W25X_SCS_PORT, W25X_SCS_PIN)
-//#define SPI_FLASH_CS_LOW()	GPIO_ResetBits(W25X_SCS_PORT, W25X_SCS_PIN)
-//#define SPI_FLASH_CS_HIGH()	GPIO_SetBits(W25X_SCS_PORT, W25X_SCS_PIN)
-//#else
-//#define SPI_FLASH_CS_LOW()      SPI1_SCS_LOW()
-//#define SPI_FLASH_CS_HIGH()     SPI1_SCS_HIGH()
-//#endif
-
-//#define SPI_FLASH_Init					SPI1_Init
-//#define SPI_FLASH_SendByte 			SPI1_SendByte
-//#define SPI_FLASH_ReadByte 			SPI1_ReceiveByte
-
 
 //***********************************************************************************
 //uint8_t SPI_FLASH_ReadByte(void);

@@ -74,10 +74,10 @@
 #define SST25_Select 				SST25_SCS_LOW
 #define SST25_DeSelect 			SST25_SCS_HIGH
 #else
-#define SST25_Select 				SPI1_SCS_LOW
-#define SST25_DeSelect 			SPI1_SCS_LOW
-//#define SST25_Select 				SPI2_SCS_LOW
-//#define SST25_DeSelect 			SPI2_SCS_LOW
+//#define SST25_Select 				SPI1_SCS_LOW
+//#define SST25_DeSelect 			SPI1_SCS_HIGH
+#define SST25_Select 				SPI2_SCS_LOW
+#define SST25_DeSelect 			SPI2_SCS_HIGH
 #endif
 
 //*************************************************************************************
