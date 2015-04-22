@@ -6,6 +6,10 @@
 typedef enum {FAILED = 0, PASSED = !FAILED}TestStatus;
 typedef enum {KeyPressed=0,KeyRelease = !KeyPressed}KeyStatus;
 uint32_t ret = 0; /* for return of the interrupt handling */
+/*采用查询方式还是中断方式接收数据开关，屏闭为中断方式*/
+#define  Rx_Polling	1
+#define Test_Tx
+#define Test_Rx
 ErrorStatus HSEStartUpStatus;
 uint8_t CAN_CellResetFlag;
 #define TJA1054AT_STB  GPIO_Pin_8
@@ -123,7 +127,7 @@ void CAN_main(void) {
 #ifdef Rx_Interrupt
 		if(CAN_CellResetFlag == RESET)
 		{
-			CAN_Interrupt();
+			//CAN_Interrupt();
 			printf("Waitting for Interrupt coming.....");
 			CAN_CellResetFlag = SET;
 		}

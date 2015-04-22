@@ -19,7 +19,14 @@ static void CAN1_GPIO_Config(void) {
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD|RCC_APB2Periph_AFIO, ENABLE);
 	GPIO_PinRemapConfig(GPIO_Remap2_CAN1,ENABLE);
 #endif 
-
+	
+#ifdef CAN1_MODE_USED
+	GPIO_InitStructure.GPIO_Pin = CAN1_MODE_PIN;
+	GPIO_InitStructure.GPIO_Mode = CAN1_MODE_MODE;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(CAN1_MODE_PORT, &GPIO_InitStructure);
+	CAN1_S_HIGH();
+#endif
 	/* Configure CAN pin: RX */
 	GPIO_InitStructure.GPIO_Pin = CAN1_RX_PIN;
 	GPIO_InitStructure.GPIO_Mode = CAN1_RX_MODE;

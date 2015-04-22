@@ -3,20 +3,19 @@
 
 #include "stm32f10x.h"
 
-/*采用查询方式还是中断方式接收数据开关，屏闭为中断方式*/
-#define  Rx_Polling	1
-#define Test_Tx
-#define Test_Rx
 #define CAN_BTR  800
-
-#ifndef Rx_Polling
-#define  Rx_Interrupt	1
+//**************************************************
+//高电平 silent mode (监听模式)
+//悬空或接低电平(默认)high speed mode
+#define CAN1_MODE_USED			//启用TJA1050 S端口功能
+#ifdef CAN1_MODE_USED
+#define CAN1_MODE_PORT			GPIOA
+#define CAN1_MODE_PIN				GPIO_Pin_8
+#define CAN1_MODE_MODE			GPIO_Mode_Out_PP
+#define CAN1_S_HIGH()         GPIO_SetBits(CAN1_MODE_PORT, CAN1_MODE_PIN)
+#define CAN1_S_LOW()         GPIO_ResetBits(CAN1_MODE_PORT, CAN1_MODE_PIN)
 #endif
-
-
-#define CAN_MODE CAN_Mode_LoopBack
-
-
+//**************************************************
 #define CAN1_NVIC
 //终端面板V1.3 PA11 PA12
 #define CAN1_NONREMAP
@@ -58,7 +57,7 @@
 #define CAN1_TX_PIN				GPIO_Pin_1
 #define CAN1_TX_MODE			GPIO_Mode_AF_PP	
 #endif
-
+//**************************************************
 
 void CAN1_Init(void);
 //void USB_HP_CAN_TX_IRQHandle(void);
