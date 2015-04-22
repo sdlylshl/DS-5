@@ -506,6 +506,16 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>menu</GroupName>
+          <Files>
+            <File>
+              <FileName>menu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Source\Menu\menu.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
         <Group>

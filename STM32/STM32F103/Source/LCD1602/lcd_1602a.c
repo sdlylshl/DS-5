@@ -62,7 +62,7 @@ void Lcd_Busy(void)//判断忙
 
      //恢复端口为输出状态 
    	 RCC_APB2PeriphClockCmd(RCC_GPIO_DATA, ENABLE);    //打开DATA端口时钟 
-	 GPIO_InitStructure.GPIO_Pin  = GPIO_DATA_0_PIN|GPIO_DATA_1_PIN|GPIO_DATA_2_PIN|GPIO_DATA_3_PIN|GPIO_DATA_4_PIN|GPIO_DATA_5_PIN|GPIO_DATA_6_PIN|GPIO_DATA_7_PIN; //  DB8~DB15
+		 GPIO_InitStructure.GPIO_Pin  = GPIO_DATA_0_PIN|GPIO_DATA_1_PIN|GPIO_DATA_2_PIN|GPIO_DATA_3_PIN|GPIO_DATA_4_PIN|GPIO_DATA_5_PIN|GPIO_DATA_6_PIN|GPIO_DATA_7_PIN; //  DB8~DB15
      GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; //推挽输出
      GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz; //50M时钟速度
      GPIO_Init(GPIO_DATA_7, &GPIO_InitStructure);
@@ -382,6 +382,31 @@ void LCD1602_Write_Data(uint8_t Data)
 
 	Reset_E(); 
 } 
+
+void LCD1602_SetXY(unsigned char x,unsigned char y)   //字符初始位置设定，x表示列，y表示行 
+{ 
+     unsigned char addr; 
+
+      if(y){
+          addr=0xC0+x; 
+			}
+		  else{
+          addr=0x80+x; 
+			}
+		 
+     Write_Cmd(addr) ; 
+} 
+
+void LCD1602_Write_String(uint8_t x,uint8_t y,char* string){
+	uint8_t num=0;
+
+	LCD1602_SetXY(x,y); 
+	while(*string) 
+	{ 
+		LCD1602_Write_Data(*string);
+		string++; 
+	} 
+}
 
 
 void Write_String(uint8_t cmd,uint8_t* p) 
