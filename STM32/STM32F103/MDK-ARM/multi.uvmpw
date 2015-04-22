@@ -12,13 +12,21 @@
   </project>
 
   <project>
+    <PathAndName>.\Usart\Usart.uvprojx</PathAndName>
+  </project>
+
+  <project>
     <PathAndName>.\flash\flash.uvprojx</PathAndName>
-    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
     <PathAndName>.\flash &amp; FatFs\flash&amp;FatFs.uvprojx</PathAndName>
+  </project>
+
+  <project>
+    <PathAndName>.\CAN\can.uvprojx</PathAndName>
     <NodeIsActive>1</NodeIsActive>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>

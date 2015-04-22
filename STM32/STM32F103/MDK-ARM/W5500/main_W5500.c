@@ -1,7 +1,7 @@
 #include "stm32f10x.h"
 
 #include "../../Source/FatFs/R0.11/diskio.h"
-#include "../../Source/System/Flash/SST25_flash.h"
+#include "../../Source/SPIFlash/SST25_flash.h"
 #include "../../Source/System/USART/usart1.h"
 #include "../../Source/System/Timer/timer4.h"
 #include "../../Source/W5500/Application/Application.h"

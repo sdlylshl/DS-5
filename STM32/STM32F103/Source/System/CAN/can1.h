@@ -3,7 +3,6 @@
 
 #include "stm32f10x.h"
 
-
 /*采用查询方式还是中断方式接收数据开关，屏闭为中断方式*/
 #define  Rx_Polling	1
 #define Test_Tx
@@ -17,15 +16,11 @@
 
 #define CAN_MODE CAN_Mode_LoopBack
 
-typedef enum {FAILED = 0, PASSED = !FAILED}TestStatus;
-typedef enum {KeyPressed=0,KeyRelease = !KeyPressed}KeyStatus;
-
-#define TJA1054AT_STB  GPIO_Pin_8
-#define TJA1054AT_EN   GPIO_Pin_9
 
 #define CAN1_NVIC
-
+//终端面板V1.3 PA11 PA12
 #define CAN1_NONREMAP
+//智能储物柜HOST V1.1 PB8 PB9 
 //#define CAN1_PARTIALREMAP
 //#define CAN1_FULLREMAP
 //复用功能
@@ -65,13 +60,8 @@ typedef enum {KeyPressed=0,KeyRelease = !KeyPressed}KeyStatus;
 #endif
 
 
-
-TestStatus CAN_Polling(void);
-void CAN_Interrupt(void);
-void Can_Init(void);
-void CAN_main(void);
-void CAN1_Config(void) ;
-void USB_HP_CAN_TX_IRQHandle(void);
+void CAN1_Init(void);
+//void USB_HP_CAN_TX_IRQHandle(void);
 void USB_LP_CAN_RX0_IRQHandle(void);
 void CAN_RX1_IRQHandle(void);
 void CAN_SCE_IRQHandle(void);

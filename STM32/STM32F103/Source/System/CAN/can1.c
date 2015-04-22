@@ -1,29 +1,15 @@
 #include "stdio.h"
 #include "can1.h"
 
-/* Local includes ------------------------------------------------------------*/
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
-
-uint32_t ret = 0; /* for return of the interrupt handling */
-ErrorStatus HSEStartUpStatus;
-uint8_t CAN_CellResetFlag;
-
-/* Private functions ---------------------------------------------------------*/
-
 static void CAN1_GPIO_Config(void) {
 	GPIO_InitTypeDef GPIO_InitStructure;
 
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_CAN1, ENABLE);
 
 #ifdef  CAN1_NONREMAP
-
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
-
 #endif
-
+	
 #ifdef  CAN1_PARTIALREMAP
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB|RCC_APB2Periph_AFIO, ENABLE);
 	GPIO_PinRemapConfig(GPIO_Remap1_CAN1,ENABLE);
@@ -67,7 +53,7 @@ static void CAN1_NVIC_Config(void) {
 	NVIC_EnableIRQ(USB_LP_CAN1_RX0_IRQn);
 	
 	/* Enable CAN RX1 FIFO1 interrupt IRQ channel */
-	NVIC_SetPriority(CAN1_RX1_IRQn, 7);
+	NVIC_SetPriority(CAN1_RX1_IRQn, 8);
 	NVIC_EnableIRQ(CAN1_RX1_IRQn);
 	
 	/* Enable CAN ERR interrupt IRQ channel CAN_SCE_IRQChannel*/
@@ -90,9 +76,11 @@ static void CAN1_IT_Config(void) {
 	//CAN_ITConfig(CAN1,CAN_IT_SLK | CAN_IT_WKU | CAN_IT_ERR | CAN_IT_LEC | CAN_IT_BOF | CAN_IT_EPV | CAN_IT_EWG, ENABLE);
 
 }
+
 uint32_t FilterID  =0x0000E010;
 uint32_t FilterMask=0x0;
- void CAN_Filter_Config(void)
+
+void CAN_Filter_Config(void)
 {
 	CAN_FilterInitTypeDef  CAN_FilterInitStructure;
 
@@ -122,8 +110,8 @@ uint32_t FilterMask=0x0;
 	CAN_FilterInitStructure.CAN_FilterIdHigh = (((uint32_t) (FilterID) << 3) & 0xFFFF0000) >> 16;				//要过滤的ID高位 
 	CAN_FilterInitStructure.CAN_FilterIdLow = (((uint32_t) (FilterID) << 3) | CAN_ID_EXT | CAN_RTR_DATA) & 0xFFFF; //要过滤的ID低位 只接收扩展数据帧
 	//屏蔽模式 为1的位必须匹配 ,为0的位 不进行匹配
-	CAN_FilterInitStructure.CAN_FilterMaskIdHigh = 0xFFFF;			//过滤器高16位每位必须匹配
-	CAN_FilterInitStructure.CAN_FilterMaskIdLow = 0xFFFF;			//过滤器低16位每位必须匹配
+	CAN_FilterInitStructure.CAN_FilterMaskIdHigh = 0;			//过滤器高16位每位必须匹配
+	CAN_FilterInitStructure.CAN_FilterMaskIdLow = 0;			//过滤器低16位每位必须匹配
 
 	CAN_FilterInitStructure.CAN_FilterFIFOAssignment = CAN_Filter_FIFO0;				//过滤器被关联到FIFO0
 	CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;			//使能过滤器
@@ -144,9 +132,9 @@ uint32_t FilterMask=0x0;
 	CAN_FilterInitStructure.CAN_FilterActivation = ENABLE;			//使能过滤器
 	CAN_FilterInit(&CAN_FilterInitStructure);
 }
-void CAN1_Config(void) {
+void CAN1_Init(void) {
+	
 	CAN_InitTypeDef CAN_InitStructure;
-	CAN_FilterInitTypeDef CAN_FilterInitStructure;
 
 	CAN1_GPIO_Config();
 //	Reset CAN1
@@ -210,150 +198,11 @@ void CAN1_Config(void) {
 
 	CAN_Filter_Config();
 
-#ifdef CAN1_NVIC
-
-	CAN1_NVIC_Config();
 	CAN1_IT_Config();
+#ifdef CAN1_NVIC
+	CAN1_NVIC_Config();
 #endif	
 
-}
-uint8_t TransmitMailbox;
-void CAN1_Transmit(){
-	CanTxMsg TxMessage;
-	//TxMessage.StdId = 0x11;
-			TxMessage.ExtId = 11212;
-			TxMessage.RTR = CAN_RTR_DATA;
-			TxMessage.IDE = CAN_ID_EXT;
-			TxMessage.DLC = 8;
-			TxMessage.Data[0] = 0xaa;
-			TxMessage.Data[1] = 0xbb;
-			TxMessage.Data[2] = 0xcc;
-			TxMessage.Data[3] = 0xdd;
-			TransmitMailbox = CAN_Transmit(CAN1, &TxMessage);
-}
-void CAN_main(void) {
-	KeyStatus NewKeyStaus, OldKeyStatus;
-	CanTxMsg TxMessage;
-	uint8_t TransmitMailbox, i;
-#ifdef DEBUG
-	debug();
-#endif
-
-	CAN1_Config();
-
-	/*config TJA1054 */
-	GPIO_SetBits(GPIOE, TJA1054AT_STB); //GPIO_Pin_1);//STB
-	GPIO_ResetBits(GPIOE, TJA1054AT_EN); //EN
-	GPIO_SetBits(GPIOE, TJA1054AT_STB); //GPIO_Pin_1);//STB
-	GPIO_SetBits(GPIOE, TJA1054AT_EN); //EN
-
-	/* CAN transmit at 100Kb/s and receive by polling in loopback mode */
-
-	//printf("    ***** Can Demo Start..... ****");
-	while (1) {
-#ifdef Test_Tx
-		if (GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_3) == Bit_RESET) {
-			NewKeyStaus = KeyPressed;
-		} else {
-			NewKeyStaus = KeyRelease;
-		}
-		if (1)
-		if((NewKeyStaus == KeyRelease) && (OldKeyStatus == KeyPressed))
-		{
-			i = 0;
-			TxMessage.StdId = 0x11;
-			TxMessage.ExtId = 0x223344;
-			TxMessage.RTR = CAN_RTR_DATA;
-			TxMessage.IDE = CAN_ID_EXT;
-			TxMessage.DLC = 4;
-			TxMessage.Data[0] = 0xaa;
-			TxMessage.Data[1] = 0xbb;
-			TxMessage.Data[2] = 0xcc;
-			TxMessage.Data[3] = 0xdd;
-			TransmitMailbox = CAN_Transmit(CAN1, &TxMessage);
-			while (1) {
-				if (CAN_TransmitStatus(CAN1, TransmitMailbox) != CANTXOK)
-				{
-					i++;
-					printf("Send Message Pending");
-				} else {
-					printf("Send Message OK");
-					i = 0xfd;
-				}
-				if (i == 0xfd) {
-					printf("Send Message Fail");
-					break;
-				}
-			} //end while(1)
-
-			/*LED ON-OFF*/
-			if (GPIO_ReadOutputDataBit(GPIOC, GPIO_Pin_6) != RESET) {
-				GPIO_ResetBits(GPIOC, GPIO_Pin_6);
-			} else {
-				GPIO_SetBits(GPIOC, GPIO_Pin_6);
-			}
-
-		}
-		OldKeyStatus = NewKeyStaus;
-#endif  // endif Test_tx
-#ifdef Test_Rx
-
-#ifdef Rx_Polling
-		if (CAN_CellResetFlag == RESET) {
-			CAN_ITConfig(
-					CAN1,
-					CAN_IT_SLK | CAN_IT_WKU | CAN_IT_ERR | CAN_IT_LEC
-							| CAN_IT_BOF | CAN_IT_EPV | CAN_IT_EWG, ENABLE);
-			CAN_CellResetFlag = SET;
-		}
-
-		if (CAN_Polling() == PASSED) {
-			printf("Polling Recv Message OK");
-		}
-#endif  //endif Rx_Polling
-#ifdef Rx_Interrupt
-		if(CAN_CellResetFlag == RESET)
-		{
-			CAN_Interrupt();
-			printf("Waitting for Interrupt coming.....");
-			CAN_CellResetFlag = SET;
-		}
-#endif	//endif Test_rx
-#endif
-
-	}
-//return 0;
-}
-
-/*******************************************************************************
- * Function Name  : CAN_Polling
- * Description    : Configures the CAN, transmit and receive by polling
- * Input          : None
- * Output         : None
- * Return         : PASSED if the reception is well done, FAILED in other case
- *******************************************************************************/
-TestStatus CAN_Polling(void) {
-	CanRxMsg RxMessage;
-	u32 i = 0;
-	i = 0;
-
-	while ((CAN_MessagePending(CAN1, CAN_FIFO0) < 1) && (i != 0xFF)) {
-		i++;
-	}
-	if (i != 0xFF) /*说明有收到报文*/
-	{
-		/* receive */
-		RxMessage.StdId = 0x00;
-		RxMessage.IDE = CAN_ID_STD;
-		RxMessage.DLC = 0;
-		RxMessage.Data[0] = 0x00;
-		RxMessage.Data[1] = 0x00;
-		CAN_Receive(CAN1, CAN_FIFO0, &RxMessage);
-		//printf("Recv a Message...");
-		return PASSED;
-	} else {
-		return FAILED;
-	}
 }
 
 /*******************************************************************************
