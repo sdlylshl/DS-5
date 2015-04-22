@@ -5,14 +5,15 @@
  *      Author: souls
  */
 
-#include "../LCD1602/lcd_1602a.h"
 #include "../Algorithm/Buffer/buffer.h"
+#include "../System/Delay/systick.h"
 #include "../System/Usart/usart2.h"
-#include "../GPIO/RS485.h"
-#include "../GPIO/Beep.h"
-#include "../KEY/key.h"
-#include "../GPIO/led.h"
 #include "../System/Timer/timer4.h"
+#include "../LCD1602/lcd_1602a.h"
+#include "../GPIO/Beep.h"
+#include "../GPIO/led.h"
+#include "../KEY/key.h"
+#include "./RS485.h"
 
 #define POLL_CMD 				0
 #define SET_USER_PASSWD			0x2
@@ -91,7 +92,7 @@ uint8_t calcfcs(uint8_t *pmsg, uint8_t len) {
 }
 void answer(uint8_t *pmsg, uint8_t len){
 
-	uint8_t result = 0;
+//	uint8_t result = 0;
 	RS485_TX();
 
 	RS485_SendChar(PANEL_CMD_HEAD);
@@ -501,7 +502,7 @@ void panel_ShowStatus(){
 	}
 }
 
-void panel(void) {
+void panel_485(void) {
 	//注册
 	Ebuffer_Init((uint8_t *)&USART2_read, (uint8_t *)&USART2_write, USART2_ReciveBuff);
 

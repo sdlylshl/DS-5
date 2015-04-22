@@ -1,589 +1,539 @@
-#include "stm32f10x.h"
-#include "stdio.h"
-#include "stdlib.h"
-#include "panel_queue.h"
-// UID1 1 2 3
-// UID2 4 5 6模式
+/*
+ * panel.c
+ *
+ *  Created on: 2015
+ *      Author: souls
+ */
+
+#include "../Algorithm/Buffer/buffer.h"
+#include "../System/Delay/systick.h"
+#include "../System/Usart/usart2.h"
+#include "../System/Timer/timer4.h"
+#include "../LCD1602/lcd_1602a.h"
+#include "../GPIO/Beep.h"
+#include "../GPIO/led.h"
+#include "../KEY/key.h"
+#include "./RS485.h"
+
+#define POLL_CMD 				0
+#define SET_USER_PASSWD			0x2
+#define SET_ADMIN_PASSWD		0x3
+#define ARM_CMD					0x4
+
+#define POLL_ARM_RSP 			0x50
+#define POLL_CH_MAP_RSP			0x51
+#define SET_USER_PASSWD_RSP		0x52
+#define SET_ADMIN_PASSWD_RSP	0x53
+#define ARM_CMD_RSP				0x54
 
 
+#define PANEL_CMD_HEAD 0xFC
+#define PANEL_CMD_MINLEN 4
+#define PANEL_MAX_LEN 8
+//全局变量
+uint8_t xintiao[6] = { 0 };
+uint8_t bufang[8] = { 0 };
+uint8_t tongdao[10] = { 0 };
 
-//[
-//	userNUM
-//	userID1[
-//		envNUM
-//			envID1[
-//				modeNUM
-//					mode1[
-//						modeUsed   //指示当前模式是否启用
-//							policyNUM    //策略数
-//							policyID1[
-//								size
-//									relation
-//									sensorNUM
-//									(
-//									cer
-//									ID
-//									value
-//									)sensor1;
-//								actorNUM
-//									(
-//									cer
-//									ID
-//									value
-//									)
-//
-//							]
-//
-//							policyID2[
-//							]
-//					]
-//					mode2[]
-//			]
-//			envID2[]
-//			envIDn[]
-//	]
-//	userID2[]
-//]
+//首次开机标志，同步状态后失效
+uint8_t firststart = 1;
+uint16_t last_key = 0;
+//撤防 灯灭  正在布防 快闪   布防成功 常量
+//布防状态
+//A 0 布防 B 1 撤防 C 2 取消报警状态 
+volatile uint8_t PanelStatus = 0;
+volatile uint8_t lastpanelstatus = 0;
+uint8_t LastStatus = 0xFF;
+//****用来监视 PanelStatus 状态改变是否是用户操作
+//当SyncFlag不为0 则代表 用户进行相关配置
+//将状态 上传之后 清零
+// 1.有布撤防状态改变 2.设置通道映射
+uint8_t SyncFlag = 0;
+uint8_t SuccessFlag = 0;
+uint8_t bufangFlag = 0;
+uint8_t tongdaoFlag = 0;
+//密码相关
+uint16_t passwd[16] = { 0 };
+uint16_t userpasswd[8] = { KEY_1, KEY_2, KEY_3, KEY_4, 0, 0 };
+uint16_t syspasswd[8] = { KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, 0, 0, 0 };
 
-#define panel_free free
-#define panel_mallc malloc
+//布防延迟时间
+uint32_t BFDELAYTIME = 30000;
+uint32_t panelcurtime;
+uint8_t bufangdelay;
+uint32_t bufangdelaytime;
 
-#define  PANEL_READ			0x01
-#define  PANEL_WRITE_ENABLE		0x02
+typedef struct panelcmd {
+	//uint8_t HEAD;
+	uint8_t len;
+	uint8_t cmd;
+	uint8_t id;
+	uint8_t data[PANEL_MAX_LEN];
+	uint8_t checksum;
+} PANELCMD_t;
 
-//***************************************************
+PANELCMD_t panelcmd;
 
-//发送传感器状态信息 ,
-typedef struct panel_send_list_s{
-	uint32_t nodeID;	//发送值
-	uint16_t value;		//Value 高两位 表 大小等于
-	uint8_t VID;		//发送到设备的虚拟ID
-	uint8_t ID;			//发送id标识,用于发送成功标志
-	struct panel_send_list_s *next;
-}panel_send_list_t;
-
-//虚拟有效传感设备表 无重复nodeID
-// 模式切换的时候 重新 初始化 
-typedef struct panel_sensor_device_s{
-
-	uint32_t nodeID;
-	uint16_t value;		//Value 高两位 表 大小等于
-	uint8_t  VID;	//传感器关联的网关 虚拟ID
-	uint8_t condition;	//传感器> = < || 执行器
-	struct panel_sensor_device_s * next;
-	//struct panel_sensor_device_s * prev;
-}panel_sensor_device_t;
-panel_sensor_device_t *psensor_device_head;
-
-//虚拟执行设备表
-typedef struct panel_actuator_device_s{
-
-	struct panel_node_s  actuator;
-	void(*run)(uint8_t value);
-	struct panel_actuator_device_s * next;
-	//struct panel_actuator_device_s * prev;
-}panel_actuator_device_t;
-
-typedef struct panel_actuator_s{
-	struct panel_node_s  actuator;
-	panel_actuator_device_t *actuator_device;
-	struct panel_actuator_s *next;
-}panel_actuator_t;
-typedef struct panel_sensor_s{
-	struct panel_node_s  sensor;
-	panel_sensor_device_t *sensor_device;
-	//uint8_t nodeVID;	//传感器关联的网关 虚拟ID
-	struct panel_sensor_s *next;
-}panel_sensor_t;
-////*****************************************************
-//可重复nodeID
-typedef struct panel_node_s{
-	uint32_t nodeID;
-	uint16_t value;		//Value 高两位 表 大小等于
-	uint8_t nodeVID;	//传感器关联的网关 虚拟ID
-	uint8_t condition;	//传感器> = < || 执行器
-	struct panel_node_s *next;
-}panel_node_t;
-
-typedef struct panel_policy_s{
-	uint32_t timeout;						//策略重发周期(s)
-	uint32_t config_timeout;				//配置超时时间(S)	
-	uint8_t  operate;						//该策略执行器允许执行标志,做为报警除非切换状态 否则不在执行 默认为1
-	uint8_t  policyID;						//策略ID
-	uint8_t  sensorNUM;						//传感器数量
-	uint8_t  actuatorNUM;					//执行器数量
-	//uint8_t  config_relation;				//策略关系
-	//uint8_t  config_style;				//策略类型[1.立即执行 2.执行延时 3.反转执行 ]
-	struct panel_node_s *sensor_head;		//传感器头指针
-	struct panel_node_s *actuator_head;		//执行器头指针
-	struct panel_mode_s *parent;			//[父模式]<--策略
-	struct panel_policy_s *prev;			//上一个策略
-	struct panel_policy_s *next;			//下一个策略
-}panel_policy_t;
-
-typedef struct panel_mode_s{
-	uint8_t  modeID;						//模式ID
-	uint8_t  modeUSED;						//模式启用状态	
-	uint8_t  policyNUM;						//策略数量
-	//struct panel_policy_s  policy;
-	struct panel_policy_s  *child_current;	//模式-->[子策略]
-	struct panel_scene_s *parent;			//[父场景]<--模式
-	struct panel_mode_s *prev;				//上一个模式
-	struct panel_mode_s *next;				//下一个模式
-}panel_mode_t;
-
-typedef struct panel_scene_s{
-
-	uint8_t  sceneID;						//场景ID
-	uint8_t  modeNUM;						//模式数量
-	//struct panel_mode_s mode;				//模式链表头
-	struct panel_mode_s *child_current;		//场景-->[子模式]
-	struct panel_user_s *parent;			//[父用户]<--场景
-	struct panel_scene_s *prev;				//场景
-	struct panel_scene_s *next;				//场景
-}panel_scene_t;
-
-typedef struct panel_user_s{
-	uint32_t userID;						//用户ID
-	uint32_t userPASS;						//用户密码
-	uint8_t login;							//登录标志
-	uint8_t  sceneNUM;						//场景数量
-	//struct panel_scene_s scene;			//
-	struct panel_scene_s *child_current;	//用户-->[子场景]	
-	//struct panel_config_t *parent;		//[父配置]<--用户
-	struct panel_user_s *prev;				//用户
-	struct panel_user_s *next;				//用户
-}panel_user_t;
-
-typedef struct panel_config_s{
-	uint8_t  writeback;						//配置改动,回写保存后置0
-	uint8_t  userNUM;						//可操作用户数
-	uint8_t VID;							//平台分配VID
-	//struct panel_user_s user;				//用户
-	struct panel_user_s *child_current;		//配置-->[子用户]
-}panel_config_t;
-
-
-//
-panel_config_t config; //只有一个配置
-//panel_user_t cur_user;
-//panel_scene_t cur_scene;
-//panel_mode_t cur_mode;
-//panel_policy_t cur_policy;
-
-void panel_config_init(){
-	//策略
-	//policy.policyID = 0;
-	//policy.relation = 0;
-	//policy.sensorNUM = 0;
-	//policy.actuatorNUM = 0;
-	//policy.actuator_head = NULL;
-	//policy.sensor_head = NULL;
-	////policy.prev = &policy;
-	////policy.next = &policy;
-	//panel_queue_init(&policy);
-	////模式
-	//mode.policyNUM = 0;
-	//mode.child_current = &policy;
-	//mode.modeID = 0;
-	//mode.modeUSED = 0;
-	////mode.prev = &mode;
-	////mode.next = &mode;
-	//panel_queue_init(&mode);
-	////场景
-	//scene.modeNUM = 0;
-	//scene.child_current = &mode;
-	//scene.sceneID = 0;
-	////scene.prev = &scene;
-	////scene.next = &scene;
-	//panel_queue_init(&scene);
-	////用户
-	//user.sceneNUM = 0;
-	//user.child_current = &scene;
-	//user.userID = 0;
-	//user.userPASS = 0;
-	//user.login = 0;
-	////user.prev = &user;
-	////user.next = &user;
-	//panel_queue_init(&user);
-	//配置
-	config.userNUM = 0;
-	config.writeback = 0;
-	config.child_current = NULL;
+void startdidi(){
+	BeepDiDiStart(100, 900);
 }
+void stopdidi(){
+	bufangdelay = 0;
+	BeepStop();
 
+}
+/////////////////////数据处理////////////////////////////////
+uint8_t calcfcs(uint8_t *pmsg, uint8_t len) {
+	uint8_t result = 0;
+	while (len--) {
+		result ^= *pmsg++;
+	}
+	return result;
+}
+void answer(uint8_t *pmsg, uint8_t len){
 
+//	uint8_t result = 0;
+	RS485_TX();
 
-// 0 没有找到 且创建失败 1 找到  2 创建   
-uint8_t panel_get_user(uint8_t flag, uint32_t userID){
-	//1.遍历当前配置 没有则创建 有则反悔 cur_usr
-	uint8_t num = config.userNUM;
-	panel_user_t * pu = config.child_current;
+	RS485_SendChar(PANEL_CMD_HEAD);
+	while (len--) {
+		RS485_SendChar(*(pmsg++));
+	}
 
-	for (; num; num--)
+	RS485_RX();
+}
+//指令应答
+static void ansbufang(PANELCMD_t * pan){
+	uint32_t i;
+
+	RS485_TX();
+	Delay_ms(1);
+	pan->cmd = POLL_ARM_RSP;
+	//for(i=0;i<0x4FFFF;i++);
+	pan->checksum = 0;
+	RS485_SendChar(PANEL_CMD_HEAD);
+	pan->checksum ^= pan->len;
+	RS485_SendChar(pan->len);
+	pan->checksum ^= pan->cmd;
+	RS485_SendChar(pan->cmd);
+	pan->checksum ^= pan->id;
+	RS485_SendChar(pan->id);
+	for (i = 0; i < pan->len; i++)
 	{
-		if (pu->userID == userID)
-		{
-			config.child_current = pu;
-			return 1;
-		}
-		pu = pu->next;
+		pan->checksum ^= pan->data[i];
+		RS485_SendChar(pan->data[i]);
 	}
-	if (flag&PANEL_WRITE_ENABLE){
-		//2.创建用户
-		pu = (panel_user_t*)panel_mallc(sizeof(panel_user_t));
-		if (pu)
-		{
-			pu->userPASS = 0;
-			pu->login = 0;
-			pu->sceneNUM = 0;
-			pu->child_current = NULL;
-
-			pu->userID = userID;
-			config.userNUM++;
-			panel_queue_insert_head(config.child_current, pu);
-			config.child_current = pu;
-			return 2;
-		}
-	}
-	return 0;
+	RS485_SendChar(pan->checksum);
+	//for(i=0;i<0x4FFFF;i++);
+	Delay_ms(1);
+	RS485_RX();
 }
-uint8_t panel_get_scene(uint8_t flag, uint32_t userID, uint8_t sceneID){
-	uint8_t num;
-	panel_scene_t *ps;
-	if (panel_get_user(flag, userID))
+void panelcmdpoll(PANELCMD_t * panelcmd){
+	static uint8_t lastId;
+
+	static uint8_t cmdbufangId;
+	static uint8_t cmdtongdaoId;
+	if (lastId == panelcmd->id)
 	{
-		ps = config.child_current->child_current;
-		num = config.child_current->sceneNUM;
-		for (; num; num--)
+		//重发			
+		if (lastId == cmdbufangId)
 		{
-			if (ps->sceneID == sceneID)
-			{
-				config.child_current->child_current = ps;
-				return 1;
-			}
-			ps = ps->next;
+			panelcmd->data[0] = PanelStatus;
+			ansbufang(panelcmd);
 		}
+		else if (lastId == cmdtongdaoId)
+		{
 
-		if (flag&PANEL_WRITE_ENABLE){
-
-			//创建场景
-			ps = (panel_scene_t*)panel_mallc(sizeof(panel_scene_t));
-			if (ps)
-			{
-				ps->modeNUM = 0;
-				ps->child_current = NULL;
-
-				ps->sceneID = sceneID;
-				ps->parent = config.child_current;
-				config.child_current->sceneNUM++;
-				panel_queue_insert_head(config.child_current->child_current, ps);
-				config.child_current->child_current = ps;
-				return 2;
-			}
 		}
 	}
-	return 0;
-}
-uint8_t panel_get_mode(uint8_t flag, uint32_t userID, uint8_t sceneID, uint8_t modeID){
-	uint8_t num;
-	panel_mode_t * pm;
-	if (panel_get_scene(flag, userID, sceneID))
+	else
 	{
-		num = config.child_current->child_current->modeNUM;
-		pm = config.child_current->child_current->child_current;
-		for (; num; num--)
+		//收到新指令
+		lastId = panelcmd->id;
+		//为了保证能有效的判断 cmdId 所以 如果主机发送过来的Id为0 做心跳处理
+		if ((SyncFlag & 0x01) && lastId)
 		{
-			if (pm->modeID == modeID)
-			{
-				config.child_current->child_current->child_current = pm;
-				return 1;
-			}
-			pm = pm->next;
-		}
-		if (flag&PANEL_WRITE_ENABLE){
-			//创建模式
-			pm = (panel_mode_t*)panel_mallc(sizeof(panel_mode_t));
-			if (pm)
-			{
-				pm->modeUSED = 0;
-				pm->policyNUM = 0;
-				pm->child_current = NULL;
 
-				pm->modeID = modeID;
-				pm->parent = config.child_current->child_current;
-				config.child_current->child_current->modeNUM++;
-				panel_queue_insert_head(config.child_current->child_current->child_current, pm);
-				config.child_current->child_current->child_current = pm;
-				return 2;
-			}
-		}
-	}
-	return 0;
-}
-uint8_t panel_get_policy(uint8_t flag, uint32_t userID, uint8_t sceneID, uint8_t modeID, uint8_t policyID){
-	uint8_t num;
-	panel_policy_t * pp;
-	if (panel_get_mode(flag, userID, sceneID, modeID)){
-		num = config.child_current->child_current->child_current->policyNUM;
-		pp = config.child_current->child_current->child_current->child_current;
-		for (; num; num--)
-		{
-			if (pp->policyID == policyID)
-			{
-				config.child_current->child_current->child_current->child_current = pp;
-				return 1;
-			}
-			pp = pp->next;
-		}
-		if (flag&PANEL_WRITE_ENABLE){
-			//创建策略
-			pp = (panel_policy_t*)panel_mallc(sizeof(panel_policy_t));
-			if (pp)
-			{
-				///pp->relation = 0;
-				pp->actuatorNUM = 0;
-				pp->actuator_head = NULL;
-				pp->sensorNUM = 0;
-				pp->sensor_head = NULL;
-
-				pp->policyID = policyID;
-				pp->parent = config.child_current->child_current->child_current;
-				config.child_current->child_current->child_current->policyNUM++;
-				panel_queue_insert_head(config.child_current->child_current->child_current->child_current, pp);
-				config.child_current->child_current->child_current->child_current = pp;
-				return 2;
-			}
-		}
-	}
-	return 0;
-}
-
-//***********************接口********************************************
-typedef struct panel_policy_data_s{
-	uint8_t complete;
-	uint32_t userID;
-	uint8_t sceneID;
-	uint8_t modeID;
-	uint8_t policyID;
-	uint8_t relation;
-	uint8_t sensorNUM;
-	uint8_t actuatorNUM;
-	struct panel_node_s *sensor_head;
-	struct panel_node_s *actuator_head;
-
-}panel_policy_data_t;
-panel_policy_data_t policy_data;
-
-uint8_t panel_add_policy(panel_policy_data_t * policy_data){
-	uint8_t num;
-	panel_node_t *pn;
-	panel_node_t *ppn;
-	panel_policy_t * pp;
-	num = panel_get_policy(PANEL_WRITE_ENABLE, policy_data->userID, policy_data->sceneID, policy_data->modeID, policy_data->policyID);
-	if (num){
-		pp = config.child_current->child_current->child_current->child_current;
-		if (num == 1)
-		{
-			//表中已存在，修改当前模式
-			pn = config.child_current->child_current->child_current->child_current->sensor_head;
-			for (ppn = pn; ppn; ppn = pn->next)
-			{
-				panel_free(pn);
-				pn = ppn;
-			}
-
-			pn = config.child_current->child_current->child_current->child_current->actuator_head;
-			for (ppn = pn; ppn; ppn = pn->next)
-			{
-				panel_free(pn);
-				pn = ppn;
-			}
+			panelcmd->data[0] = PanelStatus;
+			ansbufang(panelcmd);
+			SyncFlag &= 0xFE;
+			cmdbufangId = panelcmd->id;
 
 		}
+		else if ((SyncFlag & 0x02) && lastId){
 
-		pp->relation = policy_data->relation;
-		pp->actuatorNUM = policy_data->actuatorNUM;
-		pp->actuator_head = policy_data->actuator_head;
-		pp->sensorNUM = policy_data->sensorNUM;
-		pp->sensor_head = policy_data->sensor_head;
+			SyncFlag &= 0xFD;
+			cmdtongdaoId = panelcmd->id;
 
-		policy_data->relation = 0;
-		policy_data->actuatorNUM = 0;
-		policy_data->actuator_head = NULL;
-		policy_data->sensorNUM = 0;
-		policy_data->sensor_head = NULL;
-		policy_data->complete = 0;
-	}
-	return num;
-}
-void panel_parse_policy_data(){
-
-
-}
-void panel_create_policy_data(){
-	//panel_policy_data_t *policy_data = (panel_policy_data_t *)panel_mallc(sizeof());
-	if (policy_data.complete)
-	{
-		panel_add_policy(&policy_data);
-	}
-	else{
-
-		panel_parse_policy_data();
-
-	}
-
-}
-
-
-
-panel_actuator_device_t *pactuator_device_head;
-
-panel_sensor_device_t * find_sensor_device_by_id(uint32_t sensorID){
-	panel_sensor_device_t * psd = psensor_device_head;
-	for (; psd; psd->next)
-	{
-		if (psd->devID == sensorID)
-		{
-			return psd;
 		}
-	}
-	return NULL;
-}
-panel_actuator_device_t * find_actuator_device_by_id(uint32_t actuatorID){
-	panel_actuator_device_t * pad = pactuator_device_head;
-	for (; pad; pad->next)
-	{
-		if (pad->devID == actuatorID)
-		{
-			return pad;
-		}
-	}
-	return NULL;
-}
-
-void policy_operate(){
-	uint8_t i, success, send;
-	panel_user_t * puser;
-	panel_scene_t * pscene;
-	panel_mode_t * pmode;
-	panel_policy_t * ppolicy;
-	panel_node_t *pnode;
-	panel_sensor_device_t * psd;
-	panel_actuator_device_t * pad;
-	for (puser = config.child_current; puser;)
-	{
-		for (pscene = config.child_current->child_current; pscene;)
-		{
-			for (pmode = config.child_current->child_current->child_current; pmode;)
-			{
-
-				for (ppolicy = config.child_current->child_current->child_current->child_current; ppolicy;)
-				{
-					//策略执行  全部是与的关系 或关系拆为多条策略
-					pnode = ppolicy->sensor_head;
-					//success = 1;
-					for (i = 0; i < ppolicy->sensorNUM; i++)
-					{
-						psd = find_sensor_device_by_id(pnode->nodeID);
-						if (psd)
-						{
-							if (pnode->condition == cmp(psd->value, pnode->value))
-							{
-								//本机报警器报警
-								if (pnode->nodeVID)
-								{
-									send = 1;	//发送
-									//创建发送队列
-								}
-								success = 1;
-							}
-							else
-							{
-								success = 0;
-								break;
-							}
-						}
-						else
-						{
-							success = 0;
-							break;
-						}
-
-						pnode = pnode->next;
-					}
-
-					if (success)
-					{
-						//发送本机报警状态
-						if (send){
-
-							//送入 节点发送队列
-						}
-						if (ppolicy->timeout > ppolicy->config_timeout){
-							//策略匹配成功
-							//启动禁止重复执行
-							if (ppolicy->operate)
-							{
-								ppolicy->operate = 0;
-
-								pnode = ppolicy->actuator_head;
-								for (i = 0; i < ppolicy->actuatorNUM; i++)
-								{
-									pad = find_actuator_device_by_id(pnode->nodeID);
-
-
-								}
-							}
-							//定时上报报警状态 送入平台发送队列 
-
-							//ppolicy->timeout =0;
-						}
-
-					}
-					else
-					{
-						//发送本机报警状态
-						if (send){
-
-
-						}
-						//此策略失效 timeout =0; 
-						//检测超时时间到？ 到了清除超时，超时定时器停止
-					}
-
+		else{
+			if (PanelStatus == 2){
+				//取消报警状态成功 切换到原状态
+				if (panelcmd->data[0] == 0xFD){
+					PanelStatus = 3;
 				}
-
+				else if (panelcmd->data[0] == 0xFE){
+					PanelStatus = 1;
+				}
+				else if (panelcmd->data[0] == 0xFF){
+					PanelStatus = 0;
+				}
 			}
+			if (cmdbufangId){ cmdbufangId = 0; }
+			if (cmdtongdaoId){ cmdtongdaoId = 0; }
+			panelcmd->data[0] = 0xFF;
+			ansbufang(panelcmd);
 
-
-			ppolicy = ppolicy->next;
-			if (config.child_current->child_current->child_current->child_current == ppolicy)
-			{
-				break;
-			}
 		}
 
-		pmode = pmode->next;
-		if (config.child_current->child_current->child_current == pmode)
-		{
+
+	}
+
+}
+//接收布防状态
+static void recvbuchefang(PANELCMD_t * pan){
+	switch (pan->data[0])
+	{
+		//-------------------------------------------------
+		//服务器端更新数据
+	case 0://布防
+		//PanelStatus = 0;
+		//break;		
+	case 1://撤防
+		//PanelStatus = 1;
+		//break;		
+	case 2://取消报警
+		//PanelStatus = 2;
+	case 3://服务器取消部分报警
+		//PanelStatus = 3;
+		last_key = 0;
+		//SyncFlag &= 0xFE;	//1.服务器布撤防状态改变,取消上传
+		PanelStatus = pan->data[0];
+		stopdidi();
+		//收到应答
+		pan->data[0] = 0xff;
+		ansbufang(pan);
+		//wavplay(yuanchengbufang);
+		break;
+		//---------------------------------------------------
+		//网关当前状态，正常主机查询指令
+	case 0xFD:
+		//判断是否是首次开机 同步布取消报警状态
+		if (firststart){
+			PanelStatus = 3;
+			firststart = 0;
+			pan->data[0] = 0xff;
+			ansbufang(pan);
+			break;
+		}
+	case 0xFE:
+		//判断是否是首次开机 同步布撤防状态
+		if (firststart){
+			PanelStatus = 1;
+			firststart = 0;
+			pan->data[0] = 0xff;
+			ansbufang(pan);
 			break;
 		}
 
-	}
-	pscene = pscene->next;
-	if (config.child_current->child_current == pscene)
-	{
+	case 0xFF://布防
+		if (firststart){
+			PanelStatus = 0;
+			firststart = 0;
+			pan->data[0] = 0xff;
+			ansbufang(pan);
+			break;
+		}
+		panelcmdpoll(pan);
+		//printf("sendId%03x\n", pan->id);
+
+		break;
+
+	default:
 		break;
 	}
+}
+//指令解析
+static void panel_parsedcmd(PANELCMD_t * pan){
+	switch (pan->cmd)
+	{
+	case POLL_CMD:
+		recvbuchefang(pan);
+		break;
+	case SET_USER_PASSWD:
+		break;
+	case SET_ADMIN_PASSWD:
 
+		break;
+	default:
+		break;
+	}
 }
-puser = puser->next;
-if (config.child_current == puser){
-	break;
+//数据解析
+void panel_paredata(){
+
+	static uint8_t go = 0;
+	if (go) {
+		goto GOON;
+	}
+	else {
+		if (Ebuffer_getused() >= PANEL_CMD_MINLEN) {
+			if (Ebuffer_read() == PANEL_CMD_HEAD) {
+				panelcmd.len = Ebuffer_read();
+				if (panelcmd.len < PANEL_MAX_LEN){
+
+				GOON:
+					//接收到完整的指令
+					if (Ebuffer_getused() >= panelcmd.len + 3) {
+
+						//数据校验
+						if (!calcfcs(Ebuffer_getpbufer(), panelcmd.len + 4)) {
+							panelcmd.cmd = Ebuffer_read();
+							panelcmd.id = Ebuffer_read();
+							Ebuffer_reads(panelcmd.data, panelcmd.len);
+							panelcmd.checksum = Ebuffer_read();
+
+							//数据解析
+							panel_parsedcmd(&panelcmd);
+						}
+						go = 0;
+					}
+					else{
+						//未接收到完整指令
+						go = 1;
+					}
+				}
+			}
+		}
+	}
 }
+//////////////////按键处理//////////////////////////////
+
+
+
+uint8_t keyindex;
+uint8_t checkpasswd(){
+	if (keyindex == 4)
+	{
+		uint8_t i = 0;
+		for (i = 0; i < 4; i++)
+		{
+			if (passwd[i] != userpasswd[i]){
+				return 0;
+			}
+		}
+		return 1;
+	}
+	return 0;
+}
+
+void Delaybufang(){
+	SyncFlag |= 1;
+	PanelStatus = 0;
+}
+void keyAevent(void){
+
+	keyindex = 0;
+}
+void keyATimeoutevent(void){
+	keyindex = 0;
+}
+void keyBevent(void){
+	if (checkpasswd())
+	{
+
+		SyncFlag |= 1;
+		PanelStatus = 1;
+		stopdidi();
 	}
 
+	keyindex = 0;
+}
+void keyBTimeoutevent(void){
+	keyindex = 0;
+}
+void keyCevent(void){
+	if (checkpasswd())
+	{
+		SyncFlag |= 1;
+		lastpanelstatus = PanelStatus;
+		PanelStatus = 2;
+		stopdidi();
+	}
+	keyindex = 0;
+}
+void keyCTimeoutevent(void){
+
+	keyindex = 0;
+}
+const uint16_t numindex[] = { KEY_0, KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9 };
+void changebufangdelaytime(){
+	int8_t i, j;
+	uint32_t num = 0;
+	if (keyindex > 3){
+		keyindex = 3;
+	}
+	for (i = 0; i < keyindex; i++){
+		for (j = 0; j < 10; j++){
+			if (passwd[i] == numindex[j]){
+
+				switch (keyindex - i){
+				case 1:
+					num += j;
+					break;
+				case 2:
+					num += j * 10;
+					break;
+				case 3:
+					num += j * 100;
+					break;
+
+				}
+				break;
+			}
+		}
+	}
+
+	if (num > 300 || num < 5){
+		num = 30;
+	}
+	BFDELAYTIME = num * 1000;
+}
+void keyF1event(void){
+	changebufangdelaytime();
+	keyindex = 0;
+}
+void keyF1Timeoutevent(void){
+
+
+	//changebufangdelaytime();
+	keyindex = 0;
+}
+void keyNevent(void){
+	if (keyindex < 16)
+	{
+		passwd[keyindex++] = key;
+	}
+}
+void keyNTimeoutevent(void){
+	if (keyindex < 16)
+	{
+		passwd[keyindex++] = key;
+	}
+}
+void(*normalhandler)(void) = (void(*)(void))0;
+void(*timehandler)(void) = (void(*)(void))0;
+uint16_t panel_keyHandle(){
+	uint32_t timescan;
+	if (GetKey())
+	{
+		switch (key)
+		{
+		case KEY_A:
+			normalhandler = keyAevent;
+			timehandler = keyATimeoutevent;
+			//一分钟后布防
+			panelcurtime = TIM4_GetCurrentTime();
+			if(PanelStatus){
+			bufangdelay = 1;
+			startdidi();
+			}
+			timescan = 1000;
+			break;
+		case KEY_B:
+			normalhandler = keyBevent;
+			timehandler = keyBTimeoutevent;
+			timescan = 1000;
+			break;
+		case KEY_C:
+			normalhandler = keyCevent;
+			timehandler = keyCTimeoutevent;
+			timescan = 1000;
+			break;
+		case KEY_F1:
+			//修改延时 报警时间
+			normalhandler = keyF1event;
+			timehandler = keyF1Timeoutevent;
+			timescan = 1000;
+			break;
+		default:
+			normalhandler = keyNevent;
+			timehandler = keyNTimeoutevent;
+			timescan = 4000;								//调节用户体验
+			break;
+		}
+		//二选一 
+		keyEvent(normalhandler, timehandler, timescan);
+	}
+	return 0;
+}
+
+//////////////////状态指示//////////////////////////////
+void panel_ShowStatus(){
+
+	if (LastStatus != PanelStatus){
+		LastStatus = PanelStatus;
+		switch (PanelStatus)
+		{
+		case 0://布防
+
+			Write_String(0xc0, "Arming         ");
+			LEDFlashing(0);
+			LED2(0);
+			break;
+		case 1://撤防
+			Write_String(0xc0, "Disarm          ");
+			LEDFlashing(0);
+			LED2(1);
+			break;
+		case 2://取消报警状态
+
+			Write_String(0xc0, "Cancel alarm    ");
+			LEDFlashing(500);
+			break;
+		case 3://取消
+
+			Write_String(0xc0, "elin            ");
+			LEDFlashing(500);
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void panel_can(void) {
+	//注册
+	Ebuffer_Init((uint8_t *)&USART2_read, (uint8_t *)&USART2_write, USART2_ReciveBuff);
+
+	//RS485_init();
+	KeyInit();
+	//DS1302_Init();
+	LCD1602_Init();
+
+	while (1) {
+		IWDG_ReloadCounter();//喂狗
+		panel_ShowStatus();
+		panel_keyHandle();
+		if (bufangdelay){
+			if (PanelStatus){
+				//不在布防模式
+				if (TIM4_GetDistanceTime(panelcurtime) > BFDELAYTIME){
+					Delaybufang();
+					stopdidi();
+					BeepStart(1000);
+				}
+			}
+			else{
+				stopdidi();
+			}
+		}
+		panel_paredata();
+	}
+}
+
+void panel_can_irq(void){
 
 
 }
+

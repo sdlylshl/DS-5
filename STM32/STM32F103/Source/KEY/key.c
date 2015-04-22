@@ -6,6 +6,14 @@
  */
 #include "key.h"
 #include "../GPIO/Beep.h"
+
+#include "../System/Timer/timer4.h"
+#define KEY_GetCurrentTime TIM4_GetCurrentTime
+#define KEY_GetDistanceTime TIM4_GetDistanceTime
+
+//按键初始状态 高电平,当有按键按下的时候 低电平
+//按键扫描就是检测有没有低电平触发
+
 typedef struct _KEY{
 	uint8_t ispress;	//
 	uint8_t iskey;		//按键来源
@@ -16,10 +24,8 @@ typedef struct _KEY{
 	uint32_t timeout;
 }KEY_t;
 
-
-
-
-void KeySwap(void){
+void KeySwap(void)
+{
 	GPIO_InitTypeDef GPIO_InitStructure; //定义结构体
 
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15;
@@ -37,10 +43,10 @@ void KeySwap(void){
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 
 	GPIO_ResetBits(GPIOB, GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 | GPIO_Pin_15);
-
 }
 
-void KeyInit(void){
+void KeyInit(void)
+{
 	GPIO_InitTypeDef GPIO_InitStructure; //定义结构体		
 	//GPIO_ReadInputData(); 	
 	//	COL 列  PB15 14 13 12 PA0 
@@ -61,18 +67,25 @@ void KeyInit(void){
 	GPIO_ResetBits(GPIOB, GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_10 | GPIO_Pin_11);
 	GPIO_ResetBits(GPIOA, GPIO_Pin_0);
 }
-uint8_t isKeyRelease(){
-
+uint8_t isKeyRelease()
+{
+	//有任意IO电平为低
 	return (GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_15) &&
 		GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_14) &&
 		GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_13) &&
 		GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_12));
 }
-uint8_t isKeyPress(){
-
-	return (!isKeyRelease());
+uint8_t isKeyPress()
+{
+	//所有的IO全为高电平
+	return (GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_15) ||
+		GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_14) ||
+		GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_13) ||
+		GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_12));
+	//return (!isKeyRelease());
 }
-uint8_t isKey(uint16_t key){
+uint8_t isKey(uint16_t key)
+{
 	return (
 		key == KEY_A ||
 		key == KEY_B ||
@@ -94,10 +107,10 @@ uint8_t isKey(uint16_t key){
 		key == KEY_STAR ||
 		key == KEY_SHARP
 		);
-
 }
 
-uint16_t KeyScan(){
+uint16_t KeyScan()
+{
 	uint8_t i;
 	uint16_t key = 0;
 	if (isKeyPress()){
@@ -114,6 +127,7 @@ uint16_t KeyScan(){
 			key |= GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_11) << 7;
 			key |= GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0) << 8;
 			KeyInit();
+			
 			if (isKey(key)){
 				//BeepStart(50);
 				Beep(500);
@@ -121,7 +135,21 @@ uint16_t KeyScan(){
 			else{
 				key = 0;
 			}
+			
 		}
+	}
+	return key;
+}
+
+//等待按键按下
+uint16_t WaitKey(uint32_t timeout){
+	//KeyInit();
+	uint16_t key =0;
+	uint32_t time =KEY_GetCurrentTime();
+	while (1){	
+		key=KeyScan();
+		if(isKey(key))break;													//取得按键退出
+		if(KEY_GetDistanceTime(time)>timeout)break;	//超时退出
 	}
 	return key;
 }
@@ -179,12 +207,7 @@ uint8_t  GetKey(){
 	return trigkey;
 }
 
-uint16_t WaitKey(){
-	KeyInit();
-	while (isKeyPress());
-	KeyScan();
-	return key;
-}
+
 
 void  keyEvent(void(*keyhandler)(),void (*timeouthandler)(),uint32_t timeout){
 	if (timeout<10)
