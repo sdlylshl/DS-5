@@ -464,9 +464,9 @@
           <GroupName>LCD1602</GroupName>
           <Files>
             <File>
-              <FileName>lcd_1602a.c</FileName>
+              <FileName>lcd1602.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\Source\LCD1602\lcd_1602a.c</FilePath>
+              <FilePath>..\..\Source\LCD1602\lcd1602.c</FilePath>
             </File>
           </Files>
         </Group>

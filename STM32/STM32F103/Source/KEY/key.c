@@ -154,6 +154,27 @@ uint16_t WaitKey(uint32_t timeout){
 	return key;
 }
 
+//***********************中断处理按键********************************
+
+uint16_t NowKey = 0;
+uint8_t b_KeyInt=0; //中断触发标志 按键有效标志
+
+//1.覆盖型
+//2.触发型 
+void key_isr(void)
+{
+	NowKey = KeyScan();
+	if (isKey(key)){
+		b_KeyInt = 1;
+	}
+	else
+	{
+		NowKey = 0;
+	}
+
+}
+//*****************************************************************
+
 volatile uint16_t key = 0;		//键值	
 volatile uint8_t  trigkey = 0;	//连续触发标志
 volatile uint32_t keytime = 0;	//按键按下持续时间

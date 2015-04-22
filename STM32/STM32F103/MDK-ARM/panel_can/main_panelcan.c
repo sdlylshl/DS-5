@@ -4,7 +4,7 @@
 #include "../../Source/System/Delay/systick.h"
 #include "../../Source/System/CAN/can1.h"
 #include "../../Source/panel/panel_can.h"
-#include "../../Source/LCD1602/lcd_1602a.h"
+#include "../../Source/LCD1602/lcd1602.h"
 #include "../../Source/Menu/menu.h"
 int main(){
 	USART1_NVIC_Config(7);

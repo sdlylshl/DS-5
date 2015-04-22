@@ -534,6 +534,128 @@ void panel_can(void) {
 
 void panel_can_irq(void){
 
+//		if (TI)
+//		{
+//			if ((TxNum--)>0)
+//			{
+//				SBUF = Send232Buffer[TxPos++];
+//			}
+//			else
+//			{
+//				TxNum = 0;
+//				TxPos = 0;
+//			}
+//			//   
+//			TI = 0;
+//		}
+//		else
+//		{
+//			RI = 0;
+//			RxNow = SBUF;
+//			Rev232Buffer[RxPos++] = RxNow;
+//			if (RxPos >= 255)
+//			{
+//				RxPos = 0;
+//			}
+//			//   
+//			if (!b_ReceiveOver)
+//			{
+//				switch (RxStep)
+//				{
+//				case    0://帧头:55 55   
+//					if (RxNow == 0x55)
+//					{
+//						if (RxPrev == 0x55)
+//						{
+//							RxStep = 1;
+//						}
+//						else
+//						{
+//							RxPrev = RxNow;
+//							RxPos = 0;
+//							Rev232Buffer[RxPos++] = RxNow;
+//							RxStep = 0;
+//						}
+//					}
+//					else
+//					{
+//						RxStep = 0;
+//						RxPos = 0;
+//						REN = 1;
+//					}
+//					break;
+//				case    1://命令帧和数据帧的判断   
+//					if ((RxNow & 0x80) == 0)
+//					{
+//						RxStep = 3;
+//					}
+//					else
+//					{
+//						RxPrev = RxNow;
+//						RxStep = 2;
+//					}
+//					break;
+//				case    2://命令帧，第二个命令字（和第一个命令字相同)   
+//					if (RxNow == RxPrev)
+//					{
+//						RxStep = 7;
+//					}
+//					else
+//					{
+//						RxStep = 0;
+//						RxPos = 0;
+//						REN = 1;
+//					}
+//					break;
+//				case    3://数据帧,帧长度   
+//					RxDataLenght = RxNow;
+//					RxStep = 4;
+//					break;
+//				case    4://数据帧,数据段   
+//					RxDataLenght--;
+//					if (RxDataLenght == 0)
+//					{
+//						RxStep = 5;
+//					}
+//					break;
+//				case    5://数据帧,累加和   
+//					RxStep = 6;
+//					break;
+//				case    6://数据帧,异或和   
+//					RxStep = 8;
+//					break;
+//				case    7://命令帧,累加和   
+//					RxStep = 8;
+//					break;
+//				case    8://帧尾:aa aa   
+//					if (RxNow == 0xaa)
+//					{
+//						if (RxPrev == 0xaa)
+//						{
+//							b_ReceiveOver = 1;
+//							REN = 0;
+//						}
+//						else
+//						{
+//							RxPrev = RxNow;
+//						}
+//					}
+//					else
+//					{
+//						RxStep = 0;
+//						RxPos = 0;
+//						REN = 1;
+//					}
+//					break;
+//				default:
+//					RxStep = 0;
+//					RxPos = 0;
+//					REN = 1;
+//					break;
+//				}
+//			}
+//		}
+	
 
 }
 

@@ -9,7 +9,7 @@
 #include "../System/Delay/systick.h"
 #include "../System/Usart/usart2.h"
 #include "../System/Timer/timer4.h"
-#include "../LCD1602/lcd_1602a.h"
+#include "../LCD1602/lcd1602a.h"
 #include "../GPIO/Beep.h"
 #include "../GPIO/led.h"
 #include "../KEY/key.h"
@@ -41,6 +41,10 @@ uint16_t last_key = 0;
 //撤防 灯灭  正在布防 快闪   布防成功 常量
 //布防状态
 //A 0 布防 B 1 撤防 C 2 取消报警状态 
+#define PANEL_STATUS_BUFANG 	0
+#define PANEL_STATUS_CHEFANG 	1
+#define PANEL_STATUS_CANCEL 	2
+#define PANEL_STATUS_CANCEL_SERV 	3
 volatile uint8_t PanelStatus = 0;
 volatile uint8_t lastpanelstatus = 0;
 uint8_t LastStatus = 0xFF;
@@ -170,13 +174,13 @@ void panelcmdpoll(PANELCMD_t * panelcmd){
 			if (PanelStatus == 2){
 				//取消报警状态成功 切换到原状态
 				if (panelcmd->data[0] == 0xFD){
-					PanelStatus = 3;
+					PanelStatus = PANEL_STATUS_CANCEL_SERV;
 				}
 				else if (panelcmd->data[0] == 0xFE){
-					PanelStatus = 1;
+					PanelStatus = PANEL_STATUS_CHEFANG;
 				}
 				else if (panelcmd->data[0] == 0xFF){
-					PanelStatus = 0;
+					PanelStatus = PANEL_STATUS_BUFANG;
 				}
 			}
 			if (cmdbufangId){ cmdbufangId = 0; }
@@ -220,16 +224,16 @@ static void recvbuchefang(PANELCMD_t * pan){
 	case 0xFD:
 		//判断是否是首次开机 同步布取消报警状态
 		if (firststart){
-			PanelStatus = 3;
+			PanelStatus = PANEL_STATUS_CANCEL_SERV;
 			firststart = 0;
 			pan->data[0] = 0xff;
 			ansbufang(pan);
 			break;
 		}
 	case 0xFE:
-		//判断是否是首次开机 同步布撤防状态
+		//判断是否是首次开机 撤防状态
 		if (firststart){
-			PanelStatus = 1;
+			PanelStatus = PANEL_STATUS_CHEFANG;
 			firststart = 0;
 			pan->data[0] = 0xff;
 			ansbufang(pan);
@@ -238,7 +242,7 @@ static void recvbuchefang(PANELCMD_t * pan){
 
 	case 0xFF://布防
 		if (firststart){
-			PanelStatus = 0;
+			PanelStatus = PANEL_STATUS_BUFANG;
 			firststart = 0;
 			pan->data[0] = 0xff;
 			ansbufang(pan);
@@ -477,23 +481,23 @@ void panel_ShowStatus(){
 		{
 		case 0://布防
 
-			Write_String(0xc0, "Arming         ");
+			LCD1602_Write_String(0x0,1, "Arming         ");
 			LEDFlashing(0);
 			LED2(0);
 			break;
 		case 1://撤防
-			Write_String(0xc0, "Disarm          ");
+			LCD1602_Write_String(0x0, 1,"Disarm          ");
 			LEDFlashing(0);
 			LED2(1);
 			break;
 		case 2://取消报警状态
 
-			Write_String(0xc0, "Cancel alarm    ");
+			LCD1602_Write_String(0x0,1, "Cancel alarm    ");
 			LEDFlashing(500);
 			break;
 		case 3://取消
 
-			Write_String(0xc0, "elin            ");
+			LCD1602_Write_String(0x0,1, "elin            ");
 			LEDFlashing(500);
 			break;
 		default:

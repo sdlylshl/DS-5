@@ -8,7 +8,7 @@ int main(){
 	USART1_NVIC_Config(7);
 	USART1_Init();
 	printf("hello");
-	
+	//LCD1602_Init();
 	panel_485();
 }
 
