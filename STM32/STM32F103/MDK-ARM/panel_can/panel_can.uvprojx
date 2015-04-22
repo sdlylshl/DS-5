@@ -464,9 +464,9 @@
           <GroupName>LCD1602</GroupName>
           <Files>
             <File>
-              <FileName>lcd1602.c</FileName>
+              <FileName>lcd1602a.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\Source\LCD1602\lcd1602.c</FilePath>
+              <FilePath>..\..\Source\LCD1602\lcd1602a.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -512,6 +512,11 @@
               <FileName>menu.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Source\Menu\menu.c</FilePath>
+            </File>
+            <File>
+              <FileName>menu2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Source\Menu\menu2.c</FilePath>
             </File>
           </Files>
         </Group>

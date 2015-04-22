@@ -536,3 +536,16 @@ void panel_485(void) {
 	}
 }
 
+uint32_t LCD1602TIM=500, lcd1602time,flag;
+void LCD1602_Flashing(uint32_t ms)
+{
+//LCD1602TIM = ms;
+    if (flag&&(LCD1602TIM < TIM4_GetDistanceTime(lcd1602time))) {
+        LCD1602_Write_String(0x0f,0, "*");
+        flag =0;
+    } else if ((LCD1602TIM * 1.8) < TIM4_GetDistanceTime(lcd1602time)) {
+        LCD1602_Write_String(0x0f,0, " ");
+        flag =1;
+        lcd1602time = TIM4_GetCurrentTime();
+    }
+}

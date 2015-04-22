@@ -5,15 +5,17 @@
  *      Author: souls
  */
 
+#include "stddef.h"
 #include "../Algorithm/Buffer/buffer.h"
 #include "../System/Delay/systick.h"
 #include "../System/Usart/usart2.h"
 #include "../System/Timer/timer4.h"
-#include "../LCD1602/lcd_1602a.h"
+#include "../LCD1602/lcd1602a.h"
 #include "../GPIO/Beep.h"
 #include "../GPIO/led.h"
 #include "../KEY/key.h"
 #include "./RS485.h"
+#include "../Menu/menu.h"
 
 #define POLL_CMD 				0
 #define SET_USER_PASSWD			0x2
@@ -477,23 +479,23 @@ void panel_ShowStatus(){
 		{
 		case 0://布防
 
-			Write_String(0xc0, "Arming         ");
+			LCD1602_Write_String(0x0,1, "Arming         ");
 			LEDFlashing(0);
 			LED2(0);
 			break;
 		case 1://撤防
-			Write_String(0xc0, "Disarm          ");
+			LCD1602_Write_String(0x0,1, "Disarm          ");
 			LEDFlashing(0);
 			LED2(1);
 			break;
 		case 2://取消报警状态
 
-			Write_String(0xc0, "Cancel alarm    ");
+			LCD1602_Write_String(0x0,1, "Cancel alarm    ");
 			LEDFlashing(500);
 			break;
 		case 3://取消
 
-			Write_String(0xc0, "elin            ");
+			LCD1602_Write_String(0x0,1, "elin            ");
 			LEDFlashing(500);
 			break;
 		default:
@@ -531,6 +533,31 @@ void panel_can(void) {
 		panel_paredata();
 	}
 }
+//***********************************************************************************************
+#define PANEL_MAIN_MENU_NUM 6
+struct MenuItem PanelMainMenu[PANEL_MAIN_MENU_NUM] =		//结构体主菜单
+{
+//MenuCount DisplayString pMenuFun ChildrenMenus ParentMenus
+	{PANEL_MAIN_MENU_NUM,"www.jhmcu.com ",NullSubs,NULL,PanelMainMenu},
+	{PANEL_MAIN_MENU_NUM,"22222222222222",NullSubs,NULL,NULL},
+	{PANEL_MAIN_MENU_NUM,"33333333333333",NullSubs,NULL,NULL},
+	{PANEL_MAIN_MENU_NUM,"44444444444444",NullSubs,NULL,NULL},
+	{PANEL_MAIN_MENU_NUM,"55555555555555",NullSubs,PanelMainMenu,PanelMainMenu},
+	{PANEL_MAIN_MENU_NUM,"www.jhmcu.com ",NullSubs,PanelMainMenu,PanelMainMenu}
+};
+
+#define PANEL_FIRST_MENU_NUM 6
+struct MenuItem PanelFirstMenu[PANEL_FIRST_MENU_NUM] =		//结构体主菜单
+{
+//MenuCount DisplayString pMenuFun ChildrenMenus ParentMenus
+	{PANEL_FIRST_MENU_NUM,"www.jhmcu.com ",NullSubs,NULL,PanelMainMenu},
+	{PANEL_FIRST_MENU_NUM,"22222222222222",NullSubs,NULL,NULL},
+	{PANEL_FIRST_MENU_NUM,"33333333333333",NullSubs,NULL,NULL},
+	{PANEL_FIRST_MENU_NUM,"44444444444444",NullSubs,NULL,NULL},
+	{PANEL_FIRST_MENU_NUM,"55555555555555",NullSubs,PanelMainMenu,PanelMainMenu},
+	{PANEL_FIRST_MENU_NUM,"www.jhmcu.com ",NullSubs,PanelMainMenu,PanelMainMenu}
+};
+
 
 void panel_can_irq(void){
 

@@ -1,10 +1,10 @@
 //==================================================
-//LCD1602¶à¼¶²Ëµ¥ÏÔÊ¾
-//Ê÷ĞÎ½á¹¹+»Øµ÷º¯Êı
+//LCD1602å¤šçº§èœå•æ˜¾ç¤º
+//æ ‘å½¢ç»“æ„+å›è°ƒå‡½æ•°
 //==================================================
 #include "stdint.h"
 #include "menu.h"
-#include "../LCD1602/lcd_1602a.h"
+#include "../LCD1602/lcd1602a.h"
 #define LCD_Write_String LCD1602_Write_String
 
 #define Null 0
@@ -21,48 +21,41 @@ void NullSubs(void)
 {
 }
 //==========================================================================
-//Ä¿Â¼½á¹¹Ìå¶¨Òå
+//ç›®å½•ç»“æ„ä½“å®šä¹‰
 //==========================================================================
-struct MenuItem
-{
-	uint8_t MenuCount;    					//²Ëµ¥µÄÊıÄ¿
-	char *DisplayString; 						//ÏÔÊ¾µÄ×Ö·û´®
-	void (*pMenuFun)(); 								//²Ëµ¥Ö¸ÏòµÄ¹¦ÄÜº¯Êı
-	struct MenuItem *ChildrenMenus;	//×Ó½Úµã
-	struct MenuItem *ParentMenus;		//¸¸½Úµã
-};
+#include "menu.h"
 
-//²Ëµ¥Ä¿Â¼½á¹¹ÌåÉùÃ÷
+//èœå•ç›®å½•ç»“æ„ä½“å£°æ˜
  struct MenuItem MainMenu[7];
  struct MenuItem testMenu[6];
 
-//²Ëµ¥Ê¹ÓÃµÄÈ«¾Ö±äÁ¿
-#define LcdMaxLine	2											//¶¨ÒåLCD×î¶àÏÔÊ¾²Ëµ¥ÊıÄ¿
-struct MenuItem (*MenuPoint) = MainMenu;	//½á¹¹Ìå²Ëµ¥Ö¸ÕëÖ¸ÏòÖ÷²Ëµ¥
+//èœå•ä½¿ç”¨çš„å…¨å±€å˜é‡
+#define LcdMaxLine	2						//å®šä¹‰LCDæœ€å¤šæ˜¾ç¤ºèœå•æ•°ç›®
+struct MenuItem (*MenuPoint) = MainMenu;	//ç»“æ„ä½“èœå•æŒ‡é’ˆæŒ‡å‘ä¸»èœå•
 
-uint8_t DisplayStart=0;										//ÏÔÊ¾²Ëµ¥µÄ¿ªÊ¼Î»ÖÃ
-uint8_t DisplayPoint=0;										//ÏÔÊ¾²Ëµ¥µÄ±àºÅ
-uint8_t	ShowMenuFlag=0;										//²Ëµ¥ÔËĞĞ±êÖ¾
-uint8_t UserChoose=0;											//ÓÃ»§µÄÑ¡Ôñ
-uint8_t MaxItems=0;												//²Ëµ¥µÄÊıÁ¿
+uint8_t DisplayStart=0;						//æ˜¾ç¤ºèœå•çš„å¼€å§‹ä½ç½®
+uint8_t DisplayPoint=0;						//æ˜¾ç¤ºèœå•çš„ç¼–å·
+uint8_t	ShowMenuFlag=0;						//èœå•è¿è¡Œæ ‡å¿—
+uint8_t UserChoose=0;						//ç”¨æˆ·çš„é€‰æ‹©
+uint8_t MaxItems=0;							//èœå•çš„æ•°é‡
 
 
 //==========================================================================
-// ²Ëµ¥½á¹¹ÌåÁ´±í
+// èœå•ç»“æ„ä½“é“¾è¡¨
 //==========================================================================
-//Ö÷²Ëµ¥-µÚÒ»¼¶²Ëµ¥
-struct MenuItem MainMenu[7] =		//½á¹¹ÌåÖ÷²Ëµ¥
+//ä¸»èœå•-ç¬¬ä¸€çº§èœå•
+struct MenuItem MainMenu[7] =		//ç»“æ„ä½“ä¸»èœå•
 {
-	{7,"Set Time      ",NullSubs,testMenu,Null},		//1.->ÉèÖÃÊ±¼ä
-	{7,"Set Alarm Time",NullSubs,Null,Null},				//2.->ÉèÖÃ±¨¾¯Ê±¼ä¶Î
-	{7,"Alarm Swtich  ",NullSubs,Null,Null},				//3.->±¨¾¯×Ü¿ª¹Ø
-	{7,"Check Alarm   ",NullSubs,Null,Null},				//4.->²é¿´±¨¾¯ĞÅÏ¢
-	{7,"Alarm Init    ",NullSubs,Null,Null},				//5.->ºìÍâÌ½Í·³õÊ¼»¯
-	{7,"Exit          ",NullSubs,MainMenu,MainMenu},//6.->ÍË³ö(·µ»ØÖ÷²Ëµ¥)
-	{7,"test          ",NullSubs,MainMenu,MainMenu}	//7.->ÍË³ö
+	{7,"Set Time      ",NullSubs,testMenu,Null},		//1.->è®¾ç½®æ—¶é—´
+	{7,"Set Alarm Time",NullSubs,Null,Null},				//2.->è®¾ç½®æŠ¥è­¦æ—¶é—´æ®µ
+	{7,"Alarm Swtich  ",NullSubs,Null,Null},				//3.->æŠ¥è­¦æ€»å¼€å…³
+	{7,"Check Alarm   ",NullSubs,Null,Null},				//4.->æŸ¥çœ‹æŠ¥è­¦ä¿¡æ¯
+	{7,"Alarm Init    ",NullSubs,Null,Null},				//5.->çº¢å¤–æ¢å¤´åˆå§‹åŒ–
+	{7,"Exit          ",NullSubs,MainMenu,MainMenu},//6.->é€€å‡º(è¿”å›ä¸»èœå•)
+	{7,"test          ",NullSubs,MainMenu,MainMenu}	//7.->é€€å‡º
 };
 
-struct MenuItem testMenu[6] =		//½á¹¹ÌåÖ÷²Ëµ¥
+struct MenuItem testMenu[6] =		//ç»“æ„ä½“ä¸»èœå•
 {
 	{6,"www.jhmcu.com ",NullSubs,Null,MainMenu},
 	{6,"22222222222222",NullSubs,Null,MainMenu},
@@ -73,45 +66,45 @@ struct MenuItem testMenu[6] =		//½á¹¹ÌåÖ÷²Ëµ¥
 };
 
 //==================================================
-//LCD1602²Ëµ¥ÏÔÊ¾Í¨ÓÃº¯Êı
-//INPUT:½á¹¹ÌåÁ´±í,UserChoose
+//LCD1602èœå•æ˜¾ç¤ºé€šç”¨å‡½æ•°
+//INPUT:ç»“æ„ä½“é“¾è¡¨,UserChoose
 //OUTPUT:NONE
-//FUNCTION:LCD1602Òº¾§ÏÔÊ¾ÆÁÉÏÏÔÊ¾²Ëµ¥¹¦ÄÜ
+//FUNCTION:LCD1602æ¶²æ™¶æ˜¾ç¤ºå±ä¸Šæ˜¾ç¤ºèœå•åŠŸèƒ½
 //==================================================
 void ShowMenu(void)
 {
 	uint8_t i = 0;
-	MaxItems = MenuPoint[0].MenuCount;	//»ñÈ¡µ±Ç°²Ëµ¥µÄÌõÄ¿Êı
-	DisplayPoint = DisplayStart;		//Ñ¡ÖĞµÚÒ»Ïî²Ëµ¥
-	for(i=0;i<LcdMaxLine;i++)		//Ñ­»·ÏÔÊ¾µ±Ç°²Ëµ¥
+	MaxItems = MenuPoint[0].MenuCount;	//è·å–å½“å‰èœå•çš„æ¡ç›®æ•°
+	DisplayPoint = DisplayStart;		//é€‰ä¸­ç¬¬ä¸€é¡¹èœå•
+	for(i=0;i<LcdMaxLine;i++)		//å¾ªç¯æ˜¾ç¤ºå½“å‰èœå•
 	{
-		//Èç¹ûµ±Ç°ÏÔÊ¾½ÚµãĞ¡ÓÚ²Ëµ¥Êı
+		//å¦‚æœå½“å‰æ˜¾ç¤ºèŠ‚ç‚¹å°äºèœå•æ•°
 		if(DisplayPoint < MaxItems){
-			//Èç¹ûÓÃ»§Ñ¡ÖĞ¸Ã²Ëµ¥£¬ÔòÔÚ²Ëµ¥Ç°´òÓ¡"->"
+			//å¦‚æœç”¨æˆ·é€‰ä¸­è¯¥èœå•ï¼Œåˆ™åœ¨èœå•å‰æ‰“å°"->"
 			if(DisplayPoint==UserChoose)
 				LCD_Write_String(0,i,"->");
 			else
 				LCD_Write_String(0,i,"  ");
 			LCD_Write_String(2,i,MenuPoint[DisplayPoint++].DisplayString);
-		}else	//ÏÔÊ¾×îºóÒ»Ò³²Ëµ¥£¬²¢Ö»ÓĞÒ»Ïî²Ëµ¥Ê±£¬Çå³ı×îºóÒ»ĞĞ
+		}else	//æ˜¾ç¤ºæœ€åä¸€é¡µèœå•ï¼Œå¹¶åªæœ‰ä¸€é¡¹èœå•æ—¶ï¼Œæ¸…é™¤æœ€åä¸€è¡Œ
 		{
-			LCD_Write_String(2,LcdMaxLine-1,"                ");	//½«ÉÏÒ»´ÎÏÔÊ¾ÇåÆÁ
+			LCD_Write_String(2,LcdMaxLine-1,"                ");	//å°†ä¸Šä¸€æ¬¡æ˜¾ç¤ºæ¸…å±
 		}
 	}
-	//²Ëµ¥¶¨Î»Âß¼­
+	//èœå•å®šä½é€»è¾‘
 	if(UserChoose%LcdMaxLine==0){
 		DisplayStart = UserChoose;
 	}else{
-		//Âß¼­:Èç¹ûÓÃ»§Ñ¡ÔñµÄ²Ëµ¥ÊÇÆæÊı£¬Ôò½«ÏÔÊ¾¶¨Î»ÔÚÅ¼¶ûÒ³
+		//é€»è¾‘:å¦‚æœç”¨æˆ·é€‰æ‹©çš„èœå•æ˜¯å¥‡æ•°ï¼Œåˆ™å°†æ˜¾ç¤ºå®šä½åœ¨å¶å°”é¡µ
 		for(i=0;i<=MaxItems;i++){
 			if(UserChoose!=(i%LcdMaxLine))
-				DisplayStart = UserChoose-1;	//²Ëµ¥¹öÆÁ
+				DisplayStart = UserChoose-1;	//èœå•æ»šå±
 		}
 	}
 }
 
 //==================================================
-//²Ëµ¥Ö´ĞĞº¯Êı
+//èœå•æ‰§è¡Œå‡½æ•°
 //INPUT:NONE
 //OUTPUT:NONE
 //==================================================
@@ -123,7 +116,7 @@ void ChangeMenu(uint8_t keynum)
 			UserChoose--;
 			if (UserChoose==255)
 			{
-				UserChoose = 0;	//ÉÏ·­Í£Ö¹¸³ÖµÎª0,»Ø¹ö¸³ÖµÎªMaxItems-1
+				UserChoose = 0;	//ä¸Šç¿»åœæ­¢èµ‹å€¼ä¸º0,å›æ»šèµ‹å€¼ä¸ºMaxItems-1
 			}
 			update =1;
 			break;
@@ -131,17 +124,17 @@ void ChangeMenu(uint8_t keynum)
 			UserChoose++;
 			if (UserChoose == MaxItems)
 			{
-				UserChoose = MaxItems-1;//ÉÏ·­Í£Ö¹¸³ÖµÎªMaxItems-1,»Ø¹ö¸³ÖµÎª0
+				UserChoose = MaxItems-1;//ä¸Šç¿»åœæ­¢èµ‹å€¼ä¸ºMaxItems-1,å›æ»šèµ‹å€¼ä¸º0
 			}
 			update =1;
 			break;
 		case ENTER:
-			//Èç¹ûÓÃ»§Ñ¡ÔñµÄ²Ëµ¥Ö¸ÏòµÄº¯Êı²»ÊÇ¿Õº¯Êı,ÔòÖ´ĞĞ¹¦ÄÜº¯Êı¡£
+			//å¦‚æœç”¨æˆ·é€‰æ‹©çš„èœå•æŒ‡å‘çš„å‡½æ•°ä¸æ˜¯ç©ºå‡½æ•°,åˆ™æ‰§è¡ŒåŠŸèƒ½å‡½æ•°ã€‚
 			if (MenuPoint[UserChoose].pMenuFun != NullSubs)
 			{
-				(*MenuPoint[UserChoose].pMenuFun)();	//Ö´ĞĞ²Ëµ¥¹¦ÄÜº¯Êı
+				(*MenuPoint[UserChoose].pMenuFun)();	//æ‰§è¡Œèœå•åŠŸèƒ½å‡½æ•°
 			}
-			//Èç¹ûÊÇ¿Õº¯Êı£¬ÔòÕÒ×Ó²Ëµ¥,ÕÒ²»µ½×Ó²Ëµ¥,¾ÍÍË³ö
+			//å¦‚æœæ˜¯ç©ºå‡½æ•°ï¼Œåˆ™æ‰¾å­èœå•,æ‰¾ä¸åˆ°å­èœå•,å°±é€€å‡º
 			else if (MenuPoint[UserChoose].ChildrenMenus != Null)
 			{
 				MenuPoint = MenuPoint[UserChoose].ChildrenMenus;
